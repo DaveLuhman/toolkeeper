@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-12-29T21:50:45.085Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="cQSd7cIBBtWDhUoHTUpP" version="20.7.4" type="github" pages="10">
+<mxfile host="app.diagrams.net" modified="2022-12-29T21:53:32.478Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36" etag="rAX2GQ_LqtgntLbrRifp" version="20.7.4" type="github" pages="10">
   <diagram id="lKCODA6wVHFzISZ-hTEW" name="AbstractComponents">
     <mxGraphModel dx="1434" dy="756" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -1571,7 +1571,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="2-8ohW5GUqyYOJ9gUYKi" name="Profile">
-    <mxGraphModel dx="1434" dy="756" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2868" dy="1398" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="MwvWg9_NRS5NWp9k-zUz-0" />
         <mxCell id="MwvWg9_NRS5NWp9k-zUz-1" parent="MwvWg9_NRS5NWp9k-zUz-0" />
@@ -1685,7 +1685,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="jJ2eWfwDUlK7BzCCVk7T" name="NavBar">
-    <mxGraphModel dx="1434" dy="756" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+    <mxGraphModel dx="2607" dy="1271" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
       <root>
         <mxCell id="WwUF2i6CXzFu_FUaoij6-0" />
         <mxCell id="WwUF2i6CXzFu_FUaoij6-1" parent="WwUF2i6CXzFu_FUaoij6-0" />
@@ -1748,11 +1748,11 @@
     </mxGraphModel>
   </diagram>
   <diagram id="ytnDT0i3VeUVpUmqApCF" name="EntityRelation">
-    <mxGraphModel dx="1434" dy="756" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1434" dy="699" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="5" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center ; text-decoration: underline&quot;&gt;&lt;b&gt;Tool:Object&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;_id = OUID, auto&lt;br&gt;&quot;serialNumber&quot; = String, 24&lt;br&gt;&quot;partNumber&quot; = String, 24&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;barcode&quot; = Number, 10&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;status&quot; = String, 24&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;serviceAssignment&quot; = String, 24&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;statusLastChanged&quot; = Date }&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;description&quot; = String, 255&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;manufacturer&quot; = String, 32&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;createdOn&quot; = Date&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;createdBy&quot; = {User}&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;updatedOn&quot; = Date&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;updatedBy&quot; = {User}&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;image&quot; = String (SVG Encoded Text)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;archived&quot; = Boolean, *False*&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
+        <mxCell id="5" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center ; text-decoration: underline&quot;&gt;&lt;b&gt;Tool:Object&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;_id&quot; = OUID, auto&lt;br&gt;&quot;serialNumber&quot; = String, 24&lt;br&gt;&quot;partNumber&quot; = String, 24&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;barcode&quot; = Number, 10&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;status&quot; = String, 24&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;serviceAssignment&quot; = String, 24&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;statusLastChanged&quot; = Date }&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;description&quot; = String, 255&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;manufacturer&quot; = String, 32&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;createdOn&quot; = Date&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;createdBy&quot; = {User}&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;updatedOn&quot; = Date&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;updatedBy&quot; = {User}&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;image&quot; = String (SVG Encoded Text)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;archived&quot; = Boolean, *False*&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
           <mxGeometry x="90" y="20" width="270" height="250" as="geometry" />
         </mxCell>
         <mxCell id="8" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; text-align: center ; text-decoration: underline&quot;&gt;&lt;b&gt;User:Object&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;_id&quot; = UUID, auto&lt;br&gt;&quot;email&quot; = String, 36&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;password&quot; = String, 64&lt;br&gt;&quot;firstName&quot; = String, 18&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;lastName&quot; = String, 30&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;displayName&quot; = v(first + &quot; &quot; last)&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;createdOn&quot; = Date&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;updatedOn&quot; = Date&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px ; margin-left: 8px&quot;&gt;&quot;lastLogin&quot; = Date&lt;/p&gt;" style="verticalAlign=top;align=left;overflow=fill;fontSize=12;fontFamily=Helvetica;html=1;" parent="1" vertex="1">
