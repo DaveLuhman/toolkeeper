@@ -2,13 +2,21 @@ const express = require('express');
 const morgan = require('morgan') // logging
 const path = require('path');
 const _colors = require('colors');
-require('dotenv').config();
+require('dotenv').config("../.env");
 const PORT = process.env.PORT || 5555;
 const { errorHandler } = require('./middleware/error.js')
 const bodyParser = require('body-parser') // middleware
 const connectDB = require('../config/db.config');
 const app = express();
 
+// Passport Import and Config
+const passport = require('passport') //auth toolkit
+const User = require('/backend/models/user') // mongoose model for userAuth
+require('./config/passport.js')(passport, User); // passport import
+const expressSession = require('express-session') // session storage middleware
+const { ensureAuth } = require('./middleware/auth') // auth middleware to protect routes
+
+//Logging
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
   console.log('>>>>> Morgan enabled for logging in this development environment')
