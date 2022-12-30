@@ -1,0 +1,30 @@
+{
+  "name": "toolkeeper",
+  "version": "1.0.0",
+  "description": "Tool Crib Web Application",
+  "main": "index.js",
+  "scripts": {
+    "dev-client": "nodemon frontend/app.js",
+    "dev-server": "nodemon backend/server.js",
+    "dev": "concurrently \"nodemon frontend/app.js\" \"nodemon backend/server.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DaveLuhman/toolkeeper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DaveLuhman/toolkeeper/issues"
+  },
+  "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "express": "^4.18.2",
+    "express-handlebars": "^6.0.6",
+    "mongoose": "^6.8.2",
+    "morgan": "^1.10.0",
+    "path": "^0.12.7"
+  }
+}
