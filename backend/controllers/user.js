@@ -1,4 +1,4 @@
-const User = require('/backend/models/user');
+const User = require('../models/user');
 
 const controller = {}
 

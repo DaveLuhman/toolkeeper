@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
     firstName: {
         type:String,
         trim: true
@@ -48,5 +49,6 @@ userSchema.pre('save', function(next) {
     this.lastLogin = Date.now();
     next();
     });
+
 
 module.exports = mongoose.model('User', userSchema, "users");
