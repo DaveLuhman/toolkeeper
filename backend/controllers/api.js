@@ -3,7 +3,33 @@ const User = require('../models/user');
 
 const controller = {}
 
-
+controller.parseToolToObject = (data) => {
+    const toolObject = {
+        "_id": data._id,
+        "serialNumber": data.serialNumber,
+        "partNumber": data.partNumber,
+        "barcode": data.barcode,
+        "serviceAssignment": data.serviceAssignment,
+        "manufacturer": data.manufacturer,
+        "status": data.status,
+        "description": data.description,
+        "image": data.image,
+        "updatedBy": data.user._id
+    }
+    return toolObject
+}
+controller.parseUserToObject = (data) => {
+    const userObject = {
+        "_id": data._id,
+        "firstName": data.firstName,
+        "lastName": data.lastName,
+        "email": data.email,
+        "role": data.role,
+        "disabled": data.disabled,
+        "lastLogin": data.lastLogin
+    }
+    return userObject
+}
 // @desc    Get unique tool by _id or serial number
 // @route   GET /api/tool
 // @access  User
@@ -24,12 +50,12 @@ controller.getAllTools = async (_req, res) => {
 // @access  User
 controller.getToolsByMatch = async (req, res) => {
     const { _id, serialNumber, partNumber, barcode, serviceAssignment, manufacturer, status } = req.body
+    const matchKeys = ["_id", "serialNumber", "partNumber", "barcode", "serviceAssignment", "manufacturer", "status"]
     const matchValues = [_id, serialNumber, partNumber, barcode, serviceAssignment, manufacturer, status]
     // check for non-empty values so we know which field to search with
     for (let i = 0; i < matchValues.length; i++) {
         if (matchValues[i] != null) {
-            const matchKey = matchValues[i].toString()
-            let tools = await Tool.find({ [matchKey]: matchValues[i] })
+            let tools = await Tool.find({ [matchKeys[i]]: matchValues[i] })
             if (tools.length > 0) { return res.status(200).json(tools) }
         }
     }
@@ -39,62 +65,48 @@ controller.getToolsByMatch = async (req, res) => {
 // @route   POST /api/tool
 // @access  User
 controller.createTool = async (req, res) => {
-    if (!req.body.serialNumber) { return res.status(400).send('Serial Number is required') }
-    let tool = await Tool.create(req.body)
-    if (tool._id != null) { return res.status(201).json(tool) }
+    let tJ = this.parseToolToObject(req.body)
+    if (tJ.serialNumber.length > 0 || tJ.barcode.length > 0 || tJ.partNumber.length > 0) {
+         return res.status(400).send('Serial Number is required')
+        }
+    let tool = await Tool.create(tJ)
+    if (tool._id != null) { return res.status(201).json({message: success, tool}) }
 }
 // @desc    Update a tool by ID
 // @route   PUT /api/tool
 // @access  User
 controller.updateTool = async (req, res) => {
-    const { _id, serialNumber, partNumber, barcode, serviceAssignment, manufacturer, status, description, image } = req.body
-    let toolJSON = {
-        "_id": _id,
-        "serialNumber": serialNumber,
-        "partNumber": partNumber,
-        "barcode": barcode,
-        "serviceAssignment": serviceAssignment,
-        "manufacturer": manufacturer,
-        "status": status,
-        "description": description,
-        "image": image,
-        "updatedBy": req.user
+    let tJ = this.parseToolToObject(req.body)
+    try {
+        let tool = await Tool.findByIdAndUpdate(tJ._id, tJ)
+        return res.status(200).json({message: success, result: tool})
+    } catch (error) {
+        throw new Error(error)
     }
-    let tool = await Tool.findByIdAndUpdate(_id, toolJSON)
-    if (tool._id != null) { return res.status(200).json(tool) }
     return res.status(404).send('Tool not found')
 }
 // @desc    Return Current User Details
 // @route   GET /api/user
 // @access  User
 controller.getCurrentUser = async (req, res) => {
-    let user
-    const { _id, email } = req.body
-    if (!_id && !email) { return res.status(400).send('No unique value provided') }
-    if (_id) {
-        user = await User.findById(_id)
-    }
-    else if (email) {
-        user = await User.findOne({ email: email })
-    }
-    if (user == null) { return res.status(404).send('User not found') }
-    return res.status(200).json(user)
+    let user = this.parseUserToObject(req.body)
+    if (!user._id && !userObject.email) return res.status(400).send('No unique value provided')
+    if (user._id) {
+        let result = await User.findById(user._id)
+        if (result._id == null) { return res.status(404).send('No Matching User Found')}
+        return res.status(200).json(result)}
+    else if (user.email) {
+        let result = await User.findOne({ email: user.email })
+        if (result._id == null) { return res.status(404).send('No Matching User Found')}
+        return res.status(200).json(result)}
 }
 
 // @desc  Update a user by ID
 // @route PUT /api/user
 // @access Manager
 controller.updateUserByID = async (req, res) => {
-    const { _id, firstName, lastName, email, role, disabled } = req.body
-    let userJSON = {
-        "_id": _id,
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "role": role,
-        "disabled": disabled,
-    }
-    let user = await User.findByIdAndUpdate(_id, userJSON)
+    let userObject = this.parseUserToObject(req.body)
+    let user = await User.findByIdAndUpdate(userObject._id, userObject)
     if (user._id != null) { return res.status(200).json(user) }
     return res.status(404).send('User not found')
 }

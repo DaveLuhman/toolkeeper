@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 const serviceAssignment = require('./serviceAssignment');
 
 const toolSchema = new mongoose.Schema({
-    _id: { mongoose.Schema.Types.ObjectId,
-        auto: true},
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        auto: true
+    },
     serialNumber: {
         type: String,
         upperCase: true,
-        required: true,
+        required: false,
         maxLength: 20
     },
     partNumber: {
