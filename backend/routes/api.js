@@ -3,7 +3,7 @@ const api = require('../controllers/api.js')
 const auth = require('../middleware/auth.js')
 
 // User Security Context Tool  api routes
-router.get('/tool', auth.checkUserAuth, api.getUniqueTool)
+router.get('/tool', api.getUniqueTool)
 router.get('/tools', api.getAllTools)
 router.get('/tools/search',api.getToolsByMatch)
 router.post('/tool', api.createTool)
