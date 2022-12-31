@@ -3,7 +3,7 @@ const morgan = require('morgan') // logging
 const path = require('path');
 const _colors = require('colors');
 require('dotenv').config("../.env");
-const PORT = process.env.PORT || 5555;
+const PORT = process.env.BACKEND-PORT || 5000;
 const bodyParser = require('body-parser') // middleware
 const connectDB = require('./config/db.js');
 const app = express();

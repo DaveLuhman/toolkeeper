@@ -1,0 +1,30 @@
+
+<div class="container login-container">
+
+    <div class="container card">
+        <h3>Scoremaster Login</h3>
+        <div class="card-headers">
+            <h5 class="card-title">Login</h5>
+            <p class="lead">Welcome to ScoreMaster's submission site</p>
+        </div>
+
+        {{!-- card content for login box --}}
+        <div class="card-content">
+            <form action="/auth" method="POST">
+                <div class="section">
+
+                        <label for="username">Username</label>
+                        <input id="username" name="username" type="text" autocomplete="username" required />
+
+
+
+                        <label for="password">Password</label>
+                        <input id="password" name="password" type="password" autocomplete="password" required />
+
+
+                        <button class="btn btn-primary" type="submit">Login</button>
+
+                </div>
+            </form>
+        </div>
+    </div>

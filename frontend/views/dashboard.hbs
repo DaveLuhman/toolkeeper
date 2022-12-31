@@ -1,0 +1,69 @@
+<br>
+<br>
+<h3>Welcome To ScoreMaster</h3>
+<br>
+
+
+{{#if scorecards}}
+<table class="blueTable">
+    <thead>
+        <tr class="table-headers dark-blue card">
+            <th class="table-header col s2 m5 l3">Week #</th>
+            <th class="table-header col s5 m5 l3">Driver Name</th>
+            <th class="table-header col s2 m5 l3">Overall Tier</th>
+            <th class="table-header col s2 m5 l3">FICO</th>
+            <th class="table-header col s2 m5 l3">DCR</th>
+            <th class="table-header col s2 m5 l3">Bonus</th>
+            <th class="table-header col s2 m5 l3">DQ Reason</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="5">
+                <div class="links"><a href="#">&laquo;</a> <a class="active" href="#">1</a> <a href="#">2</a> <a
+                        href="#">3</a> <a href="#">4</a> <a href="#">&raquo;</a></div>
+            </td>
+        </tr>
+    </tfoot>
+    <tbody class="card">
+        {{#each scorecards}}
+        <tr>
+            <td class="col s3 m6 l3">{{weekNumber}}</td>
+            <td class="col s2 m7 l3">{{daName}}</td>
+            <td class="col s3 m6 l3">{{overallTier}}</td>
+            <td class="col s2 m6 l3">{{fico}}</td>
+            <td class="col s2 m7 l3">{{dcr}}</td>
+            <td class="col s2 m7 l3">{{bonus}}</td>
+            <td class="col s2 m7 l3">{{bonusWhy}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+    {{else}}
+    <p>Submit a search or list all scorecard results</p>
+    {{/if}}
+</table>
+<table class="card">
+    <tr class="card-headers">
+        <form method="POST" action="/dashboard/listAll">
+            <td><button class="centered btn btn-secondary" id='btnViewAll' type="submit">
+                <i class="align-left material-icons">assignment_returned </i>View All Scorecards</button>
+            </td>
+        </form>
+        <form method="POST" action="/dashboard/search">
+            <td><button class="centered btn btn-primary" id='btnViewAll' type="submit">
+                <i class="align-left material-icons">arrow_downward</i>Search for Scorecards</button>
+            </td>
+    </tr>
+    <tr class="card-content">
+            <td> 
+                <label for="daName">DA Name</label>
+                <input class="col s2 m6" type="text" id="daName" name="daName">
+            </td>
+            <td><label for="transporterID">Transporter ID</label>
+                <input class="col s2 m6" type="text" id="transporterID" name="transporterID">
+            </td>
+    </tr>
+
+
+        </form>
+</table>
