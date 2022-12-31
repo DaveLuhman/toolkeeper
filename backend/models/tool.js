@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const serviceAssignment = require('./serviceAssignment');
 
 const toolSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+    _id: { mongoose.Schema.Types.ObjectId,
+        auto: true},
     serialNumber: {
         type: String,
         upperCase: true,
@@ -58,6 +59,13 @@ const toolSchema = new mongoose.Schema({
     timestamps: true,
     strict: false
 });
+
+// Create a pre function for updatedBy to ingest the user id
+toolSchema.pre('save', function (next) {
+    this.updatedBy = this.user._id;
+    next();
+});
+
 
 const Tool = mongoose.model('tool', toolSchema)
 

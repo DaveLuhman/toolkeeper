@@ -1,0 +1,24 @@
+openapi: '3.0.2'
+info:
+  title: ToolKeeper
+  version: '1.0'
+servers:
+  - url: https://toolkeeper.dev.ado.software
+paths:
+  /api/tool:
+    get:
+      parameters:
+      - name: "id"
+        in: 'path'
+        required:
+        schema:
+      description: 'Retrieves a single unique tool'
+      responses:
+        '200':
+          description: OK
+    put:
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          description: OK

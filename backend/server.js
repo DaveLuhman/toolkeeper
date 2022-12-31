@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }))   // URL Encoded support on Expr
 
 
 app.use('/' , require('./routes/index.js'));
-// app.use('/api', require('./routes/api.js'));
+app.use('/api', require('./routes/api.js'));
 
 
 app.listen(process.env.PORT, () => {
