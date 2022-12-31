@@ -23,19 +23,19 @@ module.exports = (passport, user) => {
   passport.use(
     'local-signup',
     new LocalStrategy({ passReqToCallback: true },
-      (_req, username, password, done) => {
+      (_req, email, password, done) => {
         const generateHash = password => {
           return bCrypt.hashSync(password, 8);
         };
-        User.findOne({ where: { username: username } }).then(user => {
+        User.findOne({ where: { email: email } }).then(user => {
           if (user) {
             return done(null, false, {
-              message: 'That username is already taken'
+              message: 'That email is already taken'
             });
           } else {
             const userPassword = generateHash(password);
             let data = {
-              username: username,
+              email: email,
               password: userPassword,
             };
 
@@ -57,15 +57,15 @@ module.exports = (passport, user) => {
   //LOCAL SIGNIN
   passport.use(
     'local-signin',
-    new LocalStrategy({ passReqToCallback: true }, (_req, username, password, done) => {
+    new LocalStrategy({ passReqToCallback: true }, (_req, email, password, done) => {
       let User = user;
       let isValidPassword = (hashedPassword, password) => {
         return bCrypt.compareSync(hashedPassword, password);
       };
-      User.findOne({ where: { username: username } })
+      User.findOne({ where: { email: email } })
         .then(user => {
           if (!user) {
-            return done(null, false, { message: 'username does not exist' });
+            return done(null, false, { message: 'email does not exist' });
           }
           let hash = user.password;
           console.log(hash);
@@ -87,14 +87,14 @@ module.exports = (passport, user) => {
   passport.use(
     'password-reset',
     new LocalStrategy({ passReqToCallback: true },
-      (req, username, newPassword, done) => {
+      (req, email, newPassword, done) => {
         if (!req.isAuthenticated) {
           return done(null, false)
         }
         const generateHash = (newPassword) => {
           return bCrypt.hashSync(newPassword, 8);
         };
-        User.findOne({ where: { username: username } }).then(user => {
+        User.findOne({ where: { email: email } }).then(user => {
           if (user) {
             const userPassword = generateHash(newPassword);
             let data = {

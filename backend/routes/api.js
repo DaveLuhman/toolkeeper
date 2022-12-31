@@ -1,21 +1,20 @@
 const router = require('express').Router
-const API = require('/backend/controllers/api.js')
-const { checkAuthUser, checkAuthManager } = require('/backend/middleware/auth.js')
+const api = require('../controllers/api.js')
+const { checkAuthUser, checkAuthManager } = require('../middleware/auth.js')
 
-// User Security Context Tool API routes
-router.get('/tool', checkAuthUser, API.getUniqueTool())
-router.get('/tools', checkAuthUser, API.getAllTools())
-router.get('/tools/search',checkAuthUser, API.getToolsByMatch())
-router.post('/tool', checkAuthUser, API.createTool())
-router.put('/tool', checkAuthUser, API.updateTool())
+router.get('/tool', checkAuthUser, api.getUniqueTool)
+// router.get('/tools', checkAuthUser, api.getAllTools())
+// router.get('/tools/search',checkAuthUser, api.getToolsByMatch())
+// router.post('/tool', checkAuthUser, api.createTool())
+// router.put('/tool', checkAuthUser, api.updateTool())
 
-// User Security Context User API routes
-router.get('/user', checkAuthUser, API.getCurrentUser())
-router.put('/user', checkAuthUser, API.updateUserByID())
+// // User Security Context User api routes
+// router.get('/user', checkAuthUser, api.getCurrentUser())
+// router.put('/user', checkAuthUser, api.updateUserByID())
 
-// Manager Security Context User API routes
-router.get('/users', checkAuthManager, API.getAllUsers())
-router.get('/users/search', checkAuthManager, API.getUsersByMatch())
-router.post('/user', checkAuthManager, API.createUser())
+// // Manager Security Context User api routes
+// router.get('/users', checkAuthManager, api.getAllUsers())
+// router.get('/users/search', checkAuthManager, api.getUsersByMatch())
+// router.post('/user', checkAuthManager, api.createUser())
 
 module.exports = router

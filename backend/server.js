@@ -22,19 +22,18 @@ if (process.env.NODE_ENV !== 'production') {
 }
 connectDB();
 
-// Middleware
+// Express Middleware
 app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
 app.use(bodyParser.json()) // JSON Body Parser
 app.use(bodyParser.urlencoded({ extended: true }))  // URL Encoded Body Parser
 app.use(express.json())  // JSON support on Express
-app.use(express.urlencoded({ extended: true }))
-app.use(bodyParser.json()) // JSON Body Parser
+app.use(express.urlencoded({ extended: true }))   // URL Encoded support on Express
+
 
 app.use('/' , require('./routes/index.js'));
-app.use('/api', require('./routes/api.js'));
-app.use('/auth', require('./routes/auth.js'));
+// app.use('/api', require('./routes/api.js'));
 
-app.use(errorHandler)
+
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 })
