@@ -1,19 +1,29 @@
- <nav class="light-blue lighten-1" role="navigation">
-    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">
-        <img style="height: 100px; width: 100px;" src="https://scoremaster.dev.ado.software/img/scoremasterLogo.png" class="brand-logo card-image"></a>
+{{#if user}}
+<nav class="light-blue lighten-1" role="navigation">
+  <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">
       <ul class="right hide-on-med-and-down">
         <li><a href="/dashboard">Dashboard</a></li>
-        <li><a href="/documents">Submit Documents</a></li>
-        <li><a href="/roster">Add or Edit Drivers</a></li>
-        <li><a class="btn btn-secondary" href="/logout">Logout</a></li>
+        <li><a href="/checkIn">Check-Out</a></li>
+        <li><a href="/checkIn">Check-In</a></li>
+        <li><select>
+            <option value="" disabled selected>Search By</option>
+            <option value="1"><a href="/searchByBarcode">Barcode</a></option>
+            <option value="2"><a href="/searchByBarcode">Serial Number</a></option>
+            <option value="3"><a href="/searchByBarcode">Service Assignment</a></option>
+          </select></li>
+        <li><a href="/logout"></a></li>
       </ul>
-
-      <ul id="nav-mobile" class="sidenav">
-      <li><a href="/dashboard" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">Dashboard</i></a></li>
-      <li><a href="/documents" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">Submit Documents</i></a></li>
-      <li><a href="/roster" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">Add | Edit Drivers</i></a></li>
-      <li><a href="/logout" data-target="nav-mobile" class="btn btn-secondary sidenav-trigger"><i class="material-icons">Logout</i></a></li>
-      </ul>
-    </div>
-  </nav>
   </div>
+</nav>
+{{else}}
+<nav class="light-blue lighten-1" role="navigation">
+  <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">
+      <ul class="right hide-on-med-and-down">
+        <li><a href="/features">Features</a></li>
+        <li><a href="/pricing">Pricing</a></li>
+        <li><a href="/openSource">Open-Source</a></li>
+        <li><a href="/Login"></a></li>
+      </ul>
+  </div>
+</nav>
+{{/if}}

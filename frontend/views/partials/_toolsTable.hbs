@@ -1,23 +1,22 @@
-<br>
-<br>
-<h3>Welcome To ScoreMaster</h3>
-<br>
 
 
-{{#if scorecards}}
+
+{{#if tools}}
 <table class="blueTable">
     <thead>
         <tr class="table-headers dark-blue card">
-            <th class="table-header col s2 m5 l3">Week #</th>
-            <th class="table-header col s5 m5 l3">Driver Name</th>
-            <th class="table-header col s2 m5 l3">Overall Tier</th>
-            <th class="table-header col s2 m5 l3">FICO</th>
-            <th class="table-header col s2 m5 l3">DCR</th>
-            <th class="table-header col s2 m5 l3">Bonus</th>
-            <th class="table-header col s2 m5 l3">DQ Reason</th>
+            <th class="table-header col s2 m5 l3">Serial number</th>
+            <th class="table-header col s5 m5 l3">Part Number</th>
+            <th class="table-header col s2 m5 l3">Barcode #</th>
+            <th class="table-header col s2 m5 l3">Description</th>
+            <th class="table-header col s2 m5 l3">Status</th>
+            <th class="table-header col s2 m5 l3">Service Assignment</th>
+            <th class="table-header col s2 m5 l3">Last Update</th>
+            <th class="table-header col s2 m5 l3">Edit</th>
         </tr>
     </thead>
     <tfoot>
+        {{!-- pagination --}}
         <tr>
             <td colspan="5">
                 <div class="links"><a href="#">&laquo;</a> <a class="active" href="#">1</a> <a href="#">2</a> <a
@@ -28,18 +27,18 @@
     <tbody class="card">
         {{#each scorecards}}
         <tr>
-            <td class="col s3 m6 l3">{{weekNumber}}</td>
-            <td class="col s2 m7 l3">{{daName}}</td>
-            <td class="col s3 m6 l3">{{overallTier}}</td>
-            <td class="col s2 m6 l3">{{fico}}</td>
-            <td class="col s2 m7 l3">{{dcr}}</td>
-            <td class="col s2 m7 l3">{{bonus}}</td>
-            <td class="col s2 m7 l3">{{bonusWhy}}</td>
+            <td class="col s3 m6 l3">{{serialNumber}}</td>
+            <td class="col s2 m7 l3">{{partNumber}}</td>
+            <td class="col s3 m6 l3">{{barcode}}</td>
+            <td class="col s2 m6 l3">{{description}}</td>
+            <td class="col s2 m7 l3">{{status}}</td>
+            <td class="col s2 m7 l3">{{serviceAssignment}}</td>
+            <td class="col s2 m7 l3">{{lastUpdate}}</td>
+            <td class="col s2 m7 l3"><a href="/tools/{{_id}}">}</td>
         </tr>
         {{/each}}
     </tbody>
     {{else}}
-    <p>Submit a search or list all scorecard results</p>
     {{/if}}
 </table>
 <table class="card">
@@ -55,7 +54,7 @@
             </td>
     </tr>
     <tr class="card-content">
-            <td> 
+            <td>
                 <label for="daName">DA Name</label>
                 <input class="col s2 m6" type="text" id="daName" name="daName">
             </td>
