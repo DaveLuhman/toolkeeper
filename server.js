@@ -1,7 +1,6 @@
 const express = require('express');
 const morgan = require('morgan') // logging
 const path = require('path');
-const cors = require('cors');
 const _colors = require('colors');
 require('dotenv').config("../.env");
 const PORT = process.env.PORT || 5000;
@@ -10,11 +9,6 @@ const exphbs = require('express-handlebars'); // templating engine
 const connectDB = require('./config/db.js');
 const app = express();
 
-// Passport Import and Config
-const passport = require('passport') //auth toolkit
-const User = require('./models/user') // mongoose model for userAuth
-require('./config/passport.js')(passport, User); // passport import
-const expressSession = require('express-session') // session storage middleware
 const { ensureAuth } = require('./middleware/auth') // auth middleware to protect routes
 
 //Logging
@@ -36,12 +30,12 @@ app.set('view engine', '.hbs');
 app.set('views', './views');
 
 // Express Middleware
-app.use(cors());
 app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
 app.use(bodyParser.json()) // JSON Body Parser
 app.use(bodyParser.urlencoded({ extended: true }))  // URL Encoded Body Parser
 app.use(express.json())  // JSON support on Express
 app.use(express.urlencoded({ extended: true }))
+
 
 // PUBLIC SECURITY CONTEXT
 app.use('/' , require('./routes/index.js'));

@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const passportLocalMongoose = require('passport-local-mongoose');
+
 
 const userSchema = new mongoose.Schema({
     _id: {
@@ -35,7 +37,7 @@ const userSchema = new mongoose.Schema({
 },{
     timestamps: true,
 });
-
+userSchema.plugin(passportLocalMongoose);
 // Create a virtual property `displayName` with a getter and setter.
 userSchema.virtual('displayName').
   get(function() { return `${this.firstName} ${this.lastName}`; }).
