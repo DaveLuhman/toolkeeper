@@ -1,7 +1,7 @@
 const express = require('express')
 const app = express()
 require('dotenv').config("../config/.env")
-const PORT = process.env.FRONT-END-PORT || 5000
+const PORT = process.env.FRONT_END_PORT || 5000
 
 // Handlebars
 app.engine('.hbs',
