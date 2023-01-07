@@ -1,10 +1,12 @@
 const express = require('express');
 const morgan = require('morgan') // logging
 const path = require('path');
+const cors = require('cors');
 const _colors = require('colors');
 require('dotenv').config("../.env");
-const PORT = process.env.BACKEND_PORT || 5000;
+const PORT = process.env.PORT || 5000;
 const bodyParser = require('body-parser') // middleware
+const exphbs = require('express-handlebars'); // templating engine
 const connectDB = require('./config/db.js');
 const app = express();
 
@@ -31,7 +33,7 @@ app.engine(
 );
 app.set('view engine', '.hbs');
 
-app.set('views', './frontend/views');
+app.set('views', './views');
 
 // Express Middleware
 app.use(cors());
@@ -50,6 +52,6 @@ app.use('/api', require('./routes/api.js'));
 
 
 
-app.listen(process.env.PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 })
