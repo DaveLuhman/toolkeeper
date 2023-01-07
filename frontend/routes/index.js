@@ -2,14 +2,11 @@ const router = require('express').Router()
 
 
 router.get('/' , (req , res)=>{ res.render('dashboard')}) // Render Dashboard
+// get login page
+router.get('/login' , (req , res)=> {res.render('login', {layout: 'login.hbs'})}) // Render Login Page
+router.post('/login' , (req , res)=> {res.render('login', {layout: 'login.hbs'})}) // Render Login Page
+router.get('/logout', (req, res) => {req.logout(() => {}); res.redirect('/')}) // Logout User
 
-//router.get('/badLogin', (_req, res) => {res.render('badLogin', {layout: 'login'})}) // Render Bad Login Page
-// router.get('/logout', (req, res) => {req.logout(() => {}); res.redirect('/')}) // Logout User
-// router.get('/signup', ensureAuth, (_req, res) => {res.render('signUp', {layout: 'login'})})     // Render Sign Up Page
-
-// // @desc POST Routes
-// router.post('/auth', passport.authenticate('local-signin', {successRedirect: '/dashboard', failureRedirect: '/badLogin'})) // Authenticate User
-// router.post('/signup', passport.authenticate('local-signup', {successRedirect: '/dashboard', failureRedirect: '/signup'})) // Create User
 
 
 

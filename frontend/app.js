@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 require('dotenv').config("../.env")
+
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser') // middleware
 const path = require('path')
@@ -21,6 +22,7 @@ app.engine(
 app.set('views', './frontend/views');
 
 // Express Middleware
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
 app.use(bodyParser.json()) // JSON Body Parser
 app.use(bodyParser.urlencoded({ extended: true }))  // URL Encoded Body Parser
