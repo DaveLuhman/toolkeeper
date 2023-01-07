@@ -4,9 +4,7 @@
   "description": "Tool Crib Web Application",
   "main": "index.js",
   "scripts": {
-    "dev-client": "nodemon frontend/app.js",
-    "dev-server": "nodemon backend/server.js",
-    "dev": "concurrently \"nodemon frontend/app.js\" \"nodemon backend/server.js\""
+    "dev": "nodemon backend/server.js"
   },
   "repository": {
     "type": "git",
