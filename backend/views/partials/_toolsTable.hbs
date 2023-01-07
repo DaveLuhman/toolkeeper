@@ -15,17 +15,8 @@
             <th class="table-header col s2 m5 l3">Edit</th>
         </tr>
     </thead>
-    <tfoot>
-        {{!-- pagination --}}
-        <tr>
-            <td colspan="5">
-                <div class="links"><a href="#">&laquo;</a> <a class="active" href="#">1</a> <a href="#">2</a> <a
-                        href="#">3</a> <a href="#">4</a> <a href="#">&raquo;</a></div>
-            </td>
-        </tr>
-    </tfoot>
     <tbody class="card">
-        {{#each scorecards}}
+        {{#each tool}}
         <tr>
             <td class="col s3 m6 l3">{{serialNumber}}</td>
             <td class="col s2 m7 l3">{{partNumber}}</td>
@@ -39,5 +30,6 @@
         {{/each}}
     </tbody>
     {{else}}
+    <h5> There are no tools to display </h5>
     {{/if}}
 </table>

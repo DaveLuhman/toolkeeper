@@ -22,16 +22,32 @@ if (process.env.NODE_ENV !== 'production') {
 }
 connectDB();
 
+app.engine(
+  '.hbs',
+  exphbs.engine({
+    defaultLayout: 'main',
+    extname: '.hbs',
+  })
+);
+app.set('view engine', '.hbs');
+
+app.set('views', './frontend/views');
+
 // Express Middleware
+app.use(cors());
 app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
 app.use(bodyParser.json()) // JSON Body Parser
 app.use(bodyParser.urlencoded({ extended: true }))  // URL Encoded Body Parser
 app.use(express.json())  // JSON support on Express
-app.use(express.urlencoded({ extended: true }))   // URL Encoded support on Express
+app.use(express.urlencoded({ extended: true }))
 
-
+// PUBLIC SECURITY CONTEXT
 app.use('/' , require('./routes/index.js'));
+// Functions that touch the database route through the api
 app.use('/api', require('./routes/api.js'));
+// HTTP Page rendering Routes (User Context)
+
+
 
 
 app.listen(process.env.PORT, () => {
