@@ -2,9 +2,9 @@
   "name": "toolkeeper",
   "version": "1.0.0",
   "description": "Tool Crib Web Application",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon backend/server.js"
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",

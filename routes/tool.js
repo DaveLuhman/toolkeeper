@@ -1,5 +1,5 @@
 const router = require('express').Router
-const controller = require('/backend/controllers/tool.controller')
+const controller = require('/controllers/tool.controller')
 
 router.get('/', controller.getAllTools())
 

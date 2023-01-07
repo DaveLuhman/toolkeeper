@@ -65,12 +65,12 @@ module.exports = (passport, user) => {
       User.findOne({ where: { email: email } })
         .then(user => {
           if (!user) {
-            return done(null, false, { message: 'email does not exist' });
+            return done(null, false, { message: 'Incorrect Email / Password' });
           }
           let hash = user.password;
           console.log(hash);
           if (!isValidPassword(password, hash)) {
-            return done(null, false, { message: 'Incorrect password.' });
+            return done(null, false, { message: 'Incorrect Email / Password' });
           }
           let userinfo = user.get();
           return done(null, userinfo);
@@ -78,7 +78,7 @@ module.exports = (passport, user) => {
         .catch(err => {
           console.log('Error:', err);
           return done(null, false, {
-            message: 'Something went wrong with your Signin'
+            message: 'Something unknown went wrong with your sign-in'
           });
         });
     }
