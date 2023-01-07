@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 
-router.get('/' , (req , res)=>{ res.render('main.hbs')}) // Render Dashboard
+router.get('/' , (req , res)=>{ res.render('dashboard')}) // Render Dashboard
 
 //router.get('/badLogin', (_req, res) => {res.render('badLogin', {layout: 'login'})}) // Render Bad Login Page
 // router.get('/logout', (req, res) => {req.logout(() => {}); res.redirect('/')}) // Logout User

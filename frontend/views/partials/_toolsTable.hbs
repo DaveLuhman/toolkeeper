@@ -41,28 +41,3 @@
     {{else}}
     {{/if}}
 </table>
-<table class="card">
-    <tr class="card-headers">
-        <form method="POST" action="/dashboard/listAll">
-            <td><button class="centered btn btn-secondary" id='btnViewAll' type="submit">
-                <i class="align-left material-icons">assignment_returned </i>View All Scorecards</button>
-            </td>
-        </form>
-        <form method="POST" action="/dashboard/search">
-            <td><button class="centered btn btn-primary" id='btnViewAll' type="submit">
-                <i class="align-left material-icons">arrow_downward</i>Search for Scorecards</button>
-            </td>
-    </tr>
-    <tr class="card-content">
-            <td>
-                <label for="daName">DA Name</label>
-                <input class="col s2 m6" type="text" id="daName" name="daName">
-            </td>
-            <td><label for="transporterID">Transporter ID</label>
-                <input class="col s2 m6" type="text" id="transporterID" name="transporterID">
-            </td>
-    </tr>
-
-
-        </form>
-</table>
