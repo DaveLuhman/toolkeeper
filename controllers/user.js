@@ -5,14 +5,15 @@ const controller = {}
 // @desc  Return all users
 // @route GET /users
 // @access Manager
-controller.getAllUsers = async (_req, res) => {
-    const users = await User.find() ? await User.find() : res.status(404).send('No users found')
-    return res.status(200).json(users)
+controller.getAllUsers = async (_req, res, next) => {
+    const users = await User.find()
+    if(users.length != 0)  res.send(200).json(users)
+    else res.status(404).send('No users found')
 }
 
 controller.getUserByID = async (req, res) => {
     let user = await User.findById(req.body.id)
-    if (!user) { return res.status(404).send('User not found') }
+    if (!user) { return res.status(404).send('User not found by ID') }
     return res.status(200).json(user)
 }
 
@@ -38,7 +39,7 @@ controller.updateUserByID = async (req, res) => {
     let userObject = this.parseUserToObject(req.body)
     let user = await User.findByIdAndUpdate(userObject._id, userObject)
     if (user._id != null) { return res.status(200).json(user) }
-    return res.status(404).send('User not found')
+    return res.status(404).send('User not found to update by ID')
 }
 
 // @desc  Return all users by role
@@ -49,8 +50,8 @@ controller.getUsersByRole = async (req, res) => {
 }
 
 controller.userManagement = async (req, res) => {
-    let users = await this.getAllUsers()
-    if (!users) { return res.status(404).send('No users found') }
+    let users = await User.find()
+    if (!users) { return res.sendstatus(404).send('No users found to display for your management') }
     return res.render('userManagement', { users: users })}
 
 module.exports = controller

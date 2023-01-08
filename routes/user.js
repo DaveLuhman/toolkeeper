@@ -6,10 +6,12 @@ const controller = require('../controllers/user.js')
 //router.put('/', controller.updateSelfUser)
 
 // Manager Security Context
-router.get('/:id', controller.getUserByID)
 router.get('/', controller.getAllUsers)
+router.get('/userManagement', controller.userManagement)
+//router.get('/:id', controller.getUserByID)
+
 router.get('/search', controller.getUsersByRole)
 router.post('/', controller.createUser)
-router.get('/userManagment', controller.userManagement)
+
 
 module.exports = router
