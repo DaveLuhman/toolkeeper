@@ -20,9 +20,8 @@ controller.parseToolToObject = (data) => {
 // @desc     Get all tools
 // @route    GET /api/tools
 // @context  User
-controller.getAllTools = async (_req, res) => {
-    const tools = await Tool.find() ? await Tool.find() : res.status(404).send('No tools found')
-    return res.status(200).json(tools)
+controller.getAllTools = async () => {
+     return  Tool.find({ archived: false })
 }
 
 // @desc     Get unique tool by _id or serial number

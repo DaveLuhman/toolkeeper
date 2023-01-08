@@ -68,7 +68,7 @@ toolSchema.pre('save', function (next) {
     this.updatedBy = this.user._id;
     next();
 });
-
+toolSchema.findAll = function (callback) { return this.model('tool').find({}, callback); }
 
 const Tool = mongoose.model('tool', toolSchema)
 

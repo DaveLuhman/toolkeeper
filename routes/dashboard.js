@@ -1,15 +1,23 @@
+const Tool = require('../models/tool')
+const User = require('../models/user')
+const toolController = require('../controllers/tool')
 const router = require('express').Router()
 
 //@target /dashboard/
 //@desc render dashboard
-router.get('/' , (req , res)=>{
-    res.render('dashboard')
+router.get('/' , async (_req , res)=>{
+    const tools = await Tool.find({});
+    //console.log(tools)
+    res.render('dashboard', {tools: tools})
 })
+
 
 //@target /dashboard/newTool
 //@desc Open New Tool Modal
-router.get('/userManagement' , (req , res)=>{
-        res.render('userManagement')
+router.get('/userManagement' , async (req , res)=>{
+        const users = await User.find({});
+        console.log(users)
+        res.render('userManagement', {users:users})
 })
 
 //@target /dashboard/newTool
