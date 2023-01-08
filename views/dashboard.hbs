@@ -1,6 +1,27 @@
-{{!-- Header HBS View --}}
+{{!-- Conditional Header HBS View based on logged in user above --}}
+
+
+
+{{#if tools}}
+<table class="blueTable">
+    <thead>
+        <tr class="table-headers dark-blue card">
+            <th class="table-header col s2 m5 l3">Serial number</th>
+            <th class="table-header col s5 m5 l3">Part Number</th>
+            <th class="table-header col s2 m5 l3">Barcode #</th>
+            <th class="table-header col s2 m5 l3">Description</th>
+            <th class="table-header col s2 m5 l3">Status</th>
+            <th class="table-header col s2 m5 l3">Service Assignment</th>
+            <th class="table-header col s2 m5 l3">Last Update</th>
+            <th class="table-header col s2 m5 l3">Edit</th>
+        </tr>
+    </thead>
+
+    {{else}}
+    <h5> There are no tools to display </h5>
+    {{/if}}
+</table>
 
 {{> _toolsTable}}
 
 
-{{!-- End Header HBS View --}}
