@@ -1,15 +1,19 @@
 const router = require('express').Router()
 const passport = require('passport')
-const { checkUserAuth } = require('../middleware/auth')
+const User = require('../models/user')
 
 
-router.get('/' , checkUserAuth, (_req , res) => { res.redirect('dashboard')}) // Render Public Landing Page
+router.get('/', (_req, res) => { res.render('root') }) // Render Public Landing Page
 // get login page
-router.get('/login' , (req , res) => {res.render('login', {layout: 'login.hbs', user: req.email, message: req.flash('error')})}) // Render Login Page
-router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res) {
-      res.redirect('dashboard');
-    });
+router.get('/login', (req, res) => { res.render('login', { layout: 'login.hbs', user: req.email, message: req.flash('error') }) }) // Render Login Page
+router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function (req, res) {
+  session = req.session;
+  session.user = req.session.passport.user;
+  session.user.role = User.findOne({ email: req.session.passport.user.email }).role;
+  console.log(req.session)
+  res.render('dashboard');
+});
 
-router.get('/logout', function(req, res) {req.logout();res.redirect('/')});
+router.get('/logout', function (req, res) { req.logout(); res.redirect('/') });
 
-module.exports  = router
+module.exports = router

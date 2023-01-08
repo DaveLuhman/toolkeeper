@@ -47,4 +47,10 @@ controller.updateUserByID = async (req, res) => {
 controller.getUsersByRole = async (req, res) => {
     let users = req.body.role ? await User.find({ role: req.body.role }) : res.status(404).send('No users in the provided role found')
 }
+
+controller.userManagement = async (req, res) => {
+    let users = await this.getAllUsers()
+    if (!users) { return res.status(404).send('No users found') }
+    return res.render('userManagement', { users: users })}
+
 module.exports = controller

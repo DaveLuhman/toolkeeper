@@ -10,16 +10,22 @@ const connectDB = require('./config/db.js');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('connect-flash');
+var MongoDBStore = require('connect-mongodb-session')(session);
 const app = express();
 
-const { checkUserAuth } = require('./middleware/auth') // auth middleware to protect routes
+const { authenticateMiddleware, checkUserAuth } = require('./middleware/auth') // auth middleware to protect routes
 
 //Logging
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
   console.log('>>>>> Morgan enabled for logging in this development environment')
 }
+//database stuff
 connectDB();
+let store = new MongoDBStore({
+  uri: process.env.MONGO_URI,
+  collection: 'sessions'
+});
 
 //handlebars config
 app.engine('.hbs', exphbs.engine({defaultLayout: 'main', extname: '.hbs'}))
@@ -32,10 +38,11 @@ app.use(bodyParser.json()) // JSON Body Parser
 app.use(bodyParser.urlencoded({ extended: true }))  // URL Encoded Body Parser
 app.use(cookieParser());
 app.use(session({
+  store: store,
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false, maxAge: 60000 }
 }))
 app.use(flash());
 
@@ -52,11 +59,15 @@ passport.deserializeUser(User.deserializeUser());
 // PUBLIC SECURITY CONTEXT
 app.use('/' , require('./routes/index.js'));
 // PUBLIC SECURITY CONTEXT
-
+function isAuthenticated (req, res, next) {
+  if (req.session.user) next()
+  else next('route')
+}
 
 // HTTP Page rendering Routes (User Context)
-app.use('/user', checkUserAuth, require('./routes/user.js'));
-app.use('/tool', checkUserAuth, require('./routes/tool.js'));
+app.use('/user', isAuthenticated, require('./routes/user.js'));
+app.use('/tool',  require('./routes/tool.js'));
+app.use('/dashboard',  require('./routes/dashboard.js'));
 
 
 
