@@ -125,14 +125,6 @@ controller.getAllUsers = async (_req, res) => {
 controller.getUsersByRole = async (req, res) => {
     let users = req.body.role ? await User.find({ role: req.body.role }) : res.status(404).send('No users in the provided role found')
 }
-// @desc  Create a new user
-// @route POST /api/user
-// @access Manager
-controller.createUser = async (req, res) => {
-    let { firstName, lastName, email, password, role } = req.body
-    if (!email || !password) { return res.status(400).send('Email and password are required') }
-    let user = await User.create({ firstName, lastName, email, password, role })
-    return res.status(201).json({"message": "success", user})
-}
+
 
 module.exports = controller

@@ -1,0 +1,38 @@
+<br />
+{{!-- TODO - Modal pops up on click to create user --}}
+<button>Create New User</button>
+
+<table>
+    <thead>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Last Login</th>
+        <th>Role</th>
+        <th>Disabled?</th>
+    </thead>
+    {{#if users}}
+    {{#each user}}
+    <tr>
+        <td>{{user.email}}</td>
+        <td>{{user.displayName}}</td>
+        <td>{{user.lastLogin}}</td>
+        <td>{{user.role}}</td>
+        <td>{{user.isDisabled}}</td>
+        <td>
+            {{!-- This whole section is the actions menu for editing user objects --}}
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                        aria-expanded="false">Actions<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="./user/edit/:" + {{user.id}}>Edit User</a></li>
+                        <li><a href="./user/resetPass/:" + {{user.id}}>Reset Password</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="./user/disable/:" + {{user.id}}>Disable User</a></li>
+                    </ul>
+                </li>
+            </ul>
+            {{!-- END ACTIONS MENU --}}
+        </td>
+    </tr>
+</table>

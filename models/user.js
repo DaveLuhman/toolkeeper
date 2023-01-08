@@ -5,54 +5,59 @@ const passportLocalMongoose = require('passport-local-mongoose');
 const userSchema = new mongoose.Schema({
     _id: {
         type: mongoose.Schema.Types.ObjectId,
-        auto: true},
+        auto: true
+    },
     firstName: {
-        type:String,
+        type: String,
         trim: true
     },
     lastName: {
-        type:String,
+        type: String,
         trim: true
     },
     email: {
-        type:String,
+        type: String,
         trim: true,
         unique: true,
         lowercase: true,
         required: true
     },
     password: {
-        type:String
+        type: String
     },
     role: {
-        type:String,
-        enum: ['User', 'Manager','Admin'],},
-    disabled: {
-        type:Boolean,
-        default: false},
+        type: String,
+        enum: ['User', 'Manager', 'Admin'],
+    },
+    isDisabled: {
+        type: Boolean,
+        default: false
+    },
     lastLogin: {
-        type:Date
+        type: Date
     },
 
-},{
+}, {
     timestamps: true,
 });
-userSchema.plugin(passportLocalMongoose);
+
+const options = {
+    usernameField: 'email',
+    usernameUnique: true,
+    lastLoginField: 'lastLogin',
+}
+userSchema.plugin(passportLocalMongoose, options);
+
+
 // Create a virtual property `displayName` with a getter and setter.
 userSchema.virtual('displayName').
-  get(function() { return `${this.firstName} ${this.lastName}`; }).
-  set(function(v) {
-    // `v` is the value being set, so use the value to set
-    // `firstName` and `lastName`.
-    const firstName = v.substring(0, v.indexOf(' '));
-    const lastName = v.substring(v.indexOf(' ') + 1);
-    this.set({ firstName, lastName });
-  });
-// update lastLogin on login
-userSchema.pre('save', function(next) {
-    this.lastLogin = Date.now();
-    next();
+    get(function () { return `${this.firstName} ${this.lastName}`; }).
+    set(function (v) {
+        // `v` is the value being set, so use the value to set
+        // `firstName` and `lastName`.
+        const firstName = v.substring(0, v.indexOf(' '));
+        const lastName = v.substring(v.indexOf(' ') + 1);
+        this.set({ firstName, lastName });
     });
-
 
 module.exports = mongoose.model('User', userSchema, "users");

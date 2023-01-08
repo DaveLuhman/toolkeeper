@@ -1,8 +1,7 @@
 {{!-- Conditional Header HBS View based on logged in user above --}}
-
-
-
-{{#if tools}}
+<br />
+<br />
+<br />
 <table class="blueTable">
     <thead>
         <tr class="table-headers dark-blue card">
@@ -16,12 +15,11 @@
             <th class="table-header col s2 m5 l3">Edit</th>
         </tr>
     </thead>
-
-    {{else}}
-    <h5> There are no tools to display </h5>
-    {{/if}}
+{{#if tools}}
+{{> _toolsTable}}
+{{/if}}
 </table>
 
-{{> _toolsTable}}
+
 
 

@@ -16,6 +16,6 @@ router.put('/user', api.updateUserByID)
 // Manager Security Context User api routes
 router.get('/users', api.getAllUsers)
 router.get('/users/search', api.getUsersByRole)
-router.post('/user', api.createUser)
+
 
 module.exports = router
