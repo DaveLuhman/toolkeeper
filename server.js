@@ -12,7 +12,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const app = express();
 
-const { ensureAuth } = require('./middleware/auth') // auth middleware to protect routes
+const { checkUserAuth } = require('./middleware/auth') // auth middleware to protect routes
 
 //Logging
 if (process.env.NODE_ENV !== 'production') {
@@ -51,10 +51,12 @@ passport.deserializeUser(User.deserializeUser());
 
 // PUBLIC SECURITY CONTEXT
 app.use('/' , require('./routes/index.js'));
-// Functions that touch the database route through the api
-app.use('/api', require('./routes/api.js'));
+// PUBLIC SECURITY CONTEXT
+
+
 // HTTP Page rendering Routes (User Context)
-app.use('/user', require('./routes/user.js'));
+app.use('/user', checkUserAuth, require('./routes/user.js'));
+app.use('/tool', checkUserAuth, require('./routes/tool.js'));
 
 
 

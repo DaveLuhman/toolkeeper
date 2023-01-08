@@ -10,7 +10,8 @@ const toolSchema = new mongoose.Schema({
         type: String,
         upperCase: true,
         required: false,
-        maxLength: 20
+        maxLength: 20,
+        unique: true
     },
     partNumber: {
         type: String,
