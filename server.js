@@ -51,7 +51,7 @@ app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false, maxAge: 60000 }
+  cookie: { secure: false,  maxAge: 1000 * 60 * 60 * 24  }
 }))
 app.use(flash());
 

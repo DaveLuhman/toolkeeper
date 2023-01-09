@@ -1,44 +1,3 @@
-{{!-- Conditional Header HBS View based on logged in user above --}}
-<br />
-<br />
-<button type="button" class="btn right-align btn-primary" data-toggle="modal" data-target="#newToolModal">
-    Create New Tool(s)
-</button>
-<br />
-{{#if tools}}
-<table class="table table-striped">
-    <thead>
-        <tr class="table-headers dark-blue card">
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Serial number</th>
-            <th scope="col-auto" class="table-header col-auto s5 m5 l3">Part Number</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Barcode #</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Description</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Status</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Service Assignment</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Edit</th>
-        </tr>
-    </thead>
-    <tbody>
-
-        {{#each tools}}
-        <tr>
-            <td>{{serialNumber}}</td>
-            <td>{{partNumber}}</td>
-            <td>{{barcode}}</td>
-            <td>{{description}}</td>
-            <td>{{status}}</td>
-            <td>{{serviceAssignment}}</td>
-            <td><a>DotDotDor</a></td>
-
-        </tr>
-        {{/each}}
-        {{else}}
-        <h5>There are no tools to display</h5>
-        {{/if}}
-    </tbody>
-</table>
-
-
 <!-- Create New Tool Modal -->
 <div class="modal fade" id="newToolModal" tabindex="-1" role="dialog" aria-labelledby="newToolModalLabel"
     aria-hidden="true">
@@ -73,6 +32,42 @@
                                     placeholder="Description" aria-label="Description">
                             </div>
                         </div>
+
+                    </div>
+                </div>
+            <div class="modal-footer bg-info clearfix">
+                <button type="button" class="float-end btn btn-primary">Have a CSV of your new items?</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button name="NewToolModalSubmitBtn" type="button" class="btn btn-primary submit">Submit</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</div>
+
+{{!-- END OF NEW TOOL MODAL --}}
+
+<!-- Create New Tool Modal -->
+<div class="modal fade" id="checkInToolModal" tabindex="-1" role="dialog" aria-labelledby="checkInToolModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="clearfix modal-header">
+                <h5 class="modal-title" id="checkInToolModalHeader">Checking In?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid mb-3">
+                    <form action="/tool" method="POST">
+                        <div class="row ">
+                            <div class="col">
+                                <input type="textarea" class="form-control" name="checkInSNInput"
+                                    placeholder="Serial Numbers, seperated by commas"
+                                    aria-label="Serial Number(s) to check in">
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -84,26 +79,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    let submitBtn = document.getElementsByName('NewToolModalSubmitBtn')
-    let newPartNumber = document.getElementsByName('newToolPNInput')
-    let newSerialNumber = document.getElementsByName('newToolSNInput')
-    let newBarcode = document.getElementsByName('newToolBarcodeInput')
-    let newDescription = document.getElementsByName('newToolDescInput')
-
-    submitBtn.addEventListener("click", () => {
-        let body = {
-            "serialNumber": newSerialNumber.text,
-            "partNumber": newPartNumber.text,
-            "barcode": newBarcode.text
-            "description": newDescription.text
-        }
-        fetch('/tool/new', {
-            method: "POST",
-            body,
-        }).then(res => {
-            res.json()
-        }).catch(err => console.log(err))
-    }
-</script>
