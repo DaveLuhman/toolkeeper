@@ -15,10 +15,10 @@
       <ul class="nav navbar-nav">
         <li><a class="navbar-brand navbar-left" href="#">ToolKeeper</a></li>
         <li class="active"><a href="/dashboard">Dashboard</a></li>
-        <li><button type="button" class=" navbar-brand" data-toggle="modal" data-target="#checkInToolModal">
+        <li><button type="button" data-toggle="modal" data-target="#checkInToolModal">
             Check-In Tools
           </button></li>
-        <li><button type="button" class="navbar-brand" data-toggle="modal" data-target="#checkOutToolModal">
+        <li><button type="button" data-toggle="modal" data-target="#checkOutToolModal">
             Check-Out Tools
           </button></li>
         <li class="dropdown">
@@ -48,8 +48,11 @@
   </div>
 </nav>
 {{else}}
-<!-- Fixed navbar -->
-<nav class="navbar navbar-default navbar-fixed-top">
+<!-- Fixed Logged out navbar -->
+<nav class="navbar  navbar-default navbar-fixed-top">
+  <div class="navbar-left">
+    <li><img src="/img/toolKeeperLogo-dark-full.png" class="left-float" style="height:75px; width:auto"></li>
+  </div>
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -61,10 +64,9 @@
       </button>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
-      <img src="/img/toolKeeper-Small-Dark.png" class="left-float" style="height:75px; width:auto">
-      <a class="navbar-brand" href="#">ToolKeeper</a>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Features</a></li>
+
+        <li><a href="#">Features</a></li>
         <li><a href="../">Pricing</a></li>
         <li><a href="#contact">Demo</a></li>
       </ul>
