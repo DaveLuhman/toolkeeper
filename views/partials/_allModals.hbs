@@ -1,54 +1,41 @@
 <!-- Create New Tool Modal -->
-<div class="modal fade" id="newToolModal" tabindex="-1" role="dialog" aria-labelledby="newToolModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="newToolModal" tabindex="-1" role="dialog" aria-labelledby="newToolDialog"
+    aria-hidden="true" aria-modal="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
+            <form action="/tool" method="POST"></form>
             <div class="clearfix modal-header">
-                <h5 class="modal-title" id="newToolModalHeader">Create A New Tool Entry</h5>
+                <h5 class="modal-title" id="newToolDialogTitle">Create A New Tool Entry</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div class="container-fluid mb-3">
-                    <form action="/tool" method="POST">
-                        <div class="row ">
-                            <div class="col">
-                                <input type="text" class="form-control bg-light" name="newToolSNInput"
-                                    placeholder="Serial Number" aria-label="Serial Number">
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control bg-secondary" name="newToolPNInput"
-                                    placeholder="Part Number" aria-label="Part Number">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" class="form-control" name="newToolBarcodeInput" placeholder="Barcode"
-                                    aria-label="Barcode">
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" name="newToolDescInput"
-                                    placeholder="Description" aria-label="Description">
-                            </div>
-                        </div>
-
-                    </div>
+                <div class="container-fluid modal-content mb-3">
+                    <input type="text" class="form-control bg-light" name="newToolSNInput" placeholder="Serial Number"
+                        aria-label="Serial Number">
+                    <input type="text" class="form-control bg-secondary" name="newToolPNInput" placeholder="Part Number"
+                        aria-label="Part Number">
+                    <input type="text" class="form-control" name="newToolBarcodeInput" placeholder="Barcode"
+                        aria-label="Barcode">
+                    <input type="text" class="form-control" name="newToolDescInput" placeholder="Description"
+                        aria-label="Description">
                 </div>
-            <div class="modal-footer bg-info clearfix">
-                <button type="button" class="float-end btn btn-primary">Have a CSV of your new items?</button>
+            </div>
+            <div class="modal-footer bg-info">
+                <button type="button" class="btn btn-primary">Have a CSV of your new items?</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 <button name="NewToolModalSubmitBtn" type="button" class="btn btn-primary submit">Submit</button>
             </div>
+            </form>
         </div>
     </div>
-    </form>
 </div>
 
 {{!-- END OF NEW TOOL MODAL --}}
 
 <!-- Create New Tool Modal -->
-<div class="modal fade" id="checkInToolModal" tabindex="-1" role="dialog" aria-labelledby="checkInToolModalLabel"
+<div class="modal fade" id="checkInToolModal" tabindex="-1" role="dialog" aria-labelledby="checkInDialog"
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
