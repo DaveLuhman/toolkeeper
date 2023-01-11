@@ -1,6 +1,6 @@
 {
   "name": "toolkeeper",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Tool Crib Web Application",
   "main": "server.js",
   "scripts": {
@@ -11,15 +11,17 @@
     "url": "git+https://github.com/DaveLuhman/toolkeeper.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Dave Luhman",
+  "license": "",
   "bugs": {
     "url": "https://github.com/DaveLuhman/toolkeeper/issues"
   },
   "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
   "dependencies": {
+    "@popperjs/core": "^2.11.6",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
+    "bootstrap": "^5.2.3",
     "colors": "^1.4.0",
     "connect-flash": "^0.1.1",
     "connect-mongodb-session": "^3.1.1",
