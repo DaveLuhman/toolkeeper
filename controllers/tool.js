@@ -54,11 +54,11 @@ controller.getMatchingTools = async (req, res) => {
 // @access  User
 controller.createTool = async (req, res) => {
     let proposedTool = this.parseToolToObject(req.body)
-    if (proposedTool.serialNumber.length > 0 || proposedTool.barcode.length > 0 || proposedTool.partNumber.length > 0) {
-         return res.status(400).send('SN, PN, and Barcode required')
+    if ((proposedTool.serialNumber.length > 0 && proposedTool.barcode.length > 0) || (proposedTool.partNumber.length > 0 && proposedTool.barcode.length > 0)) {
+         return res.status(400).send('Either SN or PN, and Barcode required')
         }
     let existing = Tool.FindOne({ serialNumber: proposedTool.serialNumber })
-    if (existing) { return res.status(400).send('Tool already exists') }
+    if (existing) { return res.status(400).send('Tool already exists by serial number') }
     let newTool = await Tool.create(proposedTool)
     if (newTool._id != null) { return res.status(201).json({message: success, newTool}) }
 }
