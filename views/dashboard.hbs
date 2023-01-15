@@ -2,11 +2,14 @@
 <br />
 <br />
 <div class="container" id="dashboard">
+
+    {{message}}
+
+
     {{#if tools}}
     <table class="table">
         <thead>
             <tr class="table-headers">
-                <th>Database ID</th>
                 <th>Serial number</th>
                 <th>Part Number</th>
                 <th>Barcode #</th>
@@ -20,7 +23,6 @@
 
             {{#each tools}}
             <tr scope="row">
-                <td>{{id}}</td>
                 <td>{{serialNumber}}</td>
                 <td>{{partNumber}}</td>
                 <td>{{barcode}}</td>
@@ -47,12 +49,14 @@
             </div>
             <div class="col">
                 <div class="mb-3">
-                    <label for="formFile" class="form-label">Upload a CSV?</label>
-                    <input class="form-control" type="file" id="formFile">
+                    <form action="/tool/submitFile" method="POST">
+                        <label for="formFile" class="form-label">Upload a CSV?</label>
+                        <input class="form-control" type="file" id="csvFile" name="csvFile">
                 </div>
             </div>
             <div class="col">
-                Do something else in a third column
+                <button class="btn btn-primary" type="submit"></button>
+                    </form>
             </div>
         </div>
     </div>
@@ -68,24 +72,24 @@
                 </a>
             </div>
             <div class="modal-body">
-                <form action="/tool" method="POST">
+                <form action="/tool/submit" method="POST">
                     <div class="row ">
                         <div class="col">
-                            <input type="text" class="form-control" name="newToolSNInput" placeholder="Serial Number"
+                            <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
                                 aria-label="Serial Number">
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control " name="newToolPNInput" placeholder="Part Number"
+                            <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
                                 aria-label="Part Number">
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <input type="text" class="form-control" name="newToolBarcodeInput" placeholder="Barcode"
+                            <input type="text" class="form-control" name="barcode" placeholder="Barcode"
                                 aria-label="Barcode">
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control" name="newToolDescInput" placeholder="Description"
+                            <input type="text" class="form-control" name="description" placeholder="Description"
                                 aria-label="Description">
                         </div>
                     </div>

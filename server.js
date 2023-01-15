@@ -5,6 +5,7 @@ const morgan = require('morgan') // logging
 const path = require('path');
 const _colors = require('colors');
 const bodyParser = require('body-parser') // middleware
+const fileUpload = require('express-fileupload');
 const exphbs = require('express-handlebars'); // templating engine
 const connectDB = require('./config/db.js');
 const cookieParser = require('cookie-parser');
@@ -47,6 +48,7 @@ app.set('views', './views');
 // Express Middleware
 app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
 app.use(bodyParser.json()) // JSON Body Parser
+app.use(fileUpload())
 app.use(bodyParser.urlencoded({ extended: false }))  // URL Encoded Body Parser
 app.use(express.urlencoded({ extended: false })); // Parse URL-encoded values
 app.use(cookieParser());
@@ -62,17 +64,16 @@ require('./config/passport')(passport);
 app.use(passport.initialize()) // Initialize Passport
 app.use(passport.session()) // Use Passport for Sessions
 
-const { logRequest, checkAuth } = require('./middleware/middleware')
-
-// PUBLIC SECURITY CONTEXT
-app.use('/', logRequest, require('./routes/index.js'));
-// PUBLIC SECURITY CONTEXT
+const { logRequest, checkAuth } = require('./middleware/middleware');
 
 // HTTP Page rendering Routes (User Context)
-app.use('/user', logRequest, checkAuth, require('./routes/user.js'));
-app.use('/dashboard', logRequest, checkAuth, require('./routes/dashboard.js'));
-app.use('/tool', logRequest, checkAuth, require('./routes/tool.js'));
+app.use('/user', logRequest,  require('./routes/user.js'));
+app.use('/dashboard', logRequest,  require('./routes/dashboard.js'));
+app.use('/tool', logRequest, require('./routes/tool.js'));
 
+// HTTP Page rendering Routes (No User Context)
+app.use('/', logRequest, require('./routes/index.js'));
+// Public Context End
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 })

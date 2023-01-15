@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 const serviceAssignment = require('./serviceAssignment');
 
 const toolSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        auto: true
-    },
+
     serialNumber: {
         type: String,
         upperCase: true,
@@ -26,12 +23,12 @@ const toolSchema = new mongoose.Schema({
         type: String,
         upperCase: true,
         required: true,
-        maxLength: 20
+        maxLength: 20,
+        default: 'CI - In Stock'
     },
     serviceAssignment: {
         type: String,
         upperCase: true,
-        ref: 'serviceAssignment',
     },
     description: {
         type: String,
@@ -63,11 +60,7 @@ const toolSchema = new mongoose.Schema({
     strict: false
 });
 
-// Create a pre function for updatedBy to ingest the user id
-toolSchema.pre('save', function (next) {
-    this.updatedBy = this.user._id;
-    next();
-});
+
 toolSchema.findAll = function (callback) { return this.model('tool').find({}, callback); }
 
 const Tool = mongoose.model('tool', toolSchema)

@@ -53,14 +53,16 @@ controller.getMatchingTools = async (req, res) => {
 // @route   POST /tool
 // @access  User
 controller.createTool = async (req, res) => {
-    let proposedTool = this.parseToolToObject(req.body)
-    if ((proposedTool.serialNumber.length > 0 && proposedTool.barcode.length > 0) || (proposedTool.partNumber.length > 0 && proposedTool.barcode.length > 0)) {
-         return res.status(400).send('Either SN or PN, and Barcode required')
+    const { serialNumber, partNumber, barcode, description } = req.body
+    console.table(req.body)
+    if (!(serialNumber || partNumber) || !barcode) {
+         return res.status(400).render('dashboard', {message:'Either Serial Num and Barcode or Part Num and Barcode required'})
         }
-    let existing = Tool.FindOne({ serialNumber: proposedTool.serialNumber })
-    if (existing) { return res.status(400).send('Tool already exists by serial number') }
-    let newTool = await Tool.create(proposedTool)
-    if (newTool._id != null) { return res.status(201).json({message: success, newTool}) }
+    let existing = await Tool.findOne({ serialNumber: serialNumber })
+    console.log(existing)
+    if (existing) { return res.status(400).render('dashboard', {message: 'That Tool Already Exists, I looked it up by serial number', tool: existing}) }
+    let newTool = await Tool.create({serialNumber, partNumber, barcode, description, updatedBy: req.user._id, createdBy: req.user._id  })
+    if (newTool._id != null) { return res.status(201).render('dashboard', {message: "Successfully Made A New Tool", tool: newTool, user: req.user}) }
 }
 
 // @desc    Update a tool by ID
@@ -75,5 +77,19 @@ controller.updateToolbyID = async (req, res) => {
         throw new Error(error)
     }
     return res.status(404).send('Tool not found')
+}
+
+controller.importFromCSV = async (req, res) => {
+    let importFile = req.files.csvFile.data
+    let arrayOfRows = importFile.toString().split('\n').trim()
+    for (let i = 0; i < arrayOfRows.length; i++) {
+        let row = arrayOfRows[i].split(',')
+        let newTool = await Tool.create({
+             serialNumber: row[0],
+               barcode: row[1],
+                 description: row[2], partNumber: row[3], serviceAssignment: row[4], updatedBy: req.user, createdBy: req.user })
+        if (newTool._id != null) { console.log(`Successfully Made A New Tool: ${newTool}`) }
+    }
+
 }
 module.exports = controller
