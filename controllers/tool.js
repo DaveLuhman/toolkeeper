@@ -82,11 +82,11 @@ controller.updateToolbyID = async (req, res) => {
 controller.importFromCSV = async (req, res) => {
     let importFile = req.files.csvFile.data
     let arrayOfRows = importFile.toString().split('\n')
-    let newStatus = 'CO - In Stock'
+    let newStatus = 'CO - Deployed'
     for (let i = 0; i < arrayOfRows.length; i++) {
         let row = arrayOfRows[i].split(',')
-        if(row[4] != 'null') { newStatus = 'CO - Deployed' }
-        let newTool = await Tool.create({
+        if(row[4] == null ) { let newStatus = 'CO - In Stock' }
+        let toolObject = {
             serialNumber: row[0],
             barcode: row[1],
             description: row[2],
@@ -94,7 +94,9 @@ controller.importFromCSV = async (req, res) => {
             serviceAssignment: row[4],
             status: newStatus,
             updatedBy: req.user,
-            createdBy: req.user })
+            createdBy: req.user
+        }
+        let newTool = await Tool.create({toolObject})
         if (newTool._id != null) { console.log(`Successfully Made A New Tool: ${newTool}`) }
     }
 
