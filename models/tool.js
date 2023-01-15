@@ -7,23 +7,19 @@ const toolSchema = new mongoose.Schema({
         type: String,
         upperCase: true,
         required: false,
-        maxLength: 20,
         unique: true
     },
     partNumber: {
         type: String,
         upperCase: true,
-        maxLength: 20
     },
     barcode: {
         type: Number,
-        maxLength: 10
     },
     status: {
         type: String,
         upperCase: true,
         required: true,
-        maxLength: 20,
         default: 'CI - In Stock'
     },
     serviceAssignment: {
@@ -36,7 +32,6 @@ const toolSchema = new mongoose.Schema({
     },
     manufacturer: {
         type: String,
-        maxLength: 28,
         trim: true,
     },
     archived: {
