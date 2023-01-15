@@ -1,8 +1,8 @@
 middleware = {}
 middleware.logRequest = function(req, res, next) {
-    console.log(`Request Authenticated: ${req.isAuthenticated()}`)
+   // console.log(`Request Authenticated: ${req.isAuthenticated()}`)
     if(req.isAuthenticated()) {
-        console.log(`User: ${req.user}`)}
+        user = req.user }
     next()
 }
 middleware.checkAuth = function(req, res, next) {

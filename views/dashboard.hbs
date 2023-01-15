@@ -1,44 +1,62 @@
-{{!-- Conditional Header HBS View based on logged in user above --}}
 <br />
 <br />
-<button type="button" class="btn right-align btn-primary" data-bs-toggle="modal" data-bs-target="#newToolModal">
-    Create New Tool(s)
-</button>
 <br />
-{{#if tools}}
-<table class="table">
-    <thead>
-        <tr class="table-headers">
-            <th>Serial number</th>
-            <th>Part Number</th>
-            <th>Barcode #</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Service Assignment</th>
-            <th>Edit</th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="container" id="dashboard">
+    {{#if tools}}
+    <table class="table">
+        <thead>
+            <tr class="table-headers">
+                <th>Database ID</th>
+                <th>Serial number</th>
+                <th>Part Number</th>
+                <th>Barcode #</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Service Assignment</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
 
-        {{#each tools}}
-        <tr scope="row">
-            <td>{{serialNumber}}</td>
-            <td>{{partNumber}}</td>
-            <td>{{barcode}}</td>
-            <td>{{description}}</td>
-            <td>{{status}}</td>
-            <td>{{serviceAssignment}}</td>
-            <td><a>DotDotDor</a></td>
+            {{#each tools}}
+            <tr scope="row">
+                <td>{{id}}</td>
+                <td>{{serialNumber}}</td>
+                <td>{{partNumber}}</td>
+                <td>{{barcode}}</td>
+                <td>{{description}}</td>
+                <td>{{status}}</td>
+                <td>{{serviceAssignment}}</td>
+                <td><a href="/tool/{{id}}">...</a></td>
 
-        </tr>
-        {{/each}}
-        {{else}}
-        <h5>There are no tools to display</h5>
-        {{/if}}
-    </tbody>
-</table>
+            </tr>
+            {{/each}}
+            {{else}}
+            <h5>There are no tools to display</h5>
+            {{/if}}
+        </tbody>
+    </table>
 
-
+    <div class="container text-center">
+        <div class="row bg-secondary-subtle">
+            <div class="col">
+                <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#newToolModal">
+                    Create A New Tool
+                </button>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Upload a CSV?</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
+            </div>
+            <div class="col">
+                Do something else in a third column
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Create New Tool Modal -->
 <div class="modal fade" id="newToolModal" tabindex="-1" aria-labelledby="newToolModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -53,12 +71,12 @@
                 <form action="/dashboard/submitTool" method="POST">
                     <div class="row ">
                         <div class="col">
-                            <input type="text" class="form-control" name="newToolSNInput"
-                                placeholder="Serial Number" aria-label="Serial Number">
+                            <input type="text" class="form-control" name="newToolSNInput" placeholder="Serial Number"
+                                aria-label="Serial Number">
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control " name="newToolPNInput"
-                                placeholder="Part Number" aria-label="Part Number">
+                            <input type="text" class="form-control " name="newToolPNInput" placeholder="Part Number"
+                                aria-label="Part Number">
                         </div>
                     </div>
                     <div class="row">
@@ -70,30 +88,56 @@
                             <input type="text" class="form-control" name="newToolDescInput" placeholder="Description"
                                 aria-label="Description">
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
-                        </div>
-                    </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="forgotPasswordModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <p> Because ToolKeeper is built on a per-customer basis, you'll have to ask your manager to
-                            reset your password.
-                        </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thanks, I guess</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button name="NewToolModalSubmitBtn" type="submit"
+                            class="btn btn-primary submit">Submit</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editToolModal" tabindex="-1" aria-labelledby="editToolModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editToolModalHeader">Edit A Tool Entry</h5>
+                <a type='button' data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form action="/dashboard/updateTool" method="PUT">
+                    <div class="row ">
+                        <div class="col">
+                            <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
+                                aria-label="Serial Number" disabled>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
+                                aria-label="Part Number">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" name="barcode" placeholder="Barcode"
+                                aria-label="Barcode">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="description" placeholder="Description"
+                                aria-label="Description">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button name="NewToolModalSubmitBtn" type="submit"
+                            class="btn btn-primary submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

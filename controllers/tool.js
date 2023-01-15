@@ -27,9 +27,9 @@ controller.getAllTools = async () => {
 // @desc     Get unique tool by _id or serial number
 // @route    GET /api/tool
 // @context  User
-controller.getUniqueTool = async (req, res) => {
-    let { _id, serialNumber } = req.body
-    let tool = _id ?  (await Tool.findById(_id)) : (await Tool.findOne({ serialNumber: serialNumber }))
+controller.getToolByID = async (req, res, next) => {
+    let { _id } = req.params._id
+    let tool = await Tool.findById(_id)
     if (!tool) { return res.status(404).send('Tool not found') }
 }
 // @desc    Search for a match based on the provided values
@@ -66,7 +66,7 @@ controller.createTool = async (req, res) => {
 // @desc    Update a tool by ID
 // @route   PUT /tool
 // @access  User
-controller.updateTool = async (req, res) => {
+controller.updateToolbyID = async (req, res) => {
     let tJ = this.parseToolToObject(req.body)
     try {
         let tool = await Tool.findByIdAndUpdate(tJ._id, tJ)

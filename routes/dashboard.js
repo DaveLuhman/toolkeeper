@@ -20,8 +20,8 @@ router.get('/userManagement' , async (req , res)=>{
 
 //@target /dashboard/newTool
 //@desc Open Checkout Modal
-router.get('/checkOut' , (req , res) => {
-    // router code here
+router.get('/checkInOut' , (req , res) => {
+    res.render('checkInOut', {user: req.user})
 })
 
 //@target /dashboard/newTool
