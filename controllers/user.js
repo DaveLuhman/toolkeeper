@@ -59,7 +59,7 @@ controller.getUsersByRole = async (req, res) => {
 controller.userManagement = async (req, res) => {
     let users = await User.find()
     if (!users) { return res.status(404).send('No users found to display') }
-    return res.render('userManagement', { "users": users })
+    return res.render('userManagement', { "users": users, user: req.user })
 }
 
 module.exports = controller

@@ -39,15 +39,19 @@
     {{!-- right elements --}}
     <div class="d-flex align-items-center">
       {{!-- Avatar --}}
-      <div class="dropdown">
-        <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
-          id="navbarDropdownMenuAvatar" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-          {{user.displayName}}
-        </a>
+      <div class="container my-5">
+        <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+            data-bs-toggle="dropdown">Dropdown button</button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
-
 </nav>
 {{else}}
 {{!-- Fixed Logged out navbar --}}
