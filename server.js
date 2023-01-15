@@ -28,25 +28,21 @@ let store = new MongoDBStore({
 //handlebars config
 // Handlebars
 app.engine('.hbs',
-    exphbs.engine({
-        extname: '.hbs',
-        defaultLayout: 'main',
-        runtimeOptions: {
-            allowProtoPropertiesByDefault: true,
-            allowProtoMethodsByDefault: true,
-        },
-    }));
+  exphbs.engine({
+    extname: '.hbs',
+    defaultLayout: 'main',
+    runtimeOptions: {
+      allowProtoPropertiesByDefault: true,
+      allowProtoMethodsByDefault: true,
+    },
+  }));
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
-// Configure passport middleware
-const User = require('./models/user.js')
-const passport = require('passport')  //bring in the auth kit
-const initializePassport = require('./config/passport.js') //bring in the scaffold function
-initializePassport(
-  passport,
-   email => User.findOne({"email":email}),
-   id => User.findById(id))//call the scaffold function and pass it the passport object and email lookup function
+// Passport Config
+
+
+
 
 // Express Middleware
 app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
@@ -58,9 +54,11 @@ app.use(session({
   secret: process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false,  maxAge: 1000 * 60 * 60 * 24  }
+  cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 }
 }))
 app.use(flash());
+const passport = require('passport')
+require('./config/passport')(passport);
 app.use(passport.initialize()) // Initialize Passport
 app.use(passport.session()) // Use Passport for Sessions
 
@@ -71,7 +69,7 @@ app.use('/', logRequest, require('./routes/index.js'));
 // PUBLIC SECURITY CONTEXT
 
 // HTTP Page rendering Routes (User Context)
-app.use('/user', logRequest, checkAuth,  require('./routes/user.js'));
+app.use('/user', logRequest, checkAuth, require('./routes/user.js'));
 app.use('/dashboard', logRequest, checkAuth, require('./routes/dashboard.js'));
 app.use('/tool', logRequest, checkAuth, require('./routes/tool.js'));
 

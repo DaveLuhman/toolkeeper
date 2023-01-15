@@ -29,7 +29,7 @@ controller.getUserByEmail = async (req, res) => {
 // @access Manager
 controller.createUser = async (req, res) => {
     let { firstName, lastName, email, password, role } = req.body
-    let userExists = await User.findOne({ email: email }).exec()
+    let userExists = await User.findOne({ email: email })
     console.log(userExists)
     if (!email || !password) { return res.status(400).send('Email and password are required') }
     if(userExists) { return res.status(400).send('User already exists') }

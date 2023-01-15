@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     firstName: {
         type: String,
         trim: true
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
 
 
 // Create a virtual property `displayName` with a getter and setter.
-userSchema.virtual('displayName').
+UserSchema.virtual('displayName').
     get(function () { return `${this.firstName} ${this.lastName}`; }).
     set(function (v) {
         // `v` is the value being set, so use the value to set
@@ -50,4 +50,5 @@ userSchema.virtual('displayName').
     });
 
 
-module.exports = mongoose.model('User', userSchema, "users");
+const User = mongoose.model('User', UserSchema);
+module.exports = User;
