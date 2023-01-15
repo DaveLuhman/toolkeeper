@@ -81,7 +81,7 @@ controller.updateToolbyID = async (req, res) => {
 
 controller.importFromCSV = async (req, res) => {
     let importFile = req.files.csvFile.data
-    let arrayOfRows = importFile.toString().split('\n').trim()
+    let arrayOfRows = importFile.toString().split('\n')
     for (let i = 0; i < arrayOfRows.length; i++) {
         let row = arrayOfRows[i].split(',')
         let newTool = await Tool.create({
