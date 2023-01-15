@@ -82,7 +82,7 @@ controller.updateToolbyID = async (req, res) => {
 controller.importFromCSV = async (req, res) => {
     let importFile = req.files.csvFile.data
     let arrayOfRows = importFile.toString().split('\n')
-    const newStatus = 'CO - In Stock'
+    let newStatus = 'CO - In Stock'
     for (let i = 0; i < arrayOfRows.length; i++) {
         let row = arrayOfRows[i].split(',')
         if(row[4] != 'null') { newStatus = 'CO - Deployed' }
