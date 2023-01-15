@@ -33,6 +33,7 @@ module.exports = {
         if (req.cookies.authenticated) {
           // If the cookie is present, set a flag on the request object to indicate that the user is authenticated
           req.authenticated = true;
+          console.log('how can it tell that the cookie is good?')
         } else {
           // If the cookie is not present, set the flag to false
           req.authenticated = false;

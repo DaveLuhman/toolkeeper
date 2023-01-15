@@ -7,7 +7,7 @@ const controller = {}
 // @access Manager
 controller.getAllUsers = async (_req, res, next) => {
     const users = await User.find()
-    if(users.length != 0)  res.send(200).json(users)
+    if(users.length != 0) res.sendStatus(200).json(users)
     else res.status(404).send('No users found')
 }
 

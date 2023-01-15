@@ -12,9 +12,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 var MongoDBStore = require('connect-mongodb-session')(session);
 const app = express();
-
-const { authenticateMiddleware, checkUserAuth } = require('./middleware/auth') // auth middleware to protect routes
-
+const { authenticateMiddleware } = require('./middleware/auth.js');
 //Logging
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
@@ -45,6 +43,7 @@ app.set('views', './views');
 app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
 app.use(bodyParser.json()) // JSON Body Parser
 app.use(bodyParser.urlencoded({ extended: true }))  // URL Encoded Body Parser
+app.use(express.urlencoded({ extended: false })); // Parse URL-encoded values
 app.use(cookieParser());
 app.use(session({
   store: store,
@@ -57,26 +56,22 @@ app.use(flash());
 
 // Configure passport middleware
 const passport = require('passport') //auth toolkit
-const LocalStrategy = require('passport-local').Strategy;
 app.use(passport.initialize());
 app.use(passport.session());
 const User = require('./models/user') // mongoose model for userAuth
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 // PUBLIC SECURITY CONTEXT
 app.use('/' , require('./routes/index.js'));
 // PUBLIC SECURITY CONTEXT
-function isAuthenticated (req, res, next) {
-  if (req.session.user) next()
-  else next('route')
-}
 
 // HTTP Page rendering Routes (User Context)
-app.use('/user', isAuthenticated, require('./routes/user.js'));
+app.use('/user', authenticateMiddleware, require('./routes/user.js'));
+app.use('/dashboard', require('./routes/dashboard.js'));
 app.use('/tool',  require('./routes/tool.js'));
-app.use('/dashboard',  require('./routes/dashboard.js'));
+
 
 
 

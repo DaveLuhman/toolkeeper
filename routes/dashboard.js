@@ -6,7 +6,7 @@ const router = require('express').Router()
 //@target /dashboard/
 //@desc render dashboard
 router.get('/' , async (req , res)=>{
-    req.session.user = req.session.passport.user;
+    //req.session.user = req.session.passport.user;
     const tools = await Tool.find({});
     //console.log(tools)
     res.render('dashboard', {tools: tools, user: req.session.user})
