@@ -84,10 +84,16 @@ controller.importFromCSV = async (req, res) => {
     let arrayOfRows = importFile.toString().split('\n')
     for (let i = 0; i < arrayOfRows.length; i++) {
         let row = arrayOfRows[i].split(',')
+            if(row[4] != 'null') { let status = 'CO - Deployed' }
         let newTool = await Tool.create({
-             serialNumber: row[0],
-               barcode: row[1],
-                 description: row[2], partNumber: row[3], serviceAssignment: row[4], updatedBy: req.user, createdBy: req.user })
+            serialNumber: row[0],
+            barcode: row[1],
+            description: row[2],
+            partNumber: row[3],
+            serviceAssignment: row[4],
+            status: status,
+            updatedBy: req.user,
+            createdBy: req.user })
         if (newTool._id != null) { console.log(`Successfully Made A New Tool: ${newTool}`) }
     }
 
