@@ -1,27 +1,27 @@
 {{!-- Conditional Header HBS View based on logged in user above --}}
 <br />
 <br />
-<button type="button" class="btn right-align btn-primary" data-toggle="modal" data-target="#newToolModal">
+<button type="button" class="btn right-align btn-primary" data-bs-toggle="modal" data-bs-target="#newToolModal">
     Create New Tool(s)
 </button>
 <br />
 {{#if tools}}
-<table class="table table-striped">
+<table class="table">
     <thead>
-        <tr class="table-headers dark-blue card">
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Serial number</th>
-            <th scope="col-auto" class="table-header col-auto s5 m5 l3">Part Number</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Barcode #</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Description</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Status</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Service Assignment</th>
-            <th scope="col-auto" class="table-header col-auto s2 m5 l3">Edit</th>
+        <tr class="table-headers">
+            <th>Serial number</th>
+            <th>Part Number</th>
+            <th>Barcode #</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Service Assignment</th>
+            <th>Edit</th>
         </tr>
     </thead>
     <tbody>
 
         {{#each tools}}
-        <tr>
+        <tr scope="row">
             <td>{{serialNumber}}</td>
             <td>{{partNumber}}</td>
             <td>{{barcode}}</td>
@@ -40,70 +40,60 @@
 
 
 <!-- Create New Tool Modal -->
-<div class="modal fade" id="newToolModal" tabindex="-1" role="dialog" aria-labelledby="newToolModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+<div class="modal fade" id="newToolModal" tabindex="-1" aria-labelledby="newToolModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="clearfix modal-header">
+            <div class="modal-header">
                 <h5 class="modal-title" id="newToolModalHeader">Create A New Tool Entry</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <a type='button' data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>
+                </a>
             </div>
             <div class="modal-body">
-                <div class="container-fluid mb-3">
-                    <form action="/tool" method="POST">
-                        <div class="row ">
-                            <div class="col">
-                                <input type="text" class="form-control bg-light" name="newToolSNInput"
-                                    placeholder="Serial Number" aria-label="Serial Number">
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control bg-secondary" name="newToolPNInput"
-                                    placeholder="Part Number" aria-label="Part Number">
-                            </div>
+                <form action="/dashboard/submitTool" method="POST">
+                    <div class="row ">
+                        <div class="col">
+                            <input type="text" class="form-control" name="newToolSNInput"
+                                placeholder="Serial Number" aria-label="Serial Number">
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" class="form-control" name="newToolBarcodeInput" placeholder="Barcode"
-                                    aria-label="Barcode">
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" name="newToolDescInput"
-                                    placeholder="Description" aria-label="Description">
-                            </div>
+                        <div class="col">
+                            <input type="text" class="form-control " name="newToolPNInput"
+                                placeholder="Part Number" aria-label="Part Number">
                         </div>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer bg-info clearfix">
-                <button type="button" class="float-end btn btn-primary">Have a CSV of your new items?</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button name="NewToolModalSubmitBtn" type="button" class="btn btn-primary submit">Submit</button>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" name="newToolBarcodeInput" placeholder="Barcode"
+                                aria-label="Barcode">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" name="newToolDescInput" placeholder="Description"
+                                aria-label="Description">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
+                        </div>
+                    </div>
             </div>
         </div>
-    </div>
-</div>
 
-{{!-- <script>
-    let submitBtn = document.getElementsByName('NewToolModalSubmitBtn')
-    let newPartNumber = document.getElementsByName('newToolPNInput')
-    let newSerialNumber = document.getElementsByName('newToolSNInput')
-    let newBarcode = document.getElementsByName('newToolBarcodeInput')
-    let newDescription = document.getElementsByName('newToolDescInput')
-
-    submitBtn.addEventListener("click", () => {
-        let body = {
-            "serialNumber": newSerialNumber.text,
-            "partNumber": newPartNumber.text,
-            "barcode": newBarcode.text
-            "description": newDescription.text
-        }
-        fetch('/tool/new', {
-            method: "POST",
-            body,
-        }).then(res => {
-            res.json()
-        }).catch(err => console.log(err))
-    }
-</script> --}}
+        <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="forgotPasswordModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p> Because ToolKeeper is built on a per-customer basis, you'll have to ask your manager to
+                            reset your password.
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thanks, I guess</button>
+                    </div>
+                </div>
+            </div>
+        </div>

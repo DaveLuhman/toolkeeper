@@ -20,7 +20,7 @@ router.get('/userManagement' , async (req , res)=>{
 
 //@target /dashboard/newTool
 //@desc Open Checkout Modal
-router.get('/checkOut' , (req , res)=>{
+router.get('/checkOut' , (req , res) => {
     // router code here
 })
 
