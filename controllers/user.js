@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt')
 const User = require('../models/user');
 
 const controller = {}
@@ -17,20 +18,26 @@ controller.getUserByID = async (req, res) => {
     return res.status(200).json(user)
 }
 
+controller.getUserByEmail = async (req, res) => {
+    let user = await User.findOne({email: req.body.email})
+    if (!user) { return res.status(404).send('User not found by ID') }
+    return res.status(200).json(user)
+}
+
 // @desc  Create a new user
 // @route POST /user
 // @access Manager
-controller.createUser = (req, res, next) => {
+controller.createUser = async (req, res) => {
     let { firstName, lastName, email, password, role } = req.body
+    let userExists = await User.findOne({ email: email }).exec()
+    console.log(userExists)
     if (!email || !password) { return res.status(400).send('Email and password are required') }
-    User.register(new User({ email, firstName, lastName, role }), password, function (err) {
-            if (err) {
-                console.log('error while creating user', err)
-                return next(err)
-            }
-    return res.status(201).json({ "message": "success" })
-        })
-}
+    if(userExists) { return res.status(400).send('User already exists') }
+    let hash = bcrypt.hashSync(password, 10)
+    let createdUser = await User.create({ firstName, lastName, email, password: hash, role })
+    console.log(createdUser)
+    return res.json({ "message": "success", "result": createdUser })}
+
 
 // @desc  Update a user by ID
 // @route PUT /user
@@ -51,7 +58,8 @@ controller.getUsersByRole = async (req, res) => {
 
 controller.userManagement = async (req, res) => {
     let users = await User.find()
-    if (!users) { return res.sendstatus(404).send('No users found to display for your management') }
-    return res.render('userManagement', { users: users })}
+    if (!users) { return res.status(404).send('No users found to display') }
+    return res.render('userManagement', { "users": users })
+}
 
 module.exports = controller

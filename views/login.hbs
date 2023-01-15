@@ -10,14 +10,18 @@
       <br><br>
       <!-- Email input -->
       <div class="form-outline mb-4">
-        <input type="email" id="form1Example1" class="form-control" />
-        <label class="form-label" for="form1Example1">Email address</label>
+        <input type="email" name="email" id="email" class="form-control" required/>
+        <label class="form-label" for="email">Email address</label>
       </div>
       <!-- Password input -->
       <div class="form-outline mb-4">
-        <input type="password" id="form1Example2" class="form-control" />
-        <label class="form-label" for="form1Example2">Password</label>
+        <input type="password" id="password" name="password" class="form-control" required/>
+        <label class="form-label" for="password">Password</label>
       </div>
+      {{#if messages.error}}
+      {{messages.error}}
+      <br>
+      {{/if}}
       <!-- Submit button -->
       <button type="submit" class="btn btn-primary btn-block">Sign in</button>
       <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#forgotPasswordModal">

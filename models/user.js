@@ -1,12 +1,6 @@
 const mongoose = require('mongoose');
-const passportLocalMongoose = require('passport-local-mongoose');
-
 
 const userSchema = new mongoose.Schema({
-    _id: {
-        type: mongoose.Schema.Types.ObjectId,
-        auto: true
-    },
     firstName: {
         type: String,
         trim: true
@@ -27,7 +21,8 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['User', 'Manager', 'Admin'],
+        // TODO: Build getter/setter for field validation
+        // enum: ['User', 'Manager', 'Admin'],
     },
     isDisabled: {
         type: Boolean,
@@ -39,14 +34,8 @@ const userSchema = new mongoose.Schema({
 
 }, {
     timestamps: true,
-});
 
-const options = {
-    usernameField: 'email',
-    usernameUnique: true,
-    lastLoginField: 'lastLogin',
-}
-userSchema.plugin(passportLocalMongoose, options);
+});
 
 
 // Create a virtual property `displayName` with a getter and setter.
@@ -59,5 +48,6 @@ userSchema.virtual('displayName').
         const lastName = v.substring(v.indexOf(' ') + 1);
         this.set({ firstName, lastName });
     });
+
 
 module.exports = mongoose.model('User', userSchema, "users");

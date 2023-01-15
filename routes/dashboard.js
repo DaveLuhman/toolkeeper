@@ -1,16 +1,13 @@
 const Tool = require('../models/tool')
 const User = require('../models/user')
 const toolController = require('../controllers/tool')
+const dashboardController = require('../controllers/dashboard')
+const { checkAuth } = require('../middleware/middleware')
 const router = require('express').Router()
 
 //@target /dashboard/
 //@desc render dashboard
-router.get('/' , async (req , res)=>{
-    //req.session.user = req.session.passport.user;
-    const tools = await Tool.find({});
-    //console.log(tools)
-    res.render('dashboard', {tools: tools, user: req.session.user})
-})
+router.get('/', dashboardController.getIndexDashboard)
 
 
 //@target /dashboard/newTool
