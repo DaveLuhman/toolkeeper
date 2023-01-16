@@ -24,7 +24,11 @@
 </head>
 
 <body>
+  {{#if user}}
   {{> _headerUser}}
+  {{else}}
+  {{> _headerPublic}}
+  {{/if}}
 
 
   {{{body}}}
