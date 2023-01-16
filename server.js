@@ -29,6 +29,9 @@ let store = new MongoDBStore({
 //handlebars config
 // Handlebars
 const hbs = exphbs.create({
+  helpers: {
+    paginate: require('handlebars-paginate')
+  },
   extname: '.hbs',
   defaultLayout: 'main',
   runtimeOptions: {
@@ -36,6 +39,7 @@ const hbs = exphbs.create({
     allowProtoMethodsByDefault: true,
   },
 })
+
 
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');

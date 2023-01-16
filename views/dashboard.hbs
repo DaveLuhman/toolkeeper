@@ -1,27 +1,26 @@
-
-    <div class="text-center" style="background-color: #e2e1dc;">
-        <div class="row">
-            <div class="col">
-                <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#newToolModal">
-                    Create A New Tool
-                </button>
-            </div>
-            <div class="col">
-                <button type="button" class="btn right-align btn-secondary" data-bs-toggle="modal"
-                    data-bs-target="#checkInToolModal">
-                    Check Tools In/Out
-                </button>
-            </div>
-            <div class="col">
-                <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#newToolModal">
-                    Search For Tools
-                </button>
-            </div>
+<div class="text-center" style="background-color: #494949;">
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
+                data-bs-target="#newToolModal">
+                Create A New Tool
+            </button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn right-align btn-secondary" data-bs-toggle="modal"
+                data-bs-target="#checkInToolModal">
+                Check Tools In/Out
+            </button>
+        </div>
+        <div class="col">
+            <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
+                data-bs-target="#newToolModal">
+                Search For Tools
+            </button>
         </div>
     </div>
-    <br />
+</div>
+<br />
 <br />
 <br />
 <div class="container" id="dashboard">
@@ -30,7 +29,7 @@
 
 
     {{#if tools}}
-    <table class="table">
+    <table class="table table-striped">
         <thead>
             <tr class="table-headers">
                 <th>Serial number</th>
@@ -56,11 +55,29 @@
 
             </tr>
             {{/each}}
+
             {{else}}
             <h5>There are no tools to display</h5>
             {{/if}}
         </tbody>
     </table>
+  <ul class="row">
+    {{#paginate pagination type="first"}}
+      <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
+    {{/paginate}}
+    {{#paginate pagination type="previous"}}
+      <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
+    {{/paginate}}
+    {{#paginate pagination type="middle" limit="7"}}
+      <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
+    {{/paginate}}
+    {{#paginate pagination type="next"}}
+      <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Next</a></div>
+    {{/paginate}}
+    {{#paginate pagination type="last"}}
+      <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
+    {{/paginate}}
+  </ul>
 
 
 </div>
