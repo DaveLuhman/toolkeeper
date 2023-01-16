@@ -14,10 +14,26 @@
 
   <title>ToolKeeper by ADO Software</title>
 
-  <!-- Bootstrap core CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <meta name="color-scheme" content="light dark">
 
+    <!-- If `prefers-color-scheme` is not supported, fall back to light mode.
+         In this case, inject the `light` CSS before the others, with
+         no media filter so that it will be downloaded with highest priority. -->
+    <script>
+      if (window.matchMedia("(prefers-color-scheme: dark)").media === "not all") {
+        document.documentElement.style.display = "none";
+        document.head.insertAdjacentHTML(
+          "beforeend",
+          "<link id=\"css\" rel=\"stylesheet\" href=\"../dist/css/bootstrap.css\" onload=\"document.documentElement.style.display = ''\">"
+        );
+      }
+    </script>
+    <!-- Load the alternate CSS first ...
+         in this case the Bootstrap-OG Variant CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1.1.3/dist/css/bootstrap.min.css" rel="stylesheet" media="(prefers-color-scheme: light)">
+    <!-- and then the primary CSS last ...
+         in this case the Bootstrap-dark Variant CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-dark-5@1.1.3/dist/css/bootstrap-night.min.css" rel="stylesheet" media="(prefers-color-scheme: dark)">
 
   <!-- Custom styles for this template -->
   <link href="/css/toolkeeper.css" rel="stylesheet">
@@ -39,6 +55,8 @@
     integrity="sha384-mQ93GR66B00ZXjt0YO5KlohRA5SY2XofN4zfuZxLkoj1gXtW8ANNCe9d5Y3eG5eD"
     crossorigin="anonymous"></script>
   <script src="../js/bootstrap.js"></script>
+
+
 </body>
 
 </html>

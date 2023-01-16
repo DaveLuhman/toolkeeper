@@ -28,9 +28,10 @@ controller.getAllTools = async () => {
 // @route    GET /api/tool
 // @context  User
 controller.getToolByID = async (req, res, next) => {
-    let { _id } = req.params._id
-    let tool = await Tool.findById(_id)
+    console.log(req.params.id)
+    let tool = await Tool.findById(req.params.id)
     if (!tool) { return res.status(404).send('Tool not found') }
+    return res.render('editTool', { tool: tool, user: req.user })
 }
 // @desc    Search for a match based on the provided values
 // @route   GET /tools/search

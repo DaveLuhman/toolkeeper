@@ -1,0 +1,32 @@
+{{#if tool}}
+<div class="container card-lg">
+<h5 class="card-title" id="editToolModalHeader">Edit A Tool Entry</h5>
+<form action="/dashboard/updateTool" method="PUT">
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
+                aria-label="Serial Number" value="{{tool.serialNumber}}" disabled>
+        </div>
+        <div class="col">
+            <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
+                aria-label="Part Number" value="{{tool.partNumber}}">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <input type="text" class="form-control" name="barcode" placeholder="Barcode" aria-label="Barcode" value="{{tool.barcode}}">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" name="description" placeholder="Description"
+                aria-label="Description" value="{{tool.description}}">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
+    </div>
+</form>
+</div>
+{{else}}
+<h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
+{{/if}}

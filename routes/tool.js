@@ -5,8 +5,8 @@ router.get('/', controller.getAllTools)
 router.get('/tools/search', controller.getMatchingTools)
 router.post('/submit', controller.createTool)
 router.post('/submitFile', controller.importFromCSV)
-router.get('/tool:id', controller.getToolByID)
-router.put('/tool:id', controller.updateToolbyID)
+router.get('/:id', controller.getToolByID)
+router.put('/:id', controller.updateToolbyID)
 
 
 module.exports = router
