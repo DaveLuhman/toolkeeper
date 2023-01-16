@@ -1,4 +1,27 @@
-<br />
+
+    <div class="text-center" style="background-color: #e2e1dc;">
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#newToolModal">
+                    Create A New Tool
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn right-align btn-secondary" data-bs-toggle="modal"
+                    data-bs-target="#checkInToolModal">
+                    Check Tools In/Out
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#newToolModal">
+                    Search For Tools
+                </button>
+            </div>
+        </div>
+    </div>
+    <br />
 <br />
 <br />
 <div class="container" id="dashboard">
@@ -39,70 +62,9 @@
         </tbody>
     </table>
 
-    <div class="container text-center">
-        <div class="row bg-secondary-subtle">
-            <div class="col">
-                <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#newToolModal">
-                    Create A New Tool
-                </button>
-            </div>
-            <div class="col">
-                <div class="mb-3">
-                    <form action="/tool/submitFile" method="POST">
-                        <label for="formFile" class="form-label">Upload a CSV?</label>
-                        <input class="form-control" type="file" id="csvFile" name="csvFile">
-                </div>
-            </div>
-            <div class="col">
-                <button class="btn btn-primary" type="submit"></button>
-                    </form>
-            </div>
-        </div>
-    </div>
+
 </div>
-<!-- Create New Tool Modal -->
-<div class="modal fade" id="newToolModal" tabindex="-1" aria-labelledby="newToolModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newToolModalHeader">Create A New Tool Entry</h5>
-                <a type='button' data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </a>
-            </div>
-            <div class="modal-body">
-                <form action="/tool/submit" method="POST">
-                    <div class="row ">
-                        <div class="col">
-                            <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
-                                aria-label="Serial Number">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
-                                aria-label="Part Number">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" class="form-control" name="barcode" placeholder="Barcode"
-                                aria-label="Barcode">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="description" placeholder="Description"
-                                aria-label="Description">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button name="NewToolModalSubmitBtn" type="submit"
-                            class="btn btn-primary submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
+
 {{!-- edit tool modal --}}
 <div class="modal fade" id="editToolModal" tabindex="-1" aria-labelledby="editToolModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">

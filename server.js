@@ -28,15 +28,16 @@ let store = new MongoDBStore({
 
 //handlebars config
 // Handlebars
-app.engine('.hbs',
-  exphbs.engine({
-    extname: '.hbs',
-    defaultLayout: 'main',
-    runtimeOptions: {
-      allowProtoPropertiesByDefault: true,
-      allowProtoMethodsByDefault: true,
-    },
-  }));
+const hbs = exphbs.create({
+  extname: '.hbs',
+  defaultLayout: 'main',
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
+})
+
+app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
