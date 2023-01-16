@@ -96,7 +96,7 @@ controller.importFromCSV = async (req, res) => {
             updatedBy: req.user,
             createdBy: req.user
         }
-        let newTool = await Tool.create({toolObject})
+        let newTool = await Tool.create(toolObject)
         if (newTool._id != null) { console.log(`Successfully Made A New Tool: ${newTool}`) }
     }
 

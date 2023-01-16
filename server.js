@@ -40,11 +40,6 @@ app.engine('.hbs',
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
-// Passport Config
-
-
-
-
 // Express Middleware
 app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
 app.use(bodyParser.json()) // JSON Body Parser
