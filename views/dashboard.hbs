@@ -61,23 +61,23 @@
             {{/if}}
         </tbody>
     </table>
-  <ul class="row">
-    {{#paginate pagination type="first"}}
-      <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
-    {{/paginate}}
-    {{#paginate pagination type="previous"}}
-      <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
-    {{/paginate}}
-    {{#paginate pagination type="middle" limit="7"}}
-      <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
-    {{/paginate}}
-    {{#paginate pagination type="next"}}
-      <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Next</a></div>
-    {{/paginate}}
-    {{#paginate pagination type="last"}}
-      <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
-    {{/paginate}}
-  </ul>
+    <ul class="row">
+        {{#paginate pagination type="first"}}
+        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
+        {{/paginate}}
+        {{#paginate pagination type="previous"}}
+        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
+        {{/paginate}}
+        {{#paginate pagination type="middle" limit="7"}}
+        <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
+        {{/paginate}}
+        {{#paginate pagination type="next"}}
+        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Next</a></div>
+        {{/paginate}}
+        {{#paginate pagination type="last"}}
+        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
+        {{/paginate}}
+    </ul>
 
 
 </div>
