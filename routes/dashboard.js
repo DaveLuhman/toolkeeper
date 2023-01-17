@@ -7,7 +7,7 @@ const router = require('express').Router()
 
 //@target /dashboard/
 //@desc render dashboard
-router.get('/', dashboardController.getIndexDashboard)
+router.get('/', dashboardController.dashboard)
 
 
 //@target /dashboard/newTool
