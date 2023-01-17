@@ -8,5 +8,5 @@ const tools = await Tool.find({ $or: [{ sn: sn }, { pn: pn }, { bc: bc }, { sa: 
 res.send(200).json(tools)
 }
 
-modules.exports = c
+module.exports = c
 
