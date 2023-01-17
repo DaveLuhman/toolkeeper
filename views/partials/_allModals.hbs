@@ -42,7 +42,6 @@
 </div>
 {{!-- END OF NEW TOOL MODAL --}}
 
-<!-- Create New Tool Modal -->
 <!-- Check In/OutTool Modal -->
 <div class="modal fade" id="checkInToolModal" tabindex="-1" aria-labelledby="checkInToolModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -56,7 +55,8 @@
             <div class="modal-body">
                 <form action="/tool/submit" method="POST">
                     <div class="row mb-2">
-                        <div class="col"> <script></script>
+                        <div class="col">
+                            <script></script>
                             <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
                                 aria-label="Serial Number">
                         </div>
@@ -65,8 +65,8 @@
                                 aria-label="Serial Number">
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control checkInSN-right" name="serialNumber" placeholder="Serial Number"
-                                aria-label="Serial Number">
+                            <input type="text" class="form-control checkInSN-right" name="serialNumber"
+                                placeholder="Serial Number" aria-label="Serial Number">
                         </div>
                     </div>
                     <div class="row mb-2 checkInOut">
@@ -103,6 +103,77 @@
                             class="btn btn-primary submit">Submit</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- searchToolModal --}}
+<div class="modal fade modal-lg" id="searchToolModal" tabindex="-1" aria-labelledby="searchToolModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="searchToolModalHeader">Search for Tool(s)</h5>
+                <a type='button' data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+            </div>
+            <div class="modal-body px-4">
+                <div class="row gx-5">
+                    <div class="col card p-3">
+                        <form action='/tool/searchSN/' method="POST">
+                            <input type="text" class="form-control" name="serialNumber"
+                                placeholder="Serial Number" aria-label="Serial Number">
+                            <br>
+                            <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By SN</button>
+                        </form>
+                    </div>
+                    <div class="col card p-3">
+                        <form action="/tool/searchPN" method="POST">
+                            <input type="text" class="form-control" name="partNumber"
+                                placeholder="Part Number" aria-label="Part Number">
+                            <br>
+                            <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By PN</button>
+                        </form>
+                    </div>
+                    <div class="col card p-3">
+                        <form action="/tool/searchBC" method="POST">
+                            <input type="text" class="form-control" name="barcode" placeholder="Barcode"
+                                aria-label="Barcode">
+                            <br>
+                            <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By BC</button>
+                        </form>
+                    </div>
+                    <div class="col card p-3">
+                        <form action="/tool/searchSA" method="POST">
+                            <input type="text" class="form-control" name="serviceAssignment"
+                                placeholder="Service Assignment" aria-label="Service Assignment">
+                            <br>
+                            <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By SA</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- END OF NEW TOOL MODAL --}}
+{{!-- Forgot Password Modal --}}
+<div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forgotPasswordModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p> Because ToolKeeper is built on a per-customer basis, you'll have to ask your manager to reset your
+                    password.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Thanks, I guess</button>
             </div>
         </div>
     </div>

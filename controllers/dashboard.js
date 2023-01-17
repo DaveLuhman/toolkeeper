@@ -5,6 +5,17 @@ controller = {}
 controller.getIndexDashboard = async (req, res, next) => {
     let perPage = 10
     let page = req.query.p || 1
+    let pageCount = 1
+
+    if (req.body.tools)
+        return res.render('dashboard', {
+            tools: req.body.tools,
+            user: req.user,
+            pagination: {
+                page: page,
+                pageCount: Math.ceil(count / perPage)
+            }
+        })
     console.log(page)
     Tool.find({})
         .skip((perPage * page) - perPage)

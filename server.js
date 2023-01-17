@@ -13,6 +13,7 @@ const session = require('express-session');
 const flash = require('express-flash');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const handlebarsHelpers = require('handlebars-helpers')
+const paginate = require('handlebars-paginate');
 const app = express();
 
 //Logging
@@ -28,9 +29,10 @@ let store = new MongoDBStore({
 });
 //handlebars config
 // Handlebars
+
 const hbs = exphbs.create({
   helpers: {
-    paginate: require('handlebars-paginate'),
+    paginate: paginate,
     ...handlebarsHelpers(),
   },
   extname: '.hbs',
@@ -40,7 +42,6 @@ const hbs = exphbs.create({
     allowProtoMethodsByDefault: true,
   },
 })
-
 
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');

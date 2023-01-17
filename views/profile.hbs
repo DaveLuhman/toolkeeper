@@ -1,31 +1,41 @@
 <br>
 <br>
-<div class="container">
+<div class="container bg-body-secondary rounded p-3">
     <div class="container-fluid">
         <div class="row input-group">
             <div class="col">
-                <label for="email" class="form-control">Email</label>
+                <label for="email">Email:</label>
                 <input type="text" class="form-control" name="email" aria-label="Serial Number" value="{{user.email}}"
                     disabled>
             </div>
             <div class="col">
-                <label for="role" class="form-control">Role</label>
-                <select class="form-select" id="userRoleSelect" {{eq user.role "User" }}disabled{{/eq}}>
-                    <option value="User" {{eq user.role "User" }}selected{{/eq}}>User</option>
-                    <option value="Manager" {{eq user.role "Manager" }}selected{{/eq}}>Two</option>
-                    <option value="Admin" {{eq user.role "Admin" }}selected{{/eq}}>Admin</option>
+                <label for="role">Role:</label>
+                <select class="form-select" id="userRoleSelect" {{#eq user.role "User" }}disabled{{/eq}}>
+                    <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
+                    <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
+                    <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
                 </select>
             </div>
         </div>
         <div class="row input-group">
             <div class="col">
+                <label for="firstName">First Name:</label>
                 <input type="text" class="form-control" name="firstName" placeholder="firstName" aria-label="firstName"
                     value="{{user.firstName}}">
             </div>
             <div class="col">
-                <input type="text" class="form-control" name="firstName" placeholder="lastName" aria-label="lastName"
+                <label for="lastName">Last Name:</label>
+                <input type="text" class="form-control" name="lastName" placeholder="lastName" aria-label="lastName"
                     value="{{user.lastName}}">
             </div>
         </div>
+        <div class="row input-group">
+            <div class="col">
+                <button type="button" class="btn right-align btn-primary" data-bs-toggle="resetPasswordConfirmModal"
+                    data-bs-target="#resetPasswordConfirmModal">Reset Password?</button>
+            </div>
+            <div class="col">
+                <button type="submit" class="d-flex btn btn-primary">Update User Details?</button>
+            </div>
+        </div>
     </div>
-</div>

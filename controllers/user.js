@@ -13,9 +13,9 @@ controller.getAllUsers = async (_req, res, next) => {
 }
 
 controller.userProfileByID = async (req, res) => {
-    let user = await User.findById(req.body.id)
+    let user = await User.findById(req.user.id)
     if (!user) { return res.status(404).send('User not found by ID') }
-    return res.status(200).json(user)
+    res.render('profile', { user: user })
 }
 
 controller.getUserByEmail = async (req, res) => {
