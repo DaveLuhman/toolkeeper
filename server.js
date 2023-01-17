@@ -12,6 +12,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('express-flash');
 const MongoDBStore = require('connect-mongodb-session')(session);
+const handlebarsHelpers = require('handlebars-helpers')
 const app = express();
 
 //Logging
@@ -25,12 +26,12 @@ let store = new MongoDBStore({
   uri: process.env.MONGO_URI,
   collection: 'sessions'
 });
-
 //handlebars config
 // Handlebars
 const hbs = exphbs.create({
   helpers: {
-    paginate: require('handlebars-paginate')
+    paginate: require('handlebars-paginate'),
+    ...handlebarsHelpers(),
   },
   extname: '.hbs',
   defaultLayout: 'main',
@@ -67,9 +68,9 @@ app.use(passport.session()) // Use Passport for Sessions
 const { logRequest, checkAuth } = require('./middleware/middleware');
 
 // HTTP Page rendering Routes (User Context)
-app.use('/user', logRequest,  require('./routes/user.js'));
-app.use('/dashboard', logRequest,  require('./routes/dashboard.js'));
-app.use('/tool', logRequest, require('./routes/tool.js'));
+app.use('/user', checkAuth,  require('./routes/user.js'));
+app.use('/dashboard', checkAuth,  require('./routes/dashboard.js'));
+app.use('/tool', checkAuth, require('./routes/tool.js'));
 
 // HTTP Page rendering Routes (No User Context)
 app.use('/', logRequest, require('./routes/index.js'));

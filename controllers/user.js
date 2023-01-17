@@ -12,7 +12,7 @@ controller.getAllUsers = async (_req, res, next) => {
     else res.status(404).send('No users found')
 }
 
-controller.getUserByID = async (req, res) => {
+controller.userProfileByID = async (req, res) => {
     let user = await User.findById(req.body.id)
     if (!user) { return res.status(404).send('User not found by ID') }
     return res.status(200).json(user)

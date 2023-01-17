@@ -8,7 +8,7 @@ const controller = require('../controllers/user.js')
 // Manager Security Context
 router.get('/', controller.getAllUsers)
 router.get('/userManagement', controller.userManagement)
-//router.get('/:id', controller.getUserByID)
+router.get('/:id', controller.userProfileByID)
 
 router.get('/search', controller.getUsersByRole)
 router.post('/', controller.createUser)
