@@ -66,15 +66,17 @@ require('./config/passport')(passport);
 app.use(passport.initialize()) // Initialize Passport
 app.use(passport.session()) // Use Passport for Sessions
 
-const { logRequest, checkAuth } = require('./middleware/middleware');
+const { checkAuth } = require('./middleware/middleware');
+
 
 // HTTP Page rendering Routes (User Context)
 app.use('/user', checkAuth,  require('./routes/user.js'));
 app.use('/dashboard', checkAuth,  require('./routes/dashboard.js'));
 app.use('/tool', checkAuth, require('./routes/tool.js'));
-
+//api route
+app.use('/api', require('./routes/api.js'));
 // HTTP Page rendering Routes (No User Context)
-app.use('/', logRequest, require('./routes/index.js'));
+app.use('/', require('./routes/index.js'));
 // Public Context End
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

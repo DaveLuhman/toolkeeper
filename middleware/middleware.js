@@ -1,15 +1,16 @@
 middleware = {}
-middleware.logRequest = function(req, res, next) {
-   // console.log(`Request Authenticated: ${req.isAuthenticated()}`)
-    if(req.isAuthenticated()) {
-        user = req.user }
-    next()
-}
+
 middleware.checkAuth = function(req, res, next) {
     if (req.isAuthenticated()) {
+        res.locals.user = req.user
         return next()
     }
     res.redirect('/login')
+}
+
+middleware.hoistGlobals = function(req, res, next) {
+
+    next()
 }
 
 

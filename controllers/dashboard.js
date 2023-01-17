@@ -11,7 +11,7 @@ c.dashboard = async (req, res, next) => {
     if (req.body.tools) {
         return res.render('dashboard', {
             tools: req.body.tools,
-            user: req.user,
+            user: localStorage.user
     })}
     console.log(page)
     Tool.find({})
@@ -22,7 +22,6 @@ c.dashboard = async (req, res, next) => {
                 if (err) return next(err)
                 res.render('dashboard', {
                     tools: tools,
-                    user: req.user,
                     pagination: {
                         page: page,
                         pageCount: Math.ceil(count / perPage)
