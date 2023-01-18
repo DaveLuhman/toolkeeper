@@ -69,13 +69,10 @@ app.use(passport.session()) // Use Passport for Sessions
 
 const { checkAuth } = require('./middleware/middleware');
 
-
 // HTTP Page rendering Routes (User Context)
 app.use('/user', checkAuth,  require('./routes/user.js'));
 app.use('/dashboard', checkAuth,  require('./routes/dashboard.js'));
 app.use('/tool', checkAuth, require('./routes/tool.js'));
-//api route
-app.use('/api', require('./routes/api.js'));
 // HTTP Page rendering Routes (No User Context)
 app.use('/', require('./routes/index.js'));
 // Public Context End
