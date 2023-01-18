@@ -9,7 +9,7 @@ module.exports =  function(passport) {
     new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
       // Match user
       let user = await User.findOne({email:email})
-      console.log(user)
+      console.log(`User ${user.displayName} logged in`.green.bold)
       if (!user) {
         return done(null, false, { message: 'That email is not registered' });
       }
