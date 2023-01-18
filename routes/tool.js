@@ -5,7 +5,6 @@ const dashboardController = require('../controllers/dashboard.js')
 router.get('/', toolController.getAllTools)
 router.post('/search', dashboardController.renderDashboard)
 router.post('/submit', toolController.createTool)
-router.post('/submitFile', toolController.importFromCSV)
 router.get('/:id', toolController.getToolByID)
 router.put('/:id', toolController.updateToolbyID)
 

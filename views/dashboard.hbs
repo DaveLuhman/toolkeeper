@@ -21,13 +21,11 @@
     </div>
 </div>
 <br />
-<br />
-<br />
 <div class="container" id="dashboard">
 
     {{message}}
-
-
+    {{#if searchTerms}}
+    <h4>You Searched For: {{searchTerms}}{{/if}}</h4>
     {{#if tools}}
     <table class="table table-striped">
         <thead>
@@ -42,7 +40,6 @@
             </tr>
         </thead>
         <tbody>
-
             {{#each tools}}
             <tr scope="row">
                 <td>{{serialNumber}}</td>
@@ -52,10 +49,8 @@
                 <td>{{status}}</td>
                 <td>{{serviceAssignment}}</td>
                 <td><a href="/tool/{{id}}">...</a></td>
-
             </tr>
             {{/each}}
-
             {{else}}
             <h5>There are no tools to display</h5>
             {{/if}}
@@ -68,7 +63,7 @@
         {{#paginate pagination type="previous"}}
         <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
         {{/paginate}}
-        {{#paginate pagination type="middle" limit="7"}}
+        {{#paginate pagination type="middle" limit="9"}}
         <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
         {{/paginate}}
         {{#paginate pagination type="next"}}
@@ -81,6 +76,7 @@
 
 
 </div>
+
 
 {{!-- edit tool modal --}}
 <div class="modal fade" id="editToolModal" tabindex="-1" aria-labelledby="editToolModalLabel" aria-hidden="true">

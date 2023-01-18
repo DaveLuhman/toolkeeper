@@ -25,13 +25,13 @@ c.renderDashboard = (req, res) => {
         })
 }
 c.renderSearch = async (req, res) => {
-    console.log('entering dashboard search controller')
-    const { serialNumber, partNumber, barcode, serviceAssignment } = req.body
-    console.log(`search parameters, if any, are ${JSON.stringify(req.body)}`)
-    const tools = await Tool.find({ $or: [{ serialNumber: serialNumber }, { partNumber: partNumber }, { barcode: barcode }, { serviceAssignment: serviceAssignment }] })
-    console.log(`tools found: ${JSON.stringify(tools)}`)
-    if (!tools) { res.render('dashboard', { message: 'No Tool Found Matching Your Search Parameters'}) }
-    res.render('dashboard', { tools: tools, pagination: { pageCount: 0 } })
+    // console.log('entering dashboard search controller')
+    // const { serialNumber, partNumber, barcode, serviceAssignment } = req.body
+    // console.log(`search parameters, if any, are ${JSON.stringify(req.body)}`)
+    // const tools = await Tool.find({ $or: [{ serialNumber: serialNumber }, { partNumber: partNumber }, { barcode: barcode }, { serviceAssignment: serviceAssignment }] })
+    // console.log(`tools found: ${JSON.stringify(tools)}`)
+    // if (!tools) { res.render('dashboard', { message: 'No Tool Found Matching Your Search Parameters'}) }
+    res.render('dashboard', {  pagination: { pageCount: 0 } })
 }
 
 

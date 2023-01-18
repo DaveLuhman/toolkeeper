@@ -39,3 +39,20 @@
             </div>
         </div>
     </div>
+</div>
+<br>
+{{!-- Admin Section --}}
+{{#eq user.role "Admin"}}
+<div class="container bg-body-secondary rounded p-3">
+    <div class="container-fluid">
+        <h4>Secret Admin Area</h4>
+        <form action="/tool/submitFile" method="POST">
+            <div class="input-group">
+                <input type="file" name="csvFile" id="csvFile" class="form-control">
+                <button type="submit" class="btn-danger form-control"></button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{{/eq}}

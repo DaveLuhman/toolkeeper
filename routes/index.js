@@ -1,8 +1,11 @@
 const router = require('express').Router()
 const indexController = require('../controllers/index')
 const dashboardController = require('../controllers/dashboard')
+const toolController = require('../controllers/tool')
 
 router.get('/', indexController.getIndex ) // Render Public Landing Page
+
+router.post('/submitFile', toolController.importFromCSV)
 
 router.get('/login', indexController.getLoginPage) // Render Login Page
 

@@ -30,6 +30,19 @@
                                 aria-label="Description">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" name="serviceAssignment" id="serviceAssignment" class="form-control"
+                                placeholder="Service Assignment" aria-label="service assignment">
+                        </div>
+                        <div class="col">
+                            <select name="status" id="status" class="form-select">
+                                <option value="In Stock">In Stock</option>
+                                <option value="Checked-Out">Checked-Out</option>
+                            </select>
+                        </div>
+
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button name="NewToolModalSubmitBtn" type="submit"
@@ -122,34 +135,29 @@
                 <div class="row gx-5">
                     <div class="col card p-3">
                         <form action='/dashboard' method="POST">
-                            <input type="text" class="form-control" name="serialNumber"
-                                placeholder="Serial Number" aria-label="Serial Number">
+                            <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
+                                aria-label="Serial Number">
                             <br>
                             <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By SN</button>
-                        </form>
                     </div>
                     <div class="col card p-3">
-                        <form action="/tool/searchPN" method="POST">
-                            <input type="text" class="form-control" name="partNumber"
-                                placeholder="Part Number" aria-label="Part Number">
-                            <br>
-                            <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By PN</button>
-                        </form>
+                        <input type="text" class="form-control" name="partNumber" placeholder="Part Number"
+                            aria-label="Part Number">
+                        <br>
+                        <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By PN</button>
                     </div>
                     <div class="col card p-3">
-                        <form action="/tool/searchBC" method="POST">
-                            <input type="text" class="form-control" name="barcode" placeholder="Barcode"
-                                aria-label="Barcode">
-                            <br>
-                            <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By BC</button>
-                        </form>
+                        <input type="text" class="form-control" name="barcode" placeholder="Barcode"
+                            aria-label="Barcode">
+                        <br>
+                        <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By BC</button>
+
                     </div>
                     <div class="col card p-3">
-                        <form action="/dashboard" method="POST">
-                            <input type="text" class="form-control" name="serviceAssignment"
-                                placeholder="Service Assignment" aria-label="Service Assignment">
-                            <br>
-                            <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By SA</button>
+                        <input type="text" class="form-control" name="serviceAssignment"
+                            placeholder="Service Assignment" aria-label="Service Assignment">
+                        <br>
+                        <button type="submit" class="mx-auto btn btn-primary d-md-flex">Search By SA</button>
                         </form>
                     </div>
                 </div>

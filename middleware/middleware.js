@@ -6,6 +6,7 @@ middleware = {}
 middleware.checkAuth = function (req, res, next) {
     if (req.isAuthenticated()) {
         res.locals.user = req.user
+        res.locals.pagination = { pageCount: 0}
         return next()
     }
     res.redirect('/login')
@@ -14,30 +15,32 @@ middleware.checkAuth = function (req, res, next) {
 middleware.getTools = async (req, res, next) => {
     console.log('entering middleware')
     var tools = null
-    const { serialNumber, partNumber, barcode, serviceAssignment } = req.params
-    console.log(`search parameters, if any, are ${JSON.stringify(req.params)}`)
-    if (serialNumber == null && partNumber == null && barcode == null && serviceAssignment == null) {
+    const { serialNumber, partNumber, barcode, serviceAssignment } = req.body
+    console.log(`search parameters, if any, are ${JSON.stringify(req.body)}`)
+    if (serialNumber === "" && partNumber === "" && barcode === "" && serviceAssignment === "") {
         console.log('leaving middleware without searching')
     next()
     }
-    if (serialNumber) {
+    if (serialNumber !== "") {
         console.log(`Searching for ${serialNumber}...`)
-        tools = await Tool.findOne({ serialNumber: serialNumber })
+        res.locals.searchTerms = `Serial Number: ${serialNumber}`
+        res.locals.tools = await Tool.find({ serialNumber: serialNumber })
     }
-    if (partNumber) {
+    if (partNumber  !== "") {
         console.log(`Searching for ${partNumber}...`)
-        tools = await Tool.findOne({ partNumber: partNumber })
+        res.locals.tools = await Tool.find({ partNumber: partNumber })
     }
-    if (barcode) {
+    if (barcode  !== "") {
         console.log(`Searching for ${barcode}...`)
-        tools = await Tool.findOne({ barcode: barcode })
+        res.locals.tools = await Tool.find({ barcode: barcode })
     }
-    if (serviceAssignment) {
+    if (serviceAssignment  !== "") {
         console.log(`Searching for ${serviceAssignment}...`)
-        tools = await Tool.findOne({ serviceAssignment: serviceAssignment })
+        res.locals.tools = await Tool.find({ serviceAssignment: serviceAssignment })
     }
     if (!tools) { req.message = 'No Tool Found Matching Your Search Parameters' }
     console.log('leaving middleware')
+    res.locals.pagination = { pageCount: 1}
     next()
 }
 

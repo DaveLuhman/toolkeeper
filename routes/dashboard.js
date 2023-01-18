@@ -13,7 +13,7 @@ router.get('/', dashboardController.renderDashboard)
 //@target /dashboard
 //@method POST
 //@desc search for tools then render dashboard
-router.post('/', dashboardController.renderSearch)
+router.post('/', getTools, dashboardController.renderSearch)
 
 
 //@target /dashboard/newTool
@@ -35,5 +35,6 @@ router.get('/checkInOut' , (req , res) => {
 router.get('/checkIn' , (req , res)=>{
     // router code here
 })
+
 
 module.exports  = router
