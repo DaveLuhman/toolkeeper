@@ -1,7 +1,6 @@
-const { resolve } = require("path")
 const Tool = require('../models/tool')
 
-middleware = {}
+const middleware = {}
 
 middleware.checkAuth = function (req, res, next) {
     if (req.isAuthenticated()) {
