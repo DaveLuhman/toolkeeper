@@ -6,8 +6,14 @@ const { checkAuth, getTools } = require('../middleware/middleware')
 const router = require('express').Router()
 
 //@target /dashboard/
+//@method GET
 //@desc render dashboard
-router.get('/', getTools, dashboardController.renderDashboard)
+router.get('/', dashboardController.renderDashboard)
+
+//@target /dashboard
+//@method POST
+//@desc search for tools then render dashboard
+router.post('/', dashboardController.renderSearch)
 
 
 //@target /dashboard/newTool
