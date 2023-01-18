@@ -59,12 +59,10 @@ controller.getMatchingTools = async (req, res) => {
 // @access  User
 controller.createTool = async (req, res) => {
     const { serialNumber, partNumber, barcode, description } = req.body
-    console.table(req.body)
     if (!(serialNumber || partNumber) || !barcode) {
          return res.status(400).render('dashboard', {message:'Either Serial Num and Barcode or Part Num and Barcode required'})
         }
     let existing = await Tool.findOne({ serialNumber: serialNumber })
-    console.log(existing)
     if (existing) { return res.status(400).redirect('/dashboard', {message: 'That Tool Already Exists, I looked it up by serial number', tools: existing}) }
     let newTool = await Tool.create({serialNumber, partNumber, barcode, description, updatedBy: req.user._id, createdBy: req.user._id  })
     if (newTool._id != null) { return res.status(201).redirect('/dashboard', {message: "Successfully Made A New Tool", tools: newTool, pageCount: 0}) }
