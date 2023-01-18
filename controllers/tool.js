@@ -31,7 +31,7 @@ controller.getToolByID = async (req, res, next) => {
     console.log(req.params.id)
     let tool = await Tool.findById(req.params.id)
     if (!tool) { return res.status(404).send('Tool not found') }
-    return res.render('editTool', { tool: tool, user: req.user })
+    return res.render('editTool', { tool: tool })
 }
 // @desc    Search for a match based on the provided values
 // @route   GET /tools/search
@@ -57,7 +57,7 @@ controller.getToolBySN = async (req, res) => {
     console.log(serialNumber)
     let tools = await Tool.findOne({ serialNumber: serialNumber })
     if (!tools) { res.render('dashboard', { message: 'No Tool Found Matching Your Search Parameters', user: req.user }) }
-    res.render('dashboard', { tools: tools, user: req.user })
+    res.render('editTool', { tools: tools })
 }
 controller.getToolByPN = async (req, res) => {
     const { partNumber } = req.body
@@ -65,13 +65,13 @@ controller.getToolByPN = async (req, res) => {
     let tools = await Tool.find({ partNumber: partNumber })
     console.log(tools)
     if (!tools) { res.render('dashboard', { message: 'No Tool Found Matching Your Search Parameters', user: req.user }) }
-    res.render('dashboard', { tools: tools, user: req.user })
+    res.render('editTool', { tools: tools })
 }
 controller.getToolByBC = async (req, res) => {
     const { barcode } = req.body
     let tools = await Tool.findOne({ barcode: barcode })
     if (!tools) { res.render('dashboard', { message: 'No Tool Found Matching Your Search Parameters', user: req.user }) }
-    res.render('dashboard', { tools: tools, user: req.user })
+    res.render('editTool', { tools: tools })
 }
 controller.getToolBySA = async (req, res) => {
     const { serviceAssignment } = req.body

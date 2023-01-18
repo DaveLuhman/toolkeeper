@@ -6,7 +6,7 @@ router.get('/', indexController.getIndex ) // Render Public Landing Page
 
 router.get('/login', indexController.getLoginPage) // Render Login Page
 
-router.post('/login', indexController.postLoginPage, dashboardController.dashboard ) // Login User
+router.post('/login', indexController.postLoginPage, dashboardController.renderDashboard ) // Login User
 
 router.get('/logout', indexController.logUserOut) // Logout User);
 

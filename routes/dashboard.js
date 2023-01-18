@@ -2,12 +2,12 @@ const Tool = require('../models/tool')
 const User = require('../models/user')
 const toolController = require('../controllers/tool')
 const dashboardController = require('../controllers/dashboard')
-const { checkAuth } = require('../middleware/middleware')
+const { checkAuth, getTools } = require('../middleware/middleware')
 const router = require('express').Router()
 
 //@target /dashboard/
 //@desc render dashboard
-router.get('/', dashboardController.dashboard)
+router.get('/', getTools, dashboardController.renderDashboard)
 
 
 //@target /dashboard/newTool
