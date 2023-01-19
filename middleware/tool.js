@@ -4,13 +4,20 @@ const Tool = require('../models/tool');
 module.exports = {
     getTools: async (req, res, next) => {
         console.log('entering mw - getTools');
+        let search = [];
         let tools = [];
-        console.log('tool array created:', tools.length);
         const perPage = 10;
         let page = req.query.p || 1;
         const id = req.params.id;
-        console.log('id: ', id);
-        if (req.body.tools) { console.log('tools already being passed in'); return next(); }
+        if (id) {
+            console.log(`searching for tool by id: ${id}`);
+            tools = await Tool.findById(req.params.id)
+            console.log(tools)
+            res.locals.tools = [tools];
+            res.locals.pagination = { pageCount: 1 };
+            console.log('leaving mw - tool found');
+            return next();
+        }
         const { serialNumber, partNumber, barcode, serviceAssignment } = req.body;
         if ((id === "" && serialNumber === "" && partNumber === "" && barcode === "" && serviceAssignment === "" || (!id && !serialNumber && !partNumber && !barcode && !serviceAssignment))) {
             console.log('no search parameters provided');
@@ -22,37 +29,33 @@ module.exports = {
         else if (serialNumber) {
             console.log(`Serial Number: ${serialNumber}`);
             res.locals.searchTerms = `Serial Number: ${serialNumber}`;
-            tools.push(await Tool.find({ serialNumber: serialNumber }).skip((perPage * page) - perPage).limit(perPage))
-            console.log('sn tool found:', tools, tools.length);
+            search = await Tool.findOne({ serialNumber: serialNumber }).skip((perPage * page) - perPage).limit(perPage)
         }
         else if (partNumber) {
             res.locals.searchTerms = `Part Number: ${partNumber}`;
-            tools.push(await Tool.find({ partNumber: partNumber }).skip((perPage * page) - perPage).limit(perPage))
-            console.log('pn tool found:', tools, tools.length);
+            search = await Tool.find({ partNumber: partNumber }).skip((perPage * page) - perPage).limit(perPage)
         }
         else if (barcode) {
             res.locals.searchTerms = `Barcode: ${barcode}`;
-            tools.push(await Tool.find({ barcode: barcode }).skip((perPage * page) - perPage).limit(perPage))
-            console.log('bc tool found:', tools, tools.length);
+            search = await Tool.find({ barcode: barcode }).skip((perPage * page) - perPage).limit(perPage)
+
         }
         else if (serviceAssignment) {
             res.locals.searchTerms = `Service Assignment: ${serviceAssignment}`;
-            tools.push(await Tool.find({ serviceAssignment: serviceAssignment }).skip((perPage * page) - perPage).limit(perPage))
-            console.log('sa tool found:', tools, tools.length);
+            search = await Tool.find({ serviceAssignment: serviceAssignment }).skip((perPage * page) - perPage).limit(perPage)
         }
-        if (id) {
-            console.log(`searching for tool by id: ${id}`);
-            tools.push(await Tool.findById(req.params.id))
-            console.log('id tool found:', tools, tools.length);
-        }
-        if (!tools || tools.length === 0) {
+        if (!search || search.length === 0) {
             res.locals.message = `No Tool Found Matching ${res.locals.searchTerms}`;
+            res.locals.tools = [];
             console.log('leaving search mw having found no matches');
+            return next();
         }
-        console.log(typeof tools)
+
+        for (let i = 0; i < search.length; i++) tools.push(search[i]);
+        if (!search.length) { tools = [search]}
         res.locals.tools = tools;
-        console.log(`leaving mw - tools returned`);
-        next();
+        console.log(`leaving mw - tools returned`.blue);
+        return next();
     },
     createTool: async (req, res, next) => {
         console.log('entering mw - createTool')
@@ -66,7 +69,7 @@ module.exports = {
         const existing = await Tool.findOne({ $or: [{ 'serialNumber': serialNumber }, { 'barcode': barcode }] })
         if (existing) {
             res.locals.message = 'Tool already exists'
-            res.locals.tools = existing
+            res.locals.tools = [existing]
             res.status(400)
             console.log('exiting mw - createTool - tool already exists')
             return next()
@@ -74,7 +77,7 @@ module.exports = {
         let newTool = await Tool.create({ serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, createdBy: req.user._id })
         console.log(`tool id: ${newTool._id}, ${newTool.description} created`)
         res.locals.message = 'Successfully Made A New Tool';
-        res.locals.tools = newTool;
+        res.locals.tools = [newTool];
         res.locals.pageCount = 0;
         res.status(201)
         console.log('exiting mw - createTool - new tool created')
