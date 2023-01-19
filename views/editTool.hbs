@@ -1,7 +1,5 @@
 {{#if tools}}
-
 {{#each tools}}
-{{#isFalsey serialnumber}}
 <div class="container card-lg px-4">
     <h5 class="card-title" id="editToolModalHeader">Edit A Tool Entry</h5>
     <form action="/dashboard/updateTool" method="PUT">
@@ -31,7 +29,6 @@
         </div>
     </form>
 </div>
-{{/isFalsey}}
 {{/each}}
 {{else}}
 <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
