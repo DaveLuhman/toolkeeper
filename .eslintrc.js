@@ -12,5 +12,6 @@ module.exports = {
         "ecmaVersion": "latest"
     },
     "rules": {
+        "argsIgnorePattern": "^_", // ignore unused args if they start with lodash
     }
 }
