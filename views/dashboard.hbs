@@ -27,7 +27,7 @@
     <div class="container-fluid">{{message}}</div>
     {{/if}}
     {{#if searchTerms}}
-    <h4>You Searched For: {{searchTerms}}</h4>
+    <h5>You Searched For: </h5><h4><i>{{searchTerms}}</i></h4>
     {{/if}}
 
     {{#if tools}}
@@ -55,8 +55,6 @@
                 <td><a href="/tool/{{id}}">...</a></td>
             </tr>
             {{/each}}
-            {{else}}
-            <h5>There are no tools to display</h5>
             {{/if}}
         </tbody>
     </table>
