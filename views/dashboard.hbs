@@ -23,9 +23,13 @@
 <br />
 <div class="container" id="dashboard">
 
-    {{message}}
+    {{#if message}}
+    <div class="container-fluid">{{message}}</div>
+    {{/if}}
     {{#if searchTerms}}
-    <h4>You Searched For: {{searchTerms}}{{/if}}</h4>
+    <h4>You Searched For: {{searchTerms}}</h4>
+    {{/if}}
+
     {{#if tools}}
     <table class="table table-striped">
         <thead>
@@ -56,6 +60,7 @@
             {{/if}}
         </tbody>
     </table>
+    {{#gt paginate.n 1}}
     <ul class="row">
         {{#paginate pagination type="first"}}
         <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
@@ -72,6 +77,7 @@
         {{#paginate pagination type="last"}}
         <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
         {{/paginate}}
+    {{/gt}}
     </ul>
 
 
