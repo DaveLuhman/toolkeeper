@@ -4,7 +4,8 @@ const Tool = require('../models/tool');
 module.exports = {
     getTools: async (req, res, next) => {
         console.log('entering mw - getTools');
-        let tools;
+        let tools = [];
+        console.log('tool array created:', tools.length);
         const perPage = 10;
         let page = req.query.p || 1;
         const id = req.params.id;
@@ -13,33 +14,36 @@ module.exports = {
         const { serialNumber, partNumber, barcode, serviceAssignment } = req.body;
         if ((id === "" && serialNumber === "" && partNumber === "" && barcode === "" && serviceAssignment === "" || (!id && !serialNumber && !partNumber && !barcode && !serviceAssignment))) {
             console.log('no search parameters provided');
-            tools = await Tool.find({}).skip((perPage * page) - perPage).limit(perPage);
-            console.log(typeof tools)
-            res.locals.tools = tools;
+            res.locals.tools = await Tool.find({}).skip((perPage * page) - perPage).limit(perPage);
             res.locals.pagination = { pageCount: Math.ceil(await Tool.countDocuments() / perPage) };
             console.log('leaving mw - all tools returned');
             return next();
         }
-        else if (serialNumber !== "") {
+        else if (serialNumber) {
+            console.log(`Serial Number: ${serialNumber}`);
             res.locals.searchTerms = `Serial Number: ${serialNumber}`;
-            tools = await Tool.find({ serialNumber: serialNumber }).skip((perPage * page) - perPage).limit(perPage);
+            tools.push(await Tool.find({ serialNumber: serialNumber }).skip((perPage * page) - perPage).limit(perPage))
+            console.log('sn tool found:', tools, tools.length);
         }
-        else if (partNumber !== "") {
+        else if (partNumber) {
             res.locals.searchTerms = `Part Number: ${partNumber}`;
-            tools = await Tool.find({ partNumber: partNumber }).skip((perPage * page) - perPage).limit(perPage);
+            tools.push(await Tool.find({ partNumber: partNumber }).skip((perPage * page) - perPage).limit(perPage))
+            console.log('pn tool found:', tools, tools.length);
         }
-        else if (barcode !== "") {
+        else if (barcode) {
             res.locals.searchTerms = `Barcode: ${barcode}`;
-            tools = await Tool.find({ barcode: barcode }).skip((perPage * page) - perPage).limit(perPage);
+            tools.push(await Tool.find({ barcode: barcode }).skip((perPage * page) - perPage).limit(perPage))
+            console.log('bc tool found:', tools, tools.length);
         }
-        else if (serviceAssignment !== "") {
+        else if (serviceAssignment) {
             res.locals.searchTerms = `Service Assignment: ${serviceAssignment}`;
-            tools = await Tool.find({ serviceAssignment: serviceAssignment }).skip((perPage * page) - perPage).limit(perPage);
+            tools.push(await Tool.find({ serviceAssignment: serviceAssignment }).skip((perPage * page) - perPage).limit(perPage))
+            console.log('sa tool found:', tools, tools.length);
         }
         if (id) {
-            console.log('searching for tool by id');
-            tools = await Tool.findById(req.params.id);
-            console.log('tool found: ', tools);
+            console.log(`searching for tool by id: ${id}`);
+            tools.push(await Tool.findById(req.params.id))
+            console.log('id tool found:', tools, tools.length);
         }
         if (!tools || tools.length === 0) {
             res.locals.message = `No Tool Found Matching ${res.locals.searchTerms}`;
