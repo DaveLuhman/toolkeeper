@@ -3,14 +3,6 @@ const User = require('../models/user');
 
 const controller = {}
 
-
-
-controller.userProfileByID = async (req, res) => {
-    let user = await User.findById(req.user.id)
-    if (!user) { return res.status(404).send('User not found by ID') }
-    res.render('profile', { user: user })
-}
-
 controller.getUserByEmail = async (req, res) => {
     let user = await User.findOne({email: req.body.email})
     if (!user) { return res.status(404).send('User not found by ID') }
