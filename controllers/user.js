@@ -3,14 +3,7 @@ const User = require('../models/user');
 
 const controller = {}
 
-// @desc  Return all users
-// @route GET /users
-// @access Manager
-controller.getAllUsers = async (_req, res, next) => {
-    const users = await User.find()
-    if(users.length != 0) res.sendStatus(200).json(users)
-    else res.status(404).send('No users found')
-}
+
 
 controller.userProfileByID = async (req, res) => {
     let user = await User.findById(req.user.id)

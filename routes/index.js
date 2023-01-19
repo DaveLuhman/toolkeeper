@@ -13,9 +13,10 @@ router.get('/login', (req, res) => {
         res.render('login', { layout: 'login.hbs' });
     }
 });
- // Login User
+// Login User
 router.post('/login', login, (_req, res) => {
-    res.render('dashboard')});
+    res.render('dashboard')
+});
 // Logout User
 router.get('/logout', logout);
 
