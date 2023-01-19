@@ -4,10 +4,16 @@ module.exports = {
     checkAuth: (req, res, next) => {
         if (req.isAuthenticated()) {
             res.locals.user = req.user;
-            res.locals.pagination = { pageCount: 0 };
             return next();
         }
         res.redirect('/login');
+    },
+    checkManager: (req, res, next) => {
+        if (!req.user.role == 'Manager') {
+            res.status(401).send('Unauthorized');
+            return next()
+        }
+        next();
     },
     login: (_req, _res, next) => {
         passport.authenticate('local',
@@ -16,7 +22,7 @@ module.exports = {
                 failureRedirect: '/login',
                 failureFlash: true
             })
-            next()
+        next()
     },
     logout: (req, res, next) => {
         req.logout(function (err) {

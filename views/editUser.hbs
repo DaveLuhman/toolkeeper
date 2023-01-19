@@ -1,8 +1,8 @@
-<br>
-<br>
-<div class="container bg-body-secondary rounded p-3">
-    <div class="container-fluid">
-        <form action="/user/:id" method="post"></form>
+{{#if tools}}
+{{#each tools}}
+<div class="container card-lg px-4">
+    <h5 class="card-title" id="editToolModalHeader">Edit A User Entry</h5>
+    <form action="/userManagement" method="PUT">
         <div class="row input-group">
             <div class="col">
                 <label for="email">Email:</label>
@@ -30,30 +30,9 @@
                     value="{{user.lastName}}">
             </div>
         </div>
-        <div class="row input-group">
-            <div class="col">
-                <button type="button" class="btn right-align btn-primary" data-bs-toggle="forgotPasswordModal"
-                    data-bs-target="#forgotPasswordModal">Reset Password?</button>
-            </div>
-            <div class="col">
-                <button type="submit" class="d-flex btn btn-primary">Update User Details?</button>
-            </div>
-        </div>
-    </div>
+    </form>
 </div>
-<br>
-{{!-- Admin Section --}}
-{{#eq user.role "Admin"}}
-<div class="container bg-body-secondary rounded p-3">
-    <div class="container-fluid">
-        <h4>Secret Admin Area</h4>
-        <form action="/tool/submitFile" method="POST">
-            <div class="input-group">
-                <input type="file" name="csvFile" id="csvFile" class="form-control">
-                <button type="submit" class="btn-danger form-control"></button>
-            </div>
-        </form>
-
-    </div>
-</div>
-{{/eq}}
+{{/each}}
+{{else}}
+<h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
+{{/if}}

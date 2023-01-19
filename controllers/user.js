@@ -3,27 +3,6 @@ const User = require('../models/user');
 
 const controller = {}
 
-controller.getUserByEmail = async (req, res) => {
-    let user = await User.findOne({email: req.body.email})
-    if (!user) { return res.status(404).send('User not found by ID') }
-    return res.status(200).json(user)
-}
-
-// @desc  Create a new user
-// @route POST /user
-// @access Manager
-controller.createUser = async (req, res) => {
-    let { firstName, lastName, email, password, role } = req.body
-    let userExists = await User.findOne({ email: email })
-    console.log(userExists)
-    if (!email || !password) { return res.status(400).send('Email and password are required') }
-    if(userExists) { return res.status(400).send('User already exists') }
-    let hash = bcrypt.hashSync(password, 10)
-    let createdUser = await User.create({ firstName, lastName, email, password: hash, role })
-    console.log(createdUser)
-    return res.json({ "message": "success", "result": createdUser })}
-
-
 // @desc  Update a user by ID
 // @route PUT /user
 // @access Manager
