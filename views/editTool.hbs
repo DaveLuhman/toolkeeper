@@ -1,25 +1,28 @@
-{{#if tool}}
+{{#if tools}}
+{{tools}}
+{{#each tools}}
+{{#isFalsey serialnumber}}
 <div class="container card-lg px-4">
     <h5 class="card-title" id="editToolModalHeader">Edit A Tool Entry</h5>
     <form action="/dashboard/updateTool" method="PUT">
         <div class="row gx-5">
             <div class="col p-3">
                 <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
-                    aria-label="Serial Number" value="{{tool.serialNumber}}" disabled>
+                    aria-label="Serial Number" value="{{serialNumber}}" disabled>
             </div>
             <div class="col p-3">
                 <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
-                    aria-label="Part Number" value="{{tool.partNumber}}">
+                    aria-label="Part Number" value="{{partNumber}}">
             </div>
         </div>
         <div class="row gx-5">
             <div class="col p-3">
                 <input type="text" class="form-control" name="barcode" placeholder="Barcode" aria-label="Barcode"
-                    value="{{tool.barcode}}">
+                    value="{{barcode}}">
             </div>
             <div class="col p-3">
                 <input type="text" class="form-control" name="description" placeholder="Description"
-                    aria-label="Description" value="{{tool.description}}">
+                    aria-label="Description" value="{{description}}">
             </div>
         </div>
         <div class="modal-footer">
@@ -28,6 +31,8 @@
         </div>
     </form>
 </div>
+{{/isFalsey}}
+{{/each}}
 {{else}}
 <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
 {{/if}}

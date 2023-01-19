@@ -1,12 +1,9 @@
 const router = require('express').Router()
-const toolController = require('../controllers/tool.js')
-const dashboardController = require('../controllers/dashboard.js')
+const { getTools, createTool, updateTool } = require('../middleware/tool.js')
 
-router.get('/', toolController.getAllTools)
-router.post('/search', dashboardController.renderDashboard)
-router.post('/submit', toolController.createTool)
-router.get('/:id', toolController.getToolByID)
-router.put('/:id', toolController.updateToolbyID)
+router.get('/:id', getTools, (_req, res) => {res.render('editTool');})
+router.post('/submit', createTool, (_req, res) => {res.render('dashboard');})
+router.post('/update/:id', updateTool, (_req, res) => {res.render('dashboard');})
 
 
 module.exports = router

@@ -33,54 +33,8 @@ controller.getToolByID = async (req, res) => {
     if (!tool) { return res.status(404).send('Tool not found') }
     return res.render('editTool', { tool: tool })
 }
-// @desc    Search for a match based on the provided values
-// @route   GET /tools/search
-// @access  User
-controller.getMatchingTools = async (req, res) => {
-    const { _id, serialNumber, partNumber, barcode, serviceAssignment, manufacturer, status } = req.body
-    const matchKeys = ["_id", "serialNumber", "partNumber", "barcode", "serviceAssignment", "manufacturer", "status"]
-    const matchValues = [_id, serialNumber, partNumber, barcode, serviceAssignment, manufacturer, status]
-    // check for non-empty values so we know which field to search with
-    for (let i = 0; i < matchValues.length; i++) {
-        if (matchValues[i] != null) {
-            let tools = await Tool.find({ [matchKeys[i]]: matchValues[i] })
-            if (tools.length > 0) { return res.status(200).json(tools) }
-        }
-    }
-    return res.status(404).send('No tools found')
-}
-// @desc    Search for a match based on the provided values
-// @route   GET /tools/search
-// @access  User
 
 
-// @desc    Create a new tool
-// @route   POST /tool
-// @access  User
-controller.createTool = async (req, res) => {
-    const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body
-    if (!(serialNumber || partNumber) || !barcode) {
-         return res.status(400).render('dashboard', {message:'Either Serial Num and Barcode or Part Num and Barcode required'})
-        }
-    let existing = await Tool.findOne({ serialNumber: serialNumber })
-    if (existing) { return res.status(400).redirect('/dashboard', {message: 'That Tool Already Exists, I looked it up by serial number', tools: existing}) }
-    let newTool = await Tool.create({serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, createdBy: req.user._id  })
-    if (newTool._id != null) {
-        res.locals.message = 'Successfully Made A New Tool';
-        res.locals.tools = newTool;
-        res.locals.pageCount = 0;
-        res.status(201).redirect('/dashboard'); }
-}
-
-// @desc    Update a tool by ID
-// @route   PUT /tool
-// @access  User
-controller.updateToolbyID = async (req, res) => {
-    let tJ = this.parseToolToObject(req.body);
-    let tool = await Tool.findByIdAndUpdate(tJ._id, tJ);
-    if (tool) { return res.status(200).json({message: 'success', result: tool}); }
-    else return res.status(404).send('Tool not found');
-}
 
 controller.importFromCSV = async (req, res) => {
     let serviceAssignment

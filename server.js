@@ -59,7 +59,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
-  store:store
+  store: store
 }))
 app.use(flash());
 const passport = require('passport')
@@ -67,11 +67,11 @@ require('./config/passport')(passport);
 app.use(passport.initialize()) // Initialize Passport
 app.use(passport.session()) // Use Passport for Sessions
 
-const { checkAuth } = require('./middleware/middleware');
+const { checkAuth } = require('./middleware/auth.js');
 
 // HTTP Page rendering Routes (User Context)
-app.use('/user', checkAuth,  require('./routes/user.js'));
-app.use('/dashboard', checkAuth,  require('./routes/dashboard.js'));
+app.use('/user', checkAuth, require('./routes/user.js'));
+app.use('/dashboard', checkAuth, require('./routes/dashboard.js'));
 app.use('/tool', checkAuth, require('./routes/tool.js'));
 // HTTP Page rendering Routes (No User Context)
 app.use('/', require('./routes/index.js'));
