@@ -23,9 +23,9 @@
         </button>
 
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/user/{{user._id}}">{{Profile}}</a></li>
+          <li><a class="dropdown-item" href="/user/{{user._id}}">Profile</a></li>
           {{#eq user.role "Manager"}}<li><a class="dropdown-item" href="/user/userManagement">User Management</a></li>{{/eq}}
-          {{#eq user.role "Admin"}}<li><a class="dropdown-item" href="/user/{{user._id}}">Admin Utilities</a></li>
+          {{#eq user.role "Admin"}}<li><a class="dropdown-item" href="/user/userManagement">User Management</a></li>
           {{/eq}}
           <li><a class="dropdown-item" href="/logout">Logout</a></li>
         </ul>
