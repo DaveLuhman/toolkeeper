@@ -51,9 +51,9 @@ const toolSchema = new mongoose.Schema({
     },
 },
     {
-    timestamps: true,
-    strict: false
-});
+        timestamps: true,
+        strict: false
+    });
 
 
 toolSchema.findAll = function (callback) { return this.model('tool').find({}, callback); }

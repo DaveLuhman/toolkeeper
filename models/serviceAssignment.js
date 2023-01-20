@@ -12,7 +12,7 @@ const serviceAssignmentSchema = new mongoose.Schema({
         maxLength: 128
     },
 
-},{
+}, {
     timestamps: true,
 });
 

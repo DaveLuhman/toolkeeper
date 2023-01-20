@@ -8,8 +8,8 @@ controller.importFromCSV = async (req, res) => {
     let status = 'Checked Out'
     for (let i = 0; i < arrayOfRows.length; i++) {
         let row = arrayOfRows[i].split(',')
-        if(row[4] == "" ) { console.log('no status value'.red); status = 'CHECKED IN'; serviceAssignment = 'IN STOCK' }
-        if(row[4] != "" ) { status = 'CHECKED OUT'; serviceAssignment = row[4] }
+        if (row[4] == "") { console.log('no status value'.red); status = 'CHECKED IN'; serviceAssignment = 'IN STOCK' }
+        if (row[4] != "") { status = 'CHECKED OUT'; serviceAssignment = row[4] }
         let toolObject = {
             serialNumber: row[0],
             barcode: row[1],

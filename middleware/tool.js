@@ -99,7 +99,7 @@ module.exports = {
         console.log('entering mw - archivedTool')
         const { _id } = req.params;
         const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
-        let archivedTool = await Tool.findOneAndUpdate({ _id: _id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id , archived: true}, { new: true })
+        let archivedTool = await Tool.findOneAndUpdate({ _id: _id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id, archived: true }, { new: true })
         console.log(`tool id: ${updatedTool._id} archived`)
         res.locals.message = 'Successfully Marked Tool Archived';
         res.locals.tools = archivedTool;

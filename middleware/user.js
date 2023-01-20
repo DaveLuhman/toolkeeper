@@ -25,7 +25,7 @@ module.exports = {
         return next()
     },
     updateUser: async (req, _res, next) => {
-        await User.findByIdAndUpdate (req.params.id, {$set: req.body})
+        await User.findByIdAndUpdate(req.params.id, { $set: req.body })
         return next()
     }
 }
