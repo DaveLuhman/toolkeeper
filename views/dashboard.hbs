@@ -27,7 +27,8 @@
     <div class="container-fluid">{{message}}</div>
     {{/if}}
     {{#if searchTerms}}
-    <h5>You Searched For: </h5><h4><i>{{searchTerms}}</i></h4>
+    <h5>You Searched For: </h5>
+    <h4><i>{{searchTerms}}</i></h4>
     {{/if}}
 
     {{#if tools}}
@@ -52,31 +53,45 @@
                 <td>{{description}}</td>
                 <td>{{status}}</td>
                 <td>{{serviceAssignment}}</td>
-                <td><a href="/tool/{{_id}}"><i class="bi bi-pencil-square"></i></a></td>
-            </tr>
-            {{/each}}
-            {{/if}}
-        </tbody>
-    </table>
-    {{#gt paginate.n 1}}
-    <ul class="row">
-        {{#paginate pagination type="first"}}
-        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
-        {{/paginate}}
-        {{#paginate pagination type="previous"}}
-        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
-        {{/paginate}}
-        {{#paginate pagination type="middle" limit="9"}}
-        <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
-        {{/paginate}}
-        {{#paginate pagination type="next"}}
-        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Next</a></div>
-        {{/paginate}}
-        {{#paginate pagination type="last"}}
-        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
-        {{/paginate}}
+                <td>
+                    <div class="dropdown">
+
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/tool/{{id}}">Edit</a></li>
+                            <li><a class="dropdown-item" href="/tool/archive/:{{id}}">Archive</a></li>
+                        </ul>
+                    </div>
+</div>
+</td>
+</tr>
+{{/each}}
+{{/if}}
+</tbody>
+</table>
+{{#gt paginate.n 1}}
+<ul class="row">
+    {{#paginate pagination type="first"}}
+    <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
+    {{/paginate}}
+    {{#paginate pagination type="previous"}}
+    <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
+    {{/paginate}}
+    {{#paginate pagination type="middle" limit="9"}}
+    <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
+    {{/paginate}}
+    {{#paginate pagination type="next"}}
+    <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Next</a></div>
+    {{/paginate}}
+    {{#paginate pagination type="last"}}
+    <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
+    {{/paginate}}
     {{/gt}}
-    </ul>
+</ul>
 
 
 </div>
