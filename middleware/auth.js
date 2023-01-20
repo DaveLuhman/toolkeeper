@@ -15,7 +15,7 @@ module.exports = {
         }
         next();
     },
-    login: (_req, _res, next) => {
+    login: (req, _res, next) => {
         passport.authenticate('local',
             {
                 failureRedirect: '/login',
