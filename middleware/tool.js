@@ -95,7 +95,7 @@ module.exports = {
         res.status(201)
         next();
     },
-    archivedTool: async (req, res, next) => {
+    archiveTool: async (req, res, next) => {
         console.log('entering mw - archivedTool')
         const { _id } = req.params;
         const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
