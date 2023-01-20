@@ -15,13 +15,14 @@ module.exports = {
         }
         next();
     },
-    login: (req, _res, next) => {
+    login: (_req, _res, next) => {
         passport.authenticate('local',
             {
+                successRedirect: '/dashboard',
                 failureRedirect: '/login',
                 failureFlash: true
             })
-            console.log(`User ${req.user.displayName} logged in`.green.bold);
+            console.log('passporrt middleware')
         next()
     },
     logout: (req, res, next) => {
