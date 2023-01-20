@@ -6,6 +6,7 @@ module.exports = {
             res.locals.user = req.user;
             return next();
         }
+        colsole.log('not authenticated')
         res.redirect('/login');
     },
     isManager: (req, res, next) => {
