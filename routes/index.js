@@ -15,7 +15,7 @@ router.get('/login', (req, res) => {
 });
 // Login User
 router.post('/login', login, (_req, res) => {
-    res.render('dashboard')
+    res.redirect('dashboard')
 });
 // Logout User
 router.get('/logout', logout);
