@@ -21,6 +21,7 @@ module.exports = {
                 failureRedirect: '/login',
                 failureFlash: true
             })
+            console.log(`User ${req.user.displayName} logged in`.green.bold);
         next()
     },
     logout: (req, res, next) => {
