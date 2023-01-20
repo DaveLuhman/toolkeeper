@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
     firstName: {
         type: String,
         trim: true
@@ -50,5 +50,5 @@ UserSchema.virtual('displayName').
     });
 
 
-const User = mongoose.model('User', UserSchema);
-module.exports = User;
+const User = model('User', UserSchema);
+export default User;

@@ -1,4 +1,4 @@
-const Tool = require('../models/tool');
+import Tool from '../models/tool.js';
 
 const controller = {}
 
@@ -25,4 +25,4 @@ controller.importFromCSV = async (req, res) => {
     }
     res.status(201).send('Successfully Imported')
 }
-module.exports = controller
+export default controller

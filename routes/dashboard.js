@@ -1,11 +1,12 @@
-const { getTools } = require('../middleware/tool')
-const router = require('express').Router()
+import { getTools } from '../middleware/tool.js';
+import { Router } from 'express';
 
+const router = Router();
 
 //@target /dashboard
 //@method POST
 //@desc search for tools if needed via middleware then render dashboard
-router.use('/', getTools, (_req, res) => { res.render('dashboard'); });
+router.get('/', getTools, (_req, res) => { res.render('dashboard'); });
 
 
-module.exports = router
+export default router;

@@ -1,6 +1,8 @@
-const router = require('express').Router()
-const { isManager } = require('../middleware/auth.js')
-const { getUsers, createUser, verifySelf, updateUser } = require('../middleware/user.js')
+import { Router as expressRouter } from 'express';
+import { isManager } from '../middleware/auth.js';
+import { createUser, getUsers, updateUser, verifySelf } from '../middleware/user.js';
+
+const router = expressRouter();
 
 router.get('/profile', verifySelf, (_req, res) => { res.render('profile') })  // show user their own profile
 router.get('/:id', verifySelf, getUsers, (_req, res) => { res.render('profile') })  //show user their own profile
@@ -12,4 +14,4 @@ router.post('/userManagement/:id', isManager, updateUser, (_req, res) => { res.r
 router.get('/', isManager, getUsers, (_req, res) => { res.render('userManagement') })
 router.post('/', isManager, createUser, (_req, res) => { res.render('userManagement') })
 
-module.exports = router
+export default router
