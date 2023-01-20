@@ -70,11 +70,10 @@ app.use(passport.session()) // Use Passport for Sessions
 // Routes (No User Context)
 app.use('/', require('./routes/index.js'));
 const { checkAuth } = require('./middleware/auth.js');
-app.use(checkAuth) //check for login on all non-index routes
 // Routes (User Context)
-app.use('/user', require('./routes/user.js'));
-app.use('/dashboard', require('./routes/dashboard.js'));
-app.use('/tool', require('./routes/tool.js'));
+app.use('/user', checkAuth, require('./routes/user.js'));
+app.use('/dashboard',  checkAuth, require('./routes/dashboard.js'));
+app.use('/tool',  checkAuth, require('./routes/tool.js'));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

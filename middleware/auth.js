@@ -6,7 +6,7 @@ module.exports = {
             res.locals.user = req.user;
             return next();
         }
-        console.log('not authenticated: ' + req.isAuthenticated())
+        console.log('authenticated: ' + req.isAuthenticated())
         res.redirect('/login');
     },
     isManager: (req, res, next) => {
@@ -23,7 +23,7 @@ module.exports = {
                 failureRedirect: '/login',
                 failureFlash: true
             })
-            console.log('passporrt middleware')
+            console.log('passport middleware')
         next()
     },
     logout: (req, res, next) => {
