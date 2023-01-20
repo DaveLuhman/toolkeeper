@@ -9,7 +9,7 @@ module.exports = {
         res.redirect('/login');
     },
     checkManager: (req, res, next) => {
-        if (!req.user.role == 'Manager') {
+        if (req.user.role == 'User') {
             res.status(401).send('Unauthorized');
             return next()
         }
