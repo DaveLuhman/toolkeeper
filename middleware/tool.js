@@ -52,7 +52,7 @@ module.exports = {
         }
 
         for (let i = 0; i < search.length; i++) tools.push(search[i]);
-        if (!search.length) { tools = [search]}
+        if (!search.length) { tools = [search] }
         res.locals.tools = tools;
         console.log(`leaving mw - tools returned`.blue);
         return next();
@@ -94,5 +94,17 @@ module.exports = {
         res.locals.pageCount = 0;
         res.status(201)
         next();
-    }
+    },
+    archivedTool: async (req, res, next) => {
+        console.log('entering mw - archivedTool')
+        const { _id } = req.params;
+        const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
+        let archivedTool = await Tool.findOneAndUpdate({ _id: _id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id , archived: true}, { new: true })
+        console.log(`tool id: ${updatedTool._id} archived`)
+        res.locals.message = 'Successfully Marked Tool Archived';
+        res.locals.tools = archivedTool;
+        res.locals.pageCount = 0;
+        res.status(201)
+        next();
+    },
 }
