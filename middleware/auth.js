@@ -6,7 +6,7 @@ module.exports = {
             res.locals.user = req.user;
             return next();
         }
-        console.log('not authenticated')
+        console.log('not authenticated: ' + req.isAuthenticated())
         res.redirect('/login');
     },
     isManager: (req, res, next) => {
