@@ -1,5 +1,6 @@
 import User from '../models/user.js';
 
+
 async function getUsers(req, res, next) {
     let users = [];
     if (req.params.id) {
