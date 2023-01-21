@@ -100,7 +100,7 @@ async function archiveTool(req, res, next) {
     const { _id } = req.params;
     const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
     let archivedTool = await Tool.findOneAndUpdate({ _id: _id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id, archived: true }, { new: true });
-    console.log(`tool id: ${updatedTool._id} archived`);
+    console.log(`tool id: ${archivedTool._id} archived`);
     res.locals.message = 'Successfully Marked Tool Archived';
     res.locals.tools = archivedTool;
     res.locals.pageCount = 0;
