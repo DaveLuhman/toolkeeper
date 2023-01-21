@@ -84,13 +84,29 @@ async function createTool(req, res, next) {
 }
 async function updateTool(req, res, next) {
     console.log('entering mw - updateTool');
-    const { serialNumber, partNumber, barcode, description, serviceAssignment, status } = req.body;
-    console.log(status)
-    let updatedTool = await Tool.findOneAndUpdate({ _id: req.params.id }, { serialNumber, partNumber, barcode, description, serviceAssignment, status, updatedBy: req.user._id, updatedBy: req.user._id }, { new: true });
-    console.log(`tool id: ${updatedTool._id} updated`);
-    res.locals.message = 'Successfully Updated Tool';
-    res.locals.tools = [updatedTool];
-    console.log(`updaetd tool: ${updatedTool}`)
+    let updatedToolArray = [];
+    console.log(typeof req.body._id)
+    if (typeof req.body._id === 'string') {
+        const { _id, partNumber, description, serviceAssignment, status } = req.body;
+        let updatedTool = await Tool.findByIdAndUpdate(_id, { partNumber, description, serviceAssignment, status }, { new: true })
+        console.log('updated single Tool: ' + updatedTool);
+        updatedToolArray.push(updatedTool);
+    }
+    if (typeof req.body._id === 'object') {
+        const { _id, partNumber, description, serviceAssignment, status } = req.body;
+        for (let i = 0; i < _id.length; i++) {
+            let updatedTool = await Tool.findByIdAndUpdate(_id[i], {
+                'partNumber': partNumber[i],
+                'description': description[i],
+                'serviceAssignment': serviceAssignment[i],
+                'status': status[i]
+            }, { new: true }).exec();
+            console.log('updated iterated Tool line 103: ' + updatedTool);
+            updatedToolArray.push(updatedTool);
+        }
+        console.log(`updated tools: ${updatedToolArray}`)
+    }
+    res.locals.tools = updatedToolArray
     res.locals.pageCount = 0;
     res.status(201);
     next();
@@ -111,15 +127,11 @@ async function checkTools(req, res, next) {
     console.log('entering mw - checkTool');
     if (!(req.body.serialNumber || req.body.barcode)) { res.status(400); res.locals.message = 'No Tools Submitted for status change'; return next(); }
     let searchTerms = [];
-    for (let i = 0; i < req.body.serialNumber.length; i++) if(req.body.serialNumber[i] != '') searchTerms.push(req.body.serialNumber[i]);
-    for (let i = 0; i < req.body.barcode.length; i++) if(req.body.barcode[i] != '')searchTerms.push(req.body.barcode[i]);
-    for (let i = 0; i < searchTerms.length; i++) console.log('Line 115 ' + searchTerms[i]);
-
     let checkingTools = [];
-    searchTerms.forEach(async term => {
-        console.log('Line 118:  ' + term)
-        let tempTool = await Tool.findOne({ $or: [{ 'serialNumber': term }, { 'barcode': term }] });
-        console.log(tempTool)
+    for (let i = 0; i < req.body.serialNumber.length; i++) if (req.body.serialNumber[i] != '') searchTerms.push(req.body.serialNumber[i]);
+    for (let i = 0; i < req.body.barcode.length; i++) if (req.body.barcode[i] != '') searchTerms.push(req.body.barcode[i]);
+    for (let i = 0; i < searchTerms.length; i++) {
+        let tempTool = await Tool.findOne({ $or: [{ 'serialNumber': searchTerms[i] }, { 'barcode': searchTerms[i] }] });
         if (tempTool.status === "Checked In") {
             let pendingTool = {
                 _id: tempTool._id,
@@ -127,12 +139,12 @@ async function checkTools(req, res, next) {
                 partNumber: tempTool.partNumber,
                 barcode: tempTool.barcode,
                 description: tempTool.description,
-                status: "Checked Out"
+                status: "Checked Out",
+                statusChanged: true
             }
             checkingTools.push(pendingTool);
-            console.log(pendingTool)
         }
-        if (tempTool.status === "Checked In"){
+        if (tempTool.status === "Checked Out") {
             let pendingTool = {
                 _id: tempTool._id,
                 serialNumber: tempTool.serialNumber,
@@ -140,12 +152,13 @@ async function checkTools(req, res, next) {
                 barcode: tempTool.barcode,
                 description: tempTool.description,
                 status: "Checked in",
-                serviceAssignment: 'Tool Room'
+                statusChanged: true,
+                serviceAssignment: 'Tool Room',
+                serviceAssignmentChanged: true
             }
             checkingTools.push(pendingTool);
-            console.log(pendingTool)
         }
-    })
+    }
     if (!checkingTools || checkingTools.length === 0) {
         res.locals.message = 'Tools not found';
         res.locals.tools = [];
@@ -155,7 +168,7 @@ async function checkTools(req, res, next) {
     }
     res.locals.message = 'Confirm your tools for status change';
     res.locals.tools = checkingTools;
-    res.locals.pageCount = Math.ceil(pendingTool.length / 10)
+    res.locals.pageCount = Math.ceil(checkingTools.length / 10)
     res.status(200);
     next();
 }
