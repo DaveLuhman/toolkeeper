@@ -16,34 +16,34 @@ async function getTools(req, res, next) {
         console.log('leaving mw - tool found');
         return next();
     }
-    const { serialNumber, partNumber, barcode, serviceAssignment } = req.body;
-    if ((id === "" && serialNumber === "" && partNumber === "" && barcode === "" && serviceAssignment === "" || (!id && !serialNumber && !partNumber && !barcode && !serviceAssignment))) {
+    const { searchBy, searchValue } = req.body
+    if (searchValue == "" || !searchValue) {
         console.log('no search parameters provided');
         res.locals.tools = await Tool.find({}).skip((perPage * page) - perPage).limit(perPage);
         res.locals.pagination = { pageCount: Math.ceil(await res.locals.tools.length / perPage) };
         console.log('leaving mw - all tools returned');
         return next();
     }
-    else if (serialNumber) {
-        console.log(`Serial Number: ${serialNumber}`);
-        res.locals.searchTerms = `Serial Number: ${serialNumber}`;
-        search = await Tool.findOne({ serialNumber: serialNumber }).skip((perPage * page) - perPage).limit(perPage);
+    else if (searchBy == 'serialNumber') {
+        console.log(`Serial Number: ${searchValue}`);
+        res.locals.searchTerms = `Serial Number: ${searchValue}`;
+        search = await Tool.findOne({ serialNumber: searchValue }).skip((perPage * page) - perPage).limit(perPage);
     }
-    else if (partNumber) {
-        res.locals.searchTerms = `Part Number: ${partNumber}`;
-        search = await Tool.find({ partNumber: partNumber }).skip((perPage * page) - perPage).limit(perPage);
+    else if (searchBy == 'partNumber') {
+        res.locals.searchTerms = `Part Number: ${searchValue}`;
+        search = await Tool.find({ partNumber: searchValue }).skip((perPage * page) - perPage).limit(perPage);
     }
-    else if (barcode) {
-        res.locals.searchTerms = `Barcode: ${barcode}`;
-        search = await Tool.find({ barcode: barcode }).skip((perPage * page) - perPage).limit(perPage);
+    else if (searchBy == 'barcode') {
+        res.locals.searchTerms = `Barcode: ${searchValue}`;
+        search = await Tool.find({ barcode: searchValue }).skip((perPage * page) - perPage).limit(perPage);
 
     }
-    else if (serviceAssignment) {
-        res.locals.searchTerms = `Service Assignment: ${serviceAssignment}`;
-        search = await Tool.find({ serviceAssignment: serviceAssignment }).skip((perPage * page) - perPage).limit(perPage);
+    else if (searchBy == 'serviceAssignment') {
+        res.locals.searchTerms = `Service Assignment: ${searchValue}`;
+        search = await Tool.find({ serviceAssignment: searchValue }).skip((perPage * page) - perPage).limit(perPage);
     }
     if (!search || search.length === 0) {
-        res.locals.message = `No Tool Found Matching ${res.locals.searchTerms}`;
+        res.locals.message = `No Tool Found Matching ${res.locals.searchValue}`;
         res.locals.tools = [];
         console.log('leaving search mw having found no matches');
         return next();
