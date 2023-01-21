@@ -1,8 +1,13 @@
 <br>
 <br>
+{{#if error}}
+<div class="alert alert-danger" role="alert">
+    <p>{{error}}</p>
+</div>
+{{/if}}
 <div class="container bg-body-secondary rounded p-3">
     <div class="container-fluid">
-        <form action="/user/:id" method="post"></form>
+        <form action="/user/:id" method="POST"></form>
         <div class="row input-group">
             <div class="col">
                 <label for="email">Email:</label>
@@ -30,10 +35,10 @@
                     value="{{user.lastName}}">
             </div>
         </div>
-        <div class="row input-group">
+        <div class="row input-group p-2">
             <div class="col">
-                <button type="button" class="btn right-align btn-primary" data-bs-toggle="forgotPasswordModal"
-                    data-bs-target="#forgotPasswordModal">Reset Password?</button>
+                <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#resetPwModal">Reset Password?</button>
             </div>
             <div class="col">
                 <button type="submit" class="d-flex btn btn-primary">Update User Details?</button>
