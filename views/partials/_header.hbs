@@ -1,3 +1,4 @@
+<div class="rounded-top bg-body-secondary">
 {{#if user}}
 <nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
@@ -19,7 +20,7 @@
       <div class="dropdown">
 
         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          {{user.displayName}}
+          {{user.firstName}} {{user.lastName}}
         </button>
 
         <ul class="dropdown-menu">
@@ -74,3 +75,4 @@
   </div>
 </nav>
 {{/if}}
+</div>
