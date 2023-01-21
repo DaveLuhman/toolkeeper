@@ -45,4 +45,8 @@ async function resetPassword(req, res, next) {
     await User.findByIdAndUpdate(_id, { $set: { password: hash } });
     return next();
 }
-export { resetPassword, getUsers, createUser, verifySelf, updateUser };
+async function disableUser(req, res, next) {
+    await User.findByIdAndUpdate(req.params.id, { $set: { isDisabled: true } });
+    return next();
+}
+export { resetPassword, getUsers, createUser, verifySelf, updateUser, disableUser };
