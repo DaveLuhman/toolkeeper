@@ -13,6 +13,9 @@ const passportConfig = (app) => {
       if (!user) {
         return done(null, false, { message: 'That email is not registered'.red });
       }
+      if(user.isDisabled === true) {
+        return done(null, false, { message: 'That user has been disabled. Contact your manager' })
+      }
       compare(password, user.password, (err, isMatch) => {
         if (err) throw err;
         if (isMatch) {
