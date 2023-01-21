@@ -15,16 +15,15 @@ function isManager(req, res, next) {
     }
     next();
 }
-function login(_req, _res, next) {
-    passport.authenticate('local',
-        {
-            successRedirect: '/dashboard',
-            failureRedirect: '/login',
-            failureFlash: true
+async function login(req, res, next) {
+    console.log('auth.login middleware');
+    passport.authenticate('local', { failureRedirect: '/login', failureFlash: true })
+        (req, res, function () {
+            console.log('auth.login middleware: passport.authenticate');
+            res.redirect('/dashboard');
         });
-    console.log('passport middleware');
-    next();
-}
+    }
+
 function logout(req, res, next) {
     req.logout(function (err) {
         if (err) { return next(err); }
