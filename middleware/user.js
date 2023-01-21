@@ -2,10 +2,12 @@ import User from '../models/user.js';
 import bcrypt from 'bcrypt';
 
 async function getUsers(req, res, next) {
-    let users = [];
     if (req.params.id) {
-        users.push(await User.findById(req.params.id));
-        res.locals.users = users;
+
+        console.log(`req.params.id: ${req.params.id}`)
+        let user = await User.findById(req.params.id)
+        res.locals.targetUser = user;
+        console.log(`res.locals.targetUser: ${user}`)
         return next();
     }
     else
