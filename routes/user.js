@@ -16,4 +16,5 @@ router.post('/userManagement/:id', isManager, updateUser, (_req, res) => { res.r
 
 router.get('/:id', verifySelf, getUsers, (_req, res) => { res.render('profile') })  //show user their own profile
 router.post('/:id', verifySelf, updateUser, getUsers, (_req, res) => { res.render('profile') }) // update user's own profile
+
 export default router
