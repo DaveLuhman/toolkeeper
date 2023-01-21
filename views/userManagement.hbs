@@ -1,4 +1,4 @@
-<section title="userManagement">
+<div class="container">
     <div class="container-fluid">
         {{!-- TODO - Modal pops up on click to create user --}}
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newUserModal">
@@ -24,18 +24,20 @@
                 <td>{{isDisabled}}</td>
                 <td>
                     {{!-- This whole section is the actions menu for editing user objects --}}
-                    <ul class="nav navbar-nav">
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button"
-                                aria-haspopup="true" aria-expanded="false">Actions<span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="./userManagement/{{_id}}">Edit User</a></li>
-                                <li><a href="./userManagement/resetPass/{{_id}}">Reset Password</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="./userManagement/disable/{{_id}}">Disable User</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/user/userManagement/{{id}}">Edit</a></li>
+                            <li><a class="dropdown-item" href="/user/userManagement/resetPassword/{{id}}">Reset
+                                    Password</a></li>
+                            <li><a class="dropdown-item" href="/user/userManagement/resetPassword/{{id}}">Disable User</a></li>
+
+                        </ul>
+                    </div>
                     {{!-- END ACTIONS MENU --}}
                 </td>
             </tr>
@@ -43,4 +45,4 @@
         </table>
         {{/if}}
     </div>
-</section>
+</div>
