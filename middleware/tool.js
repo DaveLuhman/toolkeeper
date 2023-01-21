@@ -11,7 +11,6 @@ async function getTools(req, res, next) {
     if (id) {
         console.log(`searching for tool by id: ${id}`);
         tools = await Tool.findById(req.params.id);
-        console.log(tools);
         res.locals.tools = [tools];
         res.locals.pagination = { pageCount: 1 };
         console.log('leaving mw - tool found');
@@ -100,7 +99,7 @@ async function archiveTool(req, res, next) {
     const { _id } = req.params;
     const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
     let archivedTool = await Tool.findOneAndUpdate({ _id: _id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id, archived: true }, { new: true });
-    console.log(`tool id: ${archivedTool._id} archived`);
+    console.log(`tool id: ${archivedTool} archived`);
     res.locals.message = 'Successfully Marked Tool Archived';
     res.locals.tools = archivedTool;
     res.locals.pageCount = 0;

@@ -10,7 +10,7 @@
 
     {{#if tools}}
     <table class="table table-borderless table-hover">
-        <thead class="head"  style="background-color: #494949;">
+        <thead class="head" style="background-color: #494949;">
             <tr class="text-white">
                 <th>Serial number</th>
                 <th>Part Number</th>
@@ -23,7 +23,7 @@
         </thead>
         <tbody>
             {{#each tools}}
-            <tr scope="row">
+            <tr {{#if archived}}class="disabled" {{/if}} scope="row">
                 <td>{{serialNumber}}</td>
                 <td>{{partNumber}}</td>
                 <td>{{barcode}}</td>
@@ -32,7 +32,6 @@
                 <td>{{serviceAssignment}}</td>
                 <td>
                     <div class="dropdown">
-
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <i class="bi bi-pencil-square"></i>
