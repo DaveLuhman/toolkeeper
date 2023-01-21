@@ -39,8 +39,8 @@
                         </div>
                         <div class="col">
                             <select name="status" id="status" class="form-select">
-                                <option value="In Stock">In Stock</option>
-                                <option value="Checked-Out">Checked-Out</option>
+                                <option value="Checked In">Checked In</option>
+                                <option value="Checked Out">Checked Out</option>
                             </select>
                         </div>
 
@@ -72,7 +72,6 @@
                 <form action="/tool/checkTools" method="POST">
                     <div class="row mb-2">
                         <div class="col">
-                            <script></script>
                             <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
                                 aria-label="Serial Number">
                         </div>
@@ -81,7 +80,7 @@
                                 aria-label="Serial Number">
                         </div>
                         <div class="col">
-                            <input type="text" class="form-control checkInSN-right" name="serialNumber"
+                            <input type="text" class="form-control" name="serialNumber"
                                 placeholder="Serial Number" aria-label="Serial Number">
                         </div>
                     </div>

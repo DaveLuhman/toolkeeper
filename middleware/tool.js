@@ -84,12 +84,13 @@ async function createTool(req, res, next) {
 }
 async function updateTool(req, res, next) {
     console.log('entering mw - updateTool');
-    const { _id } = req.params;
-    const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
-    let updatedTool = await Tool.findOneAndUpdate({ _id: _id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id }, { new: true });
-    console.log(`tool id: ${id} updated`);
+    const { serialNumber, partNumber, barcode, description, serviceAssignment, status } = req.body;
+    console.log(status)
+    let updatedTool = await Tool.findOneAndUpdate({ _id: req.params.id }, { serialNumber, partNumber, barcode, description, serviceAssignment, status, updatedBy: req.user._id, updatedBy: req.user._id }, { new: true });
+    console.log(`tool id: ${updatedTool._id} updated`);
     res.locals.message = 'Successfully Updated Tool';
-    res.locals.tools = updatedTool;
+    res.locals.tools = [updatedTool];
+    console.log(`updaetd tool: ${updatedTool}`)
     res.locals.pageCount = 0;
     res.status(201);
     next();
@@ -106,43 +107,61 @@ async function archiveTool(req, res, next) {
     res.status(201);
     next();
 }
-async function checkTool(req, res, next) {
-    var pendingTool = {}
+async function checkTools(req, res, next) {
     console.log('entering mw - checkTool');
-    const { serialNumber, barcode } = req.body;
-    const inboundTool = await Tool.findOne({ $or: [{ 'serialNumber': serialNumber }, { 'barcode': barcode }] });
-    if (!inboundTool) {
-        res.locals.message = 'Tool not found';
+    if (!(req.body.serialNumber || req.body.barcode)) { res.status(400); res.locals.message = 'No Tools Submitted for status change'; return next(); }
+    let searchTerms = [];
+    for (let i = 0; i < req.body.serialNumber.length; i++) if(req.body.serialNumber[i] != '') searchTerms.push(req.body.serialNumber[i]);
+    for (let i = 0; i < req.body.barcode.length; i++) if(req.body.barcode[i] != '')searchTerms.push(req.body.barcode[i]);
+    for (let i = 0; i < searchTerms.length; i++) console.log('Line 115 ' + searchTerms[i]);
+
+    let checkingTools = [];
+    searchTerms.forEach(async term => {
+        console.log('Line 118:  ' + term)
+        let tempTool = await Tool.findOne({ $or: [{ 'serialNumber': term }, { 'barcode': term }] });
+        console.log(tempTool)
+        if (tempTool.status === "Checked In") {
+            let pendingTool = {
+                _id: tempTool._id,
+                serialNumber: tempTool.serialNumber,
+                partNumber: tempTool.partNumber,
+                barcode: tempTool.barcode,
+                description: tempTool.description,
+                status: "Checked Out"
+            }
+            checkingTools.push(pendingTool);
+            console.log(pendingTool)
+        }
+        if (tempTool.status === "Checked In"){
+            let pendingTool = {
+                _id: tempTool._id,
+                serialNumber: tempTool.serialNumber,
+                partNumber: tempTool.partNumber,
+                barcode: tempTool.barcode,
+                description: tempTool.description,
+                status: "Checked in",
+                serviceAssignment: 'Tool Room'
+            }
+            checkingTools.push(pendingTool);
+            console.log(pendingTool)
+        }
+    })
+    if (!checkingTools || checkingTools.length === 0) {
+        res.locals.message = 'Tools not found';
         res.locals.tools = [];
         res.status(400);
-        console.log('exiting mw - checkTool - tool does not exist');
+        console.log('exiting mw - checkTool - no tools found');
         return next();
     }
-    if (inboundTool.status === "Checked In") {
-        let pendingTool = {
-            serialNumber: inboundTool.serialNumber,
-            partNumber: inboundTool.partNumber,
-            barcode: inboundTool.barcode,
-            description: inboundTool.description,
-            status: "Checked Out"
-        };
-        res.locals.tools = pendingTool;
-    }
-    else {
-        let pendingTool = {
-            serialNumber: inboundTool.serialNumber,
-            partNumber: inboundTool.partNumber,
-            barcode: inboundTool.barcode,
-            description: inboundTool.description,
-            status: "Checked In"
-        };
-        res.locals.tools = pendingTool;
-    }
-    console.log(pendingTool);
-    res.locals.message = 'PulledToolForStatusChange';
-    res.locals.tools = pendingTool;
-    res.locals.pageCount = 0;
+    res.locals.message = 'Confirm your tools for status change';
+    res.locals.tools = checkingTools;
+    res.locals.pageCount = Math.ceil(pendingTool.length / 10)
     res.status(200);
     next();
 }
-export { getTools, createTool, updateTool, archiveTool };
+function logBody(req, res, next) {
+    console.log('entering mw - logBody');
+    console.log(req.body);
+    next();
+}
+export { getTools, createTool, updateTool, archiveTool, checkTools, logBody };

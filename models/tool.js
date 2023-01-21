@@ -18,9 +18,7 @@ const toolSchema = new Schema({
     },
     status: {
         type: String,
-        upperCase: true,
         required: true,
-        default: 'CI - In Stock'
     },
     serviceAssignment: {
         type: String,

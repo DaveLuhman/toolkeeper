@@ -1,49 +1,52 @@
 {{#if tools}}
 {{#each tools}}
 <div class="container">
-<div class="card">
-    <div class="card-header text-white" style="background-color: #494949;">
-        <h5>Edit A Tool Entry</h5>
-    </div>
-    <div class="card-body">
-    <form action="/tool/update/{{id}}" method="POST">
-        <div class="row gx-5">
-            <div class="col p-3">
-                <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
-                    aria-label="Serial Number" value="{{serialNumber}}" disabled>
-            </div>
-            <div class="col p-3">
-                <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
-                    aria-label="Part Number" value="{{partNumber}}">
-            </div>
+    <div class="card">
+        <div class="card-header text-white" style="background-color: #494949;">
+            <h5>Edit A Tool Entry</h5>
         </div>
-        <div class="row gx-5">
-            <div class="col p-3">
-                <input type="text" class="form-control" name="barcode" placeholder="Barcode" aria-label="Barcode"
-                    value="{{barcode}}">
-            </div>
-            <div class="col p-3">
-                <input type="text" class="form-control" name="description" placeholder="Description"
-                    aria-label="Description" value="{{description}}">
-            </div>
-        </div>
-        <div class="row gx-5">
-            <div class="col p-3">
-                <input type="text" class="form-control" name="serviceAssignment" placeholder="Service Assignment"
-                    aria-label="Barcode" value="{{serviceAssignment}}">
-            </div>
-            <div class="col p-3">
-                <input type="text" class="form-control" name="status" placeholder="Status" aria-label="Description"
-                    value="{{status}}">
-            </div>
-        </div>
+        <div class="card-body">
+            <form action="/tool/update/{{id}}" method="POST">
+                <div class="row gx-5">
+                    <div class="col p-3">
+                        <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
+                            aria-label="Serial Number" value="{{serialNumber}}" disabled>
+                    </div>
+                    <div class="col p-3">
+                        <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
+                            aria-label="Part Number" value="{{partNumber}}">
+                    </div>
+                </div>
+                <div class="row gx-5">
+                    <div class="col p-3">
+                        <input type="text" class="form-control" name="barcode" placeholder="Barcode"
+                            aria-label="Barcode" value="{{barcode}}">
+                    </div>
+                    <div class="col p-3">
+                        <input type="text" class="form-control" name="description" placeholder="Description"
+                            aria-label="Description" value="{{description}}">
+                    </div>
+                </div>
+                <div class="row gx-5">
+                    <div class="col p-3">
+                        <input type="text" class="form-control" name="serviceAssignment"
+                            placeholder="Service Assignment" aria-label="Barcode" value="{{serviceAssignment}}">
+                    </div>
+                    <div class="col p-3">
+                        <select class="form-control" name="status" id="status" placeholder="Status" aria-label="Description">
+                            <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked In</option>
+                            <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked Out
+                            </option>
+                        </select>
+                    </div>
+                </div>
         </div>
         <div class="card-footer float-end">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
         </div>
-    </form>
-</div>
+        </form>
+    </div>
 </div>
 {{/each}}
 {{else}}
