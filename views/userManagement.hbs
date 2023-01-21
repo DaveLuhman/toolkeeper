@@ -1,45 +1,46 @@
-<div class="container">
-{{!-- TODO - Modal pops up on click to create user --}}
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newUserModal">
-    Create New User
-</button>
+<section title="userManagement">
+    <div class="container-fluid">
+        {{!-- TODO - Modal pops up on click to create user --}}
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newUserModal">
+            Create New User
+        </button>
 
-<table class="table table-striped">
-    <thead>
-        <th>Email</th>
-        <th>Name</th>
-        <th>Last Login</th>
-        <th>Role</th>
-        <th>Disabled?</th>
-        <th></th>
-    </thead>
-    {{#if users}}
-    {{#each users}}
-    <tr>
-        <td>{{email}}</td>
-        <td>{{displayName}}</td>
-        <td>{{lastLogin}}</td>
-        <td>{{role}}</td>
-        <td>{{isDisabled}}</td>
-        <td>
-            {{!-- This whole section is the actions menu for editing user objects --}}
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true"
-                        aria-expanded="false">Actions<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="./userManagement/{{_id}}">Edit User</a></li>
-                        <li><a href="./userManagement/resetPass/{{_id}}">Reset Password</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="./userManagement/disable/{{_id}}">Disable User</a></li>
+        <table class="table table-striped">
+            <thead>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Last Login</th>
+                <th>Role</th>
+                <th>Disabled?</th>
+                <th></th>
+            </thead>
+            {{#if users}}
+            {{#each users}}
+            <tr>
+                <td>{{email}}</td>
+                <td>{{displayName}}</td>
+                <td>{{lastLogin}}</td>
+                <td>{{role}}</td>
+                <td>{{isDisabled}}</td>
+                <td>
+                    {{!-- This whole section is the actions menu for editing user objects --}}
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button"
+                                aria-haspopup="true" aria-expanded="false">Actions<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="./userManagement/{{_id}}">Edit User</a></li>
+                                <li><a href="./userManagement/resetPass/{{_id}}">Reset Password</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="./userManagement/disable/{{_id}}">Disable User</a></li>
+                            </ul>
+                        </li>
                     </ul>
-                </li>
-            </ul>
-            {{!-- END ACTIONS MENU --}}
-        </td>
-    </tr>
-    {{/each}}
-</table>
-{{/if}}
-</div>
-
+                    {{!-- END ACTIONS MENU --}}
+                </td>
+            </tr>
+            {{/each}}
+        </table>
+        {{/if}}
+    </div>
+</section>
