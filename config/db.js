@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 
-const connectDB = () => {
+const connectDB = async () => {
     try {
-        const conn = mongoose.connect("mongodb://root:wTN4JY7Ek8akyB@10.10.10.204/toolkeeper?authSource=admin");
-        mongoose.set('useCreateIndex', true)
+        const conn = await mongoose.connect(process.env.MONGO_URI);
         console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold)
     } catch (err) {
         console.log(err.red);

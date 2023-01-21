@@ -1,4 +1,5 @@
-import 'body-parser'; 
+import colors from 'colors';
+import 'body-parser';
 import { default as connectMongoDBSession } from 'connect-mongodb-session';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
@@ -71,8 +72,8 @@ app.use(session({
 app.use(flash());
 // Passport
 passportConfig(passport);
-app.use(passport.initialize) // Initialize Passport
-app.use(passport.session) // Use Passport for Sessions
+app.use(passport.initialize()) // Initialize Passport
+app.use(passport.session()) // Use Passport for Sessions
 
 // Routes (No User Context)
 app.use('/', indexRoutes);
