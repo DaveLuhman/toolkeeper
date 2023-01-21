@@ -72,8 +72,6 @@ app.use(session({
 app.use(flash());
 // Passport
 passportConfig(passport);
-app.use(passport.initialize()) // Initialize Passport
-app.use(passport.session()) // Use Passport for Sessions
 
 // Routes (No User Context)
 app.use('/', indexRoutes);
