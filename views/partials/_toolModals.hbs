@@ -126,34 +126,25 @@
                     </div>
                     <div class="modal-body p-4">
                         <div class="row gx-5">
-                            <div class="col card p-3">
-                                <form action='/dashboard' method="POST">
-                                    <div class="row">
-                                        <div class="col form-control input-group">
-                                            <select name="searchBy" id="searchBy" class="form-select">
-                                                <option style="background-color: #cccccc;" disabled selected>Search By:
-                                                </option>
-                                                <option style="font-size: 1pt; background-color: #000000;" disabled>
-                                                    &nbsp;</option>
-                                                <option value="serialNumber">Serial Number</option>
-                                                <option value="partNumber">Part Number</option>
-                                                <option value="barcode">Barcode</option>
-                                                <option value="serviceAssignment">Service Assignment</option>
-                                                <option value="status">Status</option>
-                                            </select>
-                                        </div>
-                                        <input type="text" class="form-control" name="searchValue"
-                                            placeholder="Search Value" aria-label="Search Value">
-                                    </div>
-                            </div>
-                            <div class='"row">
-                                        <div class="col">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <button name="searchToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
+                            <form action='/dashboard' method="POST">
+                                <div class="col card p-3">
+                                    <select name="searchBy" id="searchBy" class="form-select">
+                                        <option style="background-color: #cccccc;" disabled selected>Search By:
+                                        </option>
+                                        <option style="font-size: 1pt; background-color: #000000;" disabled>
+                                            &nbsp;</option>
+                                        <option value="serialNumber">Serial Number</option>
+                                        <option value="partNumber">Part Number</option>
+                                        <option value="barcode">Barcode</option>
+                                        <option value="serviceAssignment">Service Assignment</option>
+                                        <option value="status">Status</option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="searchValue"
+                                        placeholder="Search Value" aria-label="Search Value">
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
