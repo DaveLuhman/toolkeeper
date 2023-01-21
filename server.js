@@ -1,4 +1,4 @@
-import colors from 'colors';
+import _colors from 'colors';
 import 'body-parser';
 import { default as connectMongoDBSession } from 'connect-mongodb-session';
 import cookieParser from 'cookie-parser';
