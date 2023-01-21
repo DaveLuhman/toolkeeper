@@ -106,4 +106,43 @@ async function archiveTool(req, res, next) {
     res.status(201);
     next();
 }
+async function checkTool(req, res, next) {
+    var pendingTool = {}
+    console.log('entering mw - checkTool');
+    const { serialNumber, barcode } = req.body;
+    const inboundTool = await Tool.findOne({ $or: [{ 'serialNumber': serialNumber }, { 'barcode': barcode }] });
+    if (!inboundTool) {
+        res.locals.message = 'Tool not found';
+        res.locals.tools = [];
+        res.status(400);
+        console.log('exiting mw - checkTool - tool does not exist');
+        return next();
+    }
+    if (inboundTool.status === "Checked In") {
+        let pendingTool = {
+            serialNumber: inboundTool.serialNumber,
+            partNumber: inboundTool.partNumber,
+            barcode: inboundTool.barcode,
+            description: inboundTool.description,
+            status: "Checked Out"
+        };
+        res.locals.tools = pendingTool;
+    }
+    else {
+        let pendingTool = {
+            serialNumber: inboundTool.serialNumber,
+            partNumber: inboundTool.partNumber,
+            barcode: inboundTool.barcode,
+            description: inboundTool.description,
+            status: "Checked In"
+        };
+        res.locals.tools = pendingTool;
+    }
+    console.log(pendingTool);
+    res.locals.message = 'PulledToolForStatusChange';
+    res.locals.tools = pendingTool;
+    res.locals.pageCount = 0;
+    res.status(200);
+    next();
+}
 export { getTools, createTool, updateTool, archiveTool };
