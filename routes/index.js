@@ -1,8 +1,8 @@
-const router = require('express').Router()
-const { login, logout } = require('../middleware/auth')
-const t = require('../controllers/tool')
+import { Router } from 'express';
+import { login, logout } from '../middleware/auth.js'
+import { default as t } from '../controllers/tool.js'
 
-
+const router  = Router();
 router.get('/', (_req, res) => { res.render('index', { layout: 'public.hbs' }); }); // Render Public Landing Page
 
 router.post('/submitFile', t.importFromCSV); // Import Tool Data from CSV
@@ -20,4 +20,4 @@ router.post('/login', login, (_req, res) => {
 // Logout User
 router.get('/logout', logout);
 
-module.exports = router;
+export default router

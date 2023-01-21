@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const sessionSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+const sessionSchema = new Schema({
+    _id: Schema.Types.ObjectId,
     expires: Date,
     session: {
         cookie: {
@@ -22,6 +22,6 @@ const sessionSchema = new mongoose.Schema({
 }, {})
 
 
-const Session = mongoose.model('session', sessionSchema, "sessions")
+const Session = model('session', sessionSchema, "sessions")
 
-module.exports = Session
+export default Session

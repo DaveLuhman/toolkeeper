@@ -3,6 +3,7 @@
   "version": "1.0.5",
   "description": "Tool Crib Web Application",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon server.js"
   },

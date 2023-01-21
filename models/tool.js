@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const serviceAssignment = require('./serviceAssignment');
+import { Schema, model } from 'mongoose';
+// import serviceAssignment from './serviceAssignment';
 
-const toolSchema = new mongoose.Schema({
+const toolSchema = new Schema({
 
     serialNumber: {
         type: String,
@@ -40,11 +40,11 @@ const toolSchema = new mongoose.Schema({
     },
     createdBy: {
         ref: 'User',
-        type: mongoose.Schema.Types.ObjectId
+        type: Schema.Types.ObjectId
     },
     updatedBy: {
         ref: 'User',
-        type: mongoose.Schema.Types.ObjectId
+        type: Schema.Types.ObjectId
     },
     image: {
         type: String,
@@ -58,6 +58,6 @@ const toolSchema = new mongoose.Schema({
 
 toolSchema.findAll = function (callback) { return this.model('tool').find({}, callback); }
 
-const Tool = mongoose.model('tool', toolSchema)
+const Tool = model('tool', toolSchema)
 
-module.exports = Tool
+export default Tool

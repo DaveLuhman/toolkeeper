@@ -1,19 +1,28 @@
-const express = require('express');
-require('dotenv').config("../.env");
+import colors from 'colors';
+import 'body-parser';
+import { default as connectMongoDBSession } from 'connect-mongodb-session';
+import cookieParser from 'cookie-parser';
+import dotenv from 'dotenv';
+import express from 'express';
+import fileUpload from 'express-fileupload';
+import flash from 'express-flash';
+import { create } from 'express-handlebars'; // templating engine
+import session from 'express-session';
+import handlebarsHelpers from 'handlebars-helpers';
+import paginate from 'handlebars-paginate';
+import morgan from 'morgan'; // logging
+import passport from 'passport';
+import connectDB from './config/db.js';
+import passportConfig from './config/passport.js';
+import { checkAuth } from './middleware/auth.js';
+import { default as dashboardRouter} from './routes/dashboard.js';
+import { default as toolRouter }  from './routes/tool.js';
+import { default as userRouter } from './routes/user.js';
+import { default as indexRoutes } from './routes/index.js';
+dotenv.config()
+const MongoDBStore = connectMongoDBSession(session);
 const PORT = process.env.PORT || 5000;
-const morgan = require('morgan') // logging
-const path = require('path');
-const _colors = require('colors');
-const bodyParser = require('body-parser') // middleware
-const fileUpload = require('express-fileupload');
-const exphbs = require('express-handlebars'); // templating engine
-const connectDB = require('./config/db.js');
-const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const flash = require('express-flash');
-const MongoDBStore = require('connect-mongodb-session')(session);
-const handlebarsHelpers = require('handlebars-helpers')
-const paginate = require('handlebars-paginate');
+
 const app = express();
 
 //Logging
@@ -30,7 +39,7 @@ let store = new MongoDBStore({
 //handlebars config
 // Handlebars
 
-const hbs = exphbs.create({
+const hbs = create({
   helpers: {
     paginate: paginate,
     ...handlebarsHelpers(),
@@ -48,10 +57,9 @@ app.set('view engine', '.hbs');
 app.set('views', './views');
 
 // Express Middleware
-app.use(express.static(path.join(__dirname, 'public'))); //Serve Static Files
-app.use(bodyParser.json()) // JSON Body Parser
+app.use(express.static('public')); //Serve Static Files
+app.use(express.json()) // JSON Body Parser
 app.use(fileUpload())
-app.use(bodyParser.urlencoded({ extended: false }))  // URL Encoded Body Parser
 app.use(express.urlencoded({ extended: false })); // Parse URL-encoded values
 app.use(cookieParser());
 app.use(session({
@@ -62,18 +70,16 @@ app.use(session({
   store: store
 }))
 app.use(flash());
-const passport = require('passport')
-require('./config/passport')(passport);
-app.use(passport.initialize()) // Initialize Passport
-app.use(passport.session()) // Use Passport for Sessions
-
+// Passport
+passportConfig(app);
+app.use(passport.initialize())
+app.use(passport.session())
 // Routes (No User Context)
-app.use('/', require('./routes/index.js'));
-const { checkAuth } = require('./middleware/auth.js');
+app.use('/', indexRoutes);
 // Routes (User Context)
-app.use('/user', checkAuth, require('./routes/user.js'));
-app.use('/dashboard',  checkAuth, require('./routes/dashboard.js'));
-app.use('/tool',  checkAuth, require('./routes/tool.js'));
+app.use('/user', checkAuth, userRouter);
+app.use('/dashboard',  checkAuth, dashboardRouter);
+app.use('/tool',  checkAuth, toolRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const serviceAssignmentSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+const serviceAssignmentSchema = new Schema({
+    _id: Schema.Types.ObjectId,
     text: {
         type: String,
         required: true,
@@ -16,6 +16,6 @@ const serviceAssignmentSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-const ServiceAssignment = mongoose.model('serviceAssignment', serviceAssignmentSchema, "serviceAssignments")
+const ServiceAssignment = model('serviceAssignment', serviceAssignmentSchema, 'serviceAssignments')
 
-module.exports = ServiceAssignment
+export default ServiceAssignment
