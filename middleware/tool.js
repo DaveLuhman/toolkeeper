@@ -58,7 +58,7 @@ async function getTools(req, res, next) {
 }
 async function createTool(req, res, next) {
     console.log('entering mw - createTool');
-    const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
+    const { serialNumber, partNumber, barcode, description, serviceAssignment, status } = req.body;
     if (!(serialNumber || partNumber) || !barcode) {
         res.locals.message = 'Either Serial Num and Barcode or Part Num and Barcode required';
         res.status(400);
@@ -73,7 +73,7 @@ async function createTool(req, res, next) {
         console.log('exiting mw - createTool - tool already exists');
         return next();
     }
-    let newTool = await Tool.create({ serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, createdBy: req.user._id });
+    let newTool = await Tool.create({ serialNumber, partNumber, barcode, description, serviceAssignment, status, updatedBy: req.user._id, createdBy: req.user._id });
     console.log(`tool id: ${newTool._id}, ${newTool.description} created`);
     res.locals.message = 'Successfully Made A New Tool';
     res.locals.tools = [newTool];
@@ -87,7 +87,7 @@ async function updateTool(req, res, next) {
     const { _id } = req.params;
     const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
     let updatedTool = await Tool.findOneAndUpdate({ _id: _id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id }, { new: true });
-    console.log(`tool id: ${updatedTool._id} updated`);
+    console.log(`tool id: ${id} updated`);
     res.locals.message = 'Successfully Updated Tool';
     res.locals.tools = updatedTool;
     res.locals.pageCount = 0;
@@ -96,10 +96,10 @@ async function updateTool(req, res, next) {
 }
 async function archiveTool(req, res, next) {
     console.log('entering mw - archivedTool');
-    const { _id } = req.params;
+    const { id } = req.params;
     const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
-    let archivedTool = await Tool.findOneAndUpdate({ _id: _id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id, archived: true }, { new: true });
-    console.log(`tool id: ${archivedTool} archived`);
+    let archivedTool = await Tool.findOneAndUpdate({ _id: id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id, archived: true }, { new: true });
+    console.log(archivedTool);
     res.locals.message = 'Successfully Marked Tool Archived';
     res.locals.tools = archivedTool;
     res.locals.pageCount = 0;

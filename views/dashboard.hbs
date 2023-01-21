@@ -1,117 +1,80 @@
-<div class="container" id="dashboard">
+<section>
+    <div class="container" id="dashboard">
+        {{#if message}}
+        <section title="message">
+            <div class="alert">{{message}}</div>
+        </section>
+        {{/if}}
+        {{#if searchTerms}}
+        <section title="searchTerms">
+            <h5>You Searched For: </h5>
+            <h4><i>{{searchTerms}}</i></h4>
+        </section>
+        {{/if}}
 
-    {{#if message}}
-    <div class="container-fluid">{{message}}</div>
-    {{/if}}
-    {{#if searchTerms}}
-    <h5>You Searched For: </h5>
-    <h4><i>{{searchTerms}}</i></h4>
-    {{/if}}
+        {{#if tools}}
+        <table class="table table-borderless table-hover">
+            <thead class="head" style="background-color: #494949;">
+                <tr class="text-white">
+                    <th>Serial number</th>
+                    <th>Part Number</th>
+                    <th>Barcode #</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Service Assignment</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each tools}}
+                <tr {{#if archived}}class="disabled"{{/if}} scope="row">
+                    <td>{{serialNumber}}</td>
+                    <td>{{partNumber}}</td>
+                    <td>{{barcode}}</td>
+                    <td>{{description}}</td>
+                    <td>{{status}}</td>
+                    <td>{{serviceAssignment}}</td>
 
-    {{#if tools}}
-    <table class="table table-borderless table-hover">
-        <thead class="head" style="background-color: #494949;">
-            <tr class="text-white">
-                <th>Serial number</th>
-                <th>Part Number</th>
-                <th>Barcode #</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Service Assignment</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-        <tbody>
-            {{#each tools}}
-            <tr {{#if archived}}class="disabled" {{/if}} scope="row">
-                <td>{{serialNumber}}</td>
-                <td>{{partNumber}}</td>
-                <td>{{barcode}}</td>
-                <td>{{description}}</td>
-                <td>{{status}}</td>
-                <td>{{serviceAssignment}}</td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            <i class="bi bi-pencil-square"></i>
-                        </button>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
 
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="/tool/{{id}}">Edit</a></li>
-                            <li><a class="dropdown-item" href="/tool/archive/{{id}}">Archive</a></li>
-                        </ul>
-                    </div>
-</div>
-</td>
-</tr>
-{{/each}}
-{{/if}}
-</tbody>
-</table>
-{{#gt paginate.n 1}}
-<ul class="row">
-    {{#paginate pagination type="first"}}
-    <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
-    {{/paginate}}
-    {{#paginate pagination type="previous"}}
-    <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
-    {{/paginate}}
-    {{#paginate pagination type="middle" limit="9"}}
-    <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
-    {{/paginate}}
-    {{#paginate pagination type="next"}}
-    <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Next</a></div>
-    {{/paginate}}
-    {{#paginate pagination type="last"}}
-    <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
-    {{/paginate}}
-    {{/gt}}
-</ul>
-
-
-</div>
-
-
-{{!-- edit tool modal --}}
-<div class="modal fade" id="editToolModal" tabindex="-1" aria-labelledby="editToolModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editToolModalHeader">Edit A Tool Entry</h5>
-                <a type='button' data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </a>
-            </div>
-            <div class="modal-body">
-                <form action="/dashboard/updateTool" method="PUT">
-                    <div class="row ">
-                        <div class="col">
-                            <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
-                                aria-label="Serial Number" disabled>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="/tool/{{id}}">Edit</a></li>
+                                <li><a class="dropdown-item" href="/tool/archive/{{id}}">Archive</a></li>
+                            </ul>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
-                                aria-label="Part Number">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" class="form-control" name="barcode" placeholder="Barcode"
-                                aria-label="Barcode">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" name="description" placeholder="Description"
-                                aria-label="Description">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button name="NewToolModalSubmitBtn" type="submit"
-                            class="btn btn-primary submit">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
-</div>
+    </td>
+    </tr>
+    {{/each}}
+    {{/if}}
+    </tbody>
+    </table>
+    {{#gt paginate.n 1}}
+    <ul class="row">
+        {{#paginate pagination type="first"}}
+        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
+        {{/paginate}}
+        {{#paginate pagination type="previous"}}
+        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
+        {{/paginate}}
+        {{#paginate pagination type="middle" limit="9"}}
+        <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
+        {{/paginate}}
+        {{#paginate pagination type="next"}}
+        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Next</a></div>
+        {{/paginate}}
+        {{#paginate pagination type="last"}}
+        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
+        {{/paginate}}
+        {{/gt}}
+    </ul>
+
+
+    </div>
+
+</section>

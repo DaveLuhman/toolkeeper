@@ -10,3 +10,6 @@ input.checkInOut {
 div.checkInOut {
   background: #e2e1dc;
 }
+tr.disabled {
+  text-decoration: line-through;
+}

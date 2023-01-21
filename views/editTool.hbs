@@ -1,8 +1,12 @@
 {{#if tools}}
 {{#each tools}}
-<div class="container card-lg px-4">
-    <h5 class="card-title" id="editToolModalHeader">Edit A Tool Entry</h5>
-    <form action="/dashboard/updateTool" method="PUT">
+<div class="container">
+<div class="card">
+    <div class="card-header text-white" style="background-color: #494949;">
+        <h5>Edit A Tool Entry</h5>
+    </div>
+    <div class="card-body">
+    <form action="/tool/update/{{id}}" method="POST">
         <div class="row gx-5">
             <div class="col p-3">
                 <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
@@ -23,11 +27,23 @@
                     aria-label="Description" value="{{description}}">
             </div>
         </div>
-        <div class="modal-footer">
+        <div class="row gx-5">
+            <div class="col p-3">
+                <input type="text" class="form-control" name="serviceAssignment" placeholder="Service Assignment"
+                    aria-label="Barcode" value="{{serviceAssignment}}">
+            </div>
+            <div class="col p-3">
+                <input type="text" class="form-control" name="status" placeholder="Status" aria-label="Description"
+                    value="{{status}}">
+            </div>
+        </div>
+        </div>
+        <div class="card-footer float-end">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
         </div>
     </form>
+</div>
 </div>
 {{/each}}
 {{else}}
