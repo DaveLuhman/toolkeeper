@@ -9,9 +9,9 @@
     {{/if}}
 
     {{#if tools}}
-    <table class="table table-borderless table-hover ">
-        <thead class="head">
-            <tr class="text-white" style="background-color: #494949;">
+    <table class="table table-borderless table-hover">
+        <thead class="head"  style="background-color: #494949;">
+            <tr class="text-white">
                 <th>Serial number</th>
                 <th>Part Number</th>
                 <th>Barcode #</th>
@@ -40,7 +40,7 @@
 
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/tool/{{id}}">Edit</a></li>
-                            <li><a class="dropdown-item" href="/tool/archive/:{{id}}">Archive</a></li>
+                            <li><a class="dropdown-item" href="/tool/archive/{{id}}">Archive</a></li>
                         </ul>
                     </div>
 </div>
