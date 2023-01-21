@@ -29,4 +29,15 @@ async function updateUser(req, _res, next) {
     await User.findByIdAndUpdate(req.params.id, { $set: req.body });
     return next();
 }
-export { getUsers, createUser, verifySelf, updateUser };
+async function resetPassword(req, res, next) {
+    console.log('user reset password mw')
+    const { email } = req.body;
+    if (!email) { return res.status(400).send('Email is required'); return next(); }
+    let user = await User.findOne({ email: email });
+    if (!user) { res.status(400).send('User does not exist'); return next(); }
+    let newPassword = req.body.newPassword
+    let hash = bcrypt.hashSync(newPassword, 10);
+    await User.findByIdAndUpdate(user._id, { $set: { password: hash } });
+    return next();
+}
+export { resetPassword, getUsers, createUser, verifySelf, updateUser };

@@ -5,7 +5,7 @@ import { createUser, getUsers, updateUser, verifySelf } from '../middleware/user
 const router = expressRouter();
 
 router.get('/profile', verifySelf, (_req, res) => { res.render('profile') })  // show user their own profile
-
+router.post('/resetPassword', verifySelf, resetPassword, (_req, res) => { res.render('profile') }) // update user's own password
 
 router.get('/userManagement', isManager, getUsers, (_req, res) => { res.render('userManagement', {layout: 'userManagement'}) })
 router.post('/userManagement/createUser', isManager, createUser, (_req, res) => { res.render('userManagement', {layout: 'userManagement'}) })
