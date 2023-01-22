@@ -39,8 +39,8 @@ async function createUser(req, res, next) {
     }
     let hash = bcrypt.hashSync(password, 10);
     let newUser = await User.create({ firstName, lastName, email, password: hash, role });
-    res.locals.newUser = newUser;
-    console.info(`Created User ${newUser}`.green)
+    res.locals.user = newUser;
+    console.info(`Created User ${newUser._id}`.green)
     console.info('[MW] createUser-out-4'.bgWhite.blue)
     return next();
 }
