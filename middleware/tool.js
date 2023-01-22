@@ -16,7 +16,7 @@ async function getTools(req, res, next) {
         console.info('[MW] getTools-out-1'.bgWhite.blue);
         return next();
     }
-    const { searchBy, searchValue } = req.body
+    const { searchBy, searchValue } = req.body;
     if (searchValue == "" || !searchValue) {
         console.warn('[MW] no search parameters provided'.yellow);
         res.locals.tools = await Tool.find({}).skip((perPage * page) - perPage).limit(perPage);
@@ -45,7 +45,7 @@ async function getTools(req, res, next) {
     if (!search || search.length === 0) {
         res.locals.message = `No Tool Found Matching ${res.locals.searchValue}`;
         res.locals.tools = [];
-        console.info('[MW] getTools-out-3').bgWhite.blue;
+        console.info('[MW] getTools-out-3'.bgWhite.blue);
         return next();
     }
 
@@ -63,7 +63,7 @@ async function createTool(req, res, next) {
         res.locals.message = 'Either Serial Num and Barcode or Part Num and Barcode required';
         console.error('[MW] createTool-out-1'.red);
         res.status(400).redirect('back');
-        return
+        return;
     }
     const existing = await Tool.findOne({ $or: [{ 'serialNumber': serialNumber }, { 'barcode': barcode }] });
     if (existing) {
@@ -78,7 +78,7 @@ async function createTool(req, res, next) {
     res.locals.tools = [newTool];
     res.locals.pageCount = 0;
     res.status(201);
-    console.info(`[MW] Tool Successfully Created ${newTool._id}`.green)
+    console.info(`[MW] Tool Successfully Created ${newTool._id}`.green);
     console.info('[MW] createTool-out-3'.bgWhite.blue);
     next();
 }
@@ -87,7 +87,7 @@ async function updateTool(req, res, next) {
     let updatedToolArray = [];
     if (typeof req.body._id === 'string') {
         const { _id, partNumber, description, serviceAssignment, status } = req.body;
-        let updatedTool = await Tool.findByIdAndUpdate(_id, { partNumber, description, serviceAssignment, status }, { new: true })
+        let updatedTool = await Tool.findByIdAndUpdate(_id, { partNumber, description, serviceAssignment, status }, { new: true });
         updatedToolArray.push(updatedTool);
     }
     if (typeof req.body._id === 'object') {
@@ -102,10 +102,10 @@ async function updateTool(req, res, next) {
             updatedToolArray.push(updatedTool);
         }
     }
-    res.locals.tools = updatedToolArray
+    res.locals.tools = updatedToolArray;
     res.locals.pageCount = 0;
     res.status(201);
-    console.info('[MW] Successfully Updated Tool'.green + req.body._id)
+    console.info('[MW] Successfully Updated Tool'.green + req.body._id);
     console.info('[MW] updateTool-out-1'.bgWhite.blue);
     next();
 }
@@ -113,7 +113,7 @@ async function archiveTool(req, res, next) {
     console.info('[MW] archiveTool-in'.bgBlue.white);
     const { id } = req.params;
     const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
-    let archivedTool = await Tool.findOneAndUpdate({ _id: id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id, archived: true }, { new: true });
+    let archivedTool = await Tool.findOneAndUpdate({ _id: id }, { serialNumber, partNumber, barcode, description, serviceAssignment,  updatedBy: req.user._id, archived: true }, { new: true });
     res.locals.message = 'Successfully Marked Tool Archived';
     res.locals.tools = archivedTool;
     res.locals.pageCount = 0;
@@ -123,7 +123,7 @@ async function archiveTool(req, res, next) {
 }
 async function checkTools(req, res, next) {
     console.info('[MW] checkTools-in'.bgBlue.white);
-    if ((req.body.serialNumber != "") && ( req.body.barcode != "") ) { res.locals.message = 'No Tools Submitted For Status Change'; console.warn('[MW checkTools-out-1'.bgWhite.blue); res.status(400).redirect('./'); return }
+    if ((req.body.serialNumber != "") && ( req.body.barcode != "") ) { res.locals.message = 'No Tools Submitted For Status Change'; console.warn('[MW checkTools-out-1'.bgWhite.blue); res.status(400).redirect('./'); return; }
     let searchTerms = [];
     let checkingTools = [];
     for (let i = 0; i < req.body.serialNumber.length; i++) if (req.body.serialNumber[i] != '') searchTerms.push(req.body.serialNumber[i]);
@@ -139,7 +139,7 @@ async function checkTools(req, res, next) {
                 description: tempTool.description,
                 status: "Checked Out",
                 statusChanged: true
-            }
+            };
             checkingTools.push(pendingTool);
         }
         if (tempTool.status === "Checked Out") {
@@ -153,7 +153,7 @@ async function checkTools(req, res, next) {
                 statusChanged: true,
                 serviceAssignment: 'Tool Room',
                 serviceAssignmentChanged: true
-            }
+            };
             checkingTools.push(pendingTool);
         }
     }
@@ -167,7 +167,7 @@ async function checkTools(req, res, next) {
     }
     res.locals.message = 'Confirm your tools for status change';
     res.locals.tools = checkingTools;
-    res.locals.pageCount = Math.ceil(checkingTools.length / 10)
+    res.locals.pageCount = Math.ceil(checkingTools.length / 10);
     res.status(200);
     console.info('[MW] checkTools-out-3'.bgWhite.blue);
     next();
