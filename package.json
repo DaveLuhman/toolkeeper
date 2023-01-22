@@ -5,7 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "tailwind:css": "postcss public/css/tailwind.css -o public/css/style.css"
   },
   "repository": {
     "type": "git",
