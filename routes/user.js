@@ -11,17 +11,17 @@ router.post('/profile', verifySelf, updateUser, (_req, res) => { res.render('pro
 router.post('/resetPassword', verifySelf, resetPassword, (_req, res) => { res.render('profile', {layout: 'user.hbs'}) })
 
 // START MANAGER ROUTES
+// show user management page
+router.get('/', isManager, getUsers, (_req, res) => { res.render('userManagement', {layout: 'user.hbs'}) })
+// verify user is manager and show user to edit
+router.get('/:id', isManager, getUsers, (_req, res) => { res.render('editUser', {layout: 'user.hbs'}) })
+// verify user is manager and update user
+router.post('/:id', isManager, updateUser, (_req, res) => { res.redirect('userManagement') })
+// create new user
+router.post('/createUser', isManager, createUser, (_req, res) => { res.render('userManagement', {layout: 'user.hbs'}) })
 // verify user is manager and disable user
 router.post('/disableUser/:id', isManager, disableUser, (_req, res) => { res.render('userManagement', {layout: 'user.hbs'}) })
 // verify user is manager and reset user password
 router.post('/resetPW/:id', isManager, resetPassword, (_req, res) => { res.render('userManagement', {layout: 'user.hbs'}) })
-// verify user is manager and update user
-router.post('/:id', isManager, updateUser, (_req, res) => { res.redirect('userManagement') })
-// verify user is manager and show user to edit
-router.get('/:id', isManager, getUsers, (_req, res) => { res.render('editUser', {layout: 'user.hbs'}) })
-// create new user
-router.post('/createUser', isManager, createUser, (_req, res) => { res.render('userManagement', {layout: 'user.hbs'}) })
-// show user management page
-router.get('/', isManager, getUsers, (_req, res) => { res.render('userManagement', {layout: 'user.hbs'}) })
 
 export default router
