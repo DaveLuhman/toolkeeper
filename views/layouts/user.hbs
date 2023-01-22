@@ -18,8 +18,9 @@
 
 <body class="p-3 m-0 border-0">
     {{> _header}}
-
+    {{#if error}}
     {{> _error}}
+    {{/if}}
     {{{body}}}
     {{> _footer}}
     {{> _userModals}}
