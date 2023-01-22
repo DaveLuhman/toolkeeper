@@ -1,101 +1,79 @@
-<section class="container-lg pb-3" title="header">
-  <div class="rounded bg-body-secondary">
-    {{#if user}}
-    <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-          aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-brand">
-          <a href="/dashboard"><img src="/img/toolKeeperLogo-dark-small.png" alt="TK Logo" loading="lazy"
-              class="left-float" style="height:55px"></a>
-        </div>
-        <div id="navbarNavDropdown" class="navbar-collapse collapse">
-          <ul class="navbar-nav ">
-            <li class="nav-item">
-              <a class="nav-link" href="/dashboard">Dashboard</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#newToolModal">
-                Create A New Tool
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#checkInToolModal">
-                Check Tools In/Out
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#searchToolModal">
-                Search For Tools
-              </a>
+{{#if user}}
+<nav id="header">
+  <div class="w-full flex items-center justify-between mt-0 px-6 py-2">
+    <img class="" src="/img/toolKeeperLogo-dark-small.png" width="150px" height="auto">
+    <label for="menu-toggle" class="cursor-pointer md:hidden block">
+      <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+        <title>menu</title>
+        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+      </svg>
+    </label>
+    <input class="hidden" type="checkbox" id="menu-toggle">
+
+    <div class="hidden md:flex md:items-center md:w-auto w-full order-3 md:order-1" id="menu">
+      <nav>
+        <ul class="md:flex items-center justify-between text-base pt-4 md:pt-0">
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
+              href="#">Dashboard</a></li>
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
+              href="#">Create A New Tool</a></li>
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
+              href="#">Check-In/Out</a></li>
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
+              href="#">Search Tools</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="order-2 md:order-3 flex flex-wrap items-center justify-end mr-0 md:mr-4" id="nav-content">
+      <div class="flex items-center w-full md:w-full">
+        <div class="dropdown dropdown-end">
+          <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">{{user.firstName}} {{user.lastName}} </label><i class="fa-solid fa-chevron-down"></i>
+          <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+            <li><a href="/user/profile">Profile</a></li>
+            {{#eq user.role "Manager"}}<li><a href="/user">User Management</a></li>{{/eq}}
+            {{#eq user.role "Admin"}}<li><a href="/user">User Management</a></li>{{/eq}}
+            <li><a class="dropdown-item" href="/logout">Logout</a></li>
           </ul>
         </div>
-        <div class="d-flex align-items-center">
-          <div class="dropdown">
-
-            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              {{user.firstName}} {{user.lastName}}
-            </button>
-
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
-              {{#eq user.role "Manager"}}<li><a class="dropdown-item" href="/user">User Management</a>
-              </li>
-              {{/eq}}
-              {{#eq user.role "Admin"}}<li><a class="dropdown-item" href="/user">User Management</a></li>
-              {{/eq}}
-              <li><a class="dropdown-item" href="/logout">Logout</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </nav>
-  </div>
-  </div>
-
-  {{else}}
-  {{!-- Fixed Logged out navbar --}}
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    {{!-- container wrapper --}}
-    <div class="container-fluid">
-      {{!-- toggle button on mobile/small viewport --}}
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
-        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <a href="#" class="navbar-brand mt-2 mt-lg-0">
-        <img src="/img/toolKeeperLogo-dark-full.png" alt="TK Logo" loading="lazy" class="left-float"
-          style="height:75px; width:auto">
-      </a>
-      {{!-- Collapsible wrapper contents --}}
-      <div id="navbarContent" class="navbar-collapse collapse">
-        <ul class="navbar-nav ">
-          <li class="nav-item">
-            <a class="nav-link" href="/pricing">Pricing</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/dashboard">Features</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/demo">Demo</a>
-          </li>
-        </ul>
-      </div>
-      {{!-- collapsible wrapper END --}}
-      {{!-- right elements --}}
-      <div class="d-flex align-items-center">
-        <div class="nav-item">
-        </div>
-        <a class="nav-item nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="/login"
-          id="navbarDropdownMenuAvatar" role="button" data-mdb-toggle="dropdown" aria-expanded="false">
-          Login
-        </a>
       </div>
     </div>
-  </nav>
-  {{/if}}
   </div>
-</section>
+</nav>
+{{else}}
+{{!-- Fixed Logged out navbar --}}
+<!-- component -->
+<nav id="header">
+  <div class="w-full flex items-center justify-between mt-0 px-6 py-2">
+    <img class="" src="/img/toolKeeperLogo-dark-small.png" width="150px" height="auto">
+    <label for="menu-toggle" class="cursor-pointer md:hidden block">
+      <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+        <title>menu</title>
+        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
+      </svg>
+    </label>
+    <input class="hidden" type="checkbox" id="menu-toggle">
+
+    <div class="hidden md:flex md:items-center md:w-auto w-full order-3 md:order-1" id="menu">
+      <nav>
+        <ul class="md:flex items-center justify-between text-base pt-4 md:pt-0">
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
+              href="#">Pricing</a></li>
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
+              href="#">Features</a></li>
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
+              href="#">Demo</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="order-2 md:order-3 flex flex-wrap items-center justify-end mr-0 md:mr-4" id="nav-content">
+      <div class="auth flex items-center w-full md:w-full">
+        <a href="./login"><button
+            class="bg-transparent text-white-50 p-2 rounded border border-gray-300 mr-4 hover:bg-gray-100 hover:text-gray-700">Sign
+            in</button></a>
+      </div>
+    </div>
+  </div>
+</nav>
+{{/if}}
