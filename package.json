@@ -20,6 +20,7 @@
   "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
   "dependencies": {
     "@popperjs/core": "^2.11.6",
+    "autoprefixer": "^10.4.13",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "bootstrap": "^5.2.3",
@@ -42,7 +43,9 @@
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0"
   },
   "devDependencies": {
     "eslint": "^8.32.0",
