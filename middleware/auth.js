@@ -10,11 +10,11 @@ function checkAuth(req, res, next) {
 }
 function isManager(req, res, next) {
     if (req.user.role === 'User') {
-        console.log('User Is Not A Manager: ' + req.user.role)
+        console.warn('[AUTH] User Is Not A Manager: ' + req.user.role)
         res.locals.error = 'You are not a manager, and have been redirected to the dashboard'
         res.redirect('/dashboard');
     }
-    console.log('User Is A Manager: ' + req.user.role)
+    console.info('[AUTH] User Is A Manager: ' + req.user.role)
     return next();
 }
 async function login(req, res, next) {

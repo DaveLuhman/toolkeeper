@@ -8,7 +8,7 @@ controller.importFromCSV = async (req, res) => {
     let status = 'Checked Out'
     for (let i = 0; i < arrayOfRows.length; i++) {
         let row = arrayOfRows[i].split(',')
-        if (row[4] == "") { console.log('no status value'.red); status = 'CHECKED IN'; serviceAssignment = 'IN STOCK' }
+        if (row[4] == "") { console.info('no status value'.red); status = 'CHECKED IN'; serviceAssignment = 'IN STOCK' }
         if (row[4] != "") { status = 'CHECKED OUT'; serviceAssignment = row[4] }
         let toolObject = {
             serialNumber: row[0],
@@ -21,7 +21,7 @@ controller.importFromCSV = async (req, res) => {
             createdBy: req.user
         }
         let newTool = await Tool.create(toolObject)
-        if (newTool._id != null) { console.log(`Successfully Made A New Tool: ${newTool}`) }
+        if (newTool._id != null) { console.info(`[Controller] Successfully Made A New Tool: ${newTool}`) }
     }
     res.status(201).send('Successfully Imported')
 }

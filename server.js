@@ -28,7 +28,7 @@ const app = express();
 //Logging
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
-  console.log('>>>>> Morgan enabled for logging in this development environment')
+  console.info('[INIT]>>>>> Morgan enabled for logging in this development environment')
 }
 //database stuff
 connectDB();
@@ -82,5 +82,5 @@ app.use('/dashboard',  checkAuth, dashboardRouter);
 app.use('/tool',  checkAuth, toolRouter);
 
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.info(`[INIT] Server is running on port ${PORT}`);
 })

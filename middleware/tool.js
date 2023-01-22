@@ -2,30 +2,30 @@ import Tool from '../models/tool.js';
 
 
 async function getTools(req, res, next) {
-    console.log('entering mw - getTools');
+    console.info('[MW] getTools-in'.bgBlue.white);
     let search = [];
     let tools = [];
     const perPage = 10;
     let page = req.query.p || 1;
     const id = req.params.id;
     if (id) {
-        console.log(`searching for tool by id: ${id}`);
+        console.info(`[MW] searching id: ${id}`);
         tools = await Tool.findById(req.params.id);
         res.locals.tools = [tools];
         res.locals.pagination = { pageCount: 1 };
-        console.log('leaving mw - tool found');
+        console.info('[MW] getTools-out-1'.bgWhite.blue);
         return next();
     }
     const { searchBy, searchValue } = req.body
     if (searchValue == "" || !searchValue) {
-        console.log('no search parameters provided');
+        console.warn('[MW] no search parameters provided'.yellow);
         res.locals.tools = await Tool.find({}).skip((perPage * page) - perPage).limit(perPage);
         res.locals.pagination = { pageCount: Math.ceil(await res.locals.tools.length / perPage) };
-        console.log('leaving mw - all tools returned');
+        console.info('[MW] leaving mw getTools-out-2'.bgWhite.blue);
         return next();
     }
     else if (searchBy == 'serialNumber') {
-        console.log(`Serial Number: ${searchValue}`);
+        console.info(`[MW] Serial Number: ${searchValue}`);
         res.locals.searchTerms = `Serial Number: ${searchValue}`;
         search = await Tool.findOne({ serialNumber: searchValue }).skip((perPage * page) - perPage).limit(perPage);
     }
@@ -45,7 +45,7 @@ async function getTools(req, res, next) {
     if (!search || search.length === 0) {
         res.locals.message = `No Tool Found Matching ${res.locals.searchValue}`;
         res.locals.tools = [];
-        console.log('leaving search mw having found no matches');
+        console.info('[MW] getTools-out-3').bgWhite.blue;
         return next();
     }
 
@@ -53,16 +53,16 @@ async function getTools(req, res, next) {
         tools.push(search[i]);
     if (!search.length) { tools = [search]; }
     res.locals.tools = tools;
-    console.log(`leaving mw - tools returned`.blue);
+    console.info(`[MW] getTools-out-4`.bgWhite.blue);
     return next();
 }
 async function createTool(req, res, next) {
-    console.log('entering mw - createTool');
+    console.info('[MW] createTool-in'.bgBlue.white);
     const { serialNumber, partNumber, barcode, description, serviceAssignment, status } = req.body;
     if (!(serialNumber || partNumber) || !barcode) {
         res.locals.message = 'Either Serial Num and Barcode or Part Num and Barcode required';
         res.status(400);
-        console.log('exiting mw - createTool - missing required fields');
+        console.error('[MW] createTool-out-1'.red);
         return next();
     }
     const existing = await Tool.findOne({ $or: [{ 'serialNumber': serialNumber }, { 'barcode': barcode }] });
@@ -70,26 +70,24 @@ async function createTool(req, res, next) {
         res.locals.message = 'Tool already exists';
         res.locals.tools = [existing];
         res.status(400);
-        console.log('exiting mw - createTool - tool already exists');
+        console.error('[MW] createTool-out-2'.red);
         return next();
     }
     let newTool = await Tool.create({ serialNumber, partNumber, barcode, description, serviceAssignment, status, updatedBy: req.user._id, createdBy: req.user._id });
-    console.log(`tool id: ${newTool._id}, ${newTool.description} created`);
     res.locals.message = 'Successfully Made A New Tool';
     res.locals.tools = [newTool];
     res.locals.pageCount = 0;
     res.status(201);
-    console.log('exiting mw - createTool - new tool created');
+    console.info(`[MW] Tool Successfully Created ${newTool._id}`.green)
+    console.info('[MW] createTool-out-3'.bgWhite.blue);
     next();
 }
 async function updateTool(req, res, next) {
-    console.log('entering mw - updateTool');
+    console.info('[MW] updateTool-in'.bgBlue.white);
     let updatedToolArray = [];
-    console.log(typeof req.body._id)
     if (typeof req.body._id === 'string') {
         const { _id, partNumber, description, serviceAssignment, status } = req.body;
         let updatedTool = await Tool.findByIdAndUpdate(_id, { partNumber, description, serviceAssignment, status }, { new: true })
-        console.log('updated single Tool: ' + updatedTool);
         updatedToolArray.push(updatedTool);
     }
     if (typeof req.body._id === 'object') {
@@ -101,31 +99,31 @@ async function updateTool(req, res, next) {
                 'serviceAssignment': serviceAssignment[i],
                 'status': status[i]
             }, { new: true }).exec();
-            console.log('updated iterated Tool line 103: ' + updatedTool);
             updatedToolArray.push(updatedTool);
         }
-        console.log(`updated tools: ${updatedToolArray}`)
     }
     res.locals.tools = updatedToolArray
     res.locals.pageCount = 0;
     res.status(201);
+    console.info('[MW] Successfully Updated Tool'.green + req.body._id)
+    console.info('[MW] updateTool-out-1'.bgWhite.blue);
     next();
 }
 async function archiveTool(req, res, next) {
-    console.log('entering mw - archivedTool');
+    console.info('[MW] archiveTool-in'.bgBlue.white);
     const { id } = req.params;
     const { serialNumber, partNumber, barcode, description, serviceAssignment } = req.body;
     let archivedTool = await Tool.findOneAndUpdate({ _id: id }, { serialNumber, partNumber, barcode, description, serviceAssignment, updatedBy: req.user._id, updatedBy: req.user._id, archived: true }, { new: true });
-    console.log(archivedTool);
     res.locals.message = 'Successfully Marked Tool Archived';
     res.locals.tools = archivedTool;
     res.locals.pageCount = 0;
     res.status(201);
+    console.info('[MW] archiveTool-out-1'.bgWhite.blue);
     next();
 }
 async function checkTools(req, res, next) {
-    console.log('entering mw - checkTool');
-    if (!(req.body.serialNumber || req.body.barcode)) { res.status(400); res.locals.message = 'No Tools Submitted for status change'; return next(); }
+    console.info('[MW] checkTools-in'.bgBlue.white);
+    if (!(req.body.serialNumber || req.body.barcode)) { res.status(400); res.locals.message = 'No Tools Submitted for status change'; console.warn('[MW checkTools-out-1'.bgWhite.blue); return next(); }
     let searchTerms = [];
     let checkingTools = [];
     for (let i = 0; i < req.body.serialNumber.length; i++) if (req.body.serialNumber[i] != '') searchTerms.push(req.body.serialNumber[i]);
@@ -163,18 +161,16 @@ async function checkTools(req, res, next) {
         res.locals.message = 'Tools not found';
         res.locals.tools = [];
         res.status(400);
-        console.log('exiting mw - checkTool - no tools found');
+        console.warn('[MW] Tool Nots Found'.yellow);
+        console.info('[MW] checkTools-out-2'.bgWhite.blue);
         return next();
     }
     res.locals.message = 'Confirm your tools for status change';
     res.locals.tools = checkingTools;
     res.locals.pageCount = Math.ceil(checkingTools.length / 10)
     res.status(200);
+    console.info('[MW] checkTools-out-3'.bgWhite.blue);
     next();
 }
-function logBody(req, res, next) {
-    console.log('entering mw - logBody');
-    console.log(req.body);
-    next();
-}
-export { getTools, createTool, updateTool, archiveTool, checkTools, logBody };
+
+export { getTools, createTool, updateTool, archiveTool, checkTools };
