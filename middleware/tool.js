@@ -61,16 +61,16 @@ async function createTool(req, res, next) {
     const { serialNumber, partNumber, barcode, description, serviceAssignment, status } = req.body;
     if (!(serialNumber || partNumber) || !barcode) {
         res.locals.message = 'Either Serial Num and Barcode or Part Num and Barcode required';
-        res.status(400);
         console.error('[MW] createTool-out-1'.red);
-        return next();
+        res.status(400).redirect('back');
+        return
     }
     const existing = await Tool.findOne({ $or: [{ 'serialNumber': serialNumber }, { 'barcode': barcode }] });
     if (existing) {
         res.locals.message = 'Tool already exists';
         res.locals.tools = [existing];
-        res.status(400);
         console.error('[MW] createTool-out-2'.red);
+        res.status(400).redirect('back');
         return next();
     }
     let newTool = await Tool.create({ serialNumber, partNumber, barcode, description, serviceAssignment, status, updatedBy: req.user._id, createdBy: req.user._id });
@@ -123,7 +123,7 @@ async function archiveTool(req, res, next) {
 }
 async function checkTools(req, res, next) {
     console.info('[MW] checkTools-in'.bgBlue.white);
-    if (!(req.body.serialNumber || req.body.barcode)) { res.status(400); res.locals.message = 'No Tools Submitted for status change'; console.warn('[MW checkTools-out-1'.bgWhite.blue); return next(); }
+    if ((req.body.serialNumber != "") && ( req.body.barcode != "") ) { res.locals.message = 'No Tools Submitted For Status Change'; console.warn('[MW checkTools-out-1'.bgWhite.blue); res.status(400).redirect('./'); return }
     let searchTerms = [];
     let checkingTools = [];
     for (let i = 0; i < req.body.serialNumber.length; i++) if (req.body.serialNumber[i] != '') searchTerms.push(req.body.serialNumber[i]);
@@ -160,10 +160,10 @@ async function checkTools(req, res, next) {
     if (!checkingTools || checkingTools.length === 0) {
         res.locals.message = 'Tools not found';
         res.locals.tools = [];
-        res.status(400);
-        console.warn('[MW] Tool Nots Found'.yellow);
+        console.warn('[MW] Tools Not Found'.yellow);
         console.info('[MW] checkTools-out-2'.bgWhite.blue);
-        return next();
+        res.status(400).redirect('back');
+        return;
     }
     res.locals.message = 'Confirm your tools for status change';
     res.locals.tools = checkingTools;
