@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  content: ["./src/**/*.{html,js}"],
   daisyui: {
     themes: [
       {
@@ -17,7 +18,6 @@ module.exports = {
       },
     ],
   },
-  content: [],
   theme: {
     extend: {},
   },
