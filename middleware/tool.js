@@ -45,9 +45,14 @@ async function getTools(req, res, next) {
         res.locals.searchTerms = `Service Assignment: ${searchValue}`;
         search = await Tool.find({ serviceAssignment: searchValue }).skip((perPage * page) - perPage).limit(perPage);
     }
+    else if (searchBy == 'status') {
+        res.locals.searchTerms = `Status: ${searchValue}`;
+        search = await Tool.find({ status: searchValue }).skip((perPage * page) - perPage).limit(perPage);
+    }
     if (!search || search.length === 0) {
         res.locals.message = `No Tool Found Matching ${res.locals.searchValue}`;
         res.locals.tools = [];
+        res.locals.pagination = { page, pageCount: 1 };
         console.info('[MW] getTools-out-3'.bgWhite.blue);
         return next();
     }
@@ -88,9 +93,17 @@ async function createTool(req, res, next) {
 async function updateTool(req, res, next) {
     console.info('[MW] updateTool-in'.bgBlue.white);
     let updatedToolArray = [];
+    console.log(typeof req.body._id)
     if (typeof req.body._id === 'string') {
+        console.log('test')
         const { _id, partNumber, description, serviceAssignment, status } = req.body;
-        let updatedTool = await Tool.findByIdAndUpdate(_id, { partNumber, description, serviceAssignment, status }, { new: true });
+        let updatedTool = await Tool.findByIdAndUpdate(_id,
+            {
+                partNumber: partNumber,
+                description: description,
+                serviceAssignment: serviceAssignment,
+                status: status
+            }, { new: true }).exec();
         console.info(`updatedTool: ${updatedTool}`.green)
         updatedToolArray.push(updatedTool);
     }
@@ -108,9 +121,9 @@ async function updateTool(req, res, next) {
         }
     }
     res.locals.tools = updatedToolArray;
-    res.locals.pagination = { 'page': 1, 'pageCount': 0}
+    res.locals.pagination = { 'page': 1, 'pageCount': 0 }
     res.status(201);
-    console.info('[MW] Successfully Updated Tools: '.green + updatedToolArray.forEach(tool => console.info(tool._id)));
+    console.info('[MW] Successfully Updated Tools: '.green + updatedToolArray);
     console.info('[MW] updateTool-out-1'.bgWhite.blue);
     next();
 }
