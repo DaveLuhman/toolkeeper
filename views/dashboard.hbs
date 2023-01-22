@@ -1,15 +1,15 @@
-<section>
+<span>
     <div class="container" id="dashboard">
         {{#if message}}
-        <section title="message">
+        <span title="message">
             <div class="alert">{{message}}</div>
-        </section>
+        </span>
         {{/if}}
         {{#if searchTerms}}
-        <section title="searchTerms">
+        <span title="searchTerms">
             <h5>You Searched For: </h5>
             <h4><i>{{searchTerms}}</i></h4>
-        </section>
+        </span>
         {{/if}}
 
         {{#if tools}}
@@ -56,7 +56,8 @@
     {{/if}}
     </tbody>
     </table>
-    {{#gt paginate.n 1}}
+
+
     <ul class="row">
         {{#paginate pagination type="first"}}
         <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
@@ -73,10 +74,9 @@
         {{#paginate pagination type="last"}}
         <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
         {{/paginate}}
-        {{/gt}}
-    </ul>
 
+    </ul>
 
     </div>
 
-</section>
+</span>
