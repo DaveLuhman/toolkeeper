@@ -16,7 +16,7 @@ router.post('/disableUser/:id', isManager, disableUser, (_req, res) => { res.ren
 // verify user is manager and reset user password
 router.post('/resetPW/:id', isManager, resetPassword, (_req, res) => { res.render('userManagement', {layout: 'user.hbs'}) })
 // verify user is manager and update user
-router.post('/:id', isManager, updateUser, (_req, res) => { res.render('userManagement', {layout: 'user.hbs'}) })
+router.post('/:id', isManager, updateUser, (_req, res) => { res.redirect('userManagement') })
 // verify user is manager and show user to edit
 router.get('/:id', isManager, getUsers, (_req, res) => { res.render('editUser', {layout: 'user.hbs'}) })
 // create new user
