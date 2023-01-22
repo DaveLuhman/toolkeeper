@@ -5,15 +5,17 @@ function checkAuth(req, res, next) {
         res.locals.user = req.user;
         return next();
     }
+    res.local.message = 'You must be logged in to access that page'
+    res.redirect('/login');
 }
 function isManager(req, res, next) {
-    if (!req.user.role == 'User') {
-        console.log('User Is Manager: ' + req.user.role)
-        return next();
+    if (req.user.role === 'User') {
+        console.log('User Is Not A Manager: ' + req.user.role)
+        res.locals.error = 'You are not a manager, and have been redirected to the dashboard'
+        res.redirect('/dashboard');
     }
-    console.log('User Is Not A Manager: ' + req.user.role)
-    res.locals.error = 'You are not a manager, and have been redirected to the dashboard'
-    res.redirect('/dashboard');
+    console.log('User Is A Manager: ' + req.user.role)
+    return next();
 }
 async function login(req, res, next) {
     passport.authenticate('local', { failureRedirect: '/login', failureFlash: true })
