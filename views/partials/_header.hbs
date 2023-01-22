@@ -15,12 +15,12 @@
         <ul class="md:flex items-center justify-between text-base pt-4 md:pt-0">
           <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
               href="/dashboard">Dashboard</a></li>
-          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
-              href="#"><label for="newToolModal">Create A New Tool</label></a></li>
-          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
-              href="#">Check-In/Out</a></li>
-          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"
-              href="#">Search Tools</a></li>
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"><label
+                for="newToolModal">Create A New Tool</label></a></li>
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"><label
+                for="checkInOutModal">Check-In/Out</label></a></li>
+          <li><a class="inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2"><label
+          for="searchToolModal">Search Tools</label></a></li>
         </ul>
       </nav>
     </div>
@@ -28,7 +28,8 @@
     <div class="order-2 md:order-3 flex flex-wrap items-center justify-end mr-0 md:mr-4" id="nav-content">
       <div class="flex items-center w-full md:w-full">
         <div class="dropdown dropdown-end">
-          <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">{{user.firstName}} {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
+          <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">{{user.firstName}}
+            {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
           <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
             <li><a href="/user/profile">Profile</a></li>
             {{#eq user.role "Manager"}}<li><a href="/user">User Management</a></li>{{/eq}}
