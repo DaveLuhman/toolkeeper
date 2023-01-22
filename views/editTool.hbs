@@ -12,34 +12,40 @@
         <form action="/tool/update/" method="POST">
             {{#each tools}}
             <div class="card-body">
-                <div class="row gx-5">
-                    <div class="col p-3">
+                <div class="row gx-3">
+                    <div class="col">
                         <input type="hidden" name="_id" value="{{_id}}">
+                        <label for="serialNumber">Serial Number:</label>
                         <input type="text" class="form-control" name="serialNumber" placeholder="Serial Number"
                             aria-label="Serial Number" value="{{serialNumber}}" disabled>
                     </div>
-                    <div class="col p-3">
+                    <div class="col">
+                        <label for="partNumber">Part Number:</label>
                         <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
                             aria-label="Part Number" value="{{partNumber}}" disabled>
                     </div>
                 </div>
-                <div class="row gx-5">
-                    <div class="col p-3">
+                <div class="row gx-3">
+                    <div class="col">
+                        <label for="barcode">Barcode:</label>
                         <input type="text" class="form-control" name="barcode" placeholder="Barcode"
                             aria-label="Barcode" value="{{barcode}}" disabled>
                     </div>
-                    <div class="col p-3">
+                    <div class="col">
+                        <label for="description">Description:</label>
                         <input type="text" class="form-control" name="description" placeholder="Description"
                             aria-label="Description" value="{{description}}">
                     </div>
                 </div>
-                <div class="row gx-5">
-                    <div class="col p-3  {{#if serviceAssignmentChanged}}bg-danger-subtle{{/if}}">
+                <div class="row gx-3">
+                    <div class="col  {{#if serviceAssignmentChanged}}bg-danger-subtle{{/if}}">
+                        <label for="serviceAssignment">Service Assignment:</label>
                         <input type="text" class="form-control " name="serviceAssignment"
                             placeholder="Service Assignment" aria-label="Barcode" value="{{serviceAssignment}}">
                     </div>
 
-                    <div class="col p-3 {{#if statusChanged}}bg-danger-subtle{{/if}}">
+                    <div class="col {{#if statusChanged}}bg-danger-subtle{{/if}}">
+                        <label for="status">Status:</label>
                         <select class="form-control" name="status" id="status" placeholder="Status"
                             aria-label="Description">
                             <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked In</option>
@@ -49,7 +55,7 @@
                     </div>
                 </div>
             </div> {{/each}}
-            <div class="card-footer float-end">
+            <div class="card-footer ">
                 <a href="/dashboard"><button type="button" class="btn btn-secondary">Cancel</button></a>
                 <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
             </div>

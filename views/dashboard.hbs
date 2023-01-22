@@ -27,7 +27,8 @@
             </thead>
             <tbody>
                 {{#each tools}}
-                <tr {{#if archived}}class="disabled" {{/if}} scope="row">
+                {{#unless archived}}
+                <tr scope="row">
                     <td>{{serialNumber}}</td>
                     <td>{{partNumber}}</td>
                     <td>{{barcode}}</td>
@@ -50,6 +51,7 @@
     </div>
     </td>
     </tr>
+    {{/unless}}
     {{/each}}
     {{/if}}
     </tbody>
