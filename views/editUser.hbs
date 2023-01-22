@@ -1,52 +1,77 @@
-{{#if targetUser}}
-<div class="container bg-body-secondary rounded p-3">
-    <div class="container-fluid">
-        <form action="/user/{{targetUser.id}}" method="POST">
-            <div class="row input-group">
-                <div class="col">
-                    <label for="email">Email:</label>
-                    <input type="text" class="form-control" name="email" aria-label="email" value="{{targetUser.email}}"
-                        disabled>
-                </div>
-                <div class="col">
-                    <label for="role">Role:</label>
-                    <select class="form-select" id="userRoleSelect" name="role" {{#eq user.role "User"
-                        }}disabled{{/eq}}>
-                        <option value="User" {{#eq targetUser.role "User" }}selected{{/eq}}>User</option>
-                        <option value="Manager" {{#eq targetUser.role "Manager" }}selected{{/eq}}>Manager</option>
-                        <option value="Admin" {{#eq targetUser.role "Admin" }}selected{{/eq}}>Admin</option>
+<div class="min-h-screenflex flex-col justify-center sm:py-12 bg-gradient-to-t from-base-100 to-base-300 ...">
 
-                    </select>
-                </div>
-            </div>
-            <div class="row input-group">
-                <div class="col">
-                    <label for="firstName">First Name:</label>
-                    <input type="text" class="form-control" name="firstName" placeholder="firstName"
-                        aria-label="firstName" value="{{targetUser.firstName}}">
-                </div>
-                <div class="col">
-                    <label for="lastName">Last Name:</label>
-                    <input type="text" class="form-control" name="lastName" placeholder="lastName" aria-label="lastName"
-                        value="{{targetUser.lastName}}">
-                </div>
-            </div>
-            <div class="row input-group p-2">
-                <div class="col">
-                    <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#resetPwModal">Reset Password?</button>
-                </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-primary">Update User Details?</button>
-                </div>
-            </div>
-        </form>
+    <div class="card-header text-white" style="background-color: #494949;">
+        {{#if message}}
+        <h3>{{message}}</h3>
+        {{else}}
+        <h5>Edit User</h5>
+        {{/if}}
     </div>
-</div>
-<br>
-<br>
+    {{#if targetUser}}
+    <form action="/user/{{user._id}}" method="POST">
+        <div class="form-control justify-items-center">
+            <div class="-mx-3 flex flex-wrap">
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label for="firstName" class="mb-3  ">
+                            First Name
+                        </label>
+                        <input type="text" name="firstName" id="firstName" value="{{targetUser.firstName}}"
+                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                    </div>
+                </div>
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label for="lastName" class="mb-3 ">
+                            Last Name
+                        </label>
+                        <input type="text" name="lastName" id="lastName" value="{{targetUser.lastName}}"
+                            class="w-full rounded-md border py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                    </div>
+                </div>
+            </div>
+            <div class="-mx-3 flex flex-wrap">
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label class="label">
+                            <span class="label-text">Email</span></label>
+                        <input name="email" type="text" value="{{targetUser.email}}"
+                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
 
+                    </div>
+                </div>
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label class="label">
+                            <span class="label-text">Role</span></label>
+                        <select
+                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md"
+                            name="role" id="role" aria-label="role">
+                            <option value="User" {{#eq targetUser.role "User" }}selected{{/eq}}>User</option>
+                            <option value="Manager" {{#eq targetUser.role "Manager" }}selected{{/eq}}>Manager</option>
+                            <option value="Admin" {{#eq targetUser.role "Admin" }}selected{{/eq}}>Admin</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="-mx-3 flex flex-wrap">
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label for="resetPasswordModal" class="label">
+                            <button class="label-text">Reset Password</button>
+                            </label>
+                        <div class="w-full px-3 sm:w-1/2">
+                            <div class="mb-5">
+                                <button type="submit" class="btn btn-primary submit">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 
 {{else}}
-<h3 class="alert-danger">Somehow you got to the <i>edit user</i> page without the user's data</h3>
+<h3 class="alert-danger">Somehow you got to the <i>user tool</i> page without the tool's data</h3>
 {{/if}}
