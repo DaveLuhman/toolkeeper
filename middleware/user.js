@@ -15,7 +15,7 @@ async function getUsers(req, res, next) {
 }
 async function createUser(req, res, next) {
     const { firstName, lastName, email, password, role } = req.body;
-    if (!email || !password) { res.status(400).send('Email and password are required'); return next(); }
+    if (!email || !password) { res.locals.error = 'Email and Password are required'; return next(); }
     if (await User.findOne({ email: email })) { res.status(400).send('User already exists'); return next(); }
     let hash = bcrypt.hashSync(password, 10);
     res.locals.user = await User.create({ firstName, lastName, email, password: hash, role });

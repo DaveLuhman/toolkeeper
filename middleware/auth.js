@@ -7,12 +7,13 @@ function checkAuth(req, res, next) {
     }
 }
 function isManager(req, res, next) {
-    if (req.user.role == 'User') {
+    if (!req.user.role == 'User') {
         console.log('isManager: ' + req.user.role)
         return next();
     }
     console.log('isManager: ' + req.user.role)
-    next();
+    res.locals.error = 'You are not a manager, and have been redirected to the dashboard'
+    res.redirect('/dashboard');
 }
 async function login(req, res, next) {
     passport.authenticate('local', { failureRedirect: '/login', failureFlash: true })
