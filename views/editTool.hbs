@@ -1,47 +1,45 @@
-{{#if tools}}
+<div class="min-h-screenflex flex-col justify-center sm:py-12 bg-gradient-to-t from-base-100 to-base-300 ...">
+    {{#if tools}}
 
-<div class="container">
-    <div class="card">
-        <div class="card-header text-white" style="background-color: #494949;">
-            {{#if message}}
-            <h5>{{message}}</h5>
-            {{else}}
-            <h5>Edit A Tool Entry</h5>
-            {{/if}}
-        </div>
-        <form action="/tool/update/" method="POST">
-            {{#each tools}}
+    {{#if message}}
+    <h5>{{message}}</h5>
+    {{else}}
+    <h5>Edit A Tool Entry</h5>
+    {{/if}}
+</div>
+<form action="/tool/update/" method="POST">
+    {{#each tools}}
 
-            <div class="form-control justify-items-center">
-                <div class="row-cols-3 py-3 ">
-                    <input name="serialNumber" type="text" value="{{serialNumber}}"
-                        class="py-3 input input-bordered w-5/12" />
-                    <input name="partNumber" type="text" value="{{partNumber}}"
-                        class="py-3  input input-bordered w-5/12" />
-                    <input name="barcode" type="text" value="{{barcode}}" class="input py-3 input-bordered w-5/12" />
-                    <input name="description" type="text" value="{{description}}"
-                        class="py-3 input input-bordered w-5/12" />
-                    <div class=" py-3 input-group-text bg">
-                        <input name="serviceAssignment" type="text" class="input input-bordered w-5/12 {{#if
-                        serviceAssignmentChanged}}border-red-600" placeholder="{{serviceAssignment}}" required {{else}}"
-                            value="{{serviceAssignment}}" {{/if}} />
+    <div class="form-control justify-items-center">
+        <div class="row-cols-3 py-3 ">
+            <input name="serialNumber" type="text" value="{{serialNumber}}" class="py-3 input input-bordered w-5/12" />
+            <input name="partNumber" type="text" value="{{partNumber}}" class="py-3  input input-bordered w-5/12" />
+            <input name="barcode" type="text" value="{{barcode}}" class="input py-3 input-bordered w-5/12" />
+            <input name="description" type="text" value="{{description}}" class="py-3 input input-bordered w-5/12" />
+            <div class=" py-3 input-group-text bg">
+                {{#if serviceAssignmentChanged}}
+                <input name="serviceAssignment" type="text" class="input input-bordered w-5/12 border-red-600"
+                    placeholder="{{serviceAssignment}}" required />
+                {{else}}
+                <input name="serviceAssignment" type="text" value="{{serviceAssignment}}"
+                    class="input input-bordered w-5/12" />
+                {{/if}}
 
-                        <select class="form-control select w-5/12 py-3  {{#if statusChanged}}border-red-600{{/if}}"
-                            name="status" id="status" aria-label="Description">
-                            <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked In</option>
-                            <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked Out
-                            </option>
-                        </select>
-                    </div>
-                    {{/each}}
-                    <a href="/dashboard"><button type="button" class="btn btn-secondary">Cancel</button></a>
-                    <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
-                </div>
+                <select class="form-control select w-5/12 py-3  {{#if statusChanged}}border-red-600{{/if}}"
+                    name="status" id="status" aria-label="Description">
+                    <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked In
+                    </option>
+                    <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked Out
+                    </option>
+                </select>
             </div>
+            {{/each}}
+            <a href="/dashboard"><button type="button" class="btn btn-secondary">Cancel</button></a>
+            <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
+        </div>
     </div>
-    </form>
-</div>
-</div>
+</form>
+
 
 {{else}}
 <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>

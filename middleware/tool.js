@@ -91,6 +91,7 @@ async function updateTool(req, res, next) {
     if (typeof req.body._id === 'string') {
         const { _id, partNumber, description, serviceAssignment, status } = req.body;
         let updatedTool = await Tool.findByIdAndUpdate(_id, { partNumber, description, serviceAssignment, status }, { new: true });
+        console.info(`updatedTool: ${updatedTool}`.green)
         updatedToolArray.push(updatedTool);
     }
     if (typeof req.body._id === 'object') {
@@ -102,13 +103,14 @@ async function updateTool(req, res, next) {
                 'serviceAssignment': serviceAssignment[i],
                 'status': status[i]
             }, { new: true }).exec();
+            console.info(`updatedTool: ${updatedTool}`.green)
             updatedToolArray.push(updatedTool);
         }
     }
     res.locals.tools = updatedToolArray;
     res.locals.pagination = { 'page': 1, 'pageCount': 0}
     res.status(201);
-    console.info('[MW] Successfully Updated Tool'.green + ` ${updatedToolArray[0]._id}`.green);
+    console.info('[MW] Successfully Updated Tools: '.green + updatedToolArray.forEach(tool => console.info(tool._id)));
     console.info('[MW] updateTool-out-1'.bgWhite.blue);
     next();
 }
