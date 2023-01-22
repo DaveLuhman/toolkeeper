@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { checkTools, archiveTool, createTool, getTools, updateTool, logBody } from '../middleware/tool.js';
+import { checkTools, archiveTool, createTool, getTools, updateTool } from '../middleware/tool.js';
 const router = Router();
 router.get('/:id', getTools, (_req, res) => {
     if (res.locals.tools[0]) return res.render('editTool'); // if tool exists render editTool
