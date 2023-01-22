@@ -18,7 +18,7 @@ async function getUsers(req, res, next) {
 async function createUser(req, res, next) {
     console.info('[MW] createUser-in'.bgBlue.white)
     const { firstName, lastName, email, password, confirmPassword, role } = req.body;
-    console.log(req.body)
+    console.log(JSON.stringify(req.body))
     if (!email || !password) {
         res.locals.error = 'Email and Password are required';
         console.warn('Email and Password are both required'.yellow);
