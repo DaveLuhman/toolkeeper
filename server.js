@@ -14,11 +14,12 @@ import morgan from 'morgan'; // logging
 import passport from 'passport';
 import connectDB from './config/db.js';
 import passportConfig from './config/passport.js';
-import { checkAuth } from './middleware/auth.js';
+import { checkAuth as isAuthd, isManager } from './middleware/auth.js';
 import { default as dashboardRouter} from './routes/dashboard.js';
 import { default as toolRouter }  from './routes/tool.js';
 import { default as userRouter } from './routes/user.js';
 import { default as indexRoutes } from './routes/index.js';
+import { default as managerRouter } from './routes/manager.js';
 dotenv.config()
 const MongoDBStore = connectMongoDBSession(session);
 const PORT = process.env.PORT || 5000;
@@ -77,9 +78,13 @@ app.use(passport.session())
 // Routes (No User Context)
 app.use('/', indexRoutes);
 // Routes (User Context)
-app.use('/user', checkAuth, userRouter);
-app.use('/dashboard',  checkAuth, dashboardRouter);
-app.use('/tool',  checkAuth, toolRouter);
+app.use(isAuthd)
+app.use('/user',  userRouter);
+app.use('/dashboard',  isAuthd, dashboardRouter);
+app.use('/tool',   toolRouter);
+app.use(isManager)
+app.use('/manager',   managerRouter);
+
 
 app.listen(PORT, () => {
   console.info(`[INIT] Server is running on port ${PORT}`);
