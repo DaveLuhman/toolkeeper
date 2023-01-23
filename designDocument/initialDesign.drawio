@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e" pages="10">
     <diagram id="lKCODA6wVHFzISZ-hTEW" name="AbstractComponents">
-        <mxGraphModel dx="934" dy="464" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="344" dy="464" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="SR-n9dK1odmoLLhyO4WW-0"/>
                 <mxCell id="SR-n9dK1odmoLLhyO4WW-1" parent="SR-n9dK1odmoLLhyO4WW-0"/>
@@ -1002,7 +1002,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="VhmmaQziJfCvznqcmwFc" name="User Management">
-        <mxGraphModel dx="1434" dy="756" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="934" dy="464" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="FMiSPi2M6hDlBjzp5_MK-0"/>
                 <mxCell id="FMiSPi2M6hDlBjzp5_MK-1" parent="FMiSPi2M6hDlBjzp5_MK-0"/>
@@ -1469,7 +1469,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="jJ2eWfwDUlK7BzCCVk7T" name="NavBar">
-        <mxGraphModel dx="1757" dy="782" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
+        <mxGraphModel dx="934" dy="464" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" background="none" math="0" shadow="0">
             <root>
                 <mxCell id="WwUF2i6CXzFu_FUaoij6-0"/>
                 <mxCell id="WwUF2i6CXzFu_FUaoij6-1" parent="WwUF2i6CXzFu_FUaoij6-0"/>
@@ -1532,7 +1532,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="ytnDT0i3VeUVpUmqApCF" name="EntityRelation">
-        <mxGraphModel dx="934" dy="464" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="344" dy="464" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -1545,7 +1545,7 @@
                         <mxPoint x="470" y="370" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="dRwfENm4i6UVV9sc2CRT-12" value="User" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                <mxCell id="dRwfENm4i6UVV9sc2CRT-12" value="#user" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
                     <mxGeometry x="400" y="440" width="400" height="280" as="geometry"/>
                 </mxCell>
                 <mxCell id="dRwfENm4i6UVV9sc2CRT-13" value="+_id: OID, auto-generated&#10;+email: String&#10;+hash: String&#10;+salt: String&#10;+firstName: String&#10;+lastName: String&#10;+createdOn: ISODate&#10;+updatedOn: ISODate&#10;+lastLogin: ISODate&#10;+isDisabled: boolean&#10;+role: enum[Admin, Manager, User]&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="dRwfENm4i6UVV9sc2CRT-12" vertex="1">
@@ -1594,9 +1594,6 @@
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="190" y="459.9999999999998" as="sourcePoint"/>
                     </mxGeometry>
-                </mxCell>
-                <mxCell id="ETMm80VIuTV_vt-S9v3X-9" value="#tool" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="860" y="102" width="120" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
