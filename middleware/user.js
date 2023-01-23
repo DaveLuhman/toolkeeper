@@ -1,6 +1,7 @@
 import User from '../models/user.js';
 import bcrypt from 'bcrypt';
 
+
 async function getUsers(req, res, next) {
     console.info('[MW] getUsers-in'.bgBlue.white)
     if (req.params.id) {
@@ -18,7 +19,6 @@ async function getUsers(req, res, next) {
 async function createUser(req, res, next) {
     console.info('[MW] createUser-in'.bgBlue.white)
     const { firstName, lastName, email, password, confirmPassword, role } = req.body;
-    console.log(JSON.stringify(req.body))
     if (!email || !password) {
         res.locals.error = 'Email and Password are required';
         console.warn('Email and Password are both required'.yellow);
@@ -33,7 +33,7 @@ async function createUser(req, res, next) {
         res.redirect('back');
         return;
     }
-    if (password != confirmPassword) {
+    if (password !== confirmPassword) {
         res.locals.error = 'Passwords do not match';
         console.warn('Passwords do not match'.yellow);
         console.info('[MW] createUser-out-3'.bgWhite.blue)
@@ -42,7 +42,7 @@ async function createUser(req, res, next) {
     }
     let hash = bcrypt.hashSync(password, 10);
     let newUser = await User.create({ firstName, lastName, email, password: hash, role });
-    res.locals.user = newUser;
+    res.locals.user = [newUser];
     console.info(`Created User ${newUser._id}`.green)
     console.info('[MW] createUser-out-4'.bgWhite.blue)
     return next();
@@ -65,7 +65,7 @@ async function verifySelf(req, res, next) {
 async function updateUser(req, res, next) {
     console.info('[MW] updateUser-in'.bgBlue.white)
     let user = await User.findByIdAndUpdate(req.params.id, { $set: req.body }, { new: true });
-    res.locals.user = user;
+    res.locals.user = [user];
     console.info('[MW] disableUser-out'.bgWhite.blue)
     return next();
 }
@@ -78,19 +78,16 @@ async function resetPassword(req, res, next) {
     const { _id, password, confirmPassword } = req.body;
     if (!password || !confirmPassword) {
         res.locals.error = 'New password and confirm password are required';
-        console.info('[MW] Password and Confirm Password are both required'.yellow);
         console.info('[MW] resetPassword-out-1'.bgWhite.blue)
         res.status(400).redirect('back');
         return;
     }
     if (password != confirmPassword) {
         res.locals.error = 'New password and confirm password must match';
-        console.info('[MW] Password and Confirm Password must match'.yellow);
         console.info('[MW] resetPassword-out-2'.bgWhite.blue)
         res.status(400).redirect('back');
         return;
     }
-
     let hash = bcrypt.hashSync(password, 10);
     await User.findByIdAndUpdate(_id, { $set: { password: hash } });
     console.info('[MW] resetPassword-out-4'.bgWhite.blue)
