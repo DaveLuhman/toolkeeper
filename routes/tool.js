@@ -11,6 +11,6 @@ router.post('/submit', createTool, (_req, res) => { res.render('dashboard'); })
 router.post('/update/', updateTool, (_req, res) => { res.render('dashboard'); })
 
 router.get('/archive/:id', archiveTool, getTools, (_req, res) => { res.render('dashboard'); })
-d
+
 
 export default router
