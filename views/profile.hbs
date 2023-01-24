@@ -1,53 +1,79 @@
-<br>
-<br>
-{{#if error}}
-<div class="alert alert-danger" role="alert">
-    <p>{{error}}</p>
-</div>
-{{/if}}
-<div class="container bg-body-secondary rounded p-3">
-    <div class="container-fluid">
-        <form action="/user/:id" method="POST"></form>
-        <div class="row input-group">
-            <div class="col">
-                <label for="email">Email:</label>
-                <input type="text" class="form-control" name="email" aria-label="Serial Number" value="{{user.email}}"
-                    disabled>
-            </div>
-            <div class="col">
-                <label for="role">Role:</label>
-                <select class="form-select" id="userRoleSelect" {{#eq user.role "User" }}disabled{{/eq}}>
-                    <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
-                    <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
-                    <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
-                </select>
-            </div>
-        </div>
-        <div class="row input-group">
-            <div class="col">
-                <label for="firstName">First Name:</label>
-                <input type="text" class="form-control" name="firstName" placeholder="firstName" aria-label="firstName"
-                    value="{{user.firstName}}">
-            </div>
-            <div class="col">
-                <label for="lastName">Last Name:</label>
-                <input type="text" class="form-control" name="lastName" placeholder="lastName" aria-label="lastName"
-                    value="{{user.lastName}}">
-            </div>
-        </div>
-        <div class="row input-group p-2">
-            <div class="col">
-                <button type="button" class="btn right-align btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#resetPwModal">Reset Password?</button>
-            </div>
-            <div class="col">
-                <button type="submit" class="d-flex btn btn-primary">Update User Details?</button>
-            </div>
-        </div>
-        </form>
+<div class="rounded min-h-screenflex flex-col justify-center sm:py-12 bg-gradient-to-t from-zinc-700 to-gray-800 ...">
+    <div class="container">
+        {{#if message}}
+        <h5>{{message}}</h5>
+        {{/if}}
     </div>
+    <form action="/user/{{user._id}}" method="POST">
+        <div class="form-control justify-items-center">
+            <div class="-mx-3 flex flex-wrap">
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label for="firstName" class="mb-3">
+                            First Name
+                        </label>
+                        <input type="text" name="firstName" id="firstName" value="{{user.firstName}}"
+                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                    </div>
+                </div>
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label for="lName" class="mb-3 ">
+                            Last Name
+                        </label>
+                        <input type="text" name="lastName" id="lastName" value="{{user.lastName}}"
+                            class="w-full rounded-md border py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                    </div>
+                </div>
+            </div>
+            <div class="-mx-3 flex flex-wrap">
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label class="label">
+                            <span class="label-text">Email</span></label>
+                        <input name="email" type="text" value="{{user.email}}"
+                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                    </div>
+                </div>
+                <div class="w-full px-3 sm:w-1/2">
+                    <div class="mb-5">
+                        <label class="label">
+                            <span class="label-text">Role</span></label>
+                        <select
+                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md"
+                            name="role" id="role" aria-label="role">
+                            <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
+                            <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
+                            <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="-mx-3 flex flex-wrap">
+                    <div class="w-full px-3 sm:w-1/2">
+                        <div class="mb-5">
+                            <label for="resetPasswordModal" class="label">
+                                <button type:'button' class="btn btn-primary label-text">Reset Password</button>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="w-full px-3 sm:w-1/2">
+                        <div class="mb-5">
+                            <label class="label">
+                                <button type="submit" class="btn btn-primary label-text">Submit</button>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
-<br>
+</div>
+</form>
+</div>
+
+
+
+
 {{!-- Admin Section --}}
 {{#eq user.role "Admin"}}
 <div class="container bg-body-secondary rounded p-3">
@@ -63,3 +89,4 @@
     </div>
 </div>
 {{/eq}}
+</div>

@@ -1,93 +1,102 @@
 {{!-- New User Modal --}}
-<div class="modal fade" id="newUserModal" tabindex="-1" aria-labelledby="newUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="newUserModalHeader">Create A New User Entry</h5>
-                <a type='button' data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </a>
-            </div>
-            <div class="modal-body ">
-                <form action="/user/createUser" method="POST">
-                    <div class="row p-2">
-                        <div class="col">
-                            <input type="text" class="form-control" name="firstName" placeholder="First Name"
-                                aria-label="First Name">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control " name="lastName" placeholder="Last Name"
-                                aria-label="Last Name">
+<input type="checkbox" id="newUserModal" class="modal-toggle" />
+<div class="modal">
+    <div class="modal-box relative cursor-pointer">
+        <label for="newUserModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <form action="/user/{{user._id}}" method="POST">
+            <div class="form-control justify-items-center">
+                <div class="-mx-3 flex flex-wrap">
+                    <div class="w-full px-3 sm:w-1/2">
+                        <div class="mb-5">
+                            <label for="firstName" class="mb-3  ">
+                                First Name
+                            </label>
+                            <input type="text" name="firstName" id="firstName"
+                                class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
                         </div>
                     </div>
-                    <div class="row p-2">
-                        <div class="col">
-                            <input type="email" class="form-control" id='email' name="email" placeholder="Email"
-                                aria-label="Email" required>
+                    <div class="w-full px-3 sm:w-1/2">
+                        <div class="mb-5">
+                            <label for="lastName" class="mb-3 ">
+                                Last Name
+                            </label>
+                            <input type="text" name="lastName" id="lastName"
+                                class="w-full rounded-md border py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
                         </div>
-                        <div class="col">
-                            <select class="form-control">
-                                <option style="background-color: #cccccc;" disabled selected>Select A Role</option>
-                                <option style="font-size: 1pt; background-color: #000000;" disabled>&nbsp;</option>
-                                <option value="User">User</option>
-                                <option value="Manager">Manager</option>
+                    </div>
+                </div>
+                <div class="-mx-3 flex flex-wrap">
+                    <div class="w-full px-3 sm:w-1/2">
+                        <div class="mb-5">
+                            <label for="password" class="mb-3  ">
+                                Password
+                            </label>
+                            <input required type="password" name="password" id="password"
+                                class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                        </div>
+                    </div>
+                    <div class="w-full px-3 sm:w-1/2">
+                        <div class="mb-5">
+                            <label for="confirmPassword" class="mb-3 ">
+                                Confirm Password
+                            </label>
+                            <input required type="password" name="confirmPassword" id="confirmPassword"
+                                class="w-full rounded-md border py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
+                        </div>
+                    </div>
+                </div>
+                <div class="-mx-3 flex flex-wrap">
+                    <div class="w-full px-3 sm:w-1/2">
+                        <div class="mb-5">
+                            <label class="label">
+                                <span class="label-text">Email</span></label>
+                            <input name="email" type="text"
+                                class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
 
+                        </div>
+                    </div>
+                    <div class="w-full px-3 sm:w-1/2">
+                        <div class="mb-5">
+                            <label class="label">
+                                <span class="label-text">Role</span></label>
+                            <select
+                                class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                name="role" id="role" aria-label="role">
+                                <option value="User">User</option>
+                                <option value="Manager">Manager
+                                </option>
+                                <option value="Admin">Admin</option>
                             </select>
                         </div>
                     </div>
-                    <div class="row p-2">
-                        <div class="col">
-                            <input type="password" class="form-control" name="password" id="password" placeholder="Password"
-                                aria-label="Password" required>
-                        </div>
-                        <div class="col">
-                            <input type="password" class="form-control" name="confirmPassword"
-                                placeholder="Confirm Password" aria-label="ConfirmPassword" id="confirmPassword" required>
-                        </div>
-                    </div>
-
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button name="NewUserModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
+            <div class="modal-action">
+                <label class="btn btn-sm"> <button type="submit">Submit</button></label>
             </div>
-            </form>
-        </div>
+        </form>
+        </label>
     </div>
-</div>
 </div>
 {{!-- END New User Modal --}}
 {{!-- reset password Modal --}}
-<div class="modal fade" id="resetPwModal" tabindex="-1" aria-labelledby="resetPwModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="resetPwModalHeader">Reset Your Password</h5>
-                <a type='button' data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </a>
-            </div>
-            <div class="modal-body ">
-                <form action="/user/resetPassword" method="POST">
-                <input type="hidden" name="_id" value="{{user._id}}">
-                    <div class="row p-2">
-                        <div class="col">
-                            <input type="password" class="form-control" name="password" placeholder="Password"
-                                aria-label="Password">
-                        </div>
-                        <div class="col">
-                            <input type="password" class="form-control" name="confirmPassword"
-                                placeholder="Confirm Password" aria-label="ConfirmPassword">
-                        </div>
+<input type="checkbox" id="resetPasswordModal" class="modal-toggle" />
+<div class="modal">
+    <div class="modal-box relative cursor-pointer">
+        <label for="resetPasswordModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+        <form action="/user/resetPW/{{id}}" method="POST">
+            <h3 class="font-bold text-lg pb-2 mb-2">Reset This User's Password</h3>
+            <div class="form-control justify-items-center">
+                <div class="row-cols-3 ">
+                    <input name="password" type="text" placeholder="Password" class="input input-bordered w-5/12" />
+                    <input name="confirmPassword" type="text" placeholder="Confirm Password"
+                        class="input input-bordered w-5/12" />
+                    <div class="modal-action">
+                        <label class="btn btn-sm"> <button type="submit">Submit</button></label>
                     </div>
-
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button name="resetPwModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
-            </div>
-            </form>
-        </div>
+        </form>
+        </label>
     </div>
-</div>
 </div>

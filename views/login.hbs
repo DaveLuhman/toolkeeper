@@ -1,52 +1,52 @@
-<section class="h-100">
-  <div class="container h-100">
-    <div class="row justify-content-sm-center h-100">
-      <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-7 col-sm-9">
-        <div class="text-center my-5">
-          <a href="/"><img src="img\toolKeeperLogo-dark-small.png" alt="tk logo" width="100"></a>
-        </div>
-        <div class="card shadow-lg">
-          <div class="card-body p-5">
-            <h1 class="fs-4 card-title fw-bold mb-4">Login</h1>
-            <form method="POST" action="/login" class="needs-validation" novalidate="" autocomplete="off">
 
-              <div class="mb-3">
-                <label class="mb-2 text-muted" for="email">E-Mail Address</label>
-                <input id="email" type="email" class="form-control" name="email" value="" required autofocus>
-                <div class="invalid-feedback">
-                  Email is invalid
-                </div>
-              </div>
-
-              <div class="mb-3">
-                <div class="mb-2 w-100">
-                  <label class="text-muted" for="password">Password</label>
-                  <a data-bs-toggle="modal" data-bs-target="#forgotPasswordModal" class="float-end">
-                    Forgot Password?
-                  </a>
-                </div>
-                <input id="password" type="password" class="form-control" name="password" required>
-                <div class="invalid-feedback">
-                  Password is required
-                </div>
-              </div>
-              {{message}}
-              <div class="d-flex align-items-center">
-                <div class="form-check">
-                  <input type="checkbox" name="remember" id="remember" class="form-check-input">
-                  <label for="remember" class="form-check-label">Remember Me</label>
-                </div>
-                <button type="submit" class="btn btn-primary ms-auto">
-                  Login
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-        <div class="text-center mt-5 text-muted">
-          Copyright &copy; 2022-2023 &mdash; ADO Software
+<!-- component -->
+<div class="min-h-screenflex flex-col justify-center sm:py-12 bg-gradient-to-t from-base-100 to-base-300 ...">
+  <div class="p-10 xs:p-0 mx-auto md:w-full md:max-w-md">
+    <img src="\img\toolKeeperLogo-light-full.png" class=" shadow-lg h-20 mx-auto pb-2">
+    <div class="bg-base-300 shadow-2xl w-full rounded-lg divide-y">
+      <div class="px-5 py-7">
+        <form action="/login" method="POST">
+          <label for="email" class="font-semibold text-sm text-gray-600 pb-1 block">E-mail</label>
+          <input type="text" name="email" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
+          <label class="font-semibold text-sm text-gray-600 pb-1 block">Password</label>
+          <input type="password" name="password" class="border rounded-lg px-3 py-2 mt-1 mb-5 text-sm w-full" />
+          <button type="submit"
+            class="transition duration-200 bg-blue-500 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+            <span class="inline-block mr-2">Login</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              class="w-4 h-4 inline-block">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+        </form>
+      </div>
+      {{message}}
+      <div class="text-center whitespace-nowrap">
+        <button
+          class="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            class="w-4 h-4 inline-block align-text-top">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+          </svg>
+          <span class="inline-block ml-1">Forgot Password</span>
+        </button>
+      </div>
+    </div>
+    <div class="py-5">
+      <div class="grid grid-cols-2 gap-1">
+        <div class="text-center sm:text-left whitespace-nowrap">
+          <a href="/">
+            <button
+              class="transition duration-200 mx-5 px-5 py-4 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-200 focus:outline-none focus:bg-gray-300 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                class="w-4 h-4 inline-block align-text-top">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span class="inline-block ml-1">Back to ToolKeeper Home</span>
+            </button></a>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>

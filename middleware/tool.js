@@ -17,6 +17,7 @@ async function getTools(req, res, next) {
         return next();
     }
     const { searchBy, searchValue } = req.body;
+    console.log(`body; ${JSON.stringify(req.body)}`)
     if (searchValue == "" || !searchValue) {
         console.warn('[MW] no search parameters provided'.yellow);
         tools = await Tool.find().skip((perPage * page) - perPage).limit(perPage);
@@ -44,13 +45,18 @@ async function getTools(req, res, next) {
         res.locals.searchTerms = `Service Assignment: ${searchValue}`;
         search = await Tool.find({ serviceAssignment: searchValue }).skip((perPage * page) - perPage).limit(perPage);
     }
+    else if (searchBy == 'status') {
+        res.locals.searchTerms = `Status: ${searchValue}`;
+        search = await Tool.find({ status: searchValue }).skip((perPage * page) - perPage).limit(perPage);
+    }
     if (!search || search.length === 0) {
         res.locals.message = `No Tool Found Matching ${res.locals.searchValue}`;
         res.locals.tools = [];
+        res.locals.pagination = { page, pageCount: 1 };
         console.info('[MW] getTools-out-3'.bgWhite.blue);
         return next();
     }
-
+    res.locals.pagination = { page, pageCount: Math.ceil(search.length / perPage) };
     for (let i = 0; i < search.length; i++)
         tools.push(search[i]);
     if (!search.length) { tools = [search]; }
@@ -87,9 +93,18 @@ async function createTool(req, res, next) {
 async function updateTool(req, res, next) {
     console.info('[MW] updateTool-in'.bgBlue.white);
     let updatedToolArray = [];
+    console.log(typeof req.body._id)
     if (typeof req.body._id === 'string') {
+        console.log('test')
         const { _id, partNumber, description, serviceAssignment, status } = req.body;
-        let updatedTool = await Tool.findByIdAndUpdate(_id, { partNumber, description, serviceAssignment, status }, { new: true });
+        let updatedTool = await Tool.findByIdAndUpdate(_id,
+            {
+                partNumber: partNumber,
+                description: description,
+                serviceAssignment: serviceAssignment,
+                status: status
+            }, { new: true }).exec();
+        console.info(`updatedTool: ${updatedTool}`.green)
         updatedToolArray.push(updatedTool);
     }
     if (typeof req.body._id === 'object') {
@@ -101,13 +116,14 @@ async function updateTool(req, res, next) {
                 'serviceAssignment': serviceAssignment[i],
                 'status': status[i]
             }, { new: true }).exec();
+            console.info(`updatedTool: ${updatedTool}`.green)
             updatedToolArray.push(updatedTool);
         }
     }
     res.locals.tools = updatedToolArray;
-    res.locals.pageCount = 0;
+    res.locals.pagination = { 'page': 1, 'pageCount': 0 }
     res.status(201);
-    console.info('[MW] Successfully Updated Tool'.green + req.body._id);
+    console.info('[MW] Successfully Updated Tools: '.green + updatedToolArray);
     console.info('[MW] updateTool-out-1'.bgWhite.blue);
     next();
 }
@@ -125,7 +141,8 @@ async function archiveTool(req, res, next) {
 }
 async function checkTools(req, res, next) {
     console.info('[MW] checkTools-in'.bgBlue.white);
-    if ((req.body.serialNumber != "") && (req.body.barcode != "")) { res.locals.message = 'No Tools Submitted For Status Change'; console.warn('[MW checkTools-out-1'.bgWhite.blue); res.status(400).redirect('./'); return; }
+    console.log(JSON.stringify(req.body))
+    if (req.body === "") { res.locals.message = 'No Tools Submitted For Status Change'; console.warn('[MW checkTools-out-1'.bgWhite.blue); res.status(400).redirect('back'); return; }
     let searchTerms = [];
     let checkingTools = [];
     for (let i = 0; i < req.body.serialNumber.length; i++) if (req.body.serialNumber[i] != '') searchTerms.push(req.body.serialNumber[i]);
@@ -139,6 +156,8 @@ async function checkTools(req, res, next) {
                 partNumber: tempTool.partNumber,
                 barcode: tempTool.barcode,
                 description: tempTool.description,
+                serviceAssignment: 'FILL THIS IN',
+                serviceAssignmentChanged: true,
                 status: "Checked Out",
                 statusChanged: true
             };
@@ -154,7 +173,7 @@ async function checkTools(req, res, next) {
                 status: "Checked in",
                 statusChanged: true,
                 serviceAssignment: 'Tool Room',
-                serviceAssignmentChanged: true
+                serviceAssignmentChanged: false
             };
             checkingTools.push(pendingTool);
         }

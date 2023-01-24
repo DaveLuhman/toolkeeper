@@ -1,161 +1,93 @@
 <section title="modals">
     <!-- Create New Tool Modal -->
-    <section title="newToolModal">
-        <div class="modal fade" id="newToolModal" tabindex="-1" aria-labelledby="newToolModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="newToolModalHeader">Create A New Tool Entry</h5>
-                        <a type='button' data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </a>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/tool/submit" method="POST">
-                            <div class="row ">
-                                <div class="col">
-                                    <input type="text" class="form-control" name="serialNumber"
-                                        placeholder="Serial Number" aria-label="Serial Number">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control " name="partNumber" placeholder="Part Number"
-                                        aria-label="Part Number">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <input type="text" class="form-control" name="barcode" placeholder="Barcode"
-                                        aria-label="Barcode">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" name="description" placeholder="Description"
-                                        aria-label="Description">
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <input type="text" name="serviceAssignment" id="serviceAssignment"
-                                        class="form-control" placeholder="Service Assignment"
-                                        aria-label="service assignment">
-                                </div>
-                                <div class="col">
-                                    <select name="status" id="status" class="form-select">
-                                        <option value="Checked In">Checked In</option>
-                                        <option value="Checked Out">Checked Out</option>
-                                    </select>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button name="NewToolModalSubmitBtn" type="submit"
-                                    class="btn btn-primary submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{!-- END OF NEW TOOL MODAL --}}
-    </section>
-    <section title="checkInOutModal">
-        <!-- Check In/OutTool Modal -->
-        <div class="modal fade" id="checkInToolModal" tabindex="-1" aria-labelledby="checkInToolModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="checkInToolModalHeader">Check Tools In/Out</h5>
-                        <a type='button' data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </a>
-                    </div>
-                    <div class="modal-body">
-                        <form action="/tool/checkTools" method="POST">
-                            <div class="row mb-2">
-                                <div class="col">
-                                    <input type="text" class="form-control" name="serialNumber"
-                                        placeholder="Serial Number or Barcode" aria-label="Serial Number">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" name="serialNumber"
-                                        placeholder="Serial Number or Barcode" aria-label="Serial Number">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" name="serialNumber"
-                                        placeholder="Serial Number or Barcode" aria-label="Serial Number">
-                                </div>
-                            </div>
-                            <div class="row mb-2 ">
-                                <div class="col">
-                                    <input type="text" class=" form-control" name="barcode"
-                                        placeholder="Serial Number or Barcode" aria-label="Barcode">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class=" form-control" name="barcode"
-                                        placeholder="Serial Number or Barcode" aria-label="Barcode">
-                                </div>
-                                <div class="col">
-                                    <input type="text" class=" form-control" name="barcode"
-                                        placeholder="Serial Number or Barcode" aria-label="Barcode">
-                                </div>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button name="NewToolModalSubmitBtn" type="submit"
-                                    class="btn btn-primary submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section title="searchModal">
-        {{!-- searchToolModal --}}
-        <div class="modal modal-xl fade" id="searchToolModal" tabindex="-1" aria-labelledby="searchToolModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content p-3">
-                    <div class="modal-header text-bg-secondary rounded-bottom">
-                        <h5 class="modal-title" id="searchToolModalHeader">Search for Tool(s)</h5>
-                        <a type='button' data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </a>
-                    </div>
-                    <div class="modal-body p-4">
-                        <div class="row gx-5">
-                            <form action='/dashboard' method="POST">
-                                <div class="col card p-3">
-                                    <select name="searchBy" id="searchBy" class="form-select">
-                                        <option style="background-color: #cccccc;" disabled selected>Search By:
-                                        </option>
-                                        <option style="font-size: 1pt; background-color: #000000;" disabled>
-                                            &nbsp;</option>
-                                        <option value="serialNumber">Serial Number</option>
-                                        <option value="partNumber">Part Number</option>
-                                        <option value="barcode">Barcode</option>
-                                        <option value="serviceAssignment">Service Assignment</option>
-                                        <option value="status">Status</option>
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <input type="text" class="form-control" name="searchValue"
-                                        placeholder="Search Value" aria-label="Search Value">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Cancel</button>
-                                    <button name="NewToolModalSubmitBtn" type="submit"
-                                        class="btn btn-primary submit">Submit</button>
-                                </div>
-                            </form>
+    <input type="checkbox" id="newToolModal" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative cursor-pointer">
+            <label for="newToolModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+            <form action="/tool/submit" method="POST">
+                <h3 class="font-bold text-lg pb-2 mb-2">Create A New Tool Entry</h3>
+                <div class="form-control justify-items-center">
+                    <div class="row-cols-3 ">
+                        <input name="serialNumber" type="text" placeholder="Serial Number"
+                            class="input input-bordered w-5/12" />
+                        <input name="partNumber" type="text" placeholder="Part Number"
+                            class="input input-bordered w-5/12" />
+                        <input name="barcode" type="text" placeholder="Barcode" class="input input-bordered w-5/12" />
+                        <input name="description" type="text" placeholder="Description"
+                            class="input input-bordered w-5/12" />
+                        <input name="serviceAssignment" type="text" placeholder="Service Assignment"
+                            class="input input-bordered w-5/12" />
+                        <select name="status" class="select select-bordered w-5/12">
+                            <option>Status</option>
+                            <option value="checkedIn">Checked-In</option>
+                            <option value="checkedOut">Checked-Out</option>
+                        </select>
+                        <div class="modal-action">
+                            <label class="btn btn-sm">Cancel</label>
+                            <label class="btn btn-sm"> <button type="submit">Submit</button></label>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
+            </label>
         </div>
-    </section>
-    {{!-- END OF NEW TOOL MODAL --}}
+</section>
+<section title="checkInOutModal">
+    <!-- Create New Tool Modal -->
+    <input type="checkbox" id="checkInOutModal" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box w-11/12 max-w-5xl relative cursor-pointer">
+            <label for="checkInOutModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+            <form action="/tool/checkTools" method="POST">
+                <h3 class="font-bold text-lg pb-2 mb-2">Check Tools In or Out</h3>
+                <div class="form-control justify-items-center">
+                    <div class="row-cols-3 ">
+                        <input id="searchValue" name="searchValue" type="text" placeholder="Search Value"
+                            class="input input-bordered w-5/12" />
+                        <input id="searchValue" name="searchValue" type="text" placeholder="Search Value"
+                            class="input input-bordered w-5/12" />
+                        <input id="searchValue" name="searchValue" type="text" placeholder="Search Value"
+                            class="input input-bordered w-5/12" />
+                        <input id="searchValue" name="searchValue" type="text" placeholder="Search Value"
+                            class="input input-bordered w-5/12" />
+                        <input id="searchValue" name="searchValue" type="text" placeholder="Search Value"
+                            class="input input-bordered w-5/12" />
+                        <input id="searchValue" name="searchValue" type="text" placeholder="Search Value"
+                            class="input input-bordered w-5/12" />
+                        <div class="modal-action">
+                            <label for="checkInOutModal" class="btn btn-sm"> <button type="submit">Submit</button></label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </label>
+        </div>
+</section>
+<section title="searchModal">
+    <input type="checkbox" id="searchToolModal" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box relative cursor-pointer">
+            <label for="searchToolModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+            <form action="/dashboard" method="POST">
+                <h3 class="font-bold text-lg pb-2 mb-2">Create A New Tool Entry</h3>
+                <div class="form-control justify-items-center">
+                    <div class="grid-rows-2">
+                        <select id="searchBy" name="searchBy" class="select select-bordered w-5/12">
+                            <option>Search By: </option>
+                            <option value="serialNumber">Serial Number</option>
+                            <option value="partNumber">Part Number</option>
+                            <option value="barcode">Barcode</option>
+                            <option value="serviceAssignment">Service Assignment</option>
+                            <option value="status">In/Out Status</option>
+                        </select>
+                        <input id="searchValue" name="searchValue" type="text" placeholder="Search Term"
+                            class="input input-bordered w-5/12" />
+                        <div class="modal-action">
+                            <label for="submit" class="btn btn-sm"> <button type="submit">Submit</button></label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </label>
+        </div>
 </section>

@@ -1,82 +1,72 @@
-<span>
-    <div class="container" id="dashboard">
-        {{#if message}}
-        <span title="message">
-            <div class="alert">{{message}}</div>
-        </span>
-        {{/if}}
-        {{#if searchTerms}}
-        <span title="searchTerms">
-            <h5>You Searched For: </h5>
-            <h4><i>{{searchTerms}}</i></h4>
-        </span>
-        {{/if}}
+<div class="min-h-screenflex flex-col justify-center sm:py-12 bg-gradient-to-t from-base-100 to-base-300 ...">
 
-        {{#if tools}}
-        <table class="table table-borderless table-hover">
-            <thead class="head" style="background-color: #494949;">
-                <tr class="text-white">
-                    <th>Serial number</th>
-                    <th>Part Number</th>
-                    <th>Barcode #</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Service Assignment</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{#each tools}}
-                {{#unless archived}}
-                <tr scope="row">
-                    <td>{{serialNumber}}</td>
-                    <td>{{partNumber}}</td>
-                    <td>{{barcode}}</td>
-                    <td>{{description}}</td>
-                    <td>{{status}}</td>
-                    <td>{{serviceAssignment}}</td>
 
-                    <td>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <i class="bi bi-pencil-square"></i>
-                            </button>
-
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="/tool/{{id}}">Edit</a></li>
-                                <li><a class="dropdown-item" href="/tool/archive/{{id}}">Archive</a></li>
-                            </ul>
-                        </div>
-    </div>
-    </td>
-    </tr>
-    {{/unless}}
-    {{/each}}
+    {{#if message}}
+    <span title="message">
+        <div class="alert">{{message}}</div>
+    </span>
     {{/if}}
-    </tbody>
+    {{#if searchTerms}}<h4>You searched for: {{searchTerms}}</h4>
+    {{/if}}
+    <table class=" rounded-lg table-compact rounded-t-lg w-5/6 bg-gray-800 text-gray-200 min-w-full">
+        <thead style="background-color: #494949;">
+            <tr class="text-white ">
+                <th>Serial number</th>
+                <th>Part Number</th>
+                <th>Barcode #</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Service Assignment</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        {{#if tools}}
+        <tbody>
+            {{#each tools}}
+            {{#unless archived}}
+            <tr class="hover:bg-zinc-600 text-center">
+                <td class="bg-zinc-800 hover:bg-zinc-600">{{serialNumber}}</td>
+                <td>{{partNumber}}</td>
+                <td class="bg-zinc-800 hover:bg-zinc-600">{{barcode}}</td>
+                <td>{{description}}</td>
+                <td class="bg-zinc-800 hover:bg-zinc-600">{{status}}</td>
+                <td>{{serviceAssignment}}</td>
+                <td class="bg-zinc-800 hover:bg-zinc-600">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">
+                            <i class="fa-solid fa-chevron-down"></i></label>
+                        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+                            <li><a href="/tool/{{id}}">Edit</a></li>
+                            <li><a href="/tool/archive/{{id}}">Archive</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+            {{/unless}}
+            {{/each}}
+            {{/if}}
+        </tbody>
     </table>
 
-
-    <ul class="row">
+{{#gt paginate.pageCount 1}}
+    <ul class="flex flex-wrap items-center justify-evenly mr-0 md:mr-4">
         {{#paginate pagination type="first"}}
-        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">First</a></div>
+        <div class="col-auto"><a href="?p={{n}}"><button class="btn btn-accent">First</button></a></div>
         {{/paginate}}
         {{#paginate pagination type="previous"}}
-        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Prev</a></div>
+        <div class="col-auto"><a href="?p={{n}}"><button class="btn btn-accent">Previous</button></a></div>
         {{/paginate}}
         {{#paginate pagination type="middle" limit="9"}}
-        <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}">{{n}}</a></div>
+        <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}"><button
+                    class="btn btn-accent">{{n}}</button></a>
+        </div>
         {{/paginate}}
         {{#paginate pagination type="next"}}
-        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Next</a></div>
+        <div class="col-auto"><a href="?p={{n}}"><button class="btn btn-accent">Next</button></a></div>
         {{/paginate}}
         {{#paginate pagination type="last"}}
-        <div class="{{#if disabled}}disabled{{/if}} col"><a href="?p={{n}}">Last</a></div>
+        <div class="col-auto"><a href="?p={{n}}"><button class="btn btn-accent">Last</button></a></div>
         {{/paginate}}
-
     </ul>
-
-    </div>
-
-</span>
+    {{/gt}}
+</div>
