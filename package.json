@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
   "dependencies": {
-    "@popperjs/core": "^2.11.6",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "colors": "^1.4.0",
