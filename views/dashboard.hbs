@@ -1,4 +1,4 @@
-<div class="min-h-screenflex flex-col justify-center sm:py-12 bg-gradient-to-t from-base-100 to-base-300 ...">
+<div class=" sm:py-15  bg-gradient-to-t from-base-100 to-base-300 ...">
 
 
     {{#if message}}
@@ -6,9 +6,11 @@
         <div class="alert">{{message}}</div>
     </span>
     {{/if}}
-    {{#if searchTerms}}<h4>You searched for: {{searchTerms}}</h4>
+    {{#if searchTerms}}    <div class="bg-base-100 rounded-t-box text-center">
+        <h1 class="font-medium text-2xl">Searched For:<br />  {{searchTerms}}</h1>
+    </div>
     {{/if}}
-    <table class=" rounded-lg table-compact rounded-t-lg w-5/6 bg-gray-800 text-gray-200 min-w-full">
+    <table class="table-compact rounded-t-lg w-5/6 bg-gray-800 text-gray-200 min-w-full">
         <thead style="background-color: #494949;">
             <tr class="text-white ">
                 <th>Serial number</th>
@@ -47,8 +49,9 @@
             {{/if}}
         </tbody>
     </table>
-
-{{#gt paginate.pageCount 1}}
+</div>
+<br />
+{{#isnt paginate.pageCount 0}}
     <ul class="flex flex-wrap items-center justify-evenly mr-0 md:mr-4">
         {{#paginate pagination type="first"}}
         <div class="col-auto"><a href="?p={{n}}"><button class="btn btn-accent">First</button></a></div>
@@ -68,5 +71,5 @@
         <div class="col-auto"><a href="?p={{n}}"><button class="btn btn-accent">Last</button></a></div>
         {{/paginate}}
     </ul>
-    {{/gt}}
+    {{/isnt}}
 </div>

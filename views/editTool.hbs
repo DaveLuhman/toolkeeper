@@ -1,47 +1,55 @@
-<div class="min-h-screenflex flex-col justify-center sm:py-12 bg-gradient-to-t from-base-100 to-base-300 ...">
+<div class="p-5 sm:py-12 bg-gradient-to-t from-base-100 to-base-300 ...">
     {{#if tools}}
 
     {{#if message}}
     <h5>{{message}}</h5>
     {{else}}
-    <h5>Edit A Tool Entry</h5>
     {{/if}}
-</div>
-<form action="/tool/update/" method="POST">
-    {{#each tools}}
-
-    <div class="form-control justify-items-center">
-        <div class="row-cols-3 py-3 ">
+    <div class="bg-base-100 rounded-t-box text-center">
+        <h1 class="font-medium text-2xl">Edit A Tool Entry</h1>
+    </div>
+    <div class="rounded-b-box p-3 bg-gradient-to-t from-base-300 to-base-100 ...">
+        <form action="/tool/update/" method="POST">
+            {{#each tools}}
             <input type="hidden" name="_id" value="{{id}}" />
-            <input name="serialNumber" type="text" value="{{serialNumber}}" class="py-3 input input-bordered w-5/12" />
-            <input name="partNumber" type="text" value="{{partNumber}}" class="py-3  input input-bordered w-5/12" />
-            <input name="barcode" type="text" value="{{barcode}}" class="input py-3 input-bordered w-5/12" />
-            <input name="description" type="text" value="{{description}}" class="py-3 input input-bordered w-5/12" />
-            <div class=" py-3 input-group-text bg">
-                {{#if serviceAssignmentChanged}}
-                <input name="serviceAssignment" type="text" class="input input-bordered w-5/12 border-red-600"
-                    placeholder="{{serviceAssignment}}" required />
-                {{else}}
-                <input name="serviceAssignment" type="text" value="{{serviceAssignment}}"
-                    class="input input-bordered w-5/12" />
-                {{/if}}
-
-                <select class="form-control select w-5/12 py-3  {{#if statusChanged}}border-red-600{{/if}}"
-                    name="status" id="status" aria-label="Description">
-                    <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked In
-                    </option>
-                    <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked Out
-                    </option>
-                </select>
+            <div class="form-control mb-3 ">
+                <div class=" lg:columns-3 md:columns-2 sm:columns-1 mb-5 ">
+                    <label for="serialNumber" class="form-label">Serial Number</label>
+                    <input name="serialNumber" id="serialNumber" type="text" value="{{serialNumber}}"
+                        class="input input-bordered w-full mb-3 align-self-auto" />
+                    <label for="partNumber" class="form-label">Part Number</label>
+                    <input name="partNumber" id="partNumber" type="text" value="{{partNumber}}"
+                        class="input input-bordered w-full align-self-auto" />
+                    <label for="barcode" class="form-label">Barcode</label>
+                    <input name="barcode" id="barcode" type="text" value="{{barcode}}"
+                        class="input input-bordered w-full mb-3 align-self-auto" />
+                    <label for="description" class="form-label">Description</label>
+                    <input name="description" id="description" type="text" value="{{description}}"
+                        class="input input-bordered w-full  align-self-auto" />
+                    <label for="serviceAssignment" class="form-label">Service Assignment</label>
+                    <input name="serviceAssignment" id="serviceAssignment" type="text" value="{{serviceAssignment}}"
+                        class="input input-bordered w-full mb-3 align-self-auto" />
+                    <label for="status" class="form-label">Status</label>
+                    <select
+                        class="py-2 rounded-btn form-control select w-full {{#if statusChanged}}select-error{{/if}}"
+                        name="status" id="status" aria-label="Description">
+                        <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked In
+                        </option>
+                        <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked Out
+                        </option>
+                    </select>
+                </div>
+                {{/each}}
             </div>
-            {{/each}}
-            <a href="/dashboard"><button type="button" class="btn btn-secondary">Cancel</button></a>
-            <button name="NewToolModalSubmitBtn" type="submit" class="btn btn-primary submit">Submit</button>
+
+        </form>
+        <div class="flex justify-center">
+            <link href="/dashboard"><button class="btn btn-primary btn-sm btn-block w-1/2">Cancel</button></link>
+            <button type="submit" class="btn btn-primary btn-sm btn-block w-1/2">Update
+                Tool</button>
         </div>
     </div>
-</form>
-
-
+</div>
 {{else}}
 <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
 {{/if}}

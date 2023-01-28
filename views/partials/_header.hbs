@@ -31,9 +31,9 @@
           <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">{{user.firstName}}
             {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
           <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-            <li><a href="/user/profile">Profile</a></li>
-            {{#eq user.role "Manager"}}<li><a href="/user">User Management</a></li>{{/eq}}
-            {{#eq user.role "Admin"}}<li><a href="/user">User Management</a></li>{{/eq}}
+            <li><a href="/user">Profile</a></li>
+            {{#eq user.role "Manager"}}<li><a href="/manager">User Management</a></li>{{/eq}}
+            {{#eq user.role "Admin"}}<li><a href="/manager">User Management</a></li>{{/eq}}
             <li><a href="/logout">Logout</a></li>
           </ul>
         </div>
