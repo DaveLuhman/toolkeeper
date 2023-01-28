@@ -1,3 +1,95 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* START MAIN.hbs LAYOUT RENDER TARGETS */
+body {
+  @apply bg-gradient-to-t;
+  @apply from-gray-900;
+  @apply to-base-300;
+}
+/* dashboard view */
+.dashboard-base {
+  @apply flex;
+  @apply flex-wrap;
+  @apply items-center;
+  @apply justify-evenly;
+}
+/* -------------SEARCH TERMS FLASH----------------- */
+h1#search-terms {
+  @apply text-xl;
+  @apply text-center;
+  @apply text-base-content;
+  @apply font-semibold;
+  @apply p-4;
+  @apply bg-stone-700;
+  @apply rounded-2xl;
+  @apply mt-5;
+  @apply ml-5;
+  @apply mr-5;
+}
+/* -----------------TABLE------------------ */
+table.dashboard-table {
+  @apply flex-auto;
+  @apply table-auto;
+  @apply lg:w-5/6;
+  @apply text-gray-100;
+  @apply rounded-box;
+  @apply shadow;
+  @apply overflow-hidden;
+  @apply mb-4;
+  @apply m-5;
+}
+th {
+  @apply text-base-content;
+  @apply font-bold;
+  @apply uppercase;
+  @apply p-2;
+  @apply bg-stone-700;
+}
+tr {
+  @apply text-base-content;
+  @apply p-2;
+  @apply border-b;
+  @apply border-base-300;
+  @apply hover:bg-zinc-600;
+  @apply text-center;
+}
+td {
+  @apply text-base-content;
+  @apply p-2;
+  @apply border-b;
+  @apply border-base-300;
+  @apply hover:bg-zinc-600;
+  @apply text-center;
+}
+/* ------------PAGINATION BAR------------------------ */
+.paginate-bar {
+  @apply flex;
+  @apply flex-wrap;
+  @apply items-center;
+  @apply md:mr-4;
+  @apply mr-0;
+  @apply justify-evenly;
+  @apply overflow-hidden;
+  @apply mb-4;
+}
+.btn-paginate {
+  @apply btn;
+  @apply btn-accent;
+}
+
+/* ------- FOOTER ---------- */
+footer.tk-footer {
+  @apply flex;
+  @apply flex-wrap;
+  @apply items-center;
+  @apply justify-evenly;
+  @apply overflow-hidden;
+  @apply m-4;
+  @apply p-10;
+}
+/* This is for the Twitter - Youtube - Facebook Icons in the footer */
+svg.fill-current {
+  @apply inline-block;
+}

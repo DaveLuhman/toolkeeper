@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon server.js",
-    "tailwind:css": "postcss public/css/tailwind.css -o public/css/style.css"
+    "tailwind:css": "postcss public/css/tailwind.css -o public/css/style.css -w"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.9",
+    "autoprefixer": "^10.4.13",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
     "colors": "^1.4.0",
@@ -45,6 +47,8 @@
   "devDependencies": {
     "eslint": "^8.32.0",
     "nodemon": "^2.0.20",
+    "prettier": "2.8.3",
+    "prettier-plugin-tailwindcss": "^0.2.2",
     "tailwindcss": "^3.2.4"
   }
 }

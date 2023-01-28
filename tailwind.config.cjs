@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ["../public//**/*.{html,js}"],
+  content: ["./views/**/*.{hbs,js}"],
   daisyui: {
     themes: [
       {
@@ -16,10 +16,15 @@ module.exports = {
           "error": "#ED7573",
           "blueSteel": "bg-gradient-to-t from-gray-400 via-gray-600 to-blue-800",
         },
+
       },
     ],
   },
   theme: {
+    fontFamily: {
+      sans: ['Roboto', 'sans-serif'],
+      serif: ['Merriweather', 'serif'],
+    },
     extend: {},
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],
