@@ -7,7 +7,7 @@
             </div>
             {{#each tools}}
             {{#unless archived}}
-            <input name="_id" value="{{_id}}" type="hidden"  placeholder="Tool ID" class="input input-bordered" />
+            <input name="_id" value="{{_id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
             <input name="serialNumber" value="{{serialNumber}}" type="text" placeholder="Serial Number"
                 class="input input-bordered" />
             <input name="partNumber" value="{{partNumber}}" type="text" placeholder="Part Number"
@@ -17,10 +17,10 @@
                 class="input input-bordered" />
             <input name="serviceAssignment" value="{{serviceAssignment}}" type="text" placeholder="Service Assignment"
                 class="input input-bordered" />
-            <select name="status"  class="select select-bordered">
+            <select name="status" class="select select-bordered">
                 <option>Status</option>
-                <option value="Checked In" {{#eq status "Checked In"}}selected{{/eq}}>Checked-In</option>
-                <option value="Checked Out" {{#eq status "Checked Out"}}selected{{/eq}}>Checked-Out</option>
+                <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked-In</option>
+                <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked-Out</option>
             </select>
             <hr class="seperator" />
             <hr class="seperator" />
@@ -28,8 +28,8 @@
             {{/unless}}
             {{/each}}
             <div class="modal-button-row">
-                <label for="newToolModal" class="modal-button">Cancel</label>
-                <label class="modal-button"> <button type="submit">Submit</button></label>
+                <label class="modal-button"><a href="/dashboard">Cancel</a></label>
+                <label class="modal-button"><button type="submit">Submit</button></label>
             </div>
         </div>
     </form>
