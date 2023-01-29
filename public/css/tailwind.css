@@ -2,12 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-/* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
+/* Global CSS */
 body {
   @apply bg-gradient-to-t;
   @apply from-gray-900;
   @apply to-base-300;
   @apply min-h-screen;
+}
+hr.seperator {
+  @apply h-px;
+  @apply my-1;
+  @apply bg-gray-200;
+  @apply border-0;
+  @apply dark:bg-gray-700;
 }
 /* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
 
@@ -184,7 +191,6 @@ ul.nav-user-dropdown {
   @apply ring-inset;
 }
 /* ------------------END LOGIN----------------------- */
-
 /* START MAIN.hbs LAYOUT RENDER TARGETS */
 
 /* dashboard view */
@@ -247,7 +253,76 @@ td#description {
 }
 td#serviceAssignment {
 }
-
+/* ----------------TOOL MODALS------------- */
+.modal {
+}
+.modal-inner-lg {
+    @apply modal-box;
+  @apply max-w-5xl;
+  @apply w-3/4;
+  @apply cursor-pointer;
+  @apply bg-gradient-to-t;
+  @apply from-gray-900;
+  @apply to-base-300;
+}
+.modal-inner-md {
+    @apply modal-box;
+  @apply max-w-5xl;
+  @apply w-3/5;
+  @apply cursor-pointer;
+  @apply bg-gradient-to-t;
+  @apply from-gray-900;
+  @apply to-base-300;
+}
+.modal-close-btn {
+  @apply rounded-badge;
+  @apply btn-xs;
+  @apply absolute;
+  @apply right-1;
+  @apply top-1;
+}
+.modal-table-lg {
+  @apply grid;
+  @apply grid-cols-3;
+  @apply gap-4;
+  @apply w-full;
+  @apply items-center;
+}
+.modal-table-md {
+    @apply grid;
+    @apply grid-cols-2;
+    @apply gap-4;
+    @apply w-full;
+    @apply items-center;
+  }
+.modal-title-bar {
+  @apply col-span-3;
+  @apply rounded-lg;
+  @apply bg-base-100;
+  @apply drop-shadow-xl;
+}
+.modal-title-text {
+  @apply font-bold;
+  @apply text-lg;
+  @apply text-center;
+}
+.modal-body {
+  @apply w-full;
+  @apply drop-shadow-md;
+}
+.modal-button-row {
+    @apply col-span-3;
+    @apply modal-action;
+    @apply float-right;
+}
+.modal-button {
+  @apply btn;
+  @apply normal-case;
+  @apply btn-sm;
+  @apply rounded-lg;
+  @apply text-center;
+  @apply m-2;
+}
 /* ------------PAGINATION BAR------------------------ */
 .paginate-bar {
   @apply flex;
