@@ -22,7 +22,7 @@ async function getTools(req, res, next) {
         console.warn('[MW] no search parameters provided'.yellow);
         tools = await Tool.find().skip((perPage * page) - perPage).limit(perPage);
         let toolCount = await Tool.countDocuments()
-        res.locals.tools = tools;
+        res.locals.tools = tools.sort((a, b) => a.serialNumber - b.serialNumber);
         res.locals.pagination = { page, pageCount: Math.ceil(toolCount / perPage) };
         console.log(`[MW] pageCount: ${res.locals.pagination.pageCount}`)
         console.info('[MW] leaving mw getTools-out-2'.bgWhite.blue);
@@ -57,10 +57,9 @@ async function getTools(req, res, next) {
         return next();
     }
     res.locals.pagination = { page, pageCount: Math.ceil(search.length / perPage) };
-    for (let i = 0; i < search.length; i++)
-        tools.push(search[i]);
+    for (let i = 0; i < search.length; i++) tools.push(search[i]);
     if (!search.length) { tools = [search]; }
-    res.locals.tools = tools;
+    res.locals.tools = tools.sort((a, b) => a.serialNumber - b.serialNumber);
     console.info(`[MW] getTools-out-4`.bgWhite.blue);
     return next();
 }
@@ -84,7 +83,7 @@ async function createTool(req, res, next) {
     let newTool = await Tool.create({ serialNumber, partNumber, barcode, description, serviceAssignment, status, updatedBy: req.user._id, createdBy: req.user._id });
     res.locals.message = 'Successfully Made A New Tool';
     res.locals.tools = [newTool];
-    res.locals.pageCount = 0;
+    res.locals.pagination = { pageCount: 1 };
     res.status(201);
     console.info(`[MW] Tool Successfully Created ${newTool._id}`.green);
     console.info('[MW] createTool-out-3'.bgWhite.blue);
