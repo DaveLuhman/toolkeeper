@@ -41,20 +41,21 @@ hr.seperator {
 }
 .tk-navbar-links-wrapper {
   @apply md:flex;
-  @apply items-center;
   @apply justify-between;
+  @apply items-center;
   @apply text-base;
   @apply pt-4;
   @apply md:pt-0;
 }
 a.tk-navbar-link {
-  @apply inline-block;
+  @apply content-evenly
   @apply no-underline;
   @apply hover:text-black;
+  @apply hover:outline-dotted;
   @apply font-medium;
   @apply text-lg;
   @apply py-2;
-  @apply px-4;
+  @apply px-6;
   @apply lg:-ml-2;
 }
 #nav-content {

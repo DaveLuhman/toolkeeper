@@ -27,7 +27,7 @@
           <label tabindex="0" class="nav-username-btn"><i
               class="fa fa-chevron-down">&nbsp;</i>{{user.firstName}}&nbsp;{{user.lastName}}</label>
           <ul tabindex="0" class="nav-user-dropdown">
-            <li><a href="/user">Profile</a></li>
+            <li><a href="/user/profile">Profile</a></li>
             {{#eq user.role "Manager"}}<li><a href="/manager">User Management</a></li>{{/eq}}
             {{#eq user.role "Admin"}}<li><a href="/manager">User Management</a></li>{{/eq}}
             <li><a href="/logout">Logout</a></li>

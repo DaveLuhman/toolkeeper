@@ -2288,8 +2288,8 @@ hr.seperator {
   }
 }
 .tk-navbar-links-wrapper {
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
   font-size: 1rem;
   line-height: 1.5rem;
   padding-top: 1rem;
@@ -2307,6 +2307,7 @@ a.tk-navbar-link {
 a.tk-navbar-link:hover {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
+  outline-style: dotted;
 }
 a.tk-navbar-link {
   font-weight: 500;
