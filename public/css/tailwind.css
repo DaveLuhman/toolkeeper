@@ -35,12 +35,31 @@ hr.seperator {
   @apply items-center;
 }
 .tool-table-md {
-    @apply grid;
-    @apply grid-cols-2;
-    @apply gap-4;
-    @apply w-full;
-    @apply items-center;
-  }
+  @apply grid;
+  @apply grid-cols-2;
+  @apply gap-4;
+  @apply w-full;
+  @apply items-center;
+}
+.dropdown-label {
+  @apply hover:text-black;
+  @apply hover:rotate-90;
+  @apply font-medium;
+  @apply text-lg;
+  @apply py-2;
+  @apply btn-ghost;
+  @apply rounded-btn;
+}
+.dropdown-item-wrapper {
+  @apply menu;
+  @apply dropdown-content;
+  @apply p-2;
+  @apply shadow;
+  @apply bg-base-100;
+  @apply rounded-box;
+  @apply w-52;
+  @apply mt-4;
+}
 /* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
 
 /* -----------------HEADER--------------------- */
@@ -286,7 +305,7 @@ td#serviceAssignment {
   @apply cursor-pointer;
 }
 .modal-inner-lg {
-    @apply modal-box;
+  @apply modal-box;
   @apply max-w-5xl;
   @apply w-3/4;
   @apply bg-gradient-to-t;
@@ -294,7 +313,7 @@ td#serviceAssignment {
   @apply to-base-300;
 }
 .modal-inner-md {
-    @apply modal-box;
+  @apply modal-box;
   @apply max-w-5xl;
   @apply w-3/5;
   @apply bg-gradient-to-t;
@@ -316,21 +335,21 @@ td#serviceAssignment {
   @apply items-center;
 }
 .modal-table-md {
-    @apply grid;
-    @apply grid-cols-2;
-    @apply gap-4;
-    @apply w-full;
-    @apply items-center;
-  }
+  @apply grid;
+  @apply grid-cols-2;
+  @apply gap-4;
+  @apply w-full;
+  @apply items-center;
+}
 
 .modal-body {
   @apply w-full;
   @apply drop-shadow-md;
 }
 .modal-button-row {
-    @apply col-span-3;
-    @apply modal-action;
-    @apply float-right;
+  @apply col-span-3;
+  @apply modal-action;
+  @apply float-right;
 }
 .modal-button {
   @apply btn;
