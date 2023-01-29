@@ -8,7 +8,7 @@ router.get('/:id', getTools, (_req, res) => {
 })
 router.post('/checkTools', checkTools, (_req, res) => { res.render('editTool'); })
 router.post('/submit', createTool, (_req, res) => { res.render('dashboard'); })
-router.post('/update/', updateTool, (_req, res) => { res.render('dashboard'); })
+router.post('/update/', updateTool, (_req, res) => { res.redirect('/dashboard'); })
 
 router.get('/archive/:id', archiveTool, getTools, (_req, res) => { res.render('dashboard'); })
 

@@ -1,54 +1,39 @@
-<div class="p-5 sm:py-12 bg-gradient-to-t from-base-100 to-base-300 ...">
+<div class="dashboard-base">
     {{#if tools}}
-
-    {{#if message}}
-    <h5>{{message}}</h5>
-    {{else}}
-    {{/if}}
-    <div class="bg-base-100 rounded-t-box text-center">
-        <h1 class="font-medium text-2xl">Edit A Tool Entry</h1>
-    </div>
-    <div class="rounded-b-box p-3 bg-gradient-to-t from-base-300 to-base-100 ...">
-        <form action="/tool/update/" method="POST">
-            {{#each tools}}
-            <input type="hidden" name="_id" value="{{id}}" />
-            <div class="form-control mb-3 ">
-                <div class=" lg:columns-3 md:columns-2 sm:columns-1 mb-5 ">
-                    <label for="serialNumber" class="form-label">Serial Number</label>
-                    <input name="serialNumber" id="serialNumber" type="text" value="{{serialNumber}}"
-                        class="input input-bordered w-full mb-3 align-self-auto" />
-                    <label for="partNumber" class="form-label">Part Number</label>
-                    <input name="partNumber" id="partNumber" type="text" value="{{partNumber}}"
-                        class="input input-bordered w-full align-self-auto" />
-                    <label for="barcode" class="form-label">Barcode</label>
-                    <input name="barcode" id="barcode" type="text" value="{{barcode}}"
-                        class="input input-bordered w-full mb-3 align-self-auto" />
-                    <label for="description" class="form-label">Description</label>
-                    <input name="description" id="description" type="text" value="{{description}}"
-                        class="input input-bordered w-full  align-self-auto" />
-                    <label for="serviceAssignment" class="form-label">Service Assignment</label>
-                    <input name="serviceAssignment" id="serviceAssignment" type="text" value="{{serviceAssignment}}"
-                        class="input input-bordered w-full mb-3 align-self-auto" />
-                    <label for="status" class="form-label">Status</label>
-                    <select
-                        class="py-2 rounded-btn form-control select w-full {{#if statusChanged}}select-error{{/if}}"
-                        name="status" id="status" aria-label="Description">
-                        <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked In
-                        </option>
-                        <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked Out
-                        </option>
-                    </select>
-                </div>
-                {{/each}}
+    <form action="/tool/update" method="POST">
+        <div class="tool-table-lg">
+            <div class="title-bar">
+                <h3 class="title-text">Edit Tool(s)</h3>
             </div>
-
-        </form>
-        <div class="flex justify-center">
-            <link href="/dashboard"><button class="btn btn-primary btn-sm w-1/2">Cancel</button></link>
-            <button type="submit" class="btn btn-primary btn-sm w-1/2">Update
-                Tool</button>
+            {{#each tools}}
+            {{#unless archived}}
+            <input name="_id" value="{{_id}}" type="hidden"  placeholder="Tool ID" class="input input-bordered" />
+            <input name="serialNumber" value="{{serialNumber}}" type="text" placeholder="Serial Number"
+                class="input input-bordered" />
+            <input name="partNumber" value="{{partNumber}}" type="text" placeholder="Part Number"
+                class="input input-bordered" />
+            <input name="barcode" value="{{barcode}}" type="text" placeholder="Barcode" class="input input-bordered" />
+            <input name="description" value="{{description}}" type="text" placeholder="Description"
+                class="input input-bordered" />
+            <input name="serviceAssignment" value="{{serviceAssignment}}" type="text" placeholder="Service Assignment"
+                class="input input-bordered" />
+            <select name="status"  class="select select-bordered">
+                <option>Status</option>
+                <option value="Checked In" {{#eq status "Checked In"}}selected{{/eq}}>Checked-In</option>
+                <option value="Checked Out" {{#eq status "Checked Out"}}selected{{/eq}}>Checked-Out</option>
+            </select>
+            <hr class="seperator" />
+            <hr class="seperator" />
+            <hr class="seperator" />
+            {{/unless}}
+            {{/each}}
+            <div class="modal-button-row">
+                <label for="newToolModal" class="modal-button">Cancel</label>
+                <label class="modal-button"> <button type="submit">Submit</button></label>
+            </div>
         </div>
-    </div>
+    </form>
+
 </div>
 {{else}}
 <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>

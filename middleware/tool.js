@@ -93,9 +93,7 @@ async function createTool(req, res, next) {
 async function updateTool(req, res, next) {
     console.info('[MW] updateTool-in'.bgBlue.white);
     let updatedToolArray = [];
-    console.log(typeof req.body._id)
     if (typeof req.body._id === 'string') {
-        console.log('test')
         const { _id, partNumber, description, serviceAssignment, status } = req.body;
         let updatedTool = await Tool.findByIdAndUpdate(_id,
             {
@@ -143,12 +141,11 @@ async function checkTools(req, res, next) {
     console.info('[MW] checkTools-in'.bgBlue.white);
     console.log(JSON.stringify(req.body))
     if (req.body === "") { res.locals.message = 'No Tools Submitted For Status Change'; console.warn('[MW checkTools-out-1'.bgWhite.blue); res.status(400).redirect('back'); return; }
-    let searchTerms = [];
+    const { searchTerm } = req.body;
     let checkingTools = [];
-    for (let i = 0; i < req.body.serialNumber.length; i++) if (req.body.serialNumber[i] != '') searchTerms.push(req.body.serialNumber[i]);
-    for (let i = 0; i < req.body.barcode.length; i++) if (req.body.barcode[i] != '') searchTerms.push(req.body.barcode[i]);
-    for (let i = 0; i < searchTerms.length; i++) {
-        let tempTool = await Tool.findOne({ $or: [{ 'serialNumber': searchTerms[i] }, { 'barcode': searchTerms[i] }] });
+    for (let i = 0; i < searchTerm.length; i++) {
+        if(searchTerm[i] === "") { continue; }
+        let tempTool = await Tool.findOne({ $or: [{ 'serialNumber': searchTerm[i] }, { 'barcode': searchTerm[i] }] });
         if (tempTool.status === "Checked In") {
             let pendingTool = {
                 _id: tempTool._id,
@@ -170,7 +167,7 @@ async function checkTools(req, res, next) {
                 partNumber: tempTool.partNumber,
                 barcode: tempTool.barcode,
                 description: tempTool.description,
-                status: "Checked in",
+                status: "Checked In",
                 statusChanged: true,
                 serviceAssignment: 'Tool Room',
                 serviceAssignmentChanged: false
@@ -186,7 +183,7 @@ async function checkTools(req, res, next) {
         res.status(400).redirect('back');
         return;
     }
-    res.locals.message = 'Confirm your tools for status change';
+
     res.locals.tools = checkingTools;
     res.locals.pageCount = Math.ceil(checkingTools.length / 10);
     res.status(200);
