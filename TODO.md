@@ -5,4 +5,6 @@
     P4: Set page count to 1 if it's not defined when leaving that middlware function.
     Details: It's not causing the function to fail, but it's throwing an error and stopping the server because handlebars can't render the template properly.
 - Audit checkTools for attempting to return a null value, rather than an empty array.
--
+
+- Build out a way to change the sort target and direction by clicking on the table headers.
+- 
