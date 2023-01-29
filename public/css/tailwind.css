@@ -2,12 +2,191 @@
 @tailwind components;
 @tailwind utilities;
 
-/* START MAIN.hbs LAYOUT RENDER TARGETS */
+/* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
 body {
   @apply bg-gradient-to-t;
   @apply from-gray-900;
   @apply to-base-300;
+  @apply min-h-screen;
 }
+/* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
+
+/* -----------------HEADER--------------------- */
+
+.tk-navbar {
+  @apply flex;
+  @apply w-full;
+  @apply drop-shadow-2xl;
+  @apply items-center;
+  @apply justify-between;
+  @apply mt-0;
+  @apply px-6;
+  @apply py-2;
+}
+.tk-navbar-menu {
+  @apply hidden;
+  @apply md:flex;
+  @apply md:items-center;
+  @apply md:w-auto;
+  @apply w-full;
+  @apply order-3;
+  @apply md:order-1;
+}
+.tk-navbar-links-wrapper {
+  @apply md:flex;
+  @apply items-center;
+  @apply justify-between;
+  @apply text-base;
+  @apply pt-4;
+  @apply md:pt-0;
+}
+a.tk-navbar-link {
+  @apply inline-block;
+  @apply no-underline;
+  @apply hover:text-black;
+  @apply font-medium;
+  @apply text-lg;
+  @apply py-2;
+  @apply px-4;
+  @apply lg:-ml-2;
+}
+#nav-content {
+  @apply order-2;
+  @apply md:order-3;
+  @apply flex;
+  @apply flex-wrap;
+  @apply items-center;
+  @apply justify-end;
+  @apply mr-0;
+  @apply md:mr-4;
+}
+.nav-user-menu-wrapper {
+  @apply flex;
+  @apply items-center;
+  @apply w-full;
+  @apply md:w-full;
+}
+.nav-username-btn {
+  @apply hover:text-black;
+  @apply font-medium;
+  @apply text-lg;
+  @apply p-2;
+  @apply btn-ghost;
+  @apply rounded-btn;
+}
+ul.nav-user-dropdown {
+  @apply menu;
+  @apply dropdown-content;
+  @apply p-2;
+  @apply shadow;
+  @apply bg-base-100;
+  @apply rounded-box;
+  @apply w-52;
+  @apply mt-4;
+}
+.nav-login-btn {
+  @apply bg-transparent;
+  @apply p-1.5;
+  @apply rounded;
+  @apply border;
+  @apply border-gray-300;
+  @apply mr-4;
+  @apply hover:bg-gray-100;
+  @apply hover:text-gray-700;
+}
+.fa {
+  @apply contents;
+}
+/* ------------------END HEADER-------------------- */
+/* ------------------LOGIN----------------------- */
+#login-wrapper {
+  @apply flex-col;
+  @apply justify-center;
+  @apply sm:py-12;
+}
+#login-container {
+  @apply p-10;
+  @apply mx-auto;
+  @apply md:w-full;
+  @apply md:max-w-md;
+}
+#tk-logo {
+  @apply shadow-lg;
+  @apply h-20;
+  @apply mx-auto;
+  @apply pb-2;
+}
+.login-form-wrapper {
+  @apply bg-base-300;
+  @apply shadow-2xl;
+  @apply w-full;
+  @apply rounded-lg;
+  @apply divide-y;
+}
+.login-label {
+  @apply font-semibold;
+  @apply text-sm;
+  @apply text-gray-600;
+  @apply pb-1;
+  @apply block;
+}
+.login-input {
+  @apply border;
+  @apply rounded-lg;
+  @apply px-3;
+  @apply py-2;
+  @apply mt-1;
+  @apply mb-5;
+  @apply text-sm;
+  @apply w-full;
+}
+#login-btn {
+  @apply transition;
+  @apply duration-200;
+  @apply bg-blue-500;
+  @apply hover:bg-blue-600;
+  @apply focus:bg-blue-700;
+  @apply focus:shadow-sm;
+  @apply focus:ring-4;
+  @apply focus:ring-blue-500;
+  @apply focus:ring-opacity-50;
+  @apply text-white;
+  @apply w-full;
+  @apply rounded-lg;
+  @apply text-sm;
+  @apply shadow-sm;
+  @apply hover:shadow-md;
+  @apply font-semibold;
+  @apply text-center;
+  @apply inline-block;
+}
+.login-form-footer {
+  @apply text-center;
+  @apply whitespace-nowrap;
+}
+.forgot-password {
+  @apply transition;
+  @apply duration-200;
+  @apply mx-5;
+  @apply px-5;
+  @apply py-4;
+  @apply cursor-pointer;
+  @apply font-normal;
+  @apply text-sm;
+  @apply rounded-lg;
+  @apply text-gray-500;
+  @apply hover:bg-gray-100;
+  @apply focus:outline-none;
+  @apply focus:bg-gray-200;
+  @apply focus:ring-2;
+  @apply focus:ring-gray-400;
+  @apply focus:ring-opacity-50;
+  @apply ring-inset;
+}
+/* ------------------END LOGIN----------------------- */
+
+/* START MAIN.hbs LAYOUT RENDER TARGETS */
+
 /* dashboard view */
 .dashboard-base {
   @apply flex;
@@ -63,6 +242,12 @@ td {
   @apply hover:bg-zinc-600;
   @apply text-center;
 }
+/* --------------FIELD BASED SPECIFIC CONFIG----------------- */
+td#description {
+}
+td#serviceAssignment {
+}
+
 /* ------------PAGINATION BAR------------------------ */
 .paginate-bar {
   @apply flex;

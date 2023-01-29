@@ -5,7 +5,7 @@ export default {
         "node": true,
         "es6": true
     },
-    "extends": "eslint:recommended",
+    "extends": ["eslint:recommended", "prettier"],
     "overrides": [
     ],
     "parserOptions": {

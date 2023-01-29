@@ -22,12 +22,12 @@
             {{#each tools}}
             {{#unless archived}}
             <tr>
-                <td class="col-even">{{serialNumber}}</td>
-                <td class="col-odd">{{partNumber}}</td>
-                <td class="col-even">{{barcode}}</td>
-                <td class="col-odd">{{description}}</td>
-                <td class="col-even">{{status}}</td>
-                <td class="col-odd">{{serviceAssignment}}</td>
+                <td id="serialNumber">{{serialNumber}}</td>
+                <td id="partNumber">{{partNumber}}</td>
+                <td id="barcode">{{barcode}}</td>
+                <td id="description">{{description}}</td>
+                <td id="status">{{status}}</td>
+                <td id="serviceAssignment">{{serviceAssignment}}</td>
                 <td>
                     <div class="dropdown dropdown-end">
                         <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">
