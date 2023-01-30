@@ -1,31 +1,21 @@
-<div class="dashboard-base">
-    <form>
-        <div class="user-table">
-            <div class="title-bar">
-                <h3 class="title-text">User Profile</h3>
-            </div>
-            <div class="form-control">
-                <label class="label label-text">First&nbsp;Name</label>
-                <input id="firstName" name="firstName" type="text" value="{{user.firstName}}"
-                    class="input input-bordered" />
-            </div>
-            <div class="form-control">
-                <label class="label label-text">Last&nbsp;Name</label>
-                <input id="lastName" name="lastName" type="text" value="{{user.lastName}}"
-                    class="input input-bordered" />
-            </div>
-            <div class="form-control">
-                <label class="label label-text">Your&nbsp;Email</label>
-                <input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
-            </div>
-            <div class="form-control">
-                <label class="label label-text">Your&nbsp;Role</label>
-                <select class="select select-bordered" name="role" id="role" aria-label="role">
-                    <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
-                    <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
-                    <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
-                </select>
-            </div>
-        </div>
-    </form>
+<div class="user-table">
+    <div class="title-bar">
+        <h3 class="title-text">User Profile</h3>
+    </div>
+    <label class="label label-text">First&nbsp;Name</label>
+    <input id="firstName" name="firstName" type="text" value="{{user.firstName}}" class="input input-bordered" />
+
+
+    <label class="label label-text">Last&nbsp;Name</label>
+    <input id="lastName" name="lastName" type="text" value="{{user.lastName}}" class="input input-bordered" />
+
+    <label class="label label-text">Your&nbsp;Email</label>
+    <input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
+
+    <label class="label label-text">Your&nbsp;Role</label>
+    <select class="select select-bordered" name="role" id="role" aria-label="role">
+        <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
+        <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
+        <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
+    </select>
 </div>
