@@ -84,7 +84,12 @@ app.use('/dashboard',  isAuthd, dashboardRouter);
 app.use('/tool',   toolRouter);
 app.use(isManager)
 app.use('/manager',   managerRouter);
-
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  const err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
 app.listen(PORT, () => {
   console.info(`[INIT] Server is running on port ${PORT}`);
