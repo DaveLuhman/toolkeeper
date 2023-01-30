@@ -2047,6 +2047,8 @@ hr.seperator {
 }
 .tool-table {
   display: grid;
+  display: flex;
+  padding: 1.25rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 @media (min-width: 960px) {
@@ -2065,10 +2067,23 @@ hr.seperator {
 }
 .user-table {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 1.25rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: 1rem;
   width: 100%;
   align-items: center;
+}
+@media (min-width: 1440px) {
+
+  .user-table {
+    width: 83.333333%;
+  }
+}
+.user-table {
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  margin: 1.25rem;
 }
 .dropdown-label:hover {
   --tw-text-opacity: 1;
