@@ -4,7 +4,6 @@
 
 /* Global CSS */
 body {
-  @apply md:bg-white;
   @apply bg-gradient-to-t;
   @apply from-gray-900;
   @apply to-base-300;
