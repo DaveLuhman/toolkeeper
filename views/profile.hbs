@@ -1,92 +1,31 @@
-<div class="rounded min-h-screenflex flex-col justify-center sm:py-12 bg-gradient-to-t from-zinc-700 to-gray-800 ...">
-    <div class="container">
-        {{#if message}}
-        <h5>{{message}}</h5>
-        {{/if}}
-    </div>
-    <form action="/user/{{user._id}}" method="POST">
-        <div class="form-control justify-items-center">
-            <div class="-mx-3 flex flex-wrap">
-                <div class="w-full px-3 sm:w-1/2">
-                    <div class="mb-5">
-                        <label for="firstName" class="mb-3">
-                            First Name
-                        </label>
-                        <input type="text" name="firstName" id="firstName" value="{{user.firstName}}"
-                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                    </div>
-                </div>
-                <div class="w-full px-3 sm:w-1/2">
-                    <div class="mb-5">
-                        <label for="lName" class="mb-3 ">
-                            Last Name
-                        </label>
-                        <input type="text" name="lastName" id="lastName" value="{{user.lastName}}"
-                            class="w-full rounded-md border py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                    </div>
-                </div>
+<div class="dashboard-base">
+    <form>
+        <div class="user-table">
+            <div class="title-bar">
+                <h3 class="title-text">User Profile</h3>
             </div>
-            <div class="-mx-3 flex flex-wrap">
-                <div class="w-full px-3 sm:w-1/2">
-                    <div class="mb-5">
-                        <label class="label">
-                            <span class="label-text">Email</span></label>
-                        <input name="email" type="text" value="{{user.email}}"
-                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                    </div>
-                </div>
-                <div class="w-full px-3 sm:w-1/2">
-                    <div class="mb-5">
-                        <label class="label">
-                            <span class="label-text">Role</span></label>
-                        <select
-                            class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md"
-                            name="role" id="role" aria-label="role">
-                            <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
-                            <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
-                            <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="-mx-3 flex flex-wrap">
-                    <div class="w-full px-3 sm:w-1/2">
-                        <div class="mb-5">
-                            <label for="resetPasswordModal" class="label">
-                                <button type:'button' class="btn btn-primary label-text">Reset Password</button>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="w-full px-3 sm:w-1/2">
-                        <div class="mb-5">
-                            <label class="label">
-                                <button type="submit" class="btn btn-primary label-text">Submit</button>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-control">
+                <label class="label label-text">First&nbsp;Name</label>
+                <input id="firstName" name="firstName" type="text" value="{{user.firstName}}"
+                    class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label label-text">Last&nbsp;Name</label>
+                <input id="lastName" name="lastName" type="text" value="{{user.lastName}}"
+                    class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label label-text">Your&nbsp;Email</label>
+                <input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label label-text">Your&nbsp;Role</label>
+                <select class="select select-bordered" name="role" id="role" aria-label="role">
+                    <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
+                    <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
+                    <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
+                </select>
             </div>
         </div>
-</div>
-</div>
-</form>
-</div>
-
-
-
-
-{{!-- Admin Section --}}
-{{#eq user.role "Admin"}}
-<div class="container bg-body-secondary rounded p-3">
-    <div class="container-fluid">
-        <h4>Secret Admin Area</h4>
-        <form action="/tool/submitFile" method="POST">
-            <div class="input-group">
-                <input type="file" name="csvFile" id="csvFile" class="form-control">
-                <button type="submit" class="btn-danger form-control"></button>
-            </div>
-        </form>
-
-    </div>
-</div>
-{{/eq}}
+    </form>
 </div>
