@@ -25,6 +25,11 @@ module.exports = {
       sans: ['Roboto', 'sans-serif'],
       serif: ['Merriweather', 'serif'],
     },
+    screens: {
+      'sm': '576px',
+      'md': '960px',
+      'lg': '1440px',
+    },
     extend: {},
   },
   plugins: [require("@tailwindcss/typography"), require("daisyui")],

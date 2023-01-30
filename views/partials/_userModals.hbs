@@ -1,102 +1,54 @@
 {{!-- New User Modal --}}
 <input type="checkbox" id="newUserModal" class="modal-toggle" />
 <div class="modal">
-    <div class="modal-box relative cursor-pointer">
-        <label for="newUserModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <div class="modal-inner-lg">
+        <label for="newUserModal" class="modal-close-btn">✕</label>
         <form action="/user/{{user._id}}" method="POST">
-            <div class="form-control justify-items-center">
-                <div class="-mx-3 flex flex-wrap">
-                    <div class="w-full px-3 sm:w-1/2">
-                        <div class="mb-5">
-                            <label for="firstName" class="mb-3  ">
-                                First Name
-                            </label>
-                            <input type="text" name="firstName" id="firstName"
-                                class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                        </div>
-                    </div>
-                    <div class="w-full px-3 sm:w-1/2">
-                        <div class="mb-5">
-                            <label for="lastName" class="mb-3 ">
-                                Last Name
-                            </label>
-                            <input type="text" name="lastName" id="lastName"
-                                class="w-full rounded-md border py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                        </div>
-                    </div>
+            <div class="modal-table">
+                <div class="title-bar">
+                    <h3 class="title-text">Create A New User</h3>
                 </div>
-                <div class="-mx-3 flex flex-wrap">
-                    <div class="w-full px-3 sm:w-1/2">
-                        <div class="mb-5">
-                            <label for="password" class="mb-3  ">
-                                Password
-                            </label>
-                            <input required type="password" name="password" id="password"
-                                class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                        </div>
-                    </div>
-                    <div class="w-full px-3 sm:w-1/2">
-                        <div class="mb-5">
-                            <label for="confirmPassword" class="mb-3 ">
-                                Confirm Password
-                            </label>
-                            <input required type="password" name="confirmPassword" id="confirmPassword"
-                                class="w-full rounded-md border py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-                        </div>
-                    </div>
+                <input placeholder="First Name" type="text" name="firstName" id="firstName"
+                    class="input input-bordered">
+                <input placeholder="Last Name" type="text" name="lastName" id="lastName" class="input input-bordered">
+                <input placeholder="E-Mail" type="email" name="email" id="email" class="input input-bordered">
+                <select class="select select-bordered" name="role">
+                    <option>Role</option>
+                    <option value="User">User</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <input placeholder="Password" type="password" name="password" id="password"
+                    class="input input-bordered">
+                <input placeholder="Confirm Password" type="confirm-password" name="confirm-password"
+                    id="confirm-password" class="input input-bordered">
+                <div class="modal-button-row">
+                    <label class="btn btn-sm"> <button type="submit">Submit</button></label>
                 </div>
-                <div class="-mx-3 flex flex-wrap">
-                    <div class="w-full px-3 sm:w-1/2">
-                        <div class="mb-5">
-                            <label class="label">
-                                <span class="label-text">Email</span></label>
-                            <input name="email" type="text"
-                                class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md" />
-
-                        </div>
-                    </div>
-                    <div class="w-full px-3 sm:w-1/2">
-                        <div class="mb-5">
-                            <label class="label">
-                                <span class="label-text">Role</span></label>
-                            <select
-                                class="w-full rounded-md border  py-3 px-6 text-base font-medium  outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                name="role" id="role" aria-label="role">
-                                <option value="User">User</option>
-                                <option value="Manager">Manager
-                                </option>
-                                <option value="Admin">Admin</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-action">
-                <label class="btn btn-sm"> <button type="submit">Submit</button></label>
             </div>
         </form>
-        </label>
     </div>
 </div>
+
 {{!-- END New User Modal --}}
 {{!-- reset password Modal --}}
 <input type="checkbox" id="resetPasswordModal" class="modal-toggle" />
 <div class="modal">
-    <div class="modal-box relative cursor-pointer">
-        <label for="resetPasswordModal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+    <div class="modal-inner-md">
+        <label for="resetPasswordModal" class="modal-close-btn">✕</label>
         <form action="/user/resetPW/{{id}}" method="POST">
-            <h3 class="font-bold text-lg pb-2 mb-2">Reset This User's Password</h3>
-            <div class="form-control justify-items-center">
-                <div class="row-cols-3 ">
-                    <input name="password" type="text" placeholder="Password" class="input input-bordered w-5/12" />
-                    <input name="confirmPassword" type="text" placeholder="Confirm Password"
-                        class="input input-bordered w-5/12" />
-                    <div class="modal-action">
-                        <label class="btn btn-sm"> <button type="submit">Submit</button></label>
-                    </div>
+            <div class="modal-table">
+                <div class="title-bar">
+                    <h3 class="title-text">Reset A Password</h3>
+                </div>
+                <input placeholder="Password" type="password" name="password" id="password"
+                    class="input input-bordered">
+                <input placeholder="Confirm Password" type="confirm-password" name="confirm-password"
+                    id="confirm-password" class="input input-bordered">
+                <div class="modal-button-row">
+                    <label class="modal-button"> <button type="submit">Submit</button></label>
                 </div>
             </div>
         </form>
-        </label>
     </div>
 </div>

@@ -4,6 +4,7 @@
 
 /* Global CSS */
 body {
+  @apply md:bg-white;
   @apply bg-gradient-to-t;
   @apply from-gray-900;
   @apply to-base-300;
@@ -17,7 +18,8 @@ hr.seperator {
   @apply dark:bg-gray-700;
 }
 .title-bar {
-  @apply col-span-3;
+  @apply col-span-2;
+  @apply md:col-span-3;
   @apply rounded-lg;
   @apply bg-base-100;
   @apply drop-shadow-xl;
@@ -27,14 +29,15 @@ hr.seperator {
   @apply text-lg;
   @apply text-center;
 }
-.tool-table-lg {
+.tool-table {
   @apply grid;
-  @apply grid-cols-3;
+  @apply grid-cols-2;
+  @apply md:max-lg:grid-cols-3;
   @apply gap-4;
   @apply w-full;
   @apply items-center;
 }
-.tool-table-md {
+.user-table {
   @apply grid;
   @apply grid-cols-2;
   @apply gap-4;
@@ -327,16 +330,10 @@ td#serviceAssignment {
   @apply right-1;
   @apply top-1;
 }
-.modal-table-lg {
-  @apply grid;
-  @apply grid-cols-3;
-  @apply gap-4;
-  @apply w-full;
-  @apply items-center;
-}
-.modal-table-md {
+.modal-table {
   @apply grid;
   @apply grid-cols-2;
+  @apply md:grid-cols-3;
   @apply gap-4;
   @apply w-full;
   @apply items-center;
@@ -347,7 +344,8 @@ td#serviceAssignment {
   @apply drop-shadow-md;
 }
 .modal-button-row {
-  @apply col-span-3;
+ @apply col-span-2;
+  @apply md:col-span-3;
   @apply modal-action;
   @apply float-right;
 }
