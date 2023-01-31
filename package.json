@@ -5,8 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
-    "tailwind:css": "postcss public/css/tailwind.css -o public/css/style.css -w"
+    "dev": "nodemon ./src/server.js",
+    "tailwind:css": "postcss -c ./src/config/postcss.config.cjs -i ./src/public/css/tailwind.css -o ./src/public/css/style.css"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,6 @@
   },
   "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.9",
     "autoprefixer": "^10.4.13",
     "bcrypt": "^5.1.0",
     "body-parser": "^1.20.1",
