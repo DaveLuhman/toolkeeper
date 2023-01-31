@@ -1,4 +1,4 @@
-import { getTools } from '../../middleware/tool.js';
+import { getTools } from '../middleware/tool.js';
 import { Router } from 'express';
 
 const router = Router();
