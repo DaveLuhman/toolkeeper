@@ -1,11 +1,12 @@
 import passport from 'passport';
 
 function checkAuth(req, res, next) {
+    console.log('[AUTH] Checking Authentication: ' + req.isAuthenticated());
     if (req.isAuthenticated()) {
         res.locals.user = req.user;
         return next();
     }
-    res.local.message = 'You must be logged in to access that page';
+    res.locals.message = 'You must be logged in to access that page';
     res.redirect('/login');
     return;
 }
