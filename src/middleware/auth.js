@@ -1,7 +1,6 @@
 import passport from 'passport';
 
 function checkAuth(req, res, next) {
-    console.log('[AUTH] Checking Authentication: ' + req.isAuthenticated());
     if (req.isAuthenticated()) {
         res.locals.user = req.user;
         return next();
