@@ -1,6 +1,5 @@
 import Tool from '../models/tool.js';
 
-
 async function getTools(req, res, next) {
   console.info('[MW] getTools-in'.bgBlue.white);
   let search = [];
@@ -9,32 +8,33 @@ async function getTools(req, res, next) {
   let page = req.query.p || 1
   const id = req.params.id;
   const { searchBy, searchValue } = req.body;
+  Array.isArray(searchValue) ? searchValue : [searchValue];
   console.log(`body; ${JSON.stringify(req.body)}`)
-  switch (searchValue) {
+  switch (searchBy) {
     case id:
       console.info(`[MW] searching id: ${id}`);
-      tools = await Tool.findById(req.params.id);
+      tools = await Tool.findById({ $eq: id });
       return next();
     case serialNumber:
       console.info(`[MW] Serial Number: ${searchValue}`);
       res.locals.searchTerms = `Serial Number: ${searchValue}`;
-      search = await Tool.findOne({ serialNumber: searchValue })
+      search = await Tool.findOne({ serialNumber: { $eq: searchValue } })
       break;
     case partNumber:
       res.locals.searchTerms = `Part Number: ${searchValue}`;
-      search = await Tool.find({ partNumber: searchValue })
+      search = await Tool.find({ partNumber: { $eq: searchValue } })
       break;
     case barcode:
       res.locals.searchTerms = `Barcode: ${searchValue}`;
-      search = await Tool.find({ barcode: searchValue })
+      search = await Tool.find({ barcode: { $eq: searchValue } })
       break;
     case serviceAssignment:
       res.locals.searchTerms = `Service Assignment: ${searchValue}`;
-      search = await Tool.find({ serviceAssignment: searchValue }).skip((perPage * page) - perPage).limit(perPage);
+      search = await Tool.find({ serviceAssignment: { $eq: searchValue } }).skip((perPage * page) - perPage).limit(perPage);
       break;
     case status:
       res.locals.searchTerms = `Status: ${searchValue}`;
-      search = await Tool.find({ status: searchValue }).skip((perPage * page) - perPage).limit(perPage);
+      search = await Tool.find({ status: { $eq: searchValue } }).skip((perPage * page) - perPage).limit(perPage);
       break;
     default:
       console.warn('[MW] no search parameters provided'.yellow);
