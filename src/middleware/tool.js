@@ -5,52 +5,56 @@ async function getAllTools(req, res, next) {
   const perPage = 10;
   let page = req.query.p || 1
   const tools = await Tool.find({}).skip((perPage * page) - perPage).limit(perPage);
-  res.locals.pagination = { page, pageCount: Math.ceil(tools.length / perPage) };
+  let toolCount = await Tool.countDocuments()
+  console.log(toolCount +' ' + Math.ceil(toolCount / perPage))
   res.locals.tools = tools.sort((a, b) => a.serialNumber - b.serialNumber);
+  res.locals.pagination = { page, pageCount: Math.ceil(toolCount / perPage) };
   console.info(`[MW] getAllTools-out`.bgWhite.blue);
   return next();
 }
-
-async function getTools(req, res, next) {
-  console.info('[MW] getTools-in'.bgBlue.white);
+async function getToolByID(req, res, next) {
+  const id = req.params.id;
+    console.info(`[MW] searching id: ${id}`);
+    let tools = await Tool.findById({ $eq: id });
+    res.locals.tools = [tools];
+    return next();
+}
+async function searchTools(req, res, next) {
+  console.info('[MW] searchTools-in'.bgBlue.white);
   let tools = [];
-  let search = [];
   const perPage = 10;
   let page = req.query.p || 1
   const id = req.params.id;
   const { searchBy, searchValue } = req.body;
-  console.log(`body; ${JSON.stringify(req.body)}`)
+  console.log(`body: ${JSON.stringify(req.body)}`)
   switch (searchBy) {
-    case id:
-      console.info(`[MW] searching id: ${id}`);
-      tools = await Tool.findById({ $eq: id });
-      return next();
-    case serialNumber:
+    case 'serialNumber':
       console.info(`[MW] Serial Number: ${searchValue}`);
       res.locals.searchTerms = `Serial Number: ${searchValue}`;
       tools = await Tool.findOne({ serialNumber: { $eq: searchValue } })
       break;
-    case partNumber:
+    case 'partNumber':
       res.locals.searchTerms = `Part Number: ${searchValue}`;
       tools = await Tool.find({ partNumber: { $eq: searchValue } })
       break;
-    case barcode:
+    case 'barcode':
       res.locals.searchTerms = `Barcode: ${searchValue}`;
       tools = await Tool.find({ barcode: { $eq: searchValue } })
       break;
-    case serviceAssignment:
+    case 'serviceAssignment':
       res.locals.searchTerms = `Service Assignment: ${searchValue}`;
       tools = await Tool.find({ serviceAssignment: { $eq: searchValue } }).skip((perPage * page) - perPage).limit(perPage);
       break;
-    case status:
+    case 'status':
       res.locals.searchTerms = `Status: ${searchValue}`;
       tools = await Tool.find({ status: { $eq: searchValue } }).skip((perPage * page) - perPage).limit(perPage);
       break;
   }
-  Array.isArray(tools) ? tools : [tools];  //recast non-array to array
+  Array.isArray(tools) ? tools : tools = [tools];
+  console.log(Array.isArray(tools))
   res.locals.pagination = { page, pageCount: Math.ceil(tools.length / perPage) }; //pagination
   res.locals.tools = tools.sort((a, b) => a.serialNumber - b.serialNumber);
-  console.info(`[MW] getTools-out-4`.bgWhite.blue);
+  console.info(`[MW] searchTools-out-4`.bgWhite.blue);
   return next();
 }
 async function createTool(req, res, next) {
@@ -180,4 +184,4 @@ async function checkTools(req, res, next) {
   next();
 }
 
-export { getAllTools, getTools, createTool, updateTool, archiveTool, checkTools };
+export { getAllTools, getToolByID, searchTools, createTool, updateTool, archiveTool, checkTools };
