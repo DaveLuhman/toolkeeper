@@ -55,10 +55,10 @@ const hbs = create({
 
 app.engine('.hbs', hbs.engine);
 app.set('view engine', '.hbs');
-app.set('views', './views');
+app.set('views', './src/views');
 
 // Express Middleware
-app.use(express.static('public')); //Serve Static Files
+app.use(express.static('./src/public')); //Serve Static Files
 app.use(express.json()) // JSON Body Parser
 app.use(fileUpload())
 app.use(express.urlencoded({ extended: false })); // Parse URL-encoded values
