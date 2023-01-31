@@ -9,7 +9,7 @@ const passportConfig = (app) => {
     { usernameField: 'email' },
     async (email, password, done) => {
       console.info(`[AUTH] ${email} attempting login`.blue.bold)
-      let user = await User.findOne({ email: email })
+      let user = await User.findOne({ email: {$eq: email} })
       if (!user) {
         return done(null, false, { message: 'That email is not registered'.red });
       }
