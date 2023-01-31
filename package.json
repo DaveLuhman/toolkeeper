@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start":"node ./src/server.js",
+    "start": "node ./src/server.js",
     "dev": "nodemon ./src/server.js",
     "tailwind:css": "postcss -c ./src/config/postcss.config.cjs -i ./src/public/css/tailwind.css -o ./src/public/css/style.css"
   },
