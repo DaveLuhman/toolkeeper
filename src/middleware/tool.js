@@ -1,4 +1,5 @@
 import Tool from '../models/tool.js';
+import { paginate } from './util.js';
 
 async function getAllTools(req, res, next) {
   console.info('[MW] getAllTools-in'.bgBlue.white);
