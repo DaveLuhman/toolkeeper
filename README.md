@@ -1,13 +1,11 @@
 <a name="readme-top"></a>
 
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://toolkeeper.dev.ado.software">
     <img src="src\public\img\toolKeeperLogo-light-full.png">
   </a>
-
 
 <!-- PROJECT SHIELDS -->
 
@@ -16,6 +14,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -44,17 +43,13 @@
   </ol>
 </details>
 
-
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 [![Product Name Screen Shot][product-screenshot]][product-url]
 
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ## Introduction
 
@@ -75,7 +70,9 @@ This is a full-stack web application built with NodeJS and Express that allows a
 - TailwindCSS + DaisyUI (for styling)
 
 ## Getting Started
+
 ### Prerequisites
+
 - NodeJS 19+
 - MongoDB to point the server at (docker-compose is on the roadmap)
 
@@ -95,10 +92,10 @@ This is a full-stack web application built with NodeJS and Express that allows a
 
 4. Open a web browser and navigate to http://localhost:3000
 
-
-
 ## For Developers
+
 ### Logging Conventions:
+
 `console.log()` - Only used during development, replaced with `console.info()`, `console.warn()`, or `console.error()` if being left into production versions of the site. This allows devs to use `console.log()` as needed during development without worrying about these conventions. Once a feature branch is ready to be submitted for PR, devs can search their local branch for `console.log()` and add prefixes/colors/etc and replace `.log()` with the appropriate alternative.
 
 ###Console Prefixes
@@ -106,9 +103,11 @@ This is a full-stack web application built with NodeJS and Express that allows a
 `[MW]` - Part of a middleware function
 
 ### MW Entries
- 'middlewareName-in/out-index' is the convention, e.g. `[MW] createUser-in` would indicate the stack is entering the createUser middleware, and `[MW] getTools-out-3` would indicate the stack is exiting the getTools middleware at the third `next()` call
+
+'middlewareName-in/out-index' is the convention, e.g. `[MW] createUser-in` would indicate the stack is entering the createUser middleware, and `[MW] getTools-out-3` would indicate the stack is exiting the getTools middleware at the third `next()` call
 
 ### Colorful Logs:
+
 <ul>
 <li><font color="red">.red</font> - Error messages</li>
 <li><font color="green">.green</font> - Success messages</li>
@@ -116,8 +115,6 @@ This is a full-stack web application built with NodeJS and Express that allows a
 <li><span style="color: blue; background-color: white;">.bgBlue.white</span> - entering middleware</li>
 <li><span style="color: white; background-color: blue;">.bgWhite.blue</span> - exiting middleware</li>
 </ul>
-
-
 
 ## Contributing
 
@@ -129,6 +126,7 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/DaveLuhman/toolkeeperDesign.svg?style=for-the-badge
 [contributors-url]: https://github.com/DaveLuhman/toolkeeperDesign/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/DaveLuhman/toolkeeperDesign.svg?style=for-the-badge
@@ -142,5 +140,3 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 [product-screenshot]: ./src/public/img/dashboardScreenshot.png
 [product-url]: https://toolkeeper.dev.ado.software
 [nodejs-shield]: https://img.icons8.com/color/512/nodejs.png
-
-

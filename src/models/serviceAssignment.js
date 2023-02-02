@@ -1,21 +1,27 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
-const serviceAssignmentSchema = new Schema({
+const serviceAssignmentSchema = new Schema(
+  {
     _id: Schema.Types.ObjectId,
     text: {
-        type: String,
-        required: true,
-        maxLength: 128
+      type: String,
+      required: true,
+      maxLength: 128,
     },
     description: {
-        type: String,
-        maxLength: 128
+      type: String,
+      maxLength: 128,
     },
-
-}, {
+  },
+  {
     timestamps: true,
-});
+  }
+);
 
-const ServiceAssignment = model('serviceAssignment', serviceAssignmentSchema, 'serviceAssignments')
+const ServiceAssignment = model(
+  "serviceAssignment",
+  serviceAssignmentSchema,
+  "serviceAssignments"
+);
 
-export default ServiceAssignment
+export default ServiceAssignment;

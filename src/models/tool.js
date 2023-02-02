@@ -1,61 +1,63 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 // import serviceAssignment from './serviceAssignment';
 
-const toolSchema = new Schema({
-
+const toolSchema = new Schema(
+  {
     serialNumber: {
-        type: String,
-        upperCase: true,
-        required: false,
-        unique: true
+      type: String,
+      upperCase: true,
+      required: false,
+      unique: true,
     },
     partNumber: {
-        type: String,
-        upperCase: true,
+      type: String,
+      upperCase: true,
     },
     barcode: {
-        type: Number,
+      type: Number,
     },
     status: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     serviceAssignment: {
-        type: String,
-        upperCase: true,
+      type: String,
+      upperCase: true,
     },
     description: {
-        type: String,
-        maxLength: 128
+      type: String,
+      maxLength: 128,
     },
     manufacturer: {
-        type: String,
-        trim: true,
+      type: String,
+      trim: true,
     },
     archived: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
     createdBy: {
-        ref: 'User',
-        type: Schema.Types.ObjectId
+      ref: "User",
+      type: Schema.Types.ObjectId,
     },
     updatedBy: {
-        ref: 'User',
-        type: Schema.Types.ObjectId
+      ref: "User",
+      type: Schema.Types.ObjectId,
     },
     image: {
-        type: String,
+      type: String,
     },
-},
-    {
-        timestamps: true,
-        strict: false
-    });
+  },
+  {
+    timestamps: true,
+    strict: false,
+  }
+);
 
+toolSchema.findAll = function (callback) {
+  return this.model("tool").find({}, callback);
+};
 
-toolSchema.findAll = function (callback) { return this.model('tool').find({}, callback); }
+const Tool = model("tool", toolSchema);
 
-const Tool = model('tool', toolSchema)
-
-export default Tool
+export default Tool;
