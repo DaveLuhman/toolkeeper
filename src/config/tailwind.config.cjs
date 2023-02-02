@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-export const content = ["./views/**/*.{hbs,js}"];
-export const daisyui = {
+const content = ["./src/views/**/*.{hbs,js}"];
+const daisyui = {
   themes: [
     {
       mytheme: {
@@ -18,7 +18,7 @@ export const daisyui = {
     },
   ],
 };
-export const theme = {
+const theme = {
   fontFamily: {
     sans: ['Roboto', 'sans-serif'],
     serif: ['Merriweather', 'serif'],
@@ -30,4 +30,6 @@ export const theme = {
   },
   extend: {},
 };
-export const plugins = [require("@tailwindcss/typography"), require("daisyui")];
+const plugins = [require("@tailwindcss/typography"), require("daisyui")];
+
+module.exports = { content, daisyui, theme, plugins };
