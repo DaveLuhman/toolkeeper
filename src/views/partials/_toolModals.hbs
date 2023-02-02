@@ -21,9 +21,10 @@
                         <option value="checkedOut">Checked-Out</option>
                     </select>
                     <div class="modal-button-row">
-                        <label for="newToolModal" class="modal-button">Cancel</label>
-                        <label class="modal-button"> <button type="submit">Submit</button></label>
+                        <label class="modal-button" for="newToolModal">Cancel</label>
+                        <label class="modal-button"><button type="submit">Submit</button></label>
                     </div>
+                </div>
             </form>
         </div>
     </div>
@@ -36,7 +37,7 @@
         <div class="modal-inner-lg">
             <label for="checkInOutModal" class="modal-close-btn">✕</label>
             <form action="/tool/checkTools" method="POST">
-                <div class="tool-table-lg">
+                <div class="modal-table">
                     <div class="title-bar">
                         <h3 class="title-text">Check Tools In or Out</h3>
                     </div>
@@ -53,8 +54,8 @@
                     <input id="searchTerm" name="searchTerm" type="text" placeholder="Search Value"
                         class="input input-bordered" />
                     <div class="modal-button-row">
-                        <label for="newToolModal" class="modal-button">Cancel</label>
-                        <label class="modal-button"> <button type="submit">Submit</button></label>
+                        <label class="modal-button" for="checkInOutModal">Cancel</label>
+                        <label class="modal-button"><button type="submit">Submit</button></label>
                     </div>
                 </div>
             </form>
@@ -64,10 +65,10 @@
 <section>
     <input type="checkbox" id="searchToolModal" class="modal-toggle" />
     <div class="modal">
-        <div class="modal-inner-md">
+        <div class="modal-inner-lg">
             <label for="searchToolModal" class="modal-close-btn">✕</label>
             <form action="/tool/search" method="POST">
-                <div class="modal-table-md">
+                <div class="modal-table">
                     <div class="title-bar">
                         <h3 class="title-text">Search for Tool(s)</h3>
                     </div>
@@ -82,12 +83,11 @@
                     <input id="searchValue" name="searchValue" type="text" placeholder="Search Term"
                         class="input input-bordered" />
                     <div class="modal-button-row">
-                        <label class="modal-button"><a href="/dashboard">Cancel</a></label>
+                        <label class="modal-button" for="searchToolModal">Cancel</label>
                         <label class="modal-button"><button type="submit">Submit</button></label>
                     </div>
                 </div>
+            </form>
         </div>
-        </form>
-        </label>
     </div>
 </section>
