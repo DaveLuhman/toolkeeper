@@ -127,7 +127,6 @@ a.tk-navbar-link {
   @apply flex;
   @apply items-center;
   @apply w-full;
-  @apply md:w-full;
 }
 .nav-username-btn {
   @apply hover:text-black;
@@ -148,7 +147,6 @@ ul.nav-user-dropdown {
   @apply mt-4;
 }
 .nav-login-btn {
-  @apply bg-transparent;
   @apply p-1.5;
   @apply rounded;
   @apply border;
