@@ -34,6 +34,7 @@
     "express-fileupload": "^1.4.0",
     "express-flash": "^0.0.2",
     "express-handlebars": "^6.0.7",
+    "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
