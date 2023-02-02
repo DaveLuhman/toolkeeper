@@ -5,7 +5,7 @@ function checkAuth(req, res, next) {
         res.locals.user = req.user;
         return next();
     }
-    res.local.message = 'You must be logged in to access that page';
+    res.locals.message = 'You must be logged in to access that page';
     res.redirect('/login');
     return;
 }

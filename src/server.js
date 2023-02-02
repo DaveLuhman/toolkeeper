@@ -14,7 +14,7 @@ import morgan from 'morgan'; // logging
 import passport from 'passport';
 import connectDB from './config/db.js';
 import passportConfig from './config/passport.js';
-import { checkAuth as isAuthd, isManager } from './middleware/auth.js';
+import { checkAuth, isManager } from './middleware/auth.js';
 import { default as dashboardRouter} from './routes/dashboard.js';
 import { default as toolRouter }  from './routes/tool.js';
 import { default as userRouter } from './routes/user.js';
@@ -67,7 +67,7 @@ app.use(session({
   secret: process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: true, maxAge: 1000 * 60 * 60 * 24 },
+  cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
   store: store
 }))
 app.use(flash());
@@ -78,9 +78,9 @@ app.use(passport.session())
 // Routes (No User Context)
 app.use('/', indexRoutes);
 // Routes (User Context)
-app.use(isAuthd)
+app.use(checkAuth)
 app.use('/user',  userRouter);
-app.use('/dashboard',  isAuthd, dashboardRouter);
+app.use('/dashboard', dashboardRouter);
 app.use('/tool',   toolRouter);
 app.use(isManager)
 app.use('/manager',   managerRouter);

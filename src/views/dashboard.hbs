@@ -46,7 +46,7 @@
     </table>
 </div>
 <br />
-{{#isnt paginate.pageCount 0}}
+{{#gt pagination.pageCount 1}}
 <ul class="paginate-bar">
     {{#paginate pagination type="first"}}
     <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">First</button></a></div>
@@ -65,5 +65,5 @@
     <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Last</button></a></div>
     {{/paginate}}
 </ul>
-{{/isnt}}
+{{/gt}}
 </div>
