@@ -1,4 +1,3 @@
-@import "../../config/postcss.config.cjs"
 
 @tailwind base;
 @tailwind components;
@@ -251,7 +250,7 @@ ul.nav-user-dropdown {
 /* START MAIN.hbs LAYOUT RENDER TARGETS */
 
 /* dashboard view */
-.dashboard-base {
+.main-view {
   @apply flex;
   @apply flex-wrap;
   @apply items-center;
