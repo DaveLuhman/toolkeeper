@@ -15,11 +15,12 @@ import passport from 'passport';
 import connectDB from './config/db.js';
 import passportConfig from './config/passport.js';
 import { checkAuth, isManager } from './middleware/auth.js';
-import { default as dashboardRouter} from './routes/dashboard.js';
-import { default as toolRouter }  from './routes/tool.js';
+import { default as dashboardRouter } from './routes/dashboard.js';
+import { default as toolRouter } from './routes/tool.js';
 import { default as userRouter } from './routes/user.js';
 import { default as indexRoutes } from './routes/index.js';
 import { default as managerRouter } from './routes/manager.js';
+import { rateLimiter, createAccountLimiter } from './config/rateLimiter.js';
 dotenv.config()
 const MongoDBStore = connectMongoDBSession(session);
 const PORT = process.env.PORT || 5000;
@@ -75,17 +76,20 @@ app.use(flash());
 passportConfig(app);
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.use(rateLimiter)
+
 // Routes (No User Context)
 app.use('/', indexRoutes);
 // Routes (User Context)
 app.use(checkAuth)
-app.use('/user',  userRouter);
+app.use('/user', userRouter);
 app.use('/dashboard', dashboardRouter);
-app.use('/tool',   toolRouter);
+app.use('/tool', toolRouter);
 app.use(isManager)
-app.use('/manager',   managerRouter);
+app.use('/manager', managerRouter);
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (_req, _res, next) {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
