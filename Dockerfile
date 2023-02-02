@@ -4,6 +4,6 @@ COPY . /
 EXPOSE 3000
 ENV NODE_ENV=PRODUCTION
 RUN npm install -g npm@latest
-RUN npm ci
+RUN npm install
 COPY . /
 CMD ["npm", "start"]

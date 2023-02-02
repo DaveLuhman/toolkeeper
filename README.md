@@ -5,7 +5,7 @@
 <br />
 <div align="center">
   <a href="https://toolkeeper.dev.ado.software">
-    <img src="public\img\toolKeeperLogo-light-full.png">
+    <img src="src\public\img\toolKeeperLogo-light-full.png">
   </a>
 
 
@@ -72,11 +72,11 @@ This is a full-stack web application built with NodeJS and Express that allows a
 - NodeJS
 - Express
 - MongoDB (for database management)
-- Bootstrap (for styling)
+- TailwindCSS + DaisyUI (for styling)
 
 ## Getting Started
 ### Prerequisites
-- NodeJS 18+
+- NodeJS 19+
 - MongoDB to point the server at (docker-compose is on the roadmap)
 
 ### Installation
@@ -139,7 +139,7 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 [issues-url]: https://github.com/DaveLuhman/toolkeeperDesign/issues
 [license-shield]: https://img.shields.io/github/license/DaveLuhman/toolkeeperDesign.svg?style=for-the-badge
 [license-url]: https://github.com/DaveLuhman/toolkeeperDesign/blob/master/LICENSE.txt
-[product-screenshot]: public/img/dashboardScreenshot.png
+[product-screenshot]: ./src/public/img/dashboardScreenshot.png
 [product-url]: https://toolkeeper.dev.ado.software
 [nodejs-shield]: https://img.icons8.com/color/512/nodejs.png
 
