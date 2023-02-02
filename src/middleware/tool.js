@@ -6,7 +6,7 @@ async function getAllTools(req, res, next) {
   let page = req.query.p || 1
   const tools = await Tool.find({}).skip((perPage * page) - perPage).limit(perPage);
   let toolCount = await Tool.countDocuments()
-  console.log(toolCount +' ' + Math.ceil(toolCount / perPage))
+  console.log(toolCount + ' ' + Math.ceil(toolCount / perPage))
   res.locals.tools = tools.sort((a, b) => a.serialNumber - b.serialNumber);
   res.locals.pagination = { page, pageCount: Math.ceil(toolCount / perPage) };
   console.info(`[MW] getAllTools-out`.bgWhite.blue);
@@ -14,10 +14,10 @@ async function getAllTools(req, res, next) {
 }
 async function getToolByID(req, res, next) {
   const id = req.params.id;
-    console.info(`[MW] searching id: ${id}`);
-    let tools = await Tool.findById({ $eq: id });
-    res.locals.tools = [tools];
-    return next();
+  console.info(`[MW] searching id: ${id}`);
+  let tools = await Tool.findById({ $eq: id });
+  res.locals.tools = [tools];
+  return next();
 }
 async function searchTools(req, res, next) {
   console.info('[MW] searchTools-in'.bgBlue.white);
@@ -54,7 +54,7 @@ async function searchTools(req, res, next) {
   console.log(Array.isArray(tools))
   res.locals.pagination = { page, pageCount: Math.ceil(tools.length / perPage) }; //pagination
   res.locals.tools = tools.sort((a, b) => a.serialNumber - b.serialNumber);
-  console.info(`[MW] searchTools-out-4`.bgWhite.blue);
+  console.info(`[MW] searchTools-out`.bgWhite.blue);
   return next();
 }
 async function createTool(req, res, next) {
