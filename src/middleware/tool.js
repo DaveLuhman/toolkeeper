@@ -3,13 +3,12 @@ import { paginate } from './util.js';
 
 async function getAllTools(req, res, next) {
   console.info('[MW] getAllTools-in'.bgBlue.white);
-  const perPage = 10;
-  let page = req.query.p || 1
-  const tools = await Tool.find({}).skip((perPage * page) - perPage).limit(perPage);
-  let toolCount = await Tool.countDocuments()
-  console.log(toolCount + ' ' + Math.ceil(toolCount / perPage))
-  res.locals.tools = tools.sort((a, b) => a.serialNumber - b.serialNumber);
-  res.locals.pagination = { page, pageCount: Math.ceil(toolCount / perPage) };
+  const tools = await Tool.find({});
+  tools.sort((a, b) => a.serialNumber - b.serialNumber);
+  let { trimmedData, pageCount, targetPage} = paginate(tools, req.query.p, 10);
+  res.locals.pagination = { page: targetPage, pageCount: pageCount }; //pagination
+  res.locals.tools = trimmedData; //array of tools
+  console.log(JSON.stringify(trimmedData))
   console.info(`[MW] getAllTools-out`.bgWhite.blue);
   return next();
 }
