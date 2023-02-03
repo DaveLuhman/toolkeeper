@@ -5,24 +5,33 @@
  * @param {number} perPage
  * @returns {object} trimmedData, targetPage, pageCount
  */
-export function paginate(data, targetPage, perPage) {
+function paginate(dataArray, targetPage, perPage) {
+  if (!Array.isArray(dataArray)) {
+    throw new Error("Please provide an array");
+  }
+
+  if (typeof targetPage !== "number") {
+    throw new Error("Please provide a target page number");
+  }
+
   perPage = perPage || 10;
   targetPage = targetPage || 1;
-  const pageCount = Math.ceil(data.length / perPage); //number of pages
-  const trimmedData = data.slice(
+  const pageCount = Math.ceil(dataArray.length / perPage);
+  const trimmedData = dataArray.slice(
     perPage * targetPage - perPage,
-    perPage * targetPage + 1
+    perPage * targetPage
   );
+
   return { trimmedData, targetPage, pageCount };
 }
 
-// mutate to array
 /**
- * @param {any} data input data, typically before being rendered by handlebars
+ * @param {any} data
  * @returns {array}
  * This function will mutate the data to an array
  */
-export function mutateToArray(data) {
+function mutateToArray(data) {
+  // If data is not an array, convert it to an array
   if (!Array.isArray(data)) {
     data = [data];
   }
