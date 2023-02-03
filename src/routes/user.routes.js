@@ -8,11 +8,11 @@ router.get("/profile", (_req, res) => {
 });
 // update user's own profile
 router.post("/profile", updateUser, (_req, res) => {
-  res.render("profile", { layout: "user.hbs" });
+  res.redirect("/user/profile");
 });
 // update user's own password
 router.post("/resetPassword", resetPassword, (_req, res) => {
-  res.render("profile", { layout: "user.hbs" });
+  res.redirect("/user/profile");
 });
 
 export default router;

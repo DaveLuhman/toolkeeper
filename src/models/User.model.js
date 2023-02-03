@@ -1,6 +1,10 @@
 import { Schema, model } from "mongoose";
 
-const UserSchema = new Schema(
+const // This code creates a new schema that is used to define the User model
+// The schema contains the fields for a user, as well as the timestamps
+// that are automatically added when the user is created and updated
+
+UserSchema = new Schema(
   {
     firstName: {
       type: String,

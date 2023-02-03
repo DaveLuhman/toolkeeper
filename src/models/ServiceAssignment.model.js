@@ -1,5 +1,3 @@
-import { Schema, model } from "mongoose";
-
 const serviceAssignmentSchema = new Schema(
   {
     _id: Schema.Types.ObjectId,
@@ -17,11 +15,3 @@ const serviceAssignmentSchema = new Schema(
     timestamps: true,
   }
 );
-
-const ServiceAssignment = model(
-  "serviceAssignment",
-  serviceAssignmentSchema,
-  "serviceAssignments"
-);
-
-export default ServiceAssignment;

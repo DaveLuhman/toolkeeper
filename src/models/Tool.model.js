@@ -1,12 +1,11 @@
 import { Schema, model } from "mongoose";
-// import serviceAssignment from './serviceAssignment';
+import serviceAssignment from "./serviceAssignment";
 
 const toolSchema = new Schema(
   {
     serialNumber: {
       type: String,
       upperCase: true,
-      required: false,
       unique: true,
     },
     partNumber: {
@@ -18,7 +17,6 @@ const toolSchema = new Schema(
     },
     status: {
       type: String,
-      required: true,
     },
     serviceAssignment: {
       type: String,
