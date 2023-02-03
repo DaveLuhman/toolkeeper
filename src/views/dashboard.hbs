@@ -1,51 +1,60 @@
-<div class="main-view">
-    {{#if message}}
-    <div class="alert">{{message}}</div>
-    {{/if}}
-    {{#if searchTerms}}
-    <h1 id="search-terms">Searched For: <br />{{searchTerms}}</h1>
-    {{/if}}
-    <table class="z-0 table">
-        <thead>
-            <tr>
-                <th>Serial number</th>
-                <th>Part Number</th>
-                <th>Barcode #</th>
-                <th>Description</th>
-                <th>Status</th>
-                <th>Service Assignment</th>
-                <th>Edit</th>
-            </tr>
-        </thead>
-        {{#if tools}}
-        <tbody>
-            {{#each tools}}
-            {{#unless archived}}
-            <tr>
-                <td id="serialNumber">{{serialNumber}}</td>
-                <td id="partNumber">{{partNumber}}</td>
-                <td id="barcode">{{barcode}}</td>
-                <td id="description">{{description}}</td>
-                <td id="status">{{status}}</td>
-                <td id="serviceAssignment">{{serviceAssignment}}</td>
-                <td>
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="dropdown-label">
-                            <i class="fa-solid fa-chevron-down hover:rotate-90"></i></label>
-                        <ul tabindex="0" class="dropdown-item-wrapper">
-                            <li><a class="navbar-link" href="/tool/{{id}}">Edit</a></li>
-                            <li><a class="navbar-link" href="/tool/archive/{{id}}">Archive</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
-            {{/unless}}
-            {{/each}}
+{{!--The following code is used to create the list of tools in the database.--}}
+{{!--This code block will only run if the user is logged in.--}}
+{{#if loggedIn}}
+    {{!--The following code will only run if there are tools in the database.--}}
+    {{#if tools}}
+        {{!--The following code will only run if there are tools in the database that are not archived.--}}
+        {{#if toolsNotArchived}}
+            {{!--The following code will only run if the user has searched for tools.--}}
+            {{#if searchTerms}}
+                {{!--This code will display the search terms on the page.--}}
+                <h1 id="search-terms">Searched For: <br />{{searchTerms}}</h1>
             {{/if}}
-        </tbody>
-    </table>
-</div>
-<br />
+
+            {{!--The following code will display the table with the list of tools.--}}
+            <table class="z-0 table">
+                <thead>
+                    <tr>
+                        <th>Serial number</th>
+                        <th>Part Number</th>
+                        <th>Barcode #</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Service Assignment</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{!--The following code will loop through each tool in the database.--}}
+                    {{#each tools}}
+                        {{!--The following code will only run if the tool is not archived.--}}
+                        {{#unless archived}}
+                            <tr>
+                                <td id="serialNumber">{{serialNumber}}</td>
+                                <td id="partNumber">{{partNumber}}</td>
+                                <td id="barcode">{{barcode}}</td>
+                                <td id="description">{{description}}</td>
+                                <td id="status">{{status}}</td>
+                                <td id="serviceAssignment">{{serviceAssignment}}</td>
+                                <td>
+                                    {{!--The following code will display the dropdown menu for each tool.--}}
+                                    <div class="dropdown dropdown-end">
+                                        <label tabindex="0" class="dropdown-label">
+                                            <i class="fa-solid fa-chevron-down hover:rotate-90"></i></label>
+                                        <ul tabindex="0" class="dropdown-item-wrapper">
+                                            <li><a class="navbar-link" href="/tool/{{id}}">Edit</a></li>
+                                            <li><a class="navbar-link" href="/tool/archive/{{id}}">Archive</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        {{/unless}}
+                    {{/each}}
+                </tbody>
+            </table>
+        {{/if}}
+    {{/if}}
+{{/if}}
 {{#gt pagination.pageCount 1}}
 <ul class="paginate-bar">
     {{#paginate pagination type="first"}}
