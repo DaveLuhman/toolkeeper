@@ -1,60 +1,57 @@
-<div class="min-h-screenflex  justify-center  bg-gradient-to-t from-base-100 to-base-300 ...">
-    <div class="pt-3 w-full">
-        {{#if message}}
-        <span title="message">
-            <div class="alert">{{message}}</div>
-        </span>
-        {{/if}}
-        {{#if searchTerms}}<h4>You searched for: {{searchTerms}}</h4>
-        {{/if}}
-        <button class="btn btn-primary mb-3"><label for="newUserModal">Create A New User</label></button>
-        <table class="table-compact rounded-t-lg w-5/6 bg-gray-800 text-gray-200 min-w-full">
-            <thead style="background-color: #494949;">
-                <tr class="text-white ">
-                    <th>Display Name</th>
-                    <th>Email</th>
-                    <th>Last Login</th>
-                    <th>Role</th>
-                    <th>Disabled?</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
+<div class="main-view">
+    {{#if message}}
+    <span title="message">
+        <div class="alert">{{message}}</div>
+    </span>
+    {{/if}}
+    {{#if searchTerms}}<h4>You searched for: {{searchTerms}}</h4>
+    {{/if}}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Display Name</th>
+                <th>Email</th>
+                <th>Last Login</th>
+                <th>Role</th>
+                <th>Disabled?</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
 
-            <tbody>
-                {{#if users}}
-                {{#each users}}
+        <tbody>
+            {{#if users}}
+            {{#each users}}
 
-                <tr class="hover:bg-zinc-600 text-center">
-                    <td class="bg-zinc-800 hover:bg-zinc-600">
-                        {{displayName}}
-                    </td>
-                    <td>{{email}}
+            <tr class="hover:bg-zinc-600 text-center">
+                <td class="bg-zinc-800 hover:bg-zinc-600">
+                    {{displayName}}
+                </td>
+                <td>{{email}}
 
-                    </td>
-                    <td class="bg-zinc-800 hover:bg-zinc-600">
-                        {{lastLogin}}
-                    </td>
-                    <td>{{role}}
+                </td>
+                <td class="bg-zinc-800 hover:bg-zinc-600">
+                    {{lastLogin}}
+                </td>
+                <td>{{role}}
 
-                    </td>
-                    <td class="bg-zinc-800 hover:bg-zinc-600">
-                        {{isDisabled}}
-                    </td>
-                    <td class="bg-zinc-800 hover:bg-zinc-600">
-                        <div class="dropdown dropdown-end">
-                            <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">
-                                <i class="fa-solid fa-chevron-down"></i></label>
-                            <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-                                <li><a href="/user/{{id}}">Edit</a></li>
-                                <li><a href="/user/disable/{{id}}">Disable</a></li>
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
+                </td>
+                <td class="bg-zinc-800 hover:bg-zinc-600">
+                    {{isDisabled}}
+                </td>
+                <td class="bg-zinc-800 hover:bg-zinc-600">
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">
+                            <i class="fa-solid fa-chevron-down"></i></label>
+                        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+                            <li><a href="/manager/{{id}}">Edit</a></li>
+                            <li><a href="/manager/disable/{{id}}">Disable</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
 
-                {{/each}}
-                {{/if}}
-            </tbody>
-        </table>
-    </div>
+            {{/each}}
+            {{/if}}
+        </tbody>
+    </table>
 </div>

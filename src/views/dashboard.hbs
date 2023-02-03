@@ -5,7 +5,7 @@
     {{#if searchTerms}}
         <h1 id="search-terms">Searched For: <br />{{searchTerms}}</h1>
     {{/if}}
-    <table class="dashboard-table">
+    <table class="z-0 table">
         <thead>
             <tr>
                 <th>Serial number</th>
@@ -33,8 +33,8 @@
                         <label tabindex="0" class="dropdown-label">
                             <i class="fa-solid fa-chevron-down hover:rotate-90"></i></label>
                         <ul tabindex="0" class="dropdown-item-wrapper">
-                            <li><a href="/tool/{{id}}">Edit</a></li>
-                            <li><a href="/tool/archive/{{id}}">Archive</a></li>
+                            <li><a class="navbar-link" href="/tool/{{id}}">Edit</a></li>
+                            <li><a class="navbar-link" href="/tool/archive/{{id}}">Archive</a></li>
                         </ul>
                     </div>
                 </td>

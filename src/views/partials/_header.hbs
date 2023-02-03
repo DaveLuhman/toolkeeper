@@ -1,6 +1,6 @@
 {{#if user}}
-<nav id="header">
-  <div class="tk-navbar">
+<nav class="z-10 relative" id="header">
+  <div class="navbar">
     <img class="" src="/img/toolKeeperLogo-dark-small.png" width="150px" height="auto">
     <label for="menu-toggle" class="cursor-pointer md:hidden block">
       <svg class="inline fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
@@ -10,13 +10,13 @@
     </label>
     <input class="hidden" type="checkbox" id="menu-toggle">
 
-    <div class="tk-navbar-menu" id="menu">
+    <div class="navbar-menu" id="menu">
       <nav>
-        <ul class="tk-navbar-links-wrapper">
-          <li><a class="tk-navbar-link" href="/dashboard">Dashboard</a></li>
-          <li><a class="tk-navbar-link"><label for="newToolModal">Create&nbsp;A New Tool</label></a></li>
-          <li><a class="tk-navbar-link"><label for="checkInOutModal">Check-In/Out</label></a></li>
-          <li><a class="tk-navbar-link"><label for="searchToolModal">Search Tools</label></a></li>
+        <ul class="navbar-links-wrapper">
+          <li><a class="navbar-link" href="/dashboard">Dashboard</a></li>
+          <li><a class="navbar-link"><label for="newToolModal">Create&nbsp;A New Tool</label></a></li>
+          <li><a class="navbar-link"><label for="checkInOutModal">Check-In/Out</label></a></li>
+          <li><a class="navbar-link"><label for="searchToolModal">Search Tools</label></a></li>
         </ul>
       </nav>
     </div>
@@ -26,11 +26,11 @@
         <div class="dropdown dropdown-end">
           <label tabindex="0" class="nav-username-btn"><i
               class="fa fa-chevron-down">&nbsp;</i>{{user.firstName}}&nbsp;{{user.lastName}}</label>
-          <ul tabindex="0" class="nav-user-dropdown">
-            <li><a class="tk-navbar-link" href="/user/profile">Profile</a></li>
-            {{#eq user.role "Manager"}}<li><a class="tk-navbar-link" href="/manager">User Management</a></li>{{/eq}}
-            {{#eq user.role "Admin"}}<li><a class="tk-navbar-link" href="/manager">User Management</a></li>{{/eq}}
-            <li><a class="tk-navbar-link" href="/logout">Logout</a></li>
+          <ul tabindex="0" class="dropdown-item-wrapper">
+            <li><a class="navbar-link" href="/user/profile">Profile</a></li>
+            {{#eq user.role "Manager"}}<li><a class="navbar-link" href="/manager">User Management</a></li>{{/eq}}
+            {{#eq user.role "Admin"}}<li><a class="navbar-link" href="/manager">User Management</a></li>{{/eq}}
+            <li><a class="navbar-link" href="/logout">Logout</a></li>
           </ul>
         </div>
       </div>
@@ -41,7 +41,7 @@
 {{!-- Fixed Logged out navbar --}}
 <!-- component -->
 <nav id="header">
-  <div class="tk-navbar">
+  <div class="navbar">
     <img class="" src="/img/toolKeeperLogo-dark-small.png" width="150px" height="auto">
     <label for="menu-toggle" class="cursor-pointer md:hidden block">
       <svg class="inline fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
@@ -51,12 +51,12 @@
     </label>
     <input class="hidden" type="checkbox" id="menu-toggle">
 
-    <div class="tk-navbar-menu" id="menu">
+    <div class="navbar-menu" id="menu">
       <nav>
-        <ul class="tk-navbar-links-wrapper">
-          <li><a class="tk-navbar-link" href="#">Pricing</a></li>
-          <li><a class="tk-navbar-link" href="#">Features</a></li>
-          <li><a class="tk-navbar-link" href="#">Demo</a></li>
+        <ul class="navbar-links-wrapper">
+          <li><a class="navbar-link" href="#">Pricing</a></li>
+          <li><a class="navbar-link" href="#">Features</a></li>
+          <li><a class="navbar-link" href="#">Demo</a></li>
         </ul>
       </nav>
     </div>

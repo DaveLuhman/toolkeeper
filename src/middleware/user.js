@@ -1,16 +1,25 @@
 import User from "../models/user.js";
 import bcrypt from "bcrypt";
 
-async function getUsers(req, res, next) {
+/**
+ * getUsers - queries all users from db
+ * @param {array} res.locals.users - if id is not provided, find all users
+ * @param {*} next
+ * @returns {array}
+ */
+async function getUsers(_req, res, next) {
   console.info("[MW] getUsers-in".bgBlue.white);
-  if (req.params.id) {
-    let user = await User.findById(req.params.id);
-    res.locals.targetUser = user;
-    console.info(`Found User ${user}`.green);
-    console.info("[MW] getUsers-out-1".bgWhite.blue);
-    return next();
-  } else res.locals.users = await User.find();
+  res.locals.users = await User.find();
   console.info("[MW] getUsers-out-2".bgWhite.blue);
+  next();
+}
+async function getUserByID(req, res, next) {
+  console.info("[MW] getUserByID-in".bgBlue.white);
+  const id = req.params.id;
+  console.info(`[MW] searching id: ${id}`);
+  let user = await User.findById({ $eq: id });
+  res.locals.targetUser = [user];
+  console.info("[MW] getUserByID-out".bgWhite.blue);
   next();
 }
 async function createUser(req, res, next) {
@@ -77,10 +86,7 @@ async function updateUser(req, res, next) {
   console.info("[MW] disableUser-out".bgWhite.blue);
   return next();
 }
-// async function updateUser(id, update, newUser) {
-//     await User.findByIdAndUpdate(id, { $set: update });
-//     return newUser;
-// }
+
 async function resetPassword(req, res, next) {
   console.info("[MW] resetPassword-in".bgBlue.white);
   const { _id, password, confirmPassword } = req.body;
@@ -114,4 +120,5 @@ export {
   verifySelf,
   updateUser,
   disableUser,
+  getUserByID,
 };

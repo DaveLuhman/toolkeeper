@@ -60,48 +60,16 @@ hr.seperator {
   @apply rounded-btn;
 }
 .dropdown-item-wrapper {
+  @apply bg-base-200;
   @apply menu;
   @apply dropdown-content;
   @apply p-2;
   @apply shadow;
-  @apply bg-base-100;
   @apply rounded-box;
   @apply w-52;
   @apply mt-4;
 }
-/* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
-
-/* -----------------HEADER--------------------- */
-
-.tk-navbar {
-  @apply flex;
-  @apply w-full;
-  @apply drop-shadow-2xl;
-  @apply items-center;
-  @apply justify-between;
-  @apply mt-0;
-  @apply px-6;
-  @apply py-2;
-}
-.tk-navbar-menu {
-  @apply hidden;
-  @apply md:flex;
-  @apply md:items-center;
-  @apply md:w-auto;
-  @apply w-full;
-  @apply order-3;
-  @apply md:order-1;
-}
-.tk-navbar-links-wrapper {
-  @apply md:flex;
-  @apply m-3;
-  @apply justify-between;
-  @apply items-center;
-  @apply text-base;
-  @apply pt-4;
-  @apply md:pt-0;
-}
-a.tk-navbar-link {
+.dropdown-item {
   @apply content-evenly;
   @apply no-underline;
   @apply rounded-lg;
@@ -112,8 +80,54 @@ a.tk-navbar-link {
   @apply py-2;
   @apply px-6;
   @apply lg:-ml-2;
+  @apply z-10;
+  }
+/* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
+
+/* -----------------HEADER--------------------- */
+
+.navbar {
+  @apply flex;
+  @apply w-full;
+  @apply drop-shadow-2xl;
+  @apply items-center;
+  @apply justify-between;
+  @apply mt-0;
+  @apply px-6;
+  @apply py-2;
 }
-#nav-content {
+.navbar-menu {
+  @apply hidden;
+  @apply md:flex;
+  @apply md:items-center;
+  @apply md:w-auto;
+  @apply w-full;
+  @apply order-3;
+  @apply md:order-1;
+}
+.navbar-links-wrapper {
+  @apply md:flex;
+  @apply m-3;
+  @apply justify-between;
+  @apply items-center;
+  @apply text-base;
+  @apply pt-4;
+  @apply md:pt-0;
+}
+.navbar-link {
+  @apply content-evenly;
+  @apply no-underline;
+  @apply rounded-lg;
+  @apply hover:text-black;
+  @apply hover:outline;
+  @apply font-medium;
+  @apply text-lg;
+  @apply py-2;
+  @apply px-6;
+  @apply lg:-ml-2;
+  @apply z-10;
+}
+.nav-content {
   @apply order-2;
   @apply md:order-3;
   @apply flex;
@@ -127,6 +141,7 @@ a.tk-navbar-link {
   @apply flex;
   @apply items-center;
   @apply w-full;
+
 }
 .nav-username-btn {
   @apply hover:text-black;
@@ -136,12 +151,12 @@ a.tk-navbar-link {
   @apply btn-ghost;
   @apply rounded-btn;
 }
-ul.nav-user-dropdown {
+.nav-user-dropdown {
   @apply menu;
   @apply dropdown-content;
   @apply p-2;
   @apply shadow;
-  @apply bg-base-100;
+  @apply bg-base-300;
   @apply rounded-box;
   @apply w-52;
   @apply mt-4;
@@ -149,7 +164,7 @@ ul.nav-user-dropdown {
 .nav-login-btn {
   @apply p-1.5;
   @apply rounded;
-  @apply border;
+  @apply hover:border-dotted;
   @apply border-gray-300;
   @apply mr-4;
   @apply hover:bg-gray-100;
@@ -268,7 +283,7 @@ h1#search-terms {
   @apply mr-5;
 }
 /* -----------------TABLE------------------ */
-table.dashboard-table {
+table.table {
   @apply flex-auto;
   @apply table-auto;
   @apply lg:w-5/6;
@@ -386,6 +401,8 @@ footer.tk-footer {
   @apply overflow-hidden;
   @apply m-4;
   @apply p-10;
+  @apply relative;
+  @apply z-10;
 }
 /* This is for the Twitter - Youtube - Facebook Icons in the footer */
 svg.fill-current {

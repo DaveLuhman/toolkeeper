@@ -5,6 +5,7 @@ import {
   updateUser,
   resetPassword,
   disableUser,
+  getUserByID,
 } from "../middleware/user.js";
 
 const router = expressRouter();
@@ -14,7 +15,7 @@ router.get("/", getUsers, (_req, res) => {
   res.render("userManagement", { layout: "user.hbs" });
 });
 // get user by ID and render edit page
-router.get("/:id", getUsers, (_req, res) => {
+router.get("/:id", getUserByID, (_req, res) => {
   res.render("editUser", { layout: "user.hbs" });
 });
 // update user

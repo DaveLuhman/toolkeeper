@@ -1,16 +1,39 @@
 import Tool from "../models/tool.js";
-import { paginate } from "./util.js";
+import { mutateToArray, paginate } from "./util.js";
 
+/**
+ *
+ * @param {number} req.query.p page number
+ * @param {object} res.locals.pagination {page: targetPage, pageCount: pageCount}
+ * @param {array} res.locals.tools returns array of tools in response
+ * @param {*} next
+ * @returns {array}
+ *
+ * This function will return all tools in the database along with pagination data
+ */
 async function getAllTools(req, res, next) {
   console.info("[MW] getAllTools-in".bgBlue.white);
   const tools = await Tool.find({});
   tools.sort((a, b) => a.serialNumber - b.serialNumber);
-  let { trimmedData, pageCount, targetPage } = paginate(tools, req.query.p, 10);
+  let { trimmedData, pageCount, targetPage } = paginate(
+    tools,
+    req.query.p || 1,
+    10
+  );
   res.locals.pagination = { page: targetPage, pageCount: pageCount }; //pagination
   res.locals.tools = trimmedData; //array of tools
   console.info(`[MW] getAllTools-out`.bgWhite.blue);
   return next();
 }
+
+/**
+ * getToolByID
+ * uses the id in the request to find a tool in the database, returning the tool in the response. It returns it in an array so handlebars can iterate over it despite there only being one tool.
+ * @param {string} req.params.id Tool ID
+ * @param {array} res.locals.tools returns array of tools in response
+ * @param {*} next
+ * @returns {array}
+ */
 async function getToolByID(req, res, next) {
   const id = req.params.id;
   console.info(`[MW] searching id: ${id}`);
@@ -18,11 +41,21 @@ async function getToolByID(req, res, next) {
   res.locals.tools = [tools];
   return next();
 }
+/**
+ *
+ * @param {string} req.body.searchBy The key to search by
+ * @param {string} req.body.searchValue The terms to search for
+ * @param {number} req.query.p Page Number
+ * @param {object} res.locals.pagination {page: targetPage, pageCount: pageCount} pagination data
+ * @param {array} res.locals.tools returns array of tools in response
+ * @param {*} next
+ * @returns {array}
+ */
 async function searchTools(req, res, next) {
   console.info("[MW] searchTools-in".bgBlue.white);
   const { searchBy, searchValue } = req.body;
-  const tools = Tool.find({
-    [searchBy]: { $regex: searchValue, $options: "i" },
+  const tools = await Tool.find({
+    [searchBy]: { $eq: searchValue },
   });
   tools.sort((a, b) => a.serialNumber - b.serialNumber);
   let { trimmedData, pageCount, targetPage } = paginate(tools, req.query.p, 10);
@@ -31,6 +64,13 @@ async function searchTools(req, res, next) {
   console.info(`[MW] searchTools-out`.bgWhite.blue);
   return next();
 }
+/**
+ *
+ * @param {object} req.body The tool object to create
+ * @param {string} res.locals.message The message to display to the user
+ * @param {*} next
+ * @returns
+ */
 async function createTool(req, res, next) {
   console.info("[MW] createTool-in".bgBlue.white);
   const {
@@ -53,7 +93,7 @@ async function createTool(req, res, next) {
   });
   if (existing) {
     res.locals.message = "Tool already exists";
-    res.locals.tools = [existing];
+    res.locals.tools = mutateToArray(existing);
     console.error("[MW] createTool-out-2".red);
     res.status(400).redirect("back");
     return next();
@@ -76,6 +116,13 @@ async function createTool(req, res, next) {
   console.info("[MW] createTool-out-3".bgWhite.blue);
   next();
 }
+
+/**
+ *
+ * @param {*} req.body._id The id of the tool to update
+ * @param {*} res
+ * @param {*} next
+ */
 async function updateTool(req, res, next) {
   console.info("[MW] updateTool-in".bgBlue.white);
   let updatedToolArray = [];
@@ -95,7 +142,7 @@ async function updateTool(req, res, next) {
     console.info(`updatedTool: ${updatedTool}`.green);
     updatedToolArray.push(updatedTool);
   }
-  if (typeof req.body._id === "object") {
+  if (Array.isArray(req.body._id) && req.body._id.length > 1) {
     const { _id, partNumber, description, serviceAssignment, status } =
       req.body;
     for (let i = 0; i < _id.length; i++) {
@@ -120,49 +167,54 @@ async function updateTool(req, res, next) {
   console.info("[MW] updateTool-out-1".bgWhite.blue);
   next();
 }
+/**
+ * archiveTool - Archives a tool
+ * @param {string} req.params.id The id of the tool to archive
+ * @param {string} res.locals.message The message to display to the user
+ * @param {array} res.locals.tools The tool that was archived
+ * @param {number} res.status The status code to return
+ * @param {*} next
+ */
 async function archiveTool(req, res, next) {
   console.info("[MW] archiveTool-in".bgBlue.white);
   const { id } = req.params;
-  const { serialNumber, partNumber, barcode, description, serviceAssignment } =
-    req.body;
-  let archivedTool = await Tool.findOneAndUpdate(
+  let archivedTool = await Tool.findByIdAndUpdate(
     { _id: id },
-    {
-      serialNumber,
-      partNumber,
-      barcode,
-      description,
-      serviceAssignment,
-      updatedBy: req.user._id,
-      archived: true,
-    },
+    { archived: true },
     { new: true }
   );
   res.locals.message = "Successfully Marked Tool Archived";
-  res.locals.tools = archivedTool;
-  res.locals.pageCount = 0;
+  res.locals.tools = [archivedTool];
   res.status(201);
   console.info("[MW] archiveTool-out-1".bgWhite.blue);
   next();
 }
+
+/**
+ * checkTools - Checks whether tools are checked in/out and returns the inverse.
+ * @param {string} req.body.searchTerm The serialNumber/barcode of the tool to archive
+ * @param {string} res.locals.message The message to display to the user
+ * @param {array} res.locals.tools The tool that was unarchived
+ * @param {number} res.status The status code to return
+ * @param {*} next
+ * @returns
+ */
 async function checkTools(req, res, next) {
   console.info("[MW] checkTools-in".bgBlue.white);
   console.log(JSON.stringify(req.body));
-  if (req.body === "") {
+  if (req.body.searchTerm === "" || req.body.searchTerm === undefined) {
     res.locals.message = "No Tools Submitted For Status Change";
     console.warn("[MW checkTools-out-1".bgWhite.blue);
     res.status(400).redirect("back");
     return;
   }
-  const { searchTerm } = req.body;
+  const [searchTerm]  = req.body;
   let checkingTools = [];
   for (let i = 0; i < searchTerm.length; i++) {
     if (searchTerm[i] === "") {
       continue;
     }
-    let tempTool = await Tool.findOne({
-      $or: [{ serialNumber: searchTerm[i] }, { barcode: searchTerm[i] }],
-    });
+    let tempTool = lookupTool(searchTerm[i]);
     if (tempTool.status === "Checked In") {
       let pendingTool = {
         _id: tempTool._id,
@@ -200,12 +252,30 @@ async function checkTools(req, res, next) {
     res.status(400).redirect("back");
     return;
   }
-
   res.locals.tools = checkingTools;
-  res.locals.pageCount = Math.ceil(checkingTools.length / 10);
   res.status(200);
   console.info("[MW] checkTools-out-3".bgWhite.blue);
   next();
+}
+/**
+ *
+ * @param {string} searchTerm search target
+ * @param {string} searchField optional, key to search - if not provided, will search all fields
+ * @returns {object}
+ */
+async function lookupTool(searchTerm, searchField) {
+  let query;
+  if (searchField === "" || searchField === undefined) {
+    query = await Tool.findOne({ $text: { $search: searchTerm } }); //generic search
+  }
+  if (searchField) {
+    query = await Tool.findOne({ [searchField]: { $eq: searchTerm } });
+  }
+  if (!query) {
+    console.warn("[MW] Tool Not Found".yellow);
+    return;
+  }
+  return mutateToArray(query);
 }
 
 export {
