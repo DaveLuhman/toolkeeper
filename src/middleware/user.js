@@ -83,19 +83,22 @@ async function updateUser(req, res, next) {
     { new: true }
   );
   res.locals.user = [user];
-  console.info("[MW] disableUser-out".bgWhite.blue);
+  console.info("[MW] updateUser-out".bgWhite.blue);
   return next();
 }
 
 async function resetPassword(req, res, next) {
   console.info("[MW] resetPassword-in".bgBlue.white);
+  // get data from request body
   const { _id, password, confirmPassword } = req.body;
+  // if new password and confirm password are not set
   if (!password || !confirmPassword) {
     res.locals.error = "New password and confirm password are required";
     console.info("[MW] resetPassword-out-1".bgWhite.blue);
     res.status(400).redirect("back");
     return;
   }
+  // if new password and confirm password do not match
   if (password != confirmPassword) {
     res.locals.error = "New password and confirm password must match";
     console.info("[MW] resetPassword-out-2".bgWhite.blue);
