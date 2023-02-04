@@ -1,10 +1,11 @@
 <div class="main-view">
     {{#if message}}
-    <span title="message">
-        <div class="alert">{{message}}</div>
-    </span>
+        <span title="message">
+            <div class="alert">{{message}}</div>
+        </span>
     {{/if}}
-    {{#if searchTerms}}<h4>You searched for: {{searchTerms}}</h4>
+    {{#if searchTerms}}
+        <h4>You searched for: {{searchTerms}}</h4>
     {{/if}}
     <table class="table">
         <thead>
@@ -20,38 +21,45 @@
 
         <tbody>
             {{#if users}}
-            {{#each users}}
+                {{#each users}}
 
-            <tr class="hover:bg-zinc-600 text-center">
-                <td class="bg-zinc-800 hover:bg-zinc-600">
-                    {{displayName}}
-                </td>
-                <td>{{email}}
+                    <tr class="hover:bg-zinc-600 text-center">
+                        <td class="bg-zinc-800 hover:bg-zinc-600">
+                            {{displayName}}
+                        </td>
+                        <td>{{email}}
 
-                </td>
-                <td class="bg-zinc-800 hover:bg-zinc-600">
-                    {{lastLogin}}
-                </td>
-                <td>{{role}}
+                        </td>
+                        <td class="bg-zinc-800 hover:bg-zinc-600">
+                            {{lastLogin}}
+                        </td>
+                        <td>{{role}}
 
-                </td>
-                <td class="bg-zinc-800 hover:bg-zinc-600">
-                    {{isDisabled}}
-                </td>
-                <td class="bg-zinc-800 hover:bg-zinc-600">
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">
-                            <i class="fa-solid fa-chevron-down"></i></label>
-                        <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
-                            <li><a href="/manager/{{id}}">Edit</a></li>
-                            <li><a href="/manager/disable/{{id}}">Disable</a></li>
-                        </ul>
-                    </div>
-                </td>
-            </tr>
+                        </td>
+                        <td class="bg-zinc-800 hover:bg-zinc-600">
+                            {{isDisabled}}
+                        </td>
+                        <td class="bg-zinc-800 hover:bg-zinc-600">
+                            <div class="dropdown dropdown-end">
+                                <label tabindex="0"
+                                    class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">
+                                    <i class="fa-solid fa-chevron-down"></i></label>
+                                <ul tabindex="0"
+                                    class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+                                    <li><a href="/manager/{{id}}">Edit</a></li>
+                                    <li><a href="/manager/disable/{{id}}">Disable</a></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
 
-            {{/each}}
+                {{/each}}
             {{/if}}
         </tbody>
     </table>
+</div>
+<div class="float-right mx-6">
+    <div class="btn rounded-lg inline-block no-underline hover:text-black font-medium text-lg py-2 px-4 lg:-ml-2">
+        <label for="newToolModal">Create A New Tool</label>
+        </div>
 </div>
