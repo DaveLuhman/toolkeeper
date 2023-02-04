@@ -9,13 +9,6 @@ body {
   @apply to-base-300;
   @apply min-h-screen;
 }
-hr.seperator {
-  @apply h-px;
-  @apply my-1;
-  @apply bg-gray-200;
-  @apply border-0;
-  @apply dark:bg-gray-700;
-}
 .title-bar {
   @apply col-span-2;
   @apply md:col-span-3;
@@ -71,6 +64,7 @@ hr.seperator {
   @apply content-evenly;
   @apply no-underline;
   @apply rounded-lg;
+  @apply bg-base-200;
   @apply hover:text-black;
   @apply hover:outline;
   @apply font-medium;
@@ -84,89 +78,7 @@ hr.seperator {
 
 /* -----------------HEADER--------------------- */
 
-.navbar {
-  @apply flex;
-  @apply w-full;
-  @apply drop-shadow-2xl;
-  @apply items-center;
-  @apply justify-between;
-  @apply mt-0;
-  @apply px-6;
-  @apply py-2;
-}
-.navbar-menu {
-  @apply hidden;
-  @apply md:flex;
-  @apply md:items-center;
-  @apply md:w-auto;
-  @apply w-full;
-  @apply order-3;
-  @apply md:order-1;
-}
-.navbar-links-wrapper {
-  @apply md:flex;
-  @apply m-3;
-  @apply justify-between;
-  @apply items-center;
-  @apply text-base;
-  @apply pt-4;
-  @apply md:pt-0;
-}
-.navbar-link {
-  @apply inline-block;
-  @apply no-underline;
-  @apply rounded-lg;
-  @apply hover:text-gray-500;
-  @apply hover:outline;
-  @apply font-medium;
-  @apply text-lg;
-  @apply py-2;
-  @apply px-6;
-  @apply lg:-ml-2;
-  @apply z-10;
-}
-.nav-content {
-  @apply order-2;
-  @apply md:order-3;
-  @apply flex;
-  @apply flex-wrap;
-  @apply items-center;
-  @apply justify-end;
-  @apply mr-0;
-  @apply md:mr-4;
-}
-.nav-user-menu-wrapper {
-  @apply flex;
-  @apply items-center;
-  @apply w-full;
-}
-.nav-username-btn {
-  @apply hover:text-black;
-  @apply font-medium;
-  @apply text-lg;
-  @apply p-2;
-  @apply btn-ghost;
-  @apply rounded-btn;
-}
-.nav-user-dropdown {
-  @apply menu;
-  @apply dropdown-content;
-  @apply p-2;
-  @apply shadow;
-  @apply bg-base-300;
-  @apply rounded-box;
-  @apply w-52;
-  @apply mt-4;
-}
-.nav-login-btn {
-  @apply p-1.5;
-  @apply rounded;
-  @apply hover:border-dotted;
-  @apply border-gray-300;
-  @apply mr-4;
-  @apply hover:bg-gray-100;
-  @apply hover:text-gray-700;
-}
+
 .fa {
   @apply contents;
 }
@@ -305,13 +217,13 @@ tr {
   @apply border-base-300;
   @apply hover:bg-zinc-600;
   @apply text-center;
+  @apply bg-opacity-5;
 }
 td {
   @apply text-base-content;
   @apply p-2;
   @apply border-b;
   @apply border-base-300;
-  @apply hover:bg-zinc-600;
   @apply text-center;
 }
 /* --------------FIELD BASED SPECIFIC CONFIG----------------- */

@@ -12,8 +12,7 @@ const daisyui = {
         info: '#206DE9',
         success: '#189A90',
         warning: '#8E6010',
-        error: '#ED7573',
-        blueSteel: 'bg-gradient-to-t from-gray-400 via-gray-600 to-blue-800'
+        error: '#ED7573'
       }
     }
   ]
@@ -31,6 +30,6 @@ const theme = {
   extend: {}
 }
 const variants = { display: ['responsive', 'dropdown'] }
-const plugins = [require('@tailwindcss/typography'), require('daisyui'), require('rippleui')]
+const plugins = [require('@tailwindcss/typography'), require('daisyui')]
 
 module.exports = { content, daisyui, theme, plugins, variants }
