@@ -59,7 +59,6 @@ hr.seperator {
   @apply rounded-btn;
 }
 .dropdown-item-wrapper {
-  @apply bg-base-200;
   @apply menu;
   @apply dropdown-content;
   @apply p-2;
@@ -114,10 +113,10 @@ hr.seperator {
   @apply md:pt-0;
 }
 .navbar-link {
-  @apply content-evenly;
+  @apply inline-block;
   @apply no-underline;
   @apply rounded-lg;
-  @apply hover:text-black;
+  @apply hover:text-gray-500;
   @apply hover:outline;
   @apply font-medium;
   @apply text-lg;

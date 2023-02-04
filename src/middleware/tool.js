@@ -15,7 +15,7 @@ async function getAllTools (req, res, next) {
   console.info('[MW] getAllTools-in'.bgBlue.white)
   const tools = await Tool.find({})
   tools.sort((a, b) => a.serialNumber - b.serialNumber)
-  const { trimmedData, pageCount, targetPage } = paginate(
+  const { trimmedData, targetPage, pageCount } = paginate(
     tools,
     req.query.p || 1,
     10
