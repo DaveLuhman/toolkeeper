@@ -1,18 +1,16 @@
-import { Router as expressRouter } from "express";
-import { updateUser, resetPassword } from "../middleware/user.js";
+import { Router as expressRouter } from 'express'
+import { updateUser, resetPassword } from '../middleware/user.js'
 
-const router = expressRouter();
+export const userRouter = expressRouter()
 // show user their own profile
-router.get("/profile", (_req, res) => {
-  res.render("profile", { layout: "user.hbs" });
-});
+userRouter.get('/profile', (_req, res) => {
+  res.render('profile', { layout: 'user.hbs' })
+})
 // update user's own profile
-router.post("/profile", updateUser, (_req, res) => {
-  res.redirect("/user/profile");
-});
+userRouter.post('/profile', updateUser, (_req, res) => {
+  res.redirect('/user/profile')
+})
 // update user's own password
-router.post("/resetPassword", resetPassword, (_req, res) => {
-  res.redirect("/user/profile");
-});
-
-export default router;
+userRouter.post('/resetPassword', resetPassword, (_req, res) => {
+  res.redirect('/user/profile')
+})

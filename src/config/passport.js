@@ -1,41 +1,40 @@
-import passport from 'passport';
-import User from '../models/user.js';
-import { Strategy as localStrategy } from 'passport-local';
-import { compare } from 'bcrypt';
+import passport from 'passport'
+import User from '../models/User.model.js'
+import { Strategy as LocalStrategy } from 'passport-local'
+import { compare } from 'bcrypt'
 
 const passportConfig = (app) => {
-
-  passport.use(new localStrategy(
+  passport.use(new LocalStrategy(
     { usernameField: 'email' },
     async (email, password, done) => {
       console.info(`[AUTH] ${email} attempting login`.blue.bold)
-      let user = await User.findOne({ email: {$eq: email} })
+      const user = await User.findOne({ email: { $eq: email } })
       if (!user) {
-        return done(null, false, { message: 'That email is not registered'.red });
+        return done(null, false, { message: 'That email is not registered'.red })
       }
-      if(user.isDisabled === true) {
+      if (user.isDisabled === true) {
         return done(null, false, { message: 'That user has been disabled. Contact your manager' })
       }
       compare(password, user.password, (err, isMatch) => {
-        if (err) throw err;
+        if (err) throw err
         if (isMatch) {
-          return done(null, user);
+          return done(null, user)
         } else {
-          return done(null, false, { message: 'Password incorrect'.red });
+          return done(null, false, { message: 'Password incorrect'.red })
         }
-      });
+      })
     })
   )
 
   // stores user to session
   passport.serializeUser((user, done) => {
-    done(null, user);
-  });
+    done(null, user)
+  })
 
   // retrieves user from session
   passport.deserializeUser((user, done) => {
-    done(null, user);
-  });
-};
+    done(null, user)
+  })
+}
 
-export default passportConfig;
+export default passportConfig
