@@ -3,7 +3,7 @@ const content = ['./src/views/**/*.{hbs,js}']
 const daisyui = {
   themes: [
     {
-      mytheme: {
+      default: {
         primary: '#ddbc75',
         secondary: '#158084',
         accent: '#143ccc',

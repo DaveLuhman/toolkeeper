@@ -1,14 +1,39 @@
 <div class="main-view">
-<div class="title-bar">
-    <h3 class="title-text">User Profile</h3>
-</div>
-<br />
-<input id="firstName" name="firstName" type="text" value="{{user.firstName}}" class="input input-bordered" />
-<input id="lastName" name="lastName" type="text" value="{{user.lastName}}" class="input input-bordered" />
-<input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
-<select class="select select-bordered" name="role" id="role" aria-label="role">
-    <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
-    <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
-    <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
-</select>
+    <div class="title-bar">
+        <h3 class="title-text">User Profile</h3>
+    </div>
+    <br />
+    <form action="/profile" method="POST">
+        <div class="form-wrapper">
+            <div class="form-row">
+                <input id="firstName" name="firstName" type="text" value="{{user.firstName}}"
+                    class="input input-bordered" />
+                <input id="lastName" name="lastName" type="text" value="{{user.lastName}}"
+                    class="input input-bordered" />
+                <input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
+                <select class="select select-bordered" name="userRole" id="userRole" aria-label="userRole">
+                    <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
+                    <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
+                    <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <select name="theme" id="theme" class="select select-bordered" aria-label="theme-preference">
+                    <option value="light" {{#eq user.theme "light" }}selected{{/eq}}>Light</option>
+                    <option value="dark" {{#eq user.theme "dark" }}selected{{/eq}}>Dark</option>
+                </select>
+                <select name="language" id="language" class="select select-bordered" aria-label="language-preference">
+                    <option value="en" {{#eq user.language "en" }}selected{{/eq}}>English</option>
+                    <option value="es" {{#eq user.language "es" }}selected{{/eq}}>Spanish</option>
+                    <option value="fr" {{#eq user.language "fr" }}selected{{/eq}}>French</option>
+                    <option value="de" {{#eq user.language "de" }}selected{{/eq}}>German</option>
+                    <option value="it" {{#eq user.language "it" }}selected{{/eq}}>Italian</option>
+                    <option value="pt" {{#eq user.language "pt" }}selected{{/eq}}>Portuguese</option>
+                    <option value="ru" {{#eq user.language "ru" }}selected{{/eq}}>Russian</option>
+                    <option value="zh" {{#eq user.language "zh" }}selected{{/eq}}>Chinese</option>
+                </select>
+
+            </div>
+        </div>
+    </form>
 </div>

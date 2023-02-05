@@ -1,46 +1,48 @@
 import { Schema, model } from 'mongoose'
-
-const // This code creates a new schema that is used to define the User model
+// This code creates a new schema that is used to define the User model
 // The schema contains the fields for a user, as well as the timestamps
 // that are automatically added when the user is created and updated
-
-  UserSchema = new Schema(
-    {
-      firstName: {
-        type: String,
-        trim: true
-      },
-      lastName: {
-        type: String,
-        trim: true
-      },
-      email: {
-        type: String,
-        trim: true,
-        unique: true,
-        lowercase: true,
-        required: true
-      },
-      password: {
-        type: String
-      },
-      role: {
-        type: String
+const UserSchema = new Schema(
+  {
+    firstName: {
+      type: String,
+      trim: true
+    },
+    lastName: {
+      type: String,
+      trim: true
+    },
+    email: {
+      type: String,
+      trim: true,
+      unique: true,
+      lowercase: true,
+      required: true
+    },
+    password: {
+      type: String
+    },
+    role: {
+      type: String
       // TODO: Build getter/setter for field validation
       // enum: ['User', 'Manager', 'Admin'],
-      },
-      isDisabled: {
-        type: Boolean,
-        default: false
-      },
-      lastLogin: {
-        type: Date
-      }
     },
-    {
-      timestamps: true
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },
+    lastLogin: {
+      type: Date
+    },
+    preferences: {
+      type: Schema.Types.ObjectId,
+      ref: 'userPreferences'
     }
-  )
+  },
+  {
+    timestamps: true
+  }
+)
 
 // Create a virtual property `displayName` with a getter and setter.
 UserSchema.virtual('displayName')
