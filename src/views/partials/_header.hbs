@@ -30,7 +30,7 @@
         <div class="dropdown dropdown-end">
           <label tabindex="0" class="bg-transparent text-white-50 rounded border border-gray-300 p-2 hover:bg-gray-100 hover:text-black">{{user.firstName}}
             {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
-          <ul tabindex="0" class="menu dropdown-content shadow bg-base-100 rounded rounded-b-box w-52 mt-2">
+          <ul tabindex="0" class="menu dropdown-content shadow rounded rounded-b-box w-52 mt-2">
             <li><a href="/user/profile">Profile</a></li>
             {{#eq user.role "Manager"}}<li><a href="/manager">User Management</a></li>{{/eq}}
             {{#eq user.role "Admin"}}<li><a href="/manager">User Management</a></li>{{/eq}}
