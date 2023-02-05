@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node ./src/server.js",
     "dev": "nodemon ./src/server.js",
-    "tailwind:css": "npx tailwindcss -c ./src/config/tailwind.config.cjs --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css"
+    "build:css": "npx tailwindcss -c ./src/config/tailwind.config.cjs --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css",
+    "watch:css": "npx tailwindcss -c ./src/config/tailwind.config.cjs --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,7 @@
     "colors": "^1.4.0",
     "connect-mongodb-session": "^3.1.1",
     "cookie-parser": "^1.4.6",
-    "daisyui": "^2.49.0",
+    "daisyui": "^2.50.0",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-fileupload": "^1.4.0",
@@ -44,11 +45,17 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "postcss": "^8.4.21",
-    "postcss-cli": "^10.1.0"
+    "postcss-cli": "^10.1.0",
+    "rippleui": "^1.8.1",
+    "tailwindcss-dropdown": "^1.0.0"
   },
   "devDependencies": {
-    "eslint": "^8.32.0",
+    "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^2.0.20",
     "prettier": "2.8.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
