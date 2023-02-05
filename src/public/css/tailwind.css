@@ -9,7 +9,14 @@ body {
   @apply to-base-300;
   @apply min-h-screen;
 }
+.main-view {
+  @apply flex;
+  @apply flex-wrap;
+  @apply items-center;
+  @apply justify-evenly;
+}
 .title-bar {
+  @apply w-11/12;
   @apply col-span-2;
   @apply md:col-span-3;
   @apply rounded-lg;
@@ -78,7 +85,6 @@ body {
 /* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
 
 /* -----------------HEADER--------------------- */
-
 
 .fa {
   @apply contents;
@@ -173,12 +179,6 @@ body {
 /* START MAIN.hbs LAYOUT RENDER TARGETS */
 
 /* dashboard view */
-.main-view {
-  @apply flex;
-  @apply flex-wrap;
-  @apply items-center;
-  @apply justify-evenly;
-}
 /* -------------SEARCH TERMS FLASH----------------- */
 h1#search-terms {
   @apply text-xl;
@@ -233,9 +233,6 @@ td#description {
 td#serviceAssignment {
 }
 /* ----------------TOOL MODALS------------- */
-.modal {
-  @apply cursor-pointer;
-}
 .modal-inner-lg {
   @apply modal-box;
   @apply max-w-5xl;
@@ -246,7 +243,7 @@ td#serviceAssignment {
 }
 .modal-inner-md {
   @apply modal-box;
-  @apply max-w-5xl;
+  @apply max-w-3xl;
   @apply w-3/5;
   @apply bg-gradient-to-t;
   @apply from-gray-900;
@@ -285,6 +282,29 @@ td#serviceAssignment {
   @apply rounded-lg;
   @apply text-center;
   @apply m-2;
+}
+/* ------------Form Fields----------------- */
+.form-wrapper {
+  @apply flex;
+  @apply flex-wrap;
+  @apply items-center;
+  @apply justify-evenly;
+  @apply overflow-hidden;
+  @apply mb-4;
+  @apply m-5;
+}
+.form-row {
+  @apply grid;
+  @apply grid-cols-2;
+  @apply lg:grid-cols-4;
+  @apply gap-4;
+  @apply mb-2;
+}
+.form-button-row {
+  @apply col-span-2;
+  @apply lg:col-span-4;
+  @apply float-right;
+
 }
 /* ------------PAGINATION BAR------------------------ */
 .paginate-bar {
