@@ -27,13 +27,14 @@ const passportConfig = (app) => {
   )
 
   // stores user to session
-  passport.serializeUser((user, done) => {
-    done(null, user)
+  passport.serializeUser(function (user, done) {
+    done(null, user._id)
   })
 
-  // retrieves user from session
-  passport.deserializeUser((user, done) => {
-    done(null, user)
+  passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+      done(err, user)
+    })
   })
 }
 
