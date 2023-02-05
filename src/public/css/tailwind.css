@@ -20,7 +20,6 @@ body {
   @apply col-span-2;
   @apply md:col-span-3;
   @apply rounded-lg;
-  @apply bg-base-100;
   @apply drop-shadow-xl;
 }
 .title-text {

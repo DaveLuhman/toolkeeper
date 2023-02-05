@@ -8,7 +8,6 @@ const daisyui = {
         secondary: '#158084',
         accent: '#143ccc',
         neutral: '#1D1523',
-        'base-100': '#453E47',
         info: '#206DE9',
         success: '#189A90',
         warning: '#8E6010',
