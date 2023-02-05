@@ -2,49 +2,96 @@
     <div class="title-bar">
         <h3 class="title-text">User Profile</h3>
     </div>
-    <br />
-    <form action="/profile" method="POST">
-        <div class="form-wrapper">
+    <div class="form-wrapper">
+        <form action="/user/profile" method="POST">
             <div class="form-row">
-                <input id="firstName" name="firstName" type="text" value="{{user.firstName}}"
-                    class="input input-bordered" />
-                <input id="lastName" name="lastName" type="text" value="{{user.lastName}}"
-                    class="input input-bordered" />
-                <input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
-                <select class="select select-bordered" name="userRole" id="userRole" aria-label="userRole">
-                    <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
-                    <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
-                    <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
-                </select>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Given Name</span></label>
+                    <input id="firstName" name="firstName" type="text" value="{{user.firstName}}"
+                        class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Family Name</span></label>
+                    <input id="lastName" name="lastName" type="text" value="{{user.lastName}}"
+                        class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Email</span></label>
+                    <input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Role</span></label>
+                    <select class="select select-bordered" name="userRole" id="userRole" aria-label="userRole" disabled>
+                        <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
+                        <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
+                        <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
+                    </select>
+                </div>
             </div>
             <div class="form-row">
-                <select name="theme" id="theme" class="select select-bordered" aria-label="theme-preferences">
-                    <option value="light" {{#eq user.preferences.theme "light" }}selected{{/eq}}>Light</option>
-                    <option value="dark" {{#eq user.preferences.theme "dark" }}selected{{/eq}}>Dark</option>
-                </select>
-                <select name="sortField" id="sortField" class="select select-bordered"
-                    aria-label="sort-field-preferences">
-                    <option value="serialNumber" {{#eq user.preferences.sortField "serialNumber" }}selected{{/eq}}>Serial Number
-                    </option>
-                    <option value="partNumber" {{#eq user.preferences.sortField "partNumber" }}selected{{/eq}}>Part Number</option>
-                    <option value="barcode" {{#eq user.preferences.sortField "barcode" }}selected{{/eq}}>Barcode</option>
-                    <option value="status" {{#eq user.preferences.sortField "status" }}selected{{/eq}}>Status</option>
-                    <option value="serviceAssignment" {{#eq user.sortField "serviceAssignment" }}selected{{/eq}}>Service
-                        Assignment</option>
-                </select>
-                <select name="sortOrder" id="sortOrder" class="select select-bordered"
-                    aria-label="sort-order-preferences">
-                    <option value="asc" {{#eq user.preferences.sortOrder "asc" }}selected{{/eq}}>Ascending</option>
-                    <option value="desc" {{#eq user.preferences.sortOrder "desc" }}selected{{/eq}}>Descending</option>
-                </select>
-                <select name="pageSize" id="pageSize" class="select select-bordered" aria-label="page-size-preferences">
-                    <option value="10" {{#eq user.preferences.pageSize "10" }}selected{{/eq}}>10</option>
-                    <option value="25" {{#eq user.preferences.pageSize "25" }}selected{{/eq}}>25</option>
-                    <option value="50" {{#eq user.preferences.pageSize "50" }}selected{{/eq}}>50</option>
-                    <option value="100" {{#eq user.preferences.pageSize "100" }}selected{{/eq}}>100</option>
-                    <option value="-1" {{#eq user.preferences.pageSize "-1" }}selected{{/eq}}>Infinite</option>
-                </select>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Visual Theme</span></label>
+                    <select name="theme" id="theme" class="select select-bordered" aria-label="theme-preferences">
+                        <option value="default" {{#eq user.preferences.theme "default" }}selected{{/eq}}>Default
+                        </option>
+                        <option value="light" {{#eq user.preferences.theme "light" }}selected{{/eq}}>Light</option>
+                        <option value="cupcake" {{#eq user.preferences.theme "cupcake" }}selected{{/eq}}>Cupcake
+                        </option>
+                        <option value="dracula" {{#eq user.preferences.theme "dracula" }}selected{{/eq}}>Dracula
+                        </option>
+                        <option value="corporate" {{#eq user.preferences.theme "corporate" }}selected{{/eq}}>Corporate
+                        </option>
+                        <option value="synthwave" {{#eq user.preferences.theme "synthwave" }}selected{{/eq}}>Synthwave
+                        </option>
+                    </select>
+                </div>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Sort Field</span></label>
+                    <select name="sortField" id="sortField" class="select select-bordered"
+                        aria-label="sort-field-preferences">
+                        <option value="serialNumber" {{#eq user.preferences.sortField "serialNumber" }}selected{{/eq}}>
+                            Serial Number
+                        </option>
+                        <option value="partNumber" {{#eq user.preferences.sortField "partNumber" }}selected{{/eq}}>Part
+                            Number</option>
+                        <option value="barcode" {{#eq user.preferences.sortField "barcode" }}selected{{/eq}}>
+                            Barcode
+                        </option>
+                        <option value="status" {{#eq user.preferences.sortField "status" }}selected{{/eq}}>
+                            Status
+                        </option>
+                        <option value="serviceAssignment" {{#eq user.preferences.sortField "serviceAssignment" }}selected{{/eq}}>
+                            Service Assignment</option>
+                    </select>
+                </div>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Sort Direction</span></label>
+                    <select name="sortDirection" id="sortDirection" class="select select-bordered"
+                        aria-label="sort-direction-preferences">
+                        <option value="asc" {{#eq user.preferences.sortDirection "asc" }}selected{{/eq}}>Ascending
+                        </option>
+                        <option value="desc" {{#eq user.preferences.sortDirection "desc" }}selected{{/eq}}>
+                            Descending
+                        </option>
+                    </select>
+                </div>
+                <div class="form-control">
+                    <label class="label"><span class="label-text">Page Size</span></label>
+                    <select name="pageSize" id="pageSize" class="select select-bordered"
+                        aria-label="page-size-preferences">
+                        <option value="10" {{#eq user.preferences.pageSize 10 }}selected{{/eq}}>10</option>
+                        <option value="25" {{#eq user.preferences.pageSize 25 }}selected{{/eq}}>25</option>
+                        <option value="50" {{#eq user.preferences.pageSize 50 }}selected{{/eq}}>50</option>
+                        <option value="100" {{#eq user.preferences.pageSize 100 }}selected{{/eq}}>100</option>
+                        <option value="-1" {{#eq user.preferences.pageSize 0 }}selected{{/eq}}>Infinite
+                        </option>
+                    </select>
+                </div>
             </div>
-        </div>
-    </form>
+            <div class="form-button-row">
+                <button type="reset" class="btn btn-accent">Cancel</button>
+                <button type="submit" class="btn">Save</button>
+            </div>
+        </form>
+    </div>
 </div>

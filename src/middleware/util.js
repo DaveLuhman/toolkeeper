@@ -10,7 +10,6 @@ export function paginate (data, targetPage, perPage) {
   targetPage = targetPage || 1
   const pageCount = Math.ceil(data.length / perPage) // number of pages
   const trimmedData = data.slice((perPage * targetPage) - perPage, ((perPage * targetPage) + 1))
-  console.log('trimmedData', trimmedData)
   return { trimmedData, targetPage, pageCount }
 }
 

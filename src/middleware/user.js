@@ -76,13 +76,29 @@ async function verifySelf (req, res, next) {
   return next()
 }
 async function updateUser (req, res, next) {
+  const { firstName, lastName, email, theme, sortField, sortDirection, pageSize } = req.body
+  console.table(req.body)
   console.info('[MW] updateUser-in'.bgBlue.white)
   const user = await User.findByIdAndUpdate(
-    req.params.id,
-    { $set: req.body },
+    req.user._id,
+    {
+      $set: {
+        firstName,
+        lastName,
+        email,
+        preferences: {
+          theme,
+          sortField,
+          sortDirection,
+          pageSize
+        }
+      }
+    },
     { new: true }
   )
-  res.locals.user = [user]
+  console.log(user)
+  res.locals.user = user
+  req.login(user, (error) => { console.log('This is an error' + error) })
   console.info('[MW] updateUser-out'.bgWhite.blue)
   return next()
 }
