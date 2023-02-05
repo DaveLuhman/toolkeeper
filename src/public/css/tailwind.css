@@ -59,6 +59,7 @@ body {
   @apply rounded-box;
   @apply w-52;
   @apply mt-4;
+  @apply bg-base-200;
 }
 .dropdown-item {
   @apply content-evenly;

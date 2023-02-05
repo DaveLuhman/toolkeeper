@@ -1,7 +1,7 @@
 {{#if user}}
 <nav id="header">
   <div class="w-full flex items-center justify-between mt-0 px-6 py-2">
-    <img class="" src="/img/toolKeeperLogo-dark-small.png" width="150px" height="auto">
+    <a href="/dashboard"> <img src="/img/toolKeeperLogo-dark-small.png" width="125px" height="auto"></a>
     <label for="menu-toggle" class="cursor-pointer md:hidden block">
       <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
         <title>menu</title>
@@ -28,9 +28,9 @@
     <div class="order-2 md:order-3 flex flex-wrap items-center justify-end mr-0 md:mr-4" id="nav-content">
       <div class="flex items-center w-full md:w-full">
         <div class="dropdown dropdown-end">
-          <label tabindex="0" class="hover:text-black font-medium text-lg py-2 btn-ghost rounded-btn">{{user.firstName}}
+          <label tabindex="0" class="bg-transparent text-white-50 rounded border border-gray-300 p-2 hover:bg-gray-100 hover:text-black">{{user.firstName}}
             {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
-          <ul tabindex="0" class="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
+          <ul tabindex="0" class="menu dropdown-content shadow bg-base-100 rounded rounded-b-box w-52 mt-2">
             <li><a href="/user/profile">Profile</a></li>
             {{#eq user.role "Manager"}}<li><a href="/manager">User Management</a></li>{{/eq}}
             {{#eq user.role "Admin"}}<li><a href="/manager">User Management</a></li>{{/eq}}
@@ -46,7 +46,7 @@
 <!-- component -->
 <nav id="header">
   <div class="w-full flex items-center justify-between mt-0 px-6 py-2">
-    <img class="" src="/img/toolKeeperLogo-dark-small.png" width="150px" height="auto">
+    <a href="/"><img class="" src="/img/toolKeeperLogo-dark-full.png" width="275px" height="auto"></a>
     <label for="menu-toggle" class="cursor-pointer md:hidden block">
       <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
         <title>menu</title>
