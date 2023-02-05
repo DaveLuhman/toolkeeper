@@ -18,21 +18,32 @@
                 </select>
             </div>
             <div class="form-row">
-                <select name="theme" id="theme" class="select select-bordered" aria-label="theme-preference">
-                    <option value="light" {{#eq user.theme "light" }}selected{{/eq}}>Light</option>
-                    <option value="dark" {{#eq user.theme "dark" }}selected{{/eq}}>Dark</option>
+                <select name="theme" id="theme" class="select select-bordered" aria-label="theme-preferences">
+                    <option value="light" {{#eq user.preferences.theme "light" }}selected{{/eq}}>Light</option>
+                    <option value="dark" {{#eq user.preferences.theme "dark" }}selected{{/eq}}>Dark</option>
                 </select>
-                <select name="language" id="language" class="select select-bordered" aria-label="language-preference">
-                    <option value="en" {{#eq user.language "en" }}selected{{/eq}}>English</option>
-                    <option value="es" {{#eq user.language "es" }}selected{{/eq}}>Spanish</option>
-                    <option value="fr" {{#eq user.language "fr" }}selected{{/eq}}>French</option>
-                    <option value="de" {{#eq user.language "de" }}selected{{/eq}}>German</option>
-                    <option value="it" {{#eq user.language "it" }}selected{{/eq}}>Italian</option>
-                    <option value="pt" {{#eq user.language "pt" }}selected{{/eq}}>Portuguese</option>
-                    <option value="ru" {{#eq user.language "ru" }}selected{{/eq}}>Russian</option>
-                    <option value="zh" {{#eq user.language "zh" }}selected{{/eq}}>Chinese</option>
+                <select name="sortField" id="sortField" class="select select-bordered"
+                    aria-label="sort-field-preferences">
+                    <option value="serialNumber" {{#eq user.preferences.sortField "serialNumber" }}selected{{/eq}}>Serial Number
+                    </option>
+                    <option value="partNumber" {{#eq user.preferences.sortField "partNumber" }}selected{{/eq}}>Part Number</option>
+                    <option value="barcode" {{#eq user.preferences.sortField "barcode" }}selected{{/eq}}>Barcode</option>
+                    <option value="status" {{#eq user.preferences.sortField "status" }}selected{{/eq}}>Status</option>
+                    <option value="serviceAssignment" {{#eq user.sortField "serviceAssignment" }}selected{{/eq}}>Service
+                        Assignment</option>
                 </select>
-
+                <select name="sortOrder" id="sortOrder" class="select select-bordered"
+                    aria-label="sort-order-preferences">
+                    <option value="asc" {{#eq user.preferences.sortOrder "asc" }}selected{{/eq}}>Ascending</option>
+                    <option value="desc" {{#eq user.preferences.sortOrder "desc" }}selected{{/eq}}>Descending</option>
+                </select>
+                <select name="pageSize" id="pageSize" class="select select-bordered" aria-label="page-size-preferences">
+                    <option value="10" {{#eq user.preferences.pageSize "10" }}selected{{/eq}}>10</option>
+                    <option value="25" {{#eq user.preferences.pageSize "25" }}selected{{/eq}}>25</option>
+                    <option value="50" {{#eq user.preferences.pageSize "50" }}selected{{/eq}}>50</option>
+                    <option value="100" {{#eq user.preferences.pageSize "100" }}selected{{/eq}}>100</option>
+                    <option value="-1" {{#eq user.preferences.pageSize "-1" }}selected{{/eq}}>Infinite</option>
+                </select>
             </div>
         </div>
     </form>

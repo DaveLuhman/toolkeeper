@@ -14,7 +14,7 @@ const daisyui = {
         warning: '#8E6010',
         error: '#ED7573'
       }
-    }
+    }, 'light', 'dark'
   ]
 }
 const theme = {

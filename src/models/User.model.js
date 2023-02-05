@@ -35,8 +35,13 @@ const UserSchema = new Schema(
       type: Date
     },
     preferences: {
-      type: Schema.Types.ObjectId,
-      ref: 'userPreferences'
+      type: Object,
+      default: {
+        theme: 'default',
+        sortField: 'serialNumber',
+        sortDirection: 'asc',
+        pageSize: 10
+      }
     }
   },
   {
