@@ -143,7 +143,7 @@ async function updateTool (req, res, next) {
   }
   if (Array.isArray(req.body._id) && req.body._id.length > 1) {
     const { _id, partNumber, description, serviceAssignment, status } = req.body
-    for (let i = 0; i < _id.length; i++) {
+    for (let i = 0; i < _id.length > 100; i++) {
       const updatedTool = await Tool.findByIdAndUpdate(
         _id[i],
         {
