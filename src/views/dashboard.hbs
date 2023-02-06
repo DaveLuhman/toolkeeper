@@ -10,11 +10,11 @@
             <thead>
                 <tr>
                     <th>Serial number</th>
-                    <th class="hidden md:grid">Part Number</th>
+                    <th>Part Number</th>
                     <th>Barcode #</th>
-                    <th class="hidden md:grid">Description</th>
-                    <th class="hidden md:grid">Status</th>
-                    <th class="hidden md:grid">Service Assignment</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Service Assignment</th>
                 </tr>
             </thead>
             {{#if tools}}
@@ -23,11 +23,11 @@
                         {{#unless archived}}
                             <tr>
                                 <td id="serialNumber">{{serialNumber}}</td>
-                                <td class="hidden md:grid" id="partNumber">{{partNumber}}</td>
+                                <td id="partNumber">{{partNumber}}</td>
                                 <td id="barcode">{{barcode}}</td>
-                                <td class="hidden md:block"id="description">{{description}}</td>
-                                <td class="hidden md:grid" id="status">{{status}}</td>
-                                <td class="hidden md:grid" id="serviceAssignment">{{serviceAssignment}}</td>
+                                <td id=" description">{{description}}</td>
+                                <td id="status">{{status}}</td>
+                                <td id="serviceAssignment">{{serviceAssignment}}</td>
                                 <td></td>
                             </tr>
                         {{/unless}}
