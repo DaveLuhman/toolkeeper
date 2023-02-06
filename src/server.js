@@ -17,7 +17,7 @@ import morgan from 'morgan' // logging
 import passport from 'passport'
 import connectDB from './config/db.js'
 import passportConfig from './config/passport.js'
-import { rateLimiter } from './config/rateLimiter.js'
+import { rateLimiter } from './config/util.config.js'
 import { checkAuth, isManager } from './middleware/auth.js'
 import { dashboardRouter } from './routes/dashboard.routes.js'
 import { indexRouter } from './routes/index.routes.js'
@@ -30,6 +30,21 @@ const PORT = process.env.PORT || 5000
 
 const app = express()
 app.use(helmet())
+const sessionConfig = {
+  secret: process.env.SESSION_KEY,
+  resave: true,
+  saveUninitialized: false,
+  cookie: {}
+}
+connectDB()
+const store = new MongoDBStore({
+  uri: process.env.MONGO_URI,
+  collection: 'sessions'
+})
+if (process.env.NODE_ENV === 'production') {
+  sessionConfig.cookie = { secure: true, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
+  sessionConfig.store = store
+}
 // Logging
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
@@ -37,15 +52,7 @@ if (process.env.NODE_ENV !== 'production') {
     '[INIT]>>>>> Morgan enabled for logging in this development environment'
   )
 }
-// database stuff
-connectDB()
-const store = new MongoDBStore({
-  uri: process.env.MONGO_URI,
-  collection: 'sessions'
-})
-// handlebars config
 // Handlebars
-
 const hbs = create({
   helpers: {
     paginate,
@@ -70,13 +77,7 @@ app.use(fileUpload())
 app.use(express.urlencoded({ extended: false })) // Parse URL-encoded values
 app.use(cookieParser())
 app.use(
-  session({
-    secret: process.env.SESSION_KEY,
-    resave: true,
-    saveUninitialized: false,
-    cookie: { secure: true, maxAge: 1000 * 60 * 60 * 24 },
-    store
-  })
+  session({ sessionConfig })
 )
 app.use(flash())
 // Passport
