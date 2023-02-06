@@ -34,7 +34,7 @@ const sessionConfig = {
   secret: process.env.SESSION_KEY,
   resave: true,
   saveUninitialized: false,
-  cookie: {}
+  cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24}
 }
 connectDB()
 const store = new MongoDBStore({
