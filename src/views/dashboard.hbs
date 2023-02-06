@@ -1,5 +1,5 @@
 <div>
-    <div class="main-view relative z-0">
+    <div class="relative z-0 main-view">
         {{#if message}}
             <div class="alert">{{message}}</div>
         {{/if}}
@@ -10,12 +10,11 @@
             <thead>
                 <tr>
                     <th>Serial number</th>
-                    <th>Part Number</th>
+                    <th class="hidden md:grid">Part Number</th>
                     <th>Barcode #</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Service Assignment</th>
-                    <th>Edit</th>
+                    <th class="hidden md:grid">Description</th>
+                    <th class="hidden md:grid">Status</th>
+                    <th class="hidden md:grid">Service Assignment</th>
                 </tr>
             </thead>
             {{#if tools}}
@@ -24,21 +23,12 @@
                         {{#unless archived}}
                             <tr>
                                 <td id="serialNumber">{{serialNumber}}</td>
-                                <td id="partNumber">{{partNumber}}</td>
+                                <td class="hidden md:grid" id="partNumber">{{partNumber}}</td>
                                 <td id="barcode">{{barcode}}</td>
-                                <td id="description">{{description}}</td>
-                                <td id="status">{{status}}</td>
-                                <td id="serviceAssignment">{{serviceAssignment}}</td>
-                                <td>
-                                    <div class="dropdown last:dropdown-left dropdown-end">
-                                        <label tabindex="0" class="dropdown-label">
-                                            <i class="fa-solid fa-chevron-down hover:rotate-90"></i></label>
-                                        <ul tabindex="0" class="dropdown-item-wrapper z-20">
-                                            <li><a class="navbar-link" href="/tool/{{id}}">Edit</a></li>
-                                            <li><a class="navbar-link" href="/tool/archive/{{id}}">Archive</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
+                                <td class="hidden md:block"id="description">{{description}}</td>
+                                <td class="hidden md:grid" id="status">{{status}}</td>
+                                <td class="hidden md:grid" id="serviceAssignment">{{serviceAssignment}}</td>
+                                <td></td>
                             </tr>
                         {{/unless}}
                     {{/each}}
