@@ -79,7 +79,7 @@ app.use(fileUpload())
 app.use(express.urlencoded({ extended: false })) // Parse URL-encoded values
 app.use(cookieParser())
 app.use(
-  session({ sessionConfig })
+  session(sessionConfig)
 )
 app.use(flash())
 // Passport
