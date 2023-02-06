@@ -1,4 +1,5 @@
 import 'body-parser'
+import helmet from 'helmet'
 // eslint-disable-next-line no-unused-vars
 import colors from 'colors'
 // eslint-disable-next-line import/no-named-default
@@ -28,7 +29,7 @@ const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
 
 const app = express()
-
+app.use(helmet())
 // Logging
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
@@ -73,7 +74,7 @@ app.use(
     secret: process.env.SESSION_KEY,
     resave: true,
     saveUninitialized: false,
-    cookie: { secure: false, maxAge: 1000 * 60 * 60 * 24 },
+    cookie: { secure: true, maxAge: 1000 * 60 * 60 * 24 },
     store
   })
 )
