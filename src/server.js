@@ -34,17 +34,19 @@ const sessionConfig = {
   secret: process.env.SESSION_KEY,
   resave: true,
   saveUninitialized: false,
-  cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24}
+  cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
 }
+if (process.env.NODE_ENV === 'production') {
+  sessionConfig.cookie = { secure: true, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
+  sessionConfig.store = store
+}
+console.log(JSON.stringify(sessionConfig))
 connectDB()
 const store = new MongoDBStore({
   uri: process.env.MONGO_URI,
   collection: 'sessions'
 })
-if (process.env.NODE_ENV === 'production') {
-  sessionConfig.cookie = { secure: true, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
-  sessionConfig.store = store
-}
+
 // Logging
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
