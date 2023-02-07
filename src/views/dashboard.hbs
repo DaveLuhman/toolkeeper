@@ -9,11 +9,11 @@
         <thead>
             <tr>
                 <th>Serial number</th>
-                <th class="invisible md:visible">Part Number</th>
+                <th class="hidden md:table-cell">Part Number</th>
                 <th>Barcode #</th>
-                <th class="invisible lg:visible">Description</th>
-                <th class="invisible md:visible">Status</th>
-                <th class="invisible md:visible">Service Assignment</th>
+                <th class="hidden lg:table-cell">Description</th>
+                <th class="hidden md:table-cell">Status</th>
+                <th class="hidden md:table-cell">Service Assignment</th>
                 <th>Edit</th>
             </tr>
         </thead>
@@ -23,11 +23,11 @@
                     {{#unless archived}}
                         <tr>
                             <td id="serialNumber">{{serialNumber}}</td>
-                            <td class="invisible md:visible" id="partNumber">{{partNumber}}</td>
+                            <td class="hidden md:table-cell" id="partNumber">{{partNumber}}</td>
                             <td id="barcode">{{barcode}}</td>
-                            <td class="invisible lg:visible" id="description">{{description}}</td>
-                            <td class="invisible md:visible" id="status">{{status}}</td>
-                            <td class="invisible md:visible" id="serviceAssignment">{{serviceAssignment}}</td>
+                            <td class="hidden lg:table-cell" id="description">{{description}}</td>
+                            <td class="hidden md:table-cell" id="status">{{status}}</td>
+                            <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment}}</td>
                             <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i
                                             class="fa fa-pencil"></i></a></label></td>
                         </tr>

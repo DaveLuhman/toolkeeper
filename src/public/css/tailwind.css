@@ -227,11 +227,6 @@ td {
   @apply border-base-300;
   @apply text-center;
 }
-/* --------------FIELD BASED SPECIFIC CONFIG----------------- */
-td#description {
-}
-td#serviceAssignment {
-}
 /* ----------------TOOL MODALS------------- */
 .modal-inner-lg {
   @apply modal-box;
