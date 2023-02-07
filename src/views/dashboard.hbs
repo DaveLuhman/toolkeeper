@@ -1,62 +1,62 @@
-<div>
-    <div class="relative z-0 main-view">
-        {{#if message}}
-            <div class="alert">{{message}}</div>
+<div class="main-view">
+    {{#if message}}
+        <div class="alert">{{message}}</div>
+    {{/if}}
+    {{#if searchTerms}}
+        <h1 id="search-terms">Searched For: <br />{{searchTerms}}</h1>
+    {{/if}}
+    <table class="table overflow-visible ">
+        <thead>
+            <tr>
+                <th>Serial number</th>
+                <th class="invisible md:visible">Part Number</th>
+                <th>Barcode #</th>
+                <th class="invisible lg:visible">Description</th>
+                <th class="invisible md:visible">Status</th>
+                <th class="invisible md:visible">Service Assignment</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        {{#if tools}}
+            <tbody>
+                {{#each tools}}
+                    {{#unless archived}}
+                        <tr>
+                            <td id="serialNumber">{{serialNumber}}</td>
+                            <td class="invisible md:visible" id="partNumber">{{partNumber}}</td>
+                            <td id="barcode">{{barcode}}</td>
+                            <td class="invisible lg:visible" id="description">{{description}}</td>
+                            <td class="invisible md:visible" id="status">{{status}}</td>
+                            <td class="invisible md:visible" id="serviceAssignment">{{serviceAssignment}}</td>
+                            <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i
+                                            class="fa fa-pencil"></i></a></label></td>
+                        </tr>
+                    {{/unless}}
+                {{/each}}
         {{/if}}
-        {{#if searchTerms}}
-            <h1 id="search-terms">Searched For: <br />{{searchTerms}}</h1>
-        {{/if}}
-        <table class="table overflow-visible ">
-            <thead>
-                <tr>
-                    <th>Serial number</th>
-                    <th>Part Number</th>
-                    <th>Barcode #</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Service Assignment</th>
-                </tr>
-            </thead>
-            {{#if tools}}
-                <tbody">
-                    {{#each tools}}
-                        {{#unless archived}}
-                            <tr>
-                                <td id="serialNumber">{{serialNumber}}</td>
-                                <td id="partNumber">{{partNumber}}</td>
-                                <td id="barcode">{{barcode}}</td>
-                                <td id=" description">{{description}}</td>
-                                <td id="status">{{status}}</td>
-                                <td id="serviceAssignment">{{serviceAssignment}}</td>
-                                <td></td>
-                            </tr>
-                        {{/unless}}
-                    {{/each}}
-            {{/if}}
-            </tbody>
-        </table>
-    </div>
-    <br />
-    {{#gt pagination.pageCount 1}}
-        <ul class="paginate-bar">
-            {{#paginate pagination type="first"}}
-                <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">First</button></a></div>
-            {{/paginate}}
-            {{#paginate pagination type="previous"}}
-                <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Previous</button></a></div>
-            {{/paginate}}
-            {{#paginate pagination type="middle" limit="9"}}
-                <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}"><button
-                            class="btn-paginate">{{n}}</button></a>
-                </div>
-            {{/paginate}}
-            {{#paginate pagination type="next"}}
-                <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Next</button></a></div>
-            {{/paginate}}
-            {{#paginate pagination type="last"}}
-                <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Last</button></a></div>
-            {{/paginate}}
-        </ul>
-    {{/gt}}
+        </tbody>
+    </table>
 </div>
-</div>
+<br />
+{{#gt pagination.pageCount 1}}
+    <ul class="paginate-bar">
+        {{#paginate pagination type="first"}}
+            <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">First</button></a></div>
+        {{/paginate}}
+        {{#paginate pagination type="previous"}}
+            <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Previous</button></a></div>
+        {{/paginate}}
+        {{#paginate pagination type="middle" limit="9"}}
+            <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}"><button
+                        class="btn-paginate">{{n}}</button></a>
+            </div>
+        {{/paginate}}
+        {{#paginate pagination type="next"}}
+            <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Next</button></a></div>
+        {{/paginate}}
+        {{#paginate pagination type="last"}}
+            <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Last</button></a></div>
+        {{/paginate}}
+    </ul>
+{{/gt}}
+</>

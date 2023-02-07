@@ -211,6 +211,7 @@ th {
   @apply bg-stone-700;
 }
 tr {
+  @apply table-row;
   @apply text-base-content;
   @apply p-2;
   @apply border-b;

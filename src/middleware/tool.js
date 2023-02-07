@@ -208,7 +208,7 @@ async function checkTools (req, res, next) {
   }
   const [searchTerm] = req.body
   const checkingTools = []
-  for (let i = 0; i < searchTerm.length; i++) {
+  for (let i = 0; i < searchTerm.length > 100; i++) {
     if (searchTerm[i] === '') {
       continue
     }

@@ -28,33 +28,35 @@ dotenv.config()
 const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
 
-const app = express()
-app.use(helmet())
+const app = express() // Create Express App
+
+connectDB() // Connect to MongoDB and report status to console
+// create mongo store for session persistence
+const store = new MongoDBStore({
+  uri: process.env.MONGO_URI,
+  collection: 'sessions'
+})
+// Configure session options
 const sessionConfig = {
   secret: process.env.SESSION_KEY,
   resave: true,
   saveUninitialized: false,
   cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
 }
+// If in production, use secure cookies and mongo store
 if (process.env.NODE_ENV === 'production') {
   sessionConfig.cookie = { secure: true, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
   sessionConfig.store = store
 }
-console.log(JSON.stringify(sessionConfig))
-connectDB()
-const store = new MongoDBStore({
-  uri: process.env.MONGO_URI,
-  collection: 'sessions'
-})
 
-// Logging
+// Morgan Logging in development
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
   console.info(
     '[INIT]>>>>> Morgan enabled for logging in this development environment'
   )
 }
-// Handlebars
+// Handlebars Setup
 const hbs = create({
   helpers: {
     paginate,
@@ -67,20 +69,18 @@ const hbs = create({
     allowProtoMethodsByDefault: true
   }
 })
-
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 app.set('views', './src/views')
 
 // Express Middleware
+app.use(helmet()) // Add Helmet for HTTP Header controls
 app.use(express.static('./src/public')) // Serve Static Files
 app.use(express.json()) // JSON Body Parser
 app.use(fileUpload())
 app.use(express.urlencoded({ extended: false })) // Parse URL-encoded values
 app.use(cookieParser())
-app.use(
-  session(sessionConfig)
-)
+app.use(session(sessionConfig))
 app.use(flash())
 // Passport
 passportConfig(app)
