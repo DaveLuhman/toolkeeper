@@ -5,7 +5,7 @@
 /* Global CSS */
 body {
   @apply bg-gradient-to-t;
-  @apply from-gray-900;
+  @apply from-gray-700;
   @apply to-base-300;
   @apply min-h-screen;
 }
