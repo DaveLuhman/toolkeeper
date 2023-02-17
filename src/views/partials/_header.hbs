@@ -28,13 +28,13 @@
     <div class="flex flex-wrap items-center justify-end order-2 mr-0 md:order-3 md:mr-4" id="nav-content">
       <div class="flex items-center w-full md:w-full">
         <div class="dropdown dropdown-end">
-          <label tabindex="0" class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:bg-gray-100 hover:text-black">{{user.firstName}}
+          <label tabindex="0" class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:text-black">{{user.firstName}}
             {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
           <ul tabindex="0" class="mt-2 rounded shadow menu dropdown-content rounded-b-box w-52">
-            <li><a href="/user/profile">Profile</a></li>
-            {{#eq user.role "Manager"}}<li><a href="/manager">User Management</a></li>{{/eq}}
-            {{#eq user.role "Admin"}}<li><a href="/manager">User Management</a></li>{{/eq}}
-            <li><a href="/logout">Logout</a></li>
+            <li class="bg-base-100"><a href="/user/profile">Profile</a></li>
+            {{#eq user.role "Manager"}}<li class="bg-base-100"><a href="/manager">User Management</a></li>{{/eq}}
+            {{#eq user.role "Admin"}}<li class="bg-base-100"><a href="/manager">User Management</a></li>{{/eq}}
+            <li class="bg-base-100"><a href="/logout">Logout</a></li>
           </ul>
         </div>
       </div>
