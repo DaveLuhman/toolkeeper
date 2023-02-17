@@ -24,28 +24,28 @@
                 {{#each users}}
 
                     <tr class="text-center">
-                        <td class=" hover:bg-zinc-600">
+                        <td>
                             {{displayName}}
                         </td>
                         <td>{{email}}
 
                         </td>
-                        <td class=" hover:bg-zinc-600">
+                        <td>
                             {{lastLogin}}
                         </td>
                         <td>{{role}}
 
                         </td>
-                        <td class=" hover:bg-zinc-600">
+                        <td >
                             {{isDisabled}}
                         </td>
-                        <td class=" hover:bg-zinc-600">
-                            <div class="dropdown dropdown-end">
+                        <td >
+                            <div class="border-separate dropdown dropdown-end">
                                 <label tabindex="0"
-                                    class="py-2 text-lg font-medium hover:text-black btn-ghost rounded-btn">
+                                    class="py-2 text-lg font-medium btn-ghost rounded-btn">
                                     <i class="fa-solid fa-chevron-down"></i></label>
                                 <ul tabindex="0"
-                                    class="p-2 mt-4 shadow menu dropdown-content rounded-box w-52">
+                                    class="bg-base-200 p-2 mt-4 shadow menu dropdown-content rounded-box w-52">
                                     <li><a href="/manager/{{id}}">Edit</a></li>
                                     <li><a href="/manager/disable/{{id}}">Disable</a></li>
                                 </ul>
