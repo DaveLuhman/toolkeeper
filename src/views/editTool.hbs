@@ -1,12 +1,12 @@
 <div class="main-view">
     {{#if tools}}
     <form action="/tool/update" method="POST">
-        <div class="form-control justify-items-center">
             <div class="title-bar">
                 <h3 class="title-text">Edit Tool(s)</h3>
             </div>
             {{#each tools}}
-            {{#unless archived}}
+            <div class="columns-1 md:columns-3">
+            <div class="form-control justify-items-center gap-2">
             <input name="_id" value="{{_id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
             <input name="serialNumber" value="{{serialNumber}}" type="text" placeholder="Serial Number"
                 class="input input-bordered" />
@@ -22,13 +22,14 @@
                 <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked-In</option>
                 <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked-Out</option>
             </select>
-            {{/unless}}
+</div>
+            </div>
             {{/each}}
             <div class="modal-button-row">
                 <label class="modal-button"><a href="/dashboard">Cancel</a></label>
                 <label class="modal-button"><button type="submit">Submit</button></label>
             </div>
-        </div>
+
     </form>
 
 </div>

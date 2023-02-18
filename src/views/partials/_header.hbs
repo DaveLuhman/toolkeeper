@@ -2,15 +2,9 @@
 <nav id="header">
   <div class="flex items-center justify-between w-full px-6 py-2 mt-0">
     <a href="/dashboard"> <img src="/img/toolKeeperLogo-dark-small.png" width="125px" height="auto"></a>
-    <label for="menu-toggle" class="block cursor-pointer md:hidden">
-      <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-        <title>menu</title>
-        <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"></path>
-      </svg>
-    </label>
-    <input class="hidden" type="checkbox" id="menu-toggle">
+  <div class="order-2 md:hidden justify-between "
 
-    <div class="order-3 hidden w-full  md:flex md:items-center md:w-auto md:order-1" id="menu">
+    <div class="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1" id="menu">
       <nav>
         <ul class="items-center justify-between pt-4 text-base md:flex md:pt-0">
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"
@@ -42,7 +36,7 @@
   </div>
 </nav>
 {{else}}
-{{!-- Fixed Logged out navbar --}}
+{{!--  Logged out navbar --}}
 <!-- component -->
 <nav id="header">
   <div class="flex items-center justify-between w-full px-6 py-2 mt-0">
