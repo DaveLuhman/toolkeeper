@@ -4,7 +4,7 @@ import { updateUser, resetPassword } from '../middleware/user.js'
 export const userRouter = expressRouter()
 // show user their own profile
 userRouter.get('/profile', (_req, res) => {
-  res.render('profile', { layout: 'user.hbs' })
+  res.render('profile')
 })
 // update user's own profile
 userRouter.post('/profile', updateUser, (_req, res) => {
