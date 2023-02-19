@@ -12,13 +12,14 @@ import { mutateToArray, paginate } from './util.js'
  * This function will return all tools in the database along with pagination data
  */
 async function getAllTools (req, res, next) {
+  const { sortField, sortOrder } = req.user.preferences
   console.info('[MW] getAllTools-in'.bgBlue.white)
-  const tools = await Tool.find({})
-  tools.sort((a, b) => a.serialNumber - b.serialNumber)
+  const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
+
   const { trimmedData, targetPage, pageCount } = paginate(
     tools,
     req.query.p || 1,
-    10
+    req.user.preferences.pageSize
   )
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
@@ -53,12 +54,12 @@ async function getToolByID (req, res, next) {
  */
 async function searchTools (req, res, next) {
   console.info('[MW] searchTools-in'.bgBlue.white)
+  const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchValue } = req.body
   const tools = await Tool.find({
     [searchBy]: { $eq: searchValue }
-  })
-  tools.sort((a, b) => a.serialNumber - b.serialNumber)
-  const { trimmedData, pageCount, targetPage } = paginate(tools, req.query.p, 10)
+  }).sort({ [sortField]: sortOrder })
+  const { trimmedData, pageCount, targetPage } = paginate(tools, req.query.p, req.user.preferences.pageSize)
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
   console.info('[MW] searchTools-out'.bgWhite.blue)

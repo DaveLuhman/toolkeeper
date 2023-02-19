@@ -25,3 +25,13 @@ export function mutateToArray (data) {
   }
   return data
 }
+
+export function sortByUserPreference (data, sortField, sortOrder) {
+  console.log('sort field: ', sortField)
+  if (sortOrder === 'asc') {
+    data.sort((a, b) => a[sortField] - b[sortField])
+  } else {
+    data.sort((a, b) => b[sortField] - a[sortField])
+  }
+  return data
+}
