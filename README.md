@@ -59,14 +59,16 @@ This is a full-stack web application built with NodeJS and Express that allows a
 
 - Add and archive tools
 - Search for tools by serial number, barcode, in/out status, or service assignment
+- Add and archive service assignments (employees, vehicles, or jobsites)
 - Checkout and check-in tools to/from service assignments (employees, vehicles, or jobsites)
+- Users can set theme and sorting preferences individually
 - Generate reports on tool usage and inventory levels (coming soon...)
 
 ## Technologies Used
 
 - NodeJS
 - Express
-- MongoDB (for database management)
+- MongoDB (mongoose)
 - TailwindCSS + DaisyUI (for styling)
 
 ## Getting Started
@@ -74,7 +76,7 @@ This is a full-stack web application built with NodeJS and Express that allows a
 ### Prerequisites
 
 - NodeJS 19+
-- MongoDB to point the server at (docker-compose is on the roadmap)
+- MongoDB Target
 
 ### Installation
 
