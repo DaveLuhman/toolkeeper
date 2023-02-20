@@ -19,7 +19,7 @@ const toolSchema = new Schema(
     },
     serviceAssignment: {
       type: String,
-      upperCase: true
+      ref: 'ServiceAssignment.displayName'
     },
     description: {
       type: String,
@@ -34,11 +34,11 @@ const toolSchema = new Schema(
       default: false
     },
     createdBy: {
-      ref: 'User',
+      ref: 'User.displayName',
       type: Schema.Types.ObjectId
     },
     updatedBy: {
-      ref: 'User',
+      ref: 'User.displayName',
       type: Schema.Types.ObjectId
     },
     image: {
