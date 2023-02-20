@@ -1,0 +1,23 @@
+<div class="main-view">
+    {{!-- side nav container for user, service assignment, and future setting categories --}}
+    <div class="border-base-300 rounded-lg ">
+        <ul class="side-nav">
+            <div class="hover:border-gray-300 bg-base-100">
+                <a href="/manager/user">User</a>
+            </div>
+            <div class="hover:border-gray-300 bg-base-100">
+                <a href="/manager/service-assignment">Service Assignment</a>
+            </div>
+            <div class="hover:border-gray-300 bg-base-100">
+                <a href="/manager/other">Other</a>
+            </div>
+        </ul>
+    </div>
+    {{!-- main content container settings partial, based on URL browsed to --}}
+    <div class="main-content">
+        {{#contains url "service-assigment"}}
+            {{> settings/_service-assignment}}
+        {{else}}
+            {{> settings/_user}}
+        {{/contains}}
+</div>
