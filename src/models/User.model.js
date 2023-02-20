@@ -53,7 +53,6 @@ const UserSchema = new Schema(
   }
 )
 
-// Create a virtual property `displayName` with a getter and setter.
 UserSchema.virtual('displayName')
   .get(function () {
     return `${this.firstName} ${this.lastName}`
