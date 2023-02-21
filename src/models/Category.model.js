@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose'
+import { Schema, model } from 'mongoose'
 
 const ToolCategory = new Schema({
   name: {
@@ -11,4 +11,4 @@ const ToolCategory = new Schema({
     maxLength: 64
   }
 })
-export default mongoose.model('toolCategory', ToolCategory)
+export default model('toolCategory', ToolCategory)
