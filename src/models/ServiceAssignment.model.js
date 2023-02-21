@@ -1,6 +1,6 @@
-import { Schema as mongoose } from 'mongoose'
+import { Schema, model } from 'mongoose'
 
-const ServiceAssignment = new mongoose.Schema({
+const ServiceAssignment = new Schema({
   vehicle: {
     type: String
   },
@@ -28,4 +28,4 @@ ServiceAssignment.virtual('displayName')
     }
   })
 
-export default mongoose.model('serviceAssignment', ServiceAssignment)
+export default model('serviceAssignment', ServiceAssignment)

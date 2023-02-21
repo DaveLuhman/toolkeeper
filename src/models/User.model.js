@@ -65,5 +65,4 @@ UserSchema.virtual('displayName')
     this.set({ firstName, lastName })
   })
 
-const User = model('User', UserSchema)
-export default User
+export default model('User', UserSchema)

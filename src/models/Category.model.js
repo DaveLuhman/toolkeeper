@@ -1,6 +1,6 @@
-import { Schema as mongoose } from 'mongoose'
+import { Schema } from 'mongoose'
 
-const ToolCategory = new mongoose.Schema({
+const ToolCategory = new Schema({
   name: {
     type: String,
     required: true
