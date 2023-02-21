@@ -21,6 +21,10 @@ const toolSchema = new Schema(
       type: String,
       ref: 'ServiceAssignment.displayName'
     },
+    category: {
+      type: String,
+      ref: 'Category.name'
+    },
     description: {
       type: String,
       maxLength: 128

@@ -1,5 +1,6 @@
 import { Router as expressRouter } from 'express'
 import { createUser, getUsers, updateUser, resetPassword, disableUser, getUserByID } from '../middleware/user.js'
+import { getServiceAssignments } from '../middleware/serviceAssignment.js'
 
 export const managerRouter = expressRouter()
 
@@ -10,7 +11,11 @@ managerRouter.get('/', getUsers, (_req, res) => {
 managerRouter.get('/user', getUsers, (_req, res) => {
   res.render('settings')
 })
-managerRouter.get('/serviceAssignment', getUsers, (_req, res) => {
+managerRouter.get('/service-assignments', getServiceAssignments, (_req, res) => {
+  res.render('settings')
+})
+// get service assignment by ID and render edit page
+managerRouter.get('/service-assignments/:id/edit', getUsers, (_req, res) => {
   res.render('settings')
 })
 // get user by ID and render edit page

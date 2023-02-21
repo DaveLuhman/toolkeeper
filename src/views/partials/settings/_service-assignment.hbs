@@ -1,0 +1,25 @@
+<div class="main-view">
+  <div class="title-bar">
+    <h1 class="title-text">Service Assignments</h1>
+  </div>
+  <div class="content">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Display Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each serviceAssignments}}
+        <tr>
+          <td>{{displayName}}</td>
+          <td><a href="/manager/service-assignments/{{id}}/edit">Edit</a></td>
+          <td><a href="/manager/service-assignments/{{id}}/delete">Delete</a></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
