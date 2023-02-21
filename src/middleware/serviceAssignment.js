@@ -1,4 +1,4 @@
-import ServiceAssignment from '../models/ServiceAssignment'
+import ServiceAssignment from '../models/ServiceAssignment.model.js'
 
 export async function getServiceAssignments (req, res, next) {
   try {
