@@ -6,15 +6,15 @@
                 <a href="/manager/user">User</a>
             </div>
             <div class="hover:border-gray-300 bg-base-100">
-                <a href="/manager/service-assignment">Service Assignment</a>
+                <a href="/manager/service-assignments">Service Assignment</a>
             </div>
 
         </ul>
     </div>
     {{!-- main content container settings partial, based on URL browsed to --}}
     <div class="main-content">
-        {{#contains url "service-assigment"}}
-            {{> settings/_service-assignment}}
+        {{#contains url "service-assigments"}}
+            {{> settings/_service-assignments}}
         {{else}}
             {{> settings/_user}}
         {{/contains}}
