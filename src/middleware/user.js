@@ -1,5 +1,6 @@
 import User from '../models/User.model.js'
 import bcrypt from 'bcrypt'
+import { mutateToArray } from './util.js'
 
 /**
  * getUsers - queries all users from db
@@ -9,7 +10,8 @@ import bcrypt from 'bcrypt'
  */
 async function getUsers (_req, res, next) {
   console.info('[MW] getUsers-in'.bgBlue.white)
-  res.locals.users = await User.find()
+  const users = await User.find()
+  res.locals.users = mutateToArray(users)
   console.info('[MW] getUsers-out-2'.bgWhite.blue)
   next()
 }
@@ -17,8 +19,9 @@ async function getUserByID (req, res, next) {
   console.info('[MW] getUserByID-in'.bgBlue.white)
   const id = req.params.id
   console.info(`[MW] searching id: ${id}`)
-  const user = await User.findById({ $eq: id })
-  res.locals.targetUser = [user]
+  const user = await User.findById(id)
+  res.locals.targetUser = mutateToArray(user)
+  console.log(user)
   console.info('[MW] getUserByID-out'.bgWhite.blue)
   next()
 }
