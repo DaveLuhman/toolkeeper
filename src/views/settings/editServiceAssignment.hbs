@@ -1,0 +1,36 @@
+<div class="main-view">
+    {{#if serviceAssignments}}
+        <form action="/manager/editServiceAssignment" method="POST">
+            <div class="title-bar mb-2">
+                <h3 class="title-text">Update Service Assignment</h3>
+            </div>
+            {{#each serviceAssignments}}
+                <div class="columns-1 md:columns-2">
+                    <div class="form-control justify-items-center gap-2">
+                        <input name="_id" value="{{_id}}" type="hidden" />
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Vehicle</span></label>
+                            <input name="vehicle" value="{{vehicle}}" type="text" class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Job Name</span></label>
+                            <input name="jobName" value="{{jobName}}" type="text" class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Job Number</span></label>
+                            <input name="jobNumber" value="{{jobNumber}}" type="text" class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label class="label"><span class="label-text">Employee Name</span></label>
+                            <input name="employee" value="{{employee}}" type="text" class="input input-bordered" />
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+            <div class="modal-button-row">
+                <label class="modal-button"><a href="/manager/serviceAssignments">Cancel</a></label>
+                <label class="modal-button"><button type="submit">Submit</button></label>
+            </div>
+        </form>
+    {{/if}}
+</div>

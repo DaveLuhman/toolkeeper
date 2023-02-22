@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const ServiceAssignment = new Schema({
+const ServiceAssignmentSchema = new Schema({
   vehicle: {
     type: String
   },
@@ -17,7 +17,7 @@ const ServiceAssignment = new Schema({
   timestamps: true
 })
 
-ServiceAssignment.virtual('displayName')
+ServiceAssignmentSchema.virtual('displayName')
   .get(function () {
     if (this.vehicle) {
       return this.vehicle + ' ' + this.employee
@@ -28,4 +28,4 @@ ServiceAssignment.virtual('displayName')
     }
   })
 
-export default model('serviceAssignment', ServiceAssignment)
+export default model('serviceAssignment', ServiceAssignmentSchema)

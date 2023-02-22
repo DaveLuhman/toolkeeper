@@ -1,0 +1,33 @@
+<div class="flex flex-wrap">
+  <div id="settings-nav">
+    {{> _settings}}
+  </div>
+  <div id="serviceAssignmentTable">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Display Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#if serviceAssignments}}
+        {{#each serviceAssignments}}
+          <tr>
+            <td>{{displayName}}</td>
+            <td><a href="/manager/service-assignments/{{id}}/edit">Edit</a></td>
+            <td><a href="/manager/service-assignments/{{id}}/delete">Delete</a></td>
+          </tr>
+        {{/each}}
+        {{/if}}
+      </tbody>
+    </table>
+    <div class="mx-5">
+      <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
+        <label for="newServiceAssignmentModal">New Service Assignment</label>
+      </div>
+    </div>
+  </div>
+</div>
