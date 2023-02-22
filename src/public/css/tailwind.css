@@ -227,6 +227,11 @@ td {
   @apply border-base-300;
   @apply text-center;
 }
+/* -----------------END TABLE------------------ */
+#settings-nav {
+  @apply w-auto;
+  @apply mt-10;
+  }
 /* ----------------TOOL MODALS------------- */
 .modal-inner-lg {
   @apply modal-box;
@@ -240,6 +245,14 @@ td {
   @apply modal-box;
   @apply max-w-3xl;
   @apply w-3/5;
+  @apply bg-gradient-to-t;
+  @apply from-gray-900;
+  @apply to-base-300;
+}
+.modal-inner-sm {
+  @apply modal-box;
+  @apply max-w-2xl;
+  @apply w-2/5;
   @apply bg-gradient-to-t;
   @apply from-gray-900;
   @apply to-base-300;
@@ -299,7 +312,6 @@ td {
   @apply col-span-2;
   @apply lg:col-span-4;
   @apply float-right;
-
 }
 /* ------------PAGINATION BAR------------------------ */
 .paginate-bar {

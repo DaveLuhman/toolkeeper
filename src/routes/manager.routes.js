@@ -1,6 +1,6 @@
 import { Router as expressRouter } from 'express'
 import { createUser, getUsers, updateUser, resetPassword, disableUser, getUserByID } from '../middleware/user.js'
-import { getServiceAssignments, getServiceAssignmentByID, updateServiceAssignment } from '../middleware/serviceAssignment.js'
+import { getServiceAssignments, getServiceAssignmentByID, updateServiceAssignment, createServiceAssignment, deleteServiceAssignment } from '../middleware/serviceAssignment.js'
 
 export const managerRouter = expressRouter()
 
@@ -15,11 +15,19 @@ managerRouter.get('/serviceAssignments', getServiceAssignments, (_req, res) => {
   res.render('settings/serviceAssignments')
 })
 // get service assignment by ID and render edit page
-managerRouter.get('/service-assignments/:id/edit', getServiceAssignmentByID, (_req, res) => {
+managerRouter.get('/serviceAssignments/:id/edit', getServiceAssignmentByID, (_req, res) => {
   res.render('settings/editServiceAssignment')
 })
 // update service assignment
 managerRouter.post('/editServiceAssignment', updateServiceAssignment, (_req, res) => {
+  res.redirect('/manager/serviceAssignments')
+})
+// add new service assignment
+managerRouter.post('/serviceAssignments', createServiceAssignment, (_req, res) => {
+  res.redirect('/manager/serviceAssignments')
+})
+// delete service assignment
+managerRouter.get('/serviceAssignments/:id/delete', deleteServiceAssignment, (_req, res) => {
   res.redirect('/manager/serviceAssignments')
 })
 // get user by ID and render edit page

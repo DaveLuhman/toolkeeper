@@ -20,9 +20,9 @@ const ServiceAssignmentSchema = new Schema({
 ServiceAssignmentSchema.virtual('displayName')
   .get(function () {
     if (this.vehicle) {
-      return this.vehicle + ' ' + this.employee
+      return this.vehicle + ' - ' + this.employee
     } else if (this.jobName) {
-      return this.jobName + ' ' + this.jobNumber
+      return this.jobName + ' - ' + this.jobNumber
     } else {
       return this.employee
     }

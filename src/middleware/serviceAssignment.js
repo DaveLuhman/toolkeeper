@@ -35,3 +35,28 @@ export async function updateServiceAssignment (req, res, next) {
     res.status(500).send('Server Error')
   }
 }
+
+export async function createServiceAssignment (req, res, next) {
+  try {
+    const { vehicle, employee, jobName, jobNumber } = req.body
+    const newServiceAssignment = await ServiceAssignment.create({ vehicle, employee, jobName, jobNumber })
+    res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
+    return next()
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Server Error')
+  }
+}
+
+// delete service assignment
+
+export async function deleteServiceAssignment (req, res, next) {
+  try {
+    const id = req.params.id
+    await ServiceAssignment.findByIdAndDelete(id)
+    return next()
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Server Error')
+  }
+}

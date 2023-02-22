@@ -3,7 +3,6 @@
     {{> _settings}}
   </div>
   <div id="serviceAssignmentTable">
-
     <table class="table table-striped">
       <thead>
         <tr>
@@ -14,13 +13,13 @@
       </thead>
       <tbody>
         {{#if serviceAssignments}}
-        {{#each serviceAssignments}}
-          <tr>
-            <td>{{displayName}}</td>
-            <td><a href="/manager/service-assignments/{{id}}/edit">Edit</a></td>
-            <td><a href="/manager/service-assignments/{{id}}/delete">Delete</a></td>
-          </tr>
-        {{/each}}
+          {{#each serviceAssignments}}
+            <tr>
+              <td>{{displayName}}</td>
+              <td><a href="/manager/serviceAssignments/{{id}}/edit">Edit</a></td>
+              <td><a href="/manager/serviceAssignments/{{id}}/delete">Delete</a></td>
+            </tr>
+          {{/each}}
         {{/if}}
       </tbody>
     </table>
@@ -29,5 +28,30 @@
         <label for="newServiceAssignmentModal">New Service Assignment</label>
       </div>
     </div>
+  </div>
+</div>
+{{!-- New SA Modal --}}
+<input type="checkbox" id="newServiceAssignmentModal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-inner-md">
+    <label for="newServiceAssignmentModal" class="modal-close-btn">✕</label>
+    <form action="/manager/serviceAssignments" method="POST">
+      <div class="grid grid-rows-2 w-full items-center">
+        <div class="title-bar">
+          <h3 class="title-text">New Service Assignment</h3>
+        </div>
+        <div class="m-3">
+          <input placeholder="Employee" type="text" name="employee" class="input input-bordered">
+          <input placeholder="Vehicle" type="text" name="vehicle" class="input input-bordered">
+        </div>
+        <div>
+          <input placeholder="Job Num" type="text" name="jobNumber" class="input input-bordered">
+          <input placeholder="Job Name" type="text" name="jobName" class="input input-bordered">
+        </div>
+        <div class="modal-button-row">
+          <label class="btn btn-sm"> <button type="submit">Submit</button></label>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
