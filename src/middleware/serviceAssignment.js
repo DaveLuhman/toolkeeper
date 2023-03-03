@@ -60,3 +60,15 @@ export async function deleteServiceAssignment (req, res, next) {
     res.status(500).send('Server Error')
   }
 }
+
+// get service assignment display table in an array for use as enum for tools.serviceAssignment
+export async function enumerateServiceAssignments (req, res, next) {
+  try {
+    const serviceAssignments = await ServiceAssignment.find({}, { displayName: 1 })
+    res.locals.serviceAssignments = mutateToArray(serviceAssignments)
+    return next()
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Server Error')
+  }
+}
