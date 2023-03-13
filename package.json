@@ -49,6 +49,7 @@
     "tailwindcss-dropdown": "^1.0.0"
   },
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-config-standard": "^17.0.0",

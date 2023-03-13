@@ -1,6 +1,13 @@
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import { mutateToArray } from './util.js'
-
+/**
+ * @function getServiceAssignments
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns  {void}
+ * @description Gets all service assignments and adds them to res.locals.serviceAssignments as an array
+ */
 export async function getServiceAssignments (req, res, next) {
   try {
     const serviceAssignments = await ServiceAssignment.find()
@@ -11,7 +18,14 @@ export async function getServiceAssignments (req, res, next) {
     res.status(500).send('Server Error')
   }
 }
-
+/**
+ * @function getServiceAssignmentByID
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns {void}
+ * @description Gets a service assignment by ID and adds it to res.locals.serviceAssignments as an array
+ */
 export async function getServiceAssignmentByID (req, res, next) {
   try {
     const id = req.params.id
@@ -23,7 +37,14 @@ export async function getServiceAssignmentByID (req, res, next) {
     res.status(500).send('Server Error')
   }
 }
-
+/**
+ *  @function updateServiceAssignment
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns {void}
+ * @description Updates a service assignment by ID and adds it to res.locals.serviceAssignments as an array
+ */
 export async function updateServiceAssignment (req, res, next) {
   try {
     const { _id, vehicle, employee, jobName, jobNumber } = req.body
@@ -35,7 +56,14 @@ export async function updateServiceAssignment (req, res, next) {
     res.status(500).send('Server Error')
   }
 }
-
+/**
+ * @function createServiceAssignment
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @return {void}
+ * @description Creates a service assignment and adds it to res.locals.serviceAssignments as an array
+ */
 export async function createServiceAssignment (req, res, next) {
   try {
     const { vehicle, employee, jobName, jobNumber } = req.body
@@ -48,7 +76,14 @@ export async function createServiceAssignment (req, res, next) {
   }
 }
 
-// delete service assignment
+/**
+ *  @function deleteServiceAssignment
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns {void}
+ * @description Deletes a service assignment by ID
+ */
 
 export async function deleteServiceAssignment (req, res, next) {
   try {
@@ -60,8 +95,14 @@ export async function deleteServiceAssignment (req, res, next) {
     res.status(500).send('Server Error')
   }
 }
-
-// get service assignment display table in an array for use as enum for tools.serviceAssignment
+/**
+ *  @function enumerateServiceAssignments
+ * @param {*} req
+ * @param {*} res
+ * @param {*} next
+ * @returns   {void}
+ * @description Gets all service assignments and adds them to res.locals.serviceAssignments as an array specifically to be displayed in a table
+ */
 export async function enumerateServiceAssignments (req, res, next) {
   try {
     const serviceAssignments = await ServiceAssignment.find({}, { displayName: 1 })
