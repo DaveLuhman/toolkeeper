@@ -1,4 +1,5 @@
 import passport from 'passport'
+import User from '../models/User.model.js'
 
 /**
  * @param req Express Request object
@@ -58,6 +59,29 @@ async function login (req, res, next) {
     failureRedirect: '/login',
     failureFlash: true
   })(req, res, next)
+}
+
+export function register (req, res, next) {
+  const { firstName, lastName, email, password, confirmPassword } = req.body
+  if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    res.locals.error = 'All fields are required'
+    res.status(400).redirect('back')
+  }
+  if (password !== confirmPassword) {
+    res.locals.error = 'Passwords must match'
+    res.status(400).redirect('back')
+  }
+  const hash = bcrypt.hashSync(password, 10)
+  try {
+    User.create({
+      firstName,
+      lastName,
+      email,
+      password: hash
+    })
+  } catch (err) {
+    res.locals.error = 'An error occurred when creating the user'
+  }
 }
 
 /**
