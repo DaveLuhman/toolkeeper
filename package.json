@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node ./src/server.js",
     "dev": "nodemon ./src/server.js",
-    "build:css": "npx tailwindcss -c ./src/config/tailwind.config.cjs --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css",
-    "watch:css": "npx tailwindcss -c ./src/config/tailwind.config.cjs --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w"
+    "build:css": "npx tailwindcss -c ./src/config/tailwind.config.js --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css",
+    "watch:css": "npx tailwindcss -c ./src/config/tailwind.config.js --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w"
   },
   "repository": {
     "type": "git",

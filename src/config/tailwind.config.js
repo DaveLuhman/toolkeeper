@@ -31,4 +31,4 @@ const theme = {
 const variants = { display: ['responsive', 'dropdown'] }
 const plugins = [require('@tailwindcss/typography'), require('daisyui')]
 
-module.exports = { content, daisyui, theme, plugins, variants }
+export default { content, daisyui, theme, plugins, variants }
