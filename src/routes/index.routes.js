@@ -18,8 +18,6 @@ indexRouter.get('/login', (req, res) => {
   }
 })
 
-
-
 // Login User
 indexRouter.post('/login', login, (_req, res) => {
   res.redirect('/dashboard')
@@ -35,7 +33,7 @@ indexRouter.get('/register', (req, res) => {
 })
 // Register User
 indexRouter.post('/register', register, (_req, res) => {
-  res.redirect('/dashboard')
+  res.redirect('/login')
 })
 
 // Logout User
