@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { login, logout } from '../middleware/auth.js'
+import { login, logout, register } from '../middleware/auth.js'
 import { toolController } from '../controllers/tool.js'
 
 export const indexRouter = Router()
@@ -14,12 +14,27 @@ indexRouter.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
     res.redirect('/dashboard')
   } else {
-    res.render('login', { layout: 'login.hbs' })
+    res.render('login', { layout: 'auth.hbs' })
   }
 })
 
+
+
 // Login User
 indexRouter.post('/login', login, (_req, res) => {
+  res.redirect('/dashboard')
+})
+
+// Render register Page
+indexRouter.get('/register', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/dashboard')
+  } else {
+    res.render('register', { layout: 'auth.hbs' })
+  }
+})
+// Register User
+indexRouter.post('/register', register, (_req, res) => {
   res.redirect('/dashboard')
 })
 

@@ -1,0 +1,40 @@
+<!-- component -->
+<div id="login-wrapper">
+  <div id="login-container">
+    <img src="\img\toolKeeperLogo-light-full.png" id="tk-logo">
+    <div class="login-form-wrapper">
+      <div class="px-5 py-7">
+        <form action="/login" method="POST">
+          <label for="firstName" class="login-label">First Name</label>
+          <input type="text" name="firstName" class="login-input" />
+          <label for="lastName" class="login-label">Last Name</label>
+          <input type="text" name="lastName" class="login-input" />
+          <label for="email" class="login-label">E-mail</label>
+          <input type="text" name="email" class="login-input" />
+          <label class="login-label">Password</label>
+          <input type="password" name="password" class="login-input" />
+          <label class="login-label">Confirm Password</label>
+          <input type="password" name="confirmPassword" class="login-input" />
+          <button type="submit" id="login-btn">
+            <span class="inline-block mr-2">Login</span>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              class="inline-block w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </button>
+        </form>
+      </div>
+      {{message}}
+      <div class="login-form-footer">
+        <a href="/">
+          <button class="forgot-password">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              class="inline-block w-4 h-4 align-text-top">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            <span class="inline-block ml-1">Back to ToolKeeper Home</span>
+          </button></a>
+      </div>
+    </div>
+  </div>
+</div>
