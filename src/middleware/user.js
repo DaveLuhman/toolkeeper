@@ -13,7 +13,7 @@ async function getUsers (_req, res, next) {
   const users = await User.find()
   res.locals.users = mutateToArray(users)
   console.info('[MW] getUsers-out-2'.bgWhite.blue)
-  next()
+  return next()
 }
 async function getUserByID (req, res, next) {
   console.info('[MW] getUserByID-in'.bgBlue.white)
@@ -22,7 +22,7 @@ async function getUserByID (req, res, next) {
   const user = await User.findById(id).lean()
   res.locals.targetUser = mutateToArray(user)
   console.info('[MW] getUserByID-out'.bgWhite.blue)
-  next()
+  return next()
 }
 async function createUser (req, res, next) {
   console.info('[MW] createUser-in'.bgBlue.white)
@@ -103,7 +103,6 @@ async function updateUser (req, res, next) {
   console.info('[MW] updateUser-out'.bgWhite.blue)
   return next()
 }
-
 async function resetPassword (req, res, next) {
   console.info('[MW] resetPassword-in'.bgBlue.white)
   // get data from request body

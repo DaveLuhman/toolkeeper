@@ -8,7 +8,7 @@ import { mutateToArray } from './util.js'
  * @returns  {void}
  * @description Gets all service assignments and adds them to res.locals.serviceAssignments as an array
  */
-export async function getServiceAssignments (req, res, next) {
+export async function getServiceAssignments (_req, res, next) {
   try {
     const serviceAssignments = await ServiceAssignment.find()
     res.locals.serviceAssignments = mutateToArray(serviceAssignments)

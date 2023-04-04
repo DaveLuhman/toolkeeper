@@ -34,17 +34,14 @@ managerRouter.get('/serviceAssignments/:id/delete', deleteServiceAssignment, (_r
 managerRouter.get('/user/:id', getUserByID, (_req, res) => {
   res.render('editUser')
 })
-
 // update user
 managerRouter.post('/user/:id', updateUser, (_req, res) => {
   res.redirect('./')
 })
-
 // reset user's password
 managerRouter.post('/user/resetPW/:id', resetPassword, (_req, res) => {
   res.render('settings')
 })
-
 // disable user
 managerRouter.post('user/disableUser/:id', disableUser, (_req, res) => {
   res.render('settings')
