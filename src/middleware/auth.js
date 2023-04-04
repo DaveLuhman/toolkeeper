@@ -1,5 +1,5 @@
 import passport from 'passport'
-import User from '../models/User.js'
+import User from '../models/User.model.js'
 
 export async function register (req, res, next) {
   const { firstName, lastName, email, password, confirmPassword } = req.body
