@@ -21,7 +21,6 @@ async function getUserByID (req, res, next) {
   console.info(`[MW] searching id: ${id}`)
   const user = await User.findById(id).lean()
   res.locals.targetUser = mutateToArray(user)
-  console.log(res.locals.targetUser)
   console.info('[MW] getUserByID-out'.bgWhite.blue)
   next()
 }
@@ -99,7 +98,6 @@ async function updateUser (req, res, next) {
     },
     { new: true }
   )
-  console.log(user)
   res.locals.user = user
   req.login(user, (error) => { console.log('This is an error' + error) })
   console.info('[MW] updateUser-out'.bgWhite.blue)

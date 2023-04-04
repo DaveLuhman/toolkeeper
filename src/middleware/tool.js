@@ -200,7 +200,6 @@ async function archiveTool (req, res, next) {
  */
 async function checkTools (req, res, next) {
   console.info('[MW] checkTools-in'.bgBlue.white)
-  console.log(JSON.stringify(req.body))
   if (req.body.searchTerm === '' || req.body.searchTerm === undefined) {
     res.locals.message = 'No Tools Submitted For Status Change'
     console.warn('[MW checkTools-out-1'.bgWhite.blue)

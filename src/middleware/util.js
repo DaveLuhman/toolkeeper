@@ -27,7 +27,6 @@ export function mutateToArray (data) {
 }
 
 export function sortByUserPreference (data, sortField, sortOrder) {
-  console.log('sort field: ', sortField)
   if (sortOrder === 'asc') {
     data.sort((a, b) => a[sortField] - b[sortField])
   } else {

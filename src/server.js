@@ -24,7 +24,7 @@ import { indexRouter } from './routes/index.routes.js'
 import { managerRouter } from './routes/manager.routes.js'
 import { toolRouter } from './routes/tool.routes.js'
 import { userRouter } from './routes/user.routes.js'
-dotenv.config()
+dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
 const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
 
