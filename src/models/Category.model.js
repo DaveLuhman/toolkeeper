@@ -1,6 +1,6 @@
 import { Schema, model } from 'mongoose'
 
-const ToolCategory = new Schema({
+const CategorySchema = new Schema({
   name: {
     type: String,
     required: true
@@ -11,4 +11,4 @@ const ToolCategory = new Schema({
     maxLength: 64
   }
 })
-export default model('toolCategory', ToolCategory)
+export default model('Category', CategorySchema)

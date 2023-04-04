@@ -9,7 +9,6 @@ export const indexRouter = Router()
 indexRouter.get('/', (_req, res) => {
   res.render('index', { layout: 'public.hbs' })
 })
-
 // Render Login Page
 indexRouter.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
@@ -18,12 +17,10 @@ indexRouter.get('/login', (req, res) => {
     res.render('login', { layout: 'auth.hbs' })
   }
 })
-
 // Login User
 indexRouter.post('/login', login, (_req, res) => {
   res.redirect('/dashboard')
 })
-
 // Render register Page
 indexRouter.get('/register', (req, res) => {
   if (req.isAuthenticated()) {
@@ -36,7 +33,6 @@ indexRouter.get('/register', (req, res) => {
 indexRouter.post('/register', createUser, (_req, res) => {
   res.redirect('/login')
 })
-
 // Logout User
 indexRouter.get('/logout', logout)
 

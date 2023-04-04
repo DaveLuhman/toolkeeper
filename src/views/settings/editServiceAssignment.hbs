@@ -1,12 +1,12 @@
 <div class="main-view">
     {{#if serviceAssignments}}
-        <form action="/manager/editServiceAssignment" method="POST">
-            <div class="title-bar mb-2">
+        <form action="/manager/serviceAssignment/edit" method="POST">
+            <div class="mb-2 title-bar">
                 <h3 class="title-text">Update Service Assignment</h3>
             </div>
             {{#each serviceAssignments}}
                 <div class="columns-1 md:columns-2">
-                    <div class="form-control justify-items-center gap-2">
+                    <div class="gap-2 form-control justify-items-center">
                         <input name="_id" value="{{_id}}" type="hidden" />
                         <div class="form-control">
                             <label class="label"><span class="label-text">Vehicle</span></label>

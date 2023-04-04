@@ -16,10 +16,10 @@ managerRouter.get('/serviceAssignments', getServiceAssignments, (_req, res) => {
 })
 // get service assignment by ID and render edit page
 managerRouter.get('/serviceAssignments/:id/edit', getServiceAssignmentByID, (_req, res) => {
-  res.render('settings/editServiceAssignment')
+  res.render('settings/serviceAssignmentEdit')
 })
 // update service assignment
-managerRouter.post('/editServiceAssignment', updateServiceAssignment, (_req, res) => {
+managerRouter.post('/serviceAssignment/edit', updateServiceAssignment, (_req, res) => {
   res.redirect('/manager/serviceAssignments')
 })
 // add new service assignment
@@ -46,7 +46,6 @@ managerRouter.post('/user/resetPW/:id', resetPassword, (_req, res) => {
 managerRouter.post('user/disableUser/:id', disableUser, (_req, res) => {
   res.render('settings')
 })
-
 // create new user
 managerRouter.post('user/createUser', createUser, (_req, res) => {
   res.render('settings')
