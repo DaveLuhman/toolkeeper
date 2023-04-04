@@ -1,6 +1,7 @@
 import { Router } from 'express'
-import { login, logout, register } from '../middleware/auth.js'
+import { login, logout } from '../middleware/auth.js'
 import { toolController } from '../controllers/tool.js'
+import { createUser } from '../controllers/user.js'
 
 export const indexRouter = Router()
 
@@ -32,7 +33,7 @@ indexRouter.get('/register', (req, res) => {
   }
 })
 // Register User
-indexRouter.post('/register', register, (_req, res) => {
+indexRouter.post('/register', createUser, (_req, res) => {
   res.redirect('/login')
 })
 

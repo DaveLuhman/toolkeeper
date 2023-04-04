@@ -1,30 +1,5 @@
 import passport from 'passport'
-import User from '../models/User.model.js'
 
-export async function register (req, res, next) {
-  const { firstName, lastName, email, password, confirmPassword } = req.body
-  if (!firstName || !lastName || !email || !password || !confirmPassword) {
-    res.locals.error = 'All fields are required'
-    return res.redirect('back')
-  }
-  if (password !== confirmPassword) {
-    res.locals.error = 'Passwords do not match'
-    return res.redirect('back')
-  }
-  try {
-    const user = await User.create({ firstName, lastName, email, password })
-    req.login(user, function (err) {
-      if (err) {
-        return next(err)
-      }
-      return res.redirect('/dashboard')
-    })
-  } catch (error) {
-    console.error(error)
-    res.locals.error = 'Something went wrong'
-    return res.redirect('back')
-  }
-}
 /**
  * @param req Express Request object
  * @param  res  Express Response object
@@ -104,5 +79,7 @@ function logout (req, res, next) {
     res.redirect('/')
   })
 }
+
+// TODO add a function to make sure the request is coming from the front end and not an external source via url or token
 
 export { checkAuth, isManager, login, logout }
