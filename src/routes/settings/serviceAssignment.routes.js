@@ -7,20 +7,24 @@ import {
   deleteServiceAssignment
 } from '../../middleware/serviceAssignment.js'
 
-const serviceAssignmentRouter = Router()
+export const serviceAssignmentRouter = Router()
 
+// @desc get all service assignments and render settings page
+// @endpoint GET /settings/serviceAssignments
 serviceAssignmentRouter.get('/', getServiceAssignments, (_req, res) => {
   res.render('settings/serviceAssignments')
 })
-// get service assignment by ID and render edit page
+// @desc get service assignment by ID and render edit page
+// @endpoint GET /settings/serviceAssignments/edit/:id
 serviceAssignmentRouter.get(
   '/serviceAssignments/edit/:id', // target
   getServiceAssignmentByID,
   (_req, res) => {
-    res.render('settings/serviceAssignmentEdit') // render
+    res.render('settings/editServiceAssignment') // render
   }
 )
-// update service assignment
+// @desc update service assignment and redirect to settings page
+// @endpoint POST /settings/serviceAssignments/edit
 serviceAssignmentRouter.post(
   '/serviceAssignment/edit', // target
   updateServiceAssignment,
@@ -28,7 +32,8 @@ serviceAssignmentRouter.post(
     res.redirect('/settings/serviceAssignments') // redirect
   }
 )
-// add new service assignment
+// @desc add new service assignment and redirect to settings page
+// @endpoint POST /settings/serviceAssignments/create
 serviceAssignmentRouter.post(
   '/serviceAssignment/create',
   createServiceAssignment,
@@ -36,9 +41,10 @@ serviceAssignmentRouter.post(
     res.redirect('/settings/serviceAssignments')
   }
 )
-// delete service assignment
+// @desc delete service assignment and redirect to settings page
+// @endpoint GET /settings/serviceAssignments/delete/:id
 serviceAssignmentRouter.get(
-  '/serviceAssignments/:id/delete',
+  '/serviceAssignments/delete/:id/',
   deleteServiceAssignment,
   (_req, res) => {
     res.redirect('/settings/serviceAssignments')
