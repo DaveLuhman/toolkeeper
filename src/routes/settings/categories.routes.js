@@ -7,7 +7,7 @@ import {
   deletecategories
 } from '../../middleware/categories.js'
 
-const categoriesRouter = Router()
+export const categoriesRouter = Router()
 
 categoriesRouter.get('/', getcategories, (_req, res) => {
   res.render('settings/categories')
