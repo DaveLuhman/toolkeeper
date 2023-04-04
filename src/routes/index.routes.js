@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { login, logout } from '../middleware/auth.js'
 import { toolController } from '../controllers/tool.js'
-import { createUser } from '../controllers/user.js'
+import { createUser } from '../middlware/user.js'
 
 export const indexRouter = Router()
 
