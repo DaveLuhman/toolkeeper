@@ -24,9 +24,8 @@ const UserSchema = new Schema(
     },
     role: {
       type: String,
-      default: 'User'
-      // TODO: Build getter/setter for field validation
-      // enum: ['User', 'Manager', 'Admin'],
+      default: 'User',
+      enum: ['User', 'Manager', 'Admin']
     },
     isDisabled: {
       type: Boolean,
