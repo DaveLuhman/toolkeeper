@@ -6,6 +6,7 @@ import {
   createCategory,
   deleteCategory
 } from '../../middleware/category.js'
+import { sanitizeReqBody } from '../../middleware/util.js'
 
 export const categoryRouter = Router()
 
@@ -23,13 +24,14 @@ categoryRouter.get(
 // update service assignment
 categoryRouter.post(
   '/edit', // target
+  sanitizeReqBody,
   updateCategory,
   (_req, res) => {
     res.redirect('/settings/categories') // redirect
   }
 )
 // add new service assignment
-categoryRouter.post('/create', createCategory, (_req, res) => {
+categoryRouter.post('/create', sanitizeReqBody, createCategory, (_req, res) => {
   res.redirect('/settings/categories')
 })
 // delete service assignment

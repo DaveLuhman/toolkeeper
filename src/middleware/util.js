@@ -45,7 +45,7 @@ export function sortByUserPreference (data, sortField, sortOrder) {
  * It will only allow alphanumeric characters and spaces
  **/
 function sanitize (string) {
-  return string.replace(/[^a-zA-Z0-9 ]/g, '')
+  return string.replace(/[^a-zA-Z0-9@. ]/g, '')
 }
 
 /**
@@ -58,6 +58,7 @@ function sanitize (string) {
  * It will mutate the req.body
  **/
 export function sanitizeReqBody (req, _res, next) {
+  console.info('[MW] sanitizeReqBody-in'.red.underline)
   for (const key in req.body) {
     req.body[key] = sanitize(req.body[key])
   }
