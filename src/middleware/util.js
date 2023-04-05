@@ -9,7 +9,10 @@ export function paginate (data, targetPage, perPage) {
   perPage = perPage || 10
   targetPage = targetPage || 1
   const pageCount = Math.ceil(data.length / perPage) // number of pages
-  const trimmedData = data.slice((perPage * targetPage) - perPage, ((perPage * targetPage) + 1))
+  const trimmedData = data.slice(
+    perPage * targetPage - perPage,
+    perPage * targetPage + 1
+  )
   return { trimmedData, targetPage, pageCount }
 }
 
@@ -33,4 +36,31 @@ export function sortByUserPreference (data, sortField, sortOrder) {
     data.sort((a, b) => b[sortField] - a[sortField])
   }
   return data
+}
+
+/**
+ * @param {string} string
+ * @returns {string} sanitized data
+ * This function will sanitize user input to prevent XSS attacks
+ * It will only allow alphanumeric characters and spaces
+ **/
+function sanitize (string) {
+  return string.replace(/[^a-zA-Z0-9@. ]/g, '')
+}
+
+/**
+ * @param {object} req.body
+ * @param {*} res
+ * @param {*} next
+ * @returns {object} sanitized req.body
+ * This function will sanitize the request body
+ * It will only allow alphanumeric characters and spaces
+ * It will mutate the req.body
+ **/
+export function sanitizeReqBody (req, _res, next) {
+  console.info('[MW] sanitizeReqBody-in'.red.underline)
+  for (const key in req.body) {
+    req.body[key] = sanitize(req.body[key])
+  }
+  return next()
 }

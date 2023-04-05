@@ -6,6 +6,7 @@ import {
   createServiceAssignment,
   deleteServiceAssignment
 } from '../../middleware/serviceAssignment.js'
+import { sanitizeReqBody } from '../../middleware/util.js'
 
 export const serviceAssignmentRouter = Router()
 
@@ -27,6 +28,7 @@ serviceAssignmentRouter.get(
 // @endpoint POST /settings/serviceAssignments/edit
 serviceAssignmentRouter.post(
   '/edit', // target
+  sanitizeReqBody,
   updateServiceAssignment,
   (_req, res) => {
     res.redirect('/settings/serviceAssignments') // redirect
@@ -36,6 +38,7 @@ serviceAssignmentRouter.post(
 // @endpoint POST /settings/serviceAssignments/create
 serviceAssignmentRouter.post(
   '/create',
+  sanitizeReqBody,
   createServiceAssignment,
   (_req, res) => {
     res.redirect('/settings/serviceAssignments')

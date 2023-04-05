@@ -15,15 +15,16 @@ const toolSchema = new Schema(
       type: Number
     },
     status: {
-      type: String
+      type: String,
+      enum: ['Checked In', 'Checked Out', 'Missing']
     },
     serviceAssignment: {
       type: String,
-      ref: 'ServiceAssignment.displayName'
+      refPath: 'ServiceAssignment.displayName'
     },
     category: {
       type: String,
-      ref: 'Category.name'
+      refPath: 'Category.name'
     },
     description: {
       type: String,
@@ -38,11 +39,11 @@ const toolSchema = new Schema(
       default: false
     },
     createdBy: {
-      ref: 'User.displayName',
+      refPath: 'User.displayName',
       type: Schema.Types.ObjectId
     },
     updatedBy: {
-      ref: 'User.displayName',
+      refPath: 'User.displayName',
       type: Schema.Types.ObjectId
     },
     image: {

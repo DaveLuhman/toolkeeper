@@ -7,6 +7,7 @@ import {
   searchTools,
   updateTool
 } from '../middleware/tool.js'
+import { sanitizeReqBody } from '../middleware/util.js'
 export const toolRouter = Router()
 
 // get tool by id
@@ -15,7 +16,7 @@ toolRouter.get('/:id', getToolByID, (_req, res) => {
 })
 
 // search for tools
-toolRouter.post('/search', searchTools, (_req, res) => {
+toolRouter.post('/search', sanitizeReqBody, searchTools, (_req, res) => {
   res.render('dashboard')
 })
 
@@ -25,12 +26,12 @@ toolRouter.post('/checkTools', checkTools, (_req, res) => {
 })
 
 // create new tool
-toolRouter.post('/submit', createTool, (_req, res) => {
+toolRouter.post('/submit', sanitizeReqBody, createTool, (_req, res) => {
   res.render('dashboard')
 })
 
 // update tool
-toolRouter.post('/update', updateTool, (_req, res) => {
+toolRouter.post('/update', sanitizeReqBody, updateTool, (_req, res) => {
   res.render('dashboard')
 })
 

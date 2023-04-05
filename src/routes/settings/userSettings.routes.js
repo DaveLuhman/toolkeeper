@@ -7,6 +7,7 @@ import {
   disableUser,
   getUserByID
 } from '../../middleware/user.js'
+import { sanitizeReqBody } from '../../middleware/util.js'
 
 export const userSettingsRouter = Router()
 
@@ -22,7 +23,7 @@ userSettingsRouter.get('/:id', getUserByID, (_req, res) => {
 })
 // @desc update user and redirect to settings page
 // @endpoint POST /settings/users/:id
-userSettingsRouter.post('/:id', updateUser, (_req, res) => {
+userSettingsRouter.post('/:id', sanitizeReqBody, updateUser, (_req, res) => {
   res.redirect('./')
 })
 // @desc reset another user's password
@@ -37,6 +38,11 @@ userSettingsRouter.post('/disableUser/:id', disableUser, (_req, res) => {
 })
 // @desc create new user
 // @endpoint POST /settings/users/createUser
-userSettingsRouter.post('/createUser', createUser, (_req, res) => {
-  res.render('settings')
-})
+userSettingsRouter.post(
+  '/createUser',
+  sanitizeReqBody,
+  createUser,
+  (_req, res) => {
+    res.render('settings')
+  }
+)

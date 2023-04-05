@@ -59,7 +59,11 @@ async function searchTools (req, res, next) {
   const tools = await Tool.find({
     [searchBy]: { $eq: searchValue }
   }).sort({ [sortField]: sortOrder })
-  const { trimmedData, pageCount, targetPage } = paginate(tools, req.query.p, req.user.preferences.pageSize)
+  const { trimmedData, pageCount, targetPage } = paginate(
+    tools,
+    req.query.p,
+    req.user.preferences.pageSize
+  )
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
   console.info('[MW] searchTools-out'.bgWhite.blue)
