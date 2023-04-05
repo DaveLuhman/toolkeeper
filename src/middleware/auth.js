@@ -26,8 +26,8 @@ function checkAuth (req, res, next) {
  * @returns {void}
  * @description Checks if the user is a manager
  * @example
- * app.get('/manager', checkAuth, isManager, (req, res) => {
- * res.render('manager')
+ * app.get('/settings', checkAuth, isManager, (req, res) => {
+ * res.render('settings/users')
  * })
  **/
 function isManager (req, res, next) {

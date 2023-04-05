@@ -21,7 +21,7 @@ import { rateLimiter } from './config/util.config.js'
 import { checkAuth, isManager } from './middleware/auth.js'
 import { dashboardRouter } from './routes/dashboard.routes.js'
 import { indexRouter } from './routes/index.routes.js'
-import { managerRouter } from './routes/manager.routes.js'
+import { settingsRouter } from './routes/settings/index.routes.js'
 import { toolRouter } from './routes/tool.routes.js'
 import { userRouter } from './routes/user.routes.js'
 dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
@@ -97,7 +97,7 @@ app.use('/user', userRouter)
 app.use('/dashboard', dashboardRouter)
 app.use('/tool', toolRouter)
 app.use(isManager)
-app.use('/manager', managerRouter)
+app.use('/settings', settingsRouter)
 // catch 404 and forward to error handler
 app.use(function (_req, _res, next) {
   const err = new Error('Not Found')

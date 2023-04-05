@@ -1,36 +1,36 @@
 <div class="main-view">
-    {{#if serviceAssignments}}
-        <form action="/manager/serviceAssignment/edit" method="POST">
-            <div class="mb-2 title-bar">
-                <h3 class="title-text">Update Service Assignment</h3>
+  {{#if serviceAssignments}}
+    <form action="/settings/serviceAssignments/edit" method="POST">
+      <div class="mb-2 title-bar">
+        <h3 class="title-text">Update Service Assignment</h3>
+      </div>
+      {{#each serviceAssignments}}
+        <div class="columns-1 md:columns-2">
+          <div class="gap-2 form-control justify-items-center">
+            <input name="_id" value="{{_id}}" type="hidden" />
+            <div class="form-control">
+              <label class="label"><span class="label-text">Vehicle</span></label>
+              <input name="vehicle" value="{{vehicle}}" type="text" class="input input-bordered" />
             </div>
-            {{#each serviceAssignments}}
-                <div class="columns-1 md:columns-2">
-                    <div class="gap-2 form-control justify-items-center">
-                        <input name="_id" value="{{_id}}" type="hidden" />
-                        <div class="form-control">
-                            <label class="label"><span class="label-text">Vehicle</span></label>
-                            <input name="vehicle" value="{{vehicle}}" type="text" class="input input-bordered" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label"><span class="label-text">Job Name</span></label>
-                            <input name="jobName" value="{{jobName}}" type="text" class="input input-bordered" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label"><span class="label-text">Job Number</span></label>
-                            <input name="jobNumber" value="{{jobNumber}}" type="text" class="input input-bordered" />
-                        </div>
-                        <div class="form-control">
-                            <label class="label"><span class="label-text">Employee Name</span></label>
-                            <input name="employee" value="{{employee}}" type="text" class="input input-bordered" />
-                        </div>
-                    </div>
-                </div>
-            {{/each}}
-            <div class="modal-button-row">
-                <label class="modal-button"><a href="/manager/serviceAssignments">Cancel</a></label>
-                <label class="modal-button"><button type="submit">Submit</button></label>
+            <div class="form-control">
+              <label class="label"><span class="label-text">Job Name</span></label>
+              <input name="jobName" value="{{jobName}}" type="text" class="input input-bordered" />
             </div>
-        </form>
-    {{/if}}
+            <div class="form-control">
+              <label class="label"><span class="label-text">Job Number</span></label>
+              <input name="jobNumber" value="{{jobNumber}}" type="text" class="input input-bordered" />
+            </div>
+            <div class="form-control">
+              <label class="label"><span class="label-text">Employee Name</span></label>
+              <input name="employee" value="{{employee}}" type="text" class="input input-bordered" />
+            </div>
+          </div>
+        </div>
+      {{/each}}
+      <div class="modal-button-row">
+        <label class="modal-button"><a href="/settings/serviceAssignments">Cancel</a></label>
+        <label class="modal-button"><button type="submit">Submit</button></label>
+      </div>
+    </form>
+  {{/if}}
 </div>

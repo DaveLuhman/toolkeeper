@@ -19,7 +19,7 @@ async function getUserByID (req, res, next) {
   console.info('[MW] getUserByID-in'.bgBlue.white)
   const id = req.params.id
   console.info(`[MW] searching id: ${id}`)
-  const user = await User.findById(id).lean()
+  const user = await User.findById(id)
   res.locals.targetUser = mutateToArray(user)
   console.info('[MW] getUserByID-out'.bgWhite.blue)
   return next()

@@ -108,6 +108,16 @@ This is a full-stack web application built with NodeJS and Express that allows a
 
 'middlewareName-in/out-index' is the convention, e.g. `[MW] createUser-in` would indicate the stack is entering the createUser middleware, and `[MW] getTools-out-3` would indicate the stack is exiting the getTools middleware at the third `next()` call
 
+### Route URL Naming Convention
+
+`/container/name/verb/[id]` is the convention, e.g. `/tools/create` would indicate the route is for creating a new tool, and `/tools/update/123456789` would indicate the route is for updating a tool with the id of 123456789
+
+### Route Prefixes
+
+`[GET]` - GET request
+`[POST]` - POST request
+
+
 ### Colorful Logs:
 
 <ul>
