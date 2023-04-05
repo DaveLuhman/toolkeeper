@@ -100,7 +100,7 @@ This is a full-stack web application built with NodeJS and Express that allows a
 
 `console.log()` - Only used during development, replaced with `console.info()`, `console.warn()`, or `console.error()` if being left into production versions of the site. This allows devs to use `console.log()` as needed during development without worrying about these conventions. Once a feature branch is ready to be submitted for PR, devs can search their local branch for `console.log()` and add prefixes/colors/etc and replace `.log()` with the appropriate alternative.
 
-###Console Prefixes
+### Console Prefixes
 `[AUTH]` - Part of the auth chain
 `[MW]` - Part of a middleware function
 
