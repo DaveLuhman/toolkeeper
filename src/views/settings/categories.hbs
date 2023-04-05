@@ -6,7 +6,8 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Display Name</th>
+          <th>Name</th>
+          <th>Description</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
@@ -15,9 +16,10 @@
         {{#if categories}}
           {{#each categories}}
             <tr>
-              <td>{{displayName}}</td>
-              <td><a href="/manager/categories/edit/{{id}}">Edit</a></td>
-              <td><a href="/manager/categories/delete/{{id}}">Delete</a></td>
+              <td>{{name}}</td>
+              <td>{{description}}</td>
+              <td><a href="/settings/categories/edit/{{id}}">Edit</a></td>
+              <td><a href="/settings/categories/delete/{{id}}">Delete</a></td>
             </tr>
           {{/each}}
         {{/if}}

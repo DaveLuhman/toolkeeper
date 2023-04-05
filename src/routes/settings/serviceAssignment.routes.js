@@ -17,7 +17,7 @@ serviceAssignmentRouter.get('/', getServiceAssignments, (_req, res) => {
 // @desc get service assignment by ID and render edit page
 // @endpoint GET /settings/serviceAssignments/edit/:id
 serviceAssignmentRouter.get(
-  '/serviceAssignments/edit/:id', // target
+  '/edit/:id', // target
   getServiceAssignmentByID,
   (_req, res) => {
     res.render('settings/editServiceAssignment') // render
@@ -26,7 +26,7 @@ serviceAssignmentRouter.get(
 // @desc update service assignment and redirect to settings page
 // @endpoint POST /settings/serviceAssignments/edit
 serviceAssignmentRouter.post(
-  '/serviceAssignment/edit', // target
+  '/edit', // target
   updateServiceAssignment,
   (_req, res) => {
     res.redirect('/settings/serviceAssignments') // redirect
@@ -35,7 +35,7 @@ serviceAssignmentRouter.post(
 // @desc add new service assignment and redirect to settings page
 // @endpoint POST /settings/serviceAssignments/create
 serviceAssignmentRouter.post(
-  '/serviceAssignment/create',
+  '/create',
   createServiceAssignment,
   (_req, res) => {
     res.redirect('/settings/serviceAssignments')
@@ -44,7 +44,7 @@ serviceAssignmentRouter.post(
 // @desc delete service assignment and redirect to settings page
 // @endpoint GET /settings/serviceAssignments/delete/:id
 serviceAssignmentRouter.get(
-  '/serviceAssignments/delete/:id/',
+  '/delete/:id/',
   deleteServiceAssignment,
   (_req, res) => {
     res.redirect('/settings/serviceAssignments')

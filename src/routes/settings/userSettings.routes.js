@@ -18,7 +18,7 @@ userSettingsRouter.get('/', getUsers, (_req, res) => {
 // @desc get user by ID and render edit page
 // @endpoint GET /settings/users/:id
 userSettingsRouter.get('/:id', getUserByID, (_req, res) => {
-  res.render('editUser')
+  res.render('settings/editUser')
 })
 // @desc update user and redirect to settings page
 // @endpoint POST /settings/users/:id
