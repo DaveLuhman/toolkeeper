@@ -37,9 +37,9 @@ userSettingsRouter.post('/disableUser/:id', disableUser, (_req, res) => {
   res.render('settings')
 })
 // @desc create new user
-// @endpoint POST /settings/users/createUser
+// @endpoint POST /settings/users/create
 userSettingsRouter.post(
-  '/createUser',
+  '/create',
   sanitizeReqBody,
   createUser,
   (_req, res) => {
