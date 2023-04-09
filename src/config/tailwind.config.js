@@ -2,18 +2,7 @@
 const content = ['./src/views/**/*.{hbs,js}']
 const daisyui = {
   themes: [
-    {
-      default: {
-        primary: '#ddbc75',
-        secondary: '#158084',
-        accent: '#143ccc',
-        neutral: '#1D1523',
-        info: '#206DE9',
-        success: '#189A90',
-        warning: '#8E6010',
-        error: '#ED7573'
-      }
-    }, 'light', 'dark', 'dracula', 'corporate', 'synthwave', 'retro'
+    'light', 'dark', 'dracula', 'corporate', 'synthwave', 'retro'
   ]
 }
 const theme = {

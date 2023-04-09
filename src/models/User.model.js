@@ -37,7 +37,7 @@ const UserSchema = new Schema(
     preferences: {
       type: Object,
       default: {
-        theme: 'default',
+        theme: 'dracula',
         sortField: 'serialNumber',
         sortDirection: 'asc',
         pageSize: 10
