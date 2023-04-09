@@ -9,6 +9,7 @@ body {
   @apply to-base-300;
   @apply min-h-screen;
 }
+/* custom css classes */
 .main-view {
   @apply flex;
   @apply flex-wrap;
@@ -81,14 +82,7 @@ body {
   @apply lg:-ml-2;
   @apply z-10;
 }
-/* THIS HAS TO STAY AT THE TOP OR THE BACKGROUND GLOBALLY BREAKS */
 
-/* -----------------HEADER--------------------- */
-
-.fa {
-  @apply contents;
-}
-/* ------------------END HEADER-------------------- */
 /* ------------------LOGIN----------------------- */
 #login-wrapper {
   @apply flex-col;
