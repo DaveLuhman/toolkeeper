@@ -5,14 +5,17 @@ const toolSchema = new Schema(
     serialNumber: {
       type: String,
       upperCase: true,
-      unique: true
+      unique: true,
+      maxLength: 32
     },
     partNumber: {
       type: String,
-      upperCase: true
+      upperCase: true,
+      maxLength: 32
     },
     barcode: {
-      type: Number
+      type: Number,
+      maxLength: 32
     },
     status: {
       type: String,
@@ -20,11 +23,12 @@ const toolSchema = new Schema(
     },
     serviceAssignment: {
       type: String,
-      refPath: 'ServiceAssignment.displayName'
+      maxLength: 32
     },
     category: {
       type: String,
-      refPath: 'Category.name'
+      ref: 'category.name',
+      default: 'Uncategorized'
     },
     description: {
       type: String,
