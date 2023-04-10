@@ -1,0 +1,27 @@
+<input type="checkbox" id="searchToolModal" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-inner-lg">
+            <label for="searchToolModal" class="modal-close-btn">✕</label>
+            <form action="/tool/search" method="POST">
+                <div class="modal-table">
+                    <div class="title-bar">
+                        <h3 class="title-text">Search for Tool(s)</h3>
+                    </div>
+                    <select id="searchBy" name="searchBy" class="select select-bordered">
+                        <option>Search By: </option>
+                        <option value="serialNumber">Serial Number</option>
+                        <option value="partNumber">Part Number</option>
+                        <option value="barcode">Barcode</option>
+                        <option value="serviceAssignment">Service Assignment</option>
+                        <option value="status">In/Out Status</option>
+                    </select>
+                    <input id="searchValue" name="searchValue" type="text" placeholder="Search Term"
+                        class="input input-bordered" />
+                    <div class="modal-button-row">
+                        <label class="modal-button" for="searchToolModal">Cancel</label>
+                        <label class="modal-button"><button type="submit">Submit</button></label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>

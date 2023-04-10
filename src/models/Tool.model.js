@@ -26,9 +26,8 @@ const toolSchema = new Schema(
       maxLength: 32
     },
     category: {
-      type: String,
-      ref: 'category.name',
-      default: 'Uncategorized'
+      type: Schema.ObjectId,
+      ref: 'category'
     },
     description: {
       type: String,
