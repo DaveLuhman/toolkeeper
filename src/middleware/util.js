@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { User as user } from '../models/User.model'
-import { Category as category } from '../models/Category.model'
-import { Tool as tool } from '../models/Tool.model'
+import { User as user } from '../models/User.model.js'
+import { Category as category } from '../models/Category.model.js'
+import { Tool as tool } from '../models/Tool.model.js'
 
 /**
  *
