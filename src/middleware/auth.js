@@ -44,7 +44,7 @@ function isManager (req, res, next) {
 /**
  * @param req Express Request object
  * @param  res  Express Response object
- * @param next  Express Next CB Function
+ * @param next()
  * @returns {void}
  * @description Logs the user in
  * @example

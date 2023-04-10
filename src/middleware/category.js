@@ -56,12 +56,14 @@ const updateCategory = async (req, res, next) => {
     res.status(404).json({ message: error.message })
   }
 }
+
 const listCategoryNames = async (_req, res, next) => {
   const categories = await Category.find({}, { name: 1 })
   console.log(categories)
   res.locals.categories = categories
   return next()
 }
+
 export {
   getCategories,
   getCategoryByID,

@@ -1,6 +1,11 @@
+/* eslint-disable no-unused-vars */
+import { UserModel as user } from '../models/User.model'
+import { CategoryModel as category } from '../models/Category.model'
+import { Tool as tool } from '../models/Tool.model'
+
 /**
  *
- * @param {array} dataArray
+ * @param {array} data
  * @param {number} targetPage
  * @param {number} perPage
  * @returns {object} trimmedData, targetPage, pageCount
