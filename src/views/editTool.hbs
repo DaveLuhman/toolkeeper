@@ -6,7 +6,7 @@
             </div>
             {{#each tools}}
                 <div class="columns-1 md:columns-3">
-                    <div class="form-control justify-items-center gap-2">
+                    <div class="gap-2 form-control justify-items-center">
                         <input name="_id" value="{{_id}}" type="hidden" placeholder="Tool ID"
                             class="input input-bordered" />
                         <input name="serialNumber" value="{{serialNumber}}" type="text" placeholder="Serial Number"
@@ -24,6 +24,12 @@
                             <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked-In</option>
                             <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked-Out
                             </option>
+                        </select>
+                        <select name="category" class="select select-bordered">
+                            {{#forEach categories}}
+                                <option name='{{ this.name }}' value='{{ this._id }}'>{{ this.name }}
+                                </option>
+                            {{/forEach}}
                         </select>
                     </div>
                 </div>
