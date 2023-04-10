@@ -56,10 +56,10 @@ const updateCategory = async (req, res, next) => {
     res.status(404).json({ message: error.message })
   }
 }
-const listCategoryNames = async (req, _res, next) => {
-  const categories = await Category.find({}, { _id: 0, name: 1 })
+const listCategoryNames = async (_req, res, next) => {
+  const categories = await Category.find({}, { name: 1 })
   console.log(categories)
-  req.app.categories = [categories]
+  res.locals.categories = categories
   return next()
 }
 export {

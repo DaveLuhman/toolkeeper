@@ -14,6 +14,12 @@
 
 - Dashboard table edit dropdown menu is cut off by footer at the bottom of the page.
   - Solution: add a margin to the bottom of the table to push it up a bit.
+  - Fixed: set up vertical dimention (zIndex) for the dropdown menu to be above the footer.
 
-- Barcode Scanning utility:
-  - simple solution: use a barcode scanner to scan the barcode and then use the `window.location` to redirect to the tool's page.
+Category Dropdowns:
+  category list function exists and works
+  need to add select element on editTool view
+  need to fix dashboard column to display category.name rather than category.ID
+    it's coming from the tool, but something like {{#eq category.ID this.category}}{{category.name}}{{/eq}} is worth starting with
+  test {{#eq}} conditionals for dropdown to select the current category.
+  test at scale to make sure it won't kill the page load speed.
