@@ -64,3 +64,15 @@ export function sanitizeReqBody (req, _res, next) {
   }
   return next()
 }
+/**
+ *
+ * @desc Handlebars helper to get name from ID
+ * @export
+ * @param {*} _id - ID of the docuement being referred to
+ * @param {*} model - Model of the document being referred to
+ * @return {*} name - Friendly name of the document being referred to
+ */
+export function getNameFromID (_id, model) {
+  const name = model.findById({ _id }, { _id: 0, name: 1 })
+  return name
+}
