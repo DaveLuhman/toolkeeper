@@ -1,0 +1,35 @@
+<input type="checkbox" id="newToolModal" class="modal-toggle" />
+<div class="modal">
+    <div class="modal-inner-lg">
+        <label for="newToolModal" class="modal-close-btn">✕</label>
+        <form action="/tool/submit" method="POST">
+            <div class="modal-table">
+                <div class="title-bar">
+                    <h3 class="title-text">Create A New Tool Entry</h3>
+                </div>
+                <input name="serialNumber" type="text" placeholder="Serial Number" class="input input-bordered" />
+                <input name="partNumber" type="text" placeholder="Part Number" class="input input-bordered" />
+                <input name="barcode" type="text" placeholder="Barcode" class="input input-bordered" />
+                <input name="description" type="text" placeholder="Description" class="input input-bordered" />
+                <input name="serviceAssignment" type="text" placeholder="Service Assignment"
+                    class="input input-bordered" />
+                {{!--  TODO: Make Status Radio Buttoned In A Dropdown - see partials/components/_statusDropdown.hbs --}}
+                <select name="status" class="select select-bordered">
+                    <option>Status</option>
+                    <option value="Checked In">Checked In</option>
+                    <option value="Checked Out">Checked Out</option>
+                </select>
+                <select name="category" class="select select-bordered">
+                    {{#forEach categories}}
+                        <option name='{{ this.name }}' value='{{ this._id }}'>{{ this.name }}
+                        </option>
+                    {{/forEach}}
+                </select>
+                <div class="modal-button-row">
+                    <label class="modal-button" for="newToolModal">Cancel</label>
+                    <label class="modal-button"><button type="submit">Submit</button></label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

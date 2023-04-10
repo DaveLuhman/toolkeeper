@@ -84,7 +84,8 @@ async function createTool (req, res, next) {
     barcode,
     description,
     serviceAssignment,
-    status
+    status,
+    category
   } = req.body
   if (!(serialNumber || partNumber) || !barcode) {
     res.locals.message =
@@ -103,6 +104,7 @@ async function createTool (req, res, next) {
     res.status(400).redirect('back')
     return next()
   }
+  // TODO: verify input data is sanitized
   const newTool = await Tool.create({
     serialNumber,
     partNumber,
@@ -110,6 +112,7 @@ async function createTool (req, res, next) {
     description,
     serviceAssignment,
     status,
+    category,
     updatedBy: req.user._id,
     createdBy: req.user._id
   })

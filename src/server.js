@@ -24,6 +24,8 @@ import { indexRouter } from './routes/index.routes.js'
 import { settingsRouter } from './routes/settings/index.routes.js'
 import { toolRouter } from './routes/tool.routes.js'
 import { userRouter } from './routes/user.routes.js'
+import { listCategoryNames } from './middleware/category.js'
+
 dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
 const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
@@ -64,6 +66,7 @@ const hbs = create({
   },
   extname: '.hbs',
   defaultLayout: 'main',
+  partialsDir: ['./src/views/partials', './src/views/partials/modals'],
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
     allowProtoMethodsByDefault: true
@@ -93,6 +96,7 @@ app.use(rateLimiter)
 app.use('/', indexRouter)
 // Routes (User Context)
 app.use(checkAuth)
+app.use(listCategoryNames)
 app.use('/user', userRouter)
 app.use('/dashboard', dashboardRouter)
 app.use('/tool', toolRouter)
