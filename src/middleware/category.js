@@ -56,7 +56,7 @@ const updateCategory = async (req, res, next) => {
     res.status(404).json({ message: error.message })
   }
 }
-
+// TODO: Use updatedAt value hashed to check for changes
 const listCategoryNames = async (_req, res, next) => {
   const categories = await Category.find({}, { name: 1 })
   console.log(categories)
