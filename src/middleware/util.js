@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { User as user } from '../models/User.model.js'
-import { Category as category } from '../models/Category.model.js'
-import { Tool as tool } from '../models/Tool.model.js'
+import User from '../models/User.model.js'
+import Category from '../models/Category.model.js'
+import Tool from '../models/Tool.model.js'
 
 /**
  *
@@ -68,16 +68,4 @@ export function sanitizeReqBody (req, _res, next) {
     req.body[key] = sanitize(req.body[key])
   }
   return next()
-}
-/**
- *
- * @desc Handlebars helper to get name from ID
- * @export
- * @param {*} _id - ID of the docuement being referred to
- * @param {*} model - Model of the document being referred to
- * @return {*} name - Friendly name of the document being referred to
- */
-export function getNameFromID (_id, model) {
-  const name = model.findById({ _id }, { _id: 0, name: 1 })
-  return name
 }

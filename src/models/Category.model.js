@@ -11,4 +11,5 @@ const CategorySchema = new Schema({
     maxLength: 64
   }
 })
+// eslint-disable-next-line new-cap
 export default model('Category', CategorySchema)

@@ -26,7 +26,6 @@ import { settingsRouter } from './routes/settings/index.routes.js'
 import { toolRouter } from './routes/tool.routes.js'
 import { userRouter } from './routes/user.routes.js'
 import { listCategoryNames } from './middleware/category.js'
-import { getNameFromID } from './middleware/util.js'
 
 dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
 const MongoDBStore = connectMongoDBSession(session)
@@ -63,7 +62,6 @@ if (process.env.NODE_ENV !== 'production') {
 // Handlebars Setup
 const hbs = create({
   helpers: {
-    getNameFromID,
     paginate,
     ...handlebarsHelpers()
   },
