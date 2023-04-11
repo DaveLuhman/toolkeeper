@@ -48,7 +48,11 @@ const sessionConfig = {
 }
 // If in production, use secure cookies and mongo store
 if (process.env.NODE_ENV === 'production') {
-  sessionConfig.cookie = { secure: true, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
+  sessionConfig.cookie = {
+    secure: true,
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60 * 24
+  }
   sessionConfig.store = store
 }
 
@@ -79,7 +83,13 @@ app.set('view engine', '.hbs')
 app.set('views', './src/views')
 
 // Express Middleware
-app.use(helmet()) // Add Helmet for HTTP Header controls
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      'script-src': ["'unsafe-inline'", "'self'"]
+    }
+  })
+) // Add Helmet for HTTP Header controls
 app.use(express.static('./src/public')) // Serve Static Files
 app.use(express.json()) // JSON Body Parser
 app.use(fileUpload())

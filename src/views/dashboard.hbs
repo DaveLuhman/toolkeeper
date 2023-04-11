@@ -39,6 +39,7 @@
         </tbody>
     </table>
 </div>
+{{categories}}
 <br />
 {{#gt pagination.pageCount 1}}
     <ul class="paginate-bar">
@@ -62,5 +63,8 @@
     </ul>
 {{/gt}}
 <script>
-    
+    let test = "test"
+    const categories = JSON.stringify("{{categories}}")
+    let category = document.getElementById('category').innerText
+    console.log(categories)
 </script>
