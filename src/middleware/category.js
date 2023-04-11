@@ -64,6 +64,12 @@ const listCategoryNames = async (_req, res, next) => {
   return next()
 }
 
+export function categoryHelper (_id) {
+  const name = Category.findById(_id, { _id: 0, name: 1 }).exec()
+  console.log('category helper ' + name)
+  return name
+}
+
 export {
   getCategories,
   getCategoryByID,
