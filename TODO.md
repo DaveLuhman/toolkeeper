@@ -23,3 +23,7 @@ Category Dropdowns:
     it's coming from the tool, but something like {{#eq category.ID this.category}}{{category.name}}{{/eq}} is worth starting with
   test {{#eq}} conditionals for dropdown to select the current category.
   test at scale to make sure it won't kill the page load speed.
+
+edit tool page needs labels
+  make them super/sub text and line it up
+  
