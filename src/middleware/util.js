@@ -1,8 +1,3 @@
-/* eslint-disable no-unused-vars */
-import User from '../models/User.model.js'
-import Category from '../models/Category.model.js'
-import Tool from '../models/Tool.model.js'
-
 /**
  *
  * @param {array} data
