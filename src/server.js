@@ -1,32 +1,32 @@
 // server.js
-
 import {
-  bodyParser,
-  helmet,
-  colors,
+  checkAuth,
+  connectDB,
   connectMongoDBSession,
   cookieParser,
+  create,
+  csurf,
+  dashboardRouter,
   dotenv,
   express,
   fileUpload,
   flash,
+  getCategoryName,
   handlebarsHelpers,
-  paginate,
+  helmet,
+  indexRouter,
+  isManager,
+  isSelected,
+  listCategoryNames,
   morgan,
+  paginate,
   passport,
-  csurf,
-  connectDB,
   passportConfig,
   rateLimiter,
-  checkAuth,
-  isManager,
-  dashboardRouter,
-  indexRouter,
+  session,
   settingsRouter,
   toolRouter,
-  listCategoryNames,
-  getCategoryName,
-  isSelected
+  userRouter
 } from './config/dependencies.js'
 
 // use the imported dependencies as needed in the server.js file
