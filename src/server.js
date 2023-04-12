@@ -1,33 +1,35 @@
-import 'body-parser'
-import helmet from 'helmet'
-// eslint-disable-next-line no-unused-vars
-import colors from 'colors'
-// eslint-disable-next-line import/no-named-default
-import { default as connectMongoDBSession } from 'connect-mongodb-session'
-import cookieParser from 'cookie-parser'
-import dotenv from 'dotenv'
-import express from 'express'
-import fileUpload from 'express-fileupload'
-import flash from 'express-flash'
-import { create } from 'express-handlebars' // templating engine
-import session from 'express-session'
-import handlebarsHelpers from 'handlebars-helpers'
-// TODO: validate if using this paginate or the one in middleware/util.js
-import paginate from 'handlebars-paginate'
-import morgan from 'morgan' // logging
-import passport from 'passport'
-import csurf from 'csurf' // Cross Site Request Forgery protection middleware
-import connectDB from './config/db.js'
-import passportConfig from './config/passport.js'
-import { rateLimiter } from './config/util.config.js'
-import { checkAuth, isManager } from './middleware/auth.js'
-import { dashboardRouter } from './routes/dashboard.routes.js'
-import { indexRouter } from './routes/index.routes.js'
-import { settingsRouter } from './routes/settings/index.routes.js'
-import { toolRouter } from './routes/tool.routes.js'
-import { userRouter } from './routes/user.routes.js'
-import { listCategoryNames, getCategoryName } from './middleware/category.js'
-import { isSelected } from './middleware/util.js'
+// server.js
+
+import {
+  bodyParser,
+  helmet,
+  colors,
+  connectMongoDBSession,
+  cookieParser,
+  dotenv,
+  express,
+  fileUpload,
+  flash,
+  handlebarsHelpers,
+  paginate,
+  morgan,
+  passport,
+  csurf,
+  connectDB,
+  passportConfig,
+  rateLimiter,
+  checkAuth,
+  isManager,
+  dashboardRouter,
+  indexRouter,
+  settingsRouter,
+  toolRouter,
+  listCategoryNames,
+  getCategoryName,
+  isSelected
+} from './config/dependencies.js'
+
+// use the imported dependencies as needed in the server.js file
 
 dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
 const MongoDBStore = connectMongoDBSession(session)
