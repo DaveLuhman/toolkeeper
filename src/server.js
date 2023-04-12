@@ -16,6 +16,7 @@ import handlebarsHelpers from 'handlebars-helpers'
 import paginate from 'handlebars-paginate'
 import morgan from 'morgan' // logging
 import passport from 'passport'
+import csurf from 'csurf' // Cross Site Request Forgery protection middleware
 import connectDB from './config/db.js'
 import passportConfig from './config/passport.js'
 import { rateLimiter } from './config/util.config.js'
@@ -55,6 +56,7 @@ if (process.env.NODE_ENV === 'production') {
     maxAge: 1000 * 60 * 60 * 24
   }
   sessionConfig.store = mongoStore
+  app.use(helmet()) // Add Helmet for HTTP Header controls
 }
 
 // Morgan Logging in development
@@ -63,6 +65,13 @@ if (process.env.NODE_ENV !== 'production') {
   console.info(
     '[INIT]>>>>> Morgan enabled for logging in this development environment'
   )
+  app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        'script-src': ["'unsafe-inline'", "'self'"] // allow client-side inline scripting
+      }
+    })
+  ) // Allow inline scripts for development
 }
 // Handlebars Setup
 const hbs = create({
@@ -85,13 +94,7 @@ app.set('view engine', '.hbs')
 app.set('views', './src/views')
 
 // Express Middleware
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      'script-src': ["'unsafe-inline'", "'self'"]
-    }
-  })
-) // Add Helmet for HTTP Header controls
+app.use(csurf({ cookie: true })) // Cross Site Request Forgery protection middleware
 app.use(express.static('./src/public')) // Serve Static Files
 app.use(express.json()) // JSON Body Parser
 app.use(fileUpload())
