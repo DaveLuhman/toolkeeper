@@ -96,12 +96,12 @@ app.set('view engine', '.hbs')
 app.set('views', './src/views')
 
 // Express Middleware
-app.use(csurf({ cookie: true })) // Cross Site Request Forgery protection middleware
+app.use(cookieParser())
+if (process.NODE_ENV === 'PRODUCTION') app.use(csurf({ cookie: true })) // Cross Site Request Forgery protection middleware
 app.use(express.static('./src/public')) // Serve Static Files
 app.use(express.json()) // JSON Body Parser
 app.use(fileUpload())
 app.use(express.urlencoded({ extended: false })) // Parse URL-encoded values
-app.use(cookieParser())
 app.use(session(sessionConfig))
 app.use(flash())
 // Passport
