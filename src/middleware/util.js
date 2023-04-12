@@ -58,7 +58,6 @@ function sanitize (string) {
  * It will mutate the req.body
  **/
 export function sanitizeReqBody (req, _res, next) {
-  console.info('[MW] sanitizeReqBody-in'.red.underline)
   for (const key in req.body) {
     req.body[key] = sanitize(req.body[key])
   }
