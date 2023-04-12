@@ -32,9 +32,12 @@ const passportConfig = (app) => {
   })
 
   passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
-      done(err, user)
-    })
+    try {
+      const user = User.findOne(id)
+      done(null, user)
+    } catch (err) {
+      done(err)
+    }
   })
 }
 
