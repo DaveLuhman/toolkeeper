@@ -25,7 +25,8 @@ import { indexRouter } from './routes/index.routes.js'
 import { settingsRouter } from './routes/settings/index.routes.js'
 import { toolRouter } from './routes/tool.routes.js'
 import { userRouter } from './routes/user.routes.js'
-import { listCategoryNames, categoryHelper } from './middleware/category.js'
+import { listCategoryNames, getCategoryName } from './middleware/category.js'
+import { isSelected } from './middleware/util.js'
 
 dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
 const MongoDBStore = connectMongoDBSession(session)
@@ -35,7 +36,7 @@ const app = express() // Create Express App
 
 connectDB() // Connect to MongoDB and report status to console
 // create mongo store for session persistence
-const store = new MongoDBStore({
+const mongoStore = new MongoDBStore({
   uri: process.env.MONGO_URI,
   collection: 'sessions'
 })
@@ -53,7 +54,7 @@ if (process.env.NODE_ENV === 'production') {
     httpOnly: false,
     maxAge: 1000 * 60 * 60 * 24
   }
-  sessionConfig.store = store
+  sessionConfig.store = mongoStore
 }
 
 // Morgan Logging in development
@@ -66,7 +67,8 @@ if (process.env.NODE_ENV !== 'production') {
 // Handlebars Setup
 const hbs = create({
   helpers: {
-    categoryHelper,
+    isSelected,
+    getCategoryName,
     paginate,
     ...handlebarsHelpers()
   },

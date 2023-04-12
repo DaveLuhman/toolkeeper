@@ -64,3 +64,8 @@ export function sanitizeReqBody (req, _res, next) {
   }
   return next()
 }
+export function isSelected (option, objectProperty) {
+  console.log(String.toString(option), String.toString(objectProperty))
+  console.log(option.buffer, objectProperty)
+  if (toString(option) === toString(objectProperty)) return 'selected'
+}

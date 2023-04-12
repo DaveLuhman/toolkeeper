@@ -1,45 +1,50 @@
 <div class="main-view">
     {{#if tools}}
+        <div class="title-bar">
+            <h3 class="title-text">Edit Tool(s)</h3>
+        </div>
         <form action="/tool/update" method="POST">
-            <div class="title-bar">
-                <h3 class="title-text">Edit Tool(s)</h3>
+        {{#each tools as |tool|}}
+            <div class="gap-2 columns-1 md:columns-4 form-control">
+                <input name="_id" value="{{_id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
+                <label for="serialNumber" class="label"><span class="label-text">SN:</span></label>
+                <input name="serialNumber" value="{{serialNumber}}" type="text" placeholder="Serial Number"
+                    class="input input-bordered" />
+                <label for="partNumber" class="label"><span class="label-text">PN:</span></label>
+                <input name="partNumber" value="{{partNumber}}" type="text" placeholder="Part Number"
+                    class="input input-bordered" />
+                <label for="barcode" class="label"><span class="label-text">Barcode:</span></label>
+                <input name="barcode" value="{{barcode}}" type="text" placeholder="Barcode"
+                    class="input input-bordered" />
+                <label for="description" class="label"><span class="label-text">Description:</span></label>
+                <input name="description" value="{{description}}" type="text" placeholder="Description"
+                    class="input input-bordered" />
+                <label for="serviceAssignment" class="label"><span class="label-text">Service
+                        Assignment:</span></label>
+                <input name="serviceAssignment" value="{{serviceAssignment}}" type="text"
+                    placeholder="Service Assignment" class="input input-bordered" />
+                <label for="status" class="label"><span class="label-text">Status</span></label>
+                <select name="status" class="select select-bordered">
+                    <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked-In
+                    </option>
+                    <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked-Out
+                    </option>
+                </select>
+                <label for="category" class="label"><span class="label-text">Category</span></label>
+                <select name="category" class="select select-bordered">
+                    {{#each ../categories}}
+                        <option name='{{ name }}' value='{{ _id }}' {{isSelected _id ../category}}>{{ name }}
+                        </option>
+                    {{/each}}
+                </select>
             </div>
-            {{#each tools}}
-                <div class="columns-1 md:columns-3">
-                    <div class="gap-2 form-control justify-items-center">
-                        <input name="_id" value="{{_id}}" type="hidden" placeholder="Tool ID"
-                            class="input input-bordered" />
-                        <input name="serialNumber" value="{{serialNumber}}" type="text" placeholder="Serial Number"
-                            class="input input-bordered" />
-                        <input name="partNumber" value="{{partNumber}}" type="text" placeholder="Part Number"
-                            class="input input-bordered" />
-                        <input name="barcode" value="{{barcode}}" type="text" placeholder="Barcode"
-                            class="input input-bordered" />
-                        <input name="description" value="{{description}}" type="text" placeholder="Description"
-                            class="input input-bordered" />
-                        <input name="serviceAssignment" value="{{serviceAssignment}}" type="text"
-                            placeholder="Service Assignment" class="input input-bordered" />
-                        <select name="status" class="select select-bordered">
-                            <option>Status</option>
-                            <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked-In</option>
-                            <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked-Out
-                            </option>
-                        </select>
-                        <select name="category" class="select select-bordered">
-                            {{#forEach ../categories}}
-                                <option name='{{ this.name }}' value='{{ this._id }}'>{{ this.name }}
-                                </option>
-                            {{/forEach}}
-                        </select>
-                    </div>
-                </div>
-            {{/each}}
-            <div class="modal-button-row">
-                <label class="modal-button"><a href="/dashboard">Cancel</a></label>
-                <label class="modal-button"><button type="submit">Submit</button></label>
-            </div>
+        {{/each}}
+        <div class="modal-button-row">
+            <label class="modal-button"><a href="/dashboard">Cancel</a></label>
+            <label class="modal-button"><button type="submit">Submit</button></label>
+        </div>
         </form>
-</div>
-{{else}}
-    <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
+    {{else}}
+        <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
     {{/if}}
+</div>

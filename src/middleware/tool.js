@@ -135,14 +135,15 @@ async function updateTool (req, res, next) {
   console.info('[MW] updateTool-in'.bgBlue.white)
   const updatedToolArray = []
   if (typeof req.body._id === 'string') {
-    const { _id, partNumber, description, serviceAssignment, status } = req.body
+    const { _id, partNumber, description, serviceAssignment, status, category } = req.body
     const updatedTool = await Tool.findByIdAndUpdate(
       _id,
       {
         partNumber,
         description,
         serviceAssignment,
-        status
+        status,
+        category
       },
       { new: true }
     ).exec()
@@ -150,7 +151,7 @@ async function updateTool (req, res, next) {
     updatedToolArray.push(updatedTool)
   }
   if (Array.isArray(req.body._id) && req.body._id.length > 1) {
-    const { _id, partNumber, description, serviceAssignment, status } = req.body
+    const { _id, partNumber, description, serviceAssignment, status, category } = req.body
     for (let i = 0; i < _id.length > 100; i++) {
       const updatedTool = await Tool.findByIdAndUpdate(
         _id[i],
@@ -158,7 +159,8 @@ async function updateTool (req, res, next) {
           partNumber: partNumber[i],
           description: description[i],
           serviceAssignment: serviceAssignment[i],
-          status: status[i]
+          status: status[i],
+          category: category[i]
         },
         { new: true }
       ).exec()
@@ -230,7 +232,8 @@ async function checkTools (req, res, next) {
         serviceAssignment: 'FILL THIS IN',
         serviceAssignmentChanged: true,
         status: 'Checked Out',
-        statusChanged: true
+        statusChanged: true,
+        category: tempTool.category
       }
       checkingTools.push(pendingTool)
     }
@@ -244,7 +247,8 @@ async function checkTools (req, res, next) {
         status: 'Checked In',
         statusChanged: true,
         serviceAssignment: 'Tool Room',
-        serviceAssignmentChanged: false
+        serviceAssignmentChanged: false,
+        category: tempTool.category
       }
       checkingTools.push(pendingTool)
     }

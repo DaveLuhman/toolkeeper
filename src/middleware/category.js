@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */ // for the category name search
 import Category from '../models/Category.model.js'
 
 const getCategories = async (_req, res, next) => {
@@ -59,16 +60,21 @@ const updateCategory = async (req, res, next) => {
 // TODO: Use updatedAt value hashed to check for changes
 const listCategoryNames = async (_req, res, next) => {
   const categories = await Category.find({}, { name: 1 })
-  
-  console.log(categories)
   res.locals.categories = categories
   return next()
 }
 
-export function categoryHelper (_id) {
-  const name = Category.findById(_id, { _id: 0, name: 1 }).exec()
-  console.log('category helper ' + name)
-  return name
+// write a handlebars helper to lookup the category name based on the id
+// https://stackoverflow.com/questions/28223460/handlebars-js-lookup-value-in-array-of-objects
+const getCategoryName = (categories, id) => {
+  const category = categories.filter((item) => {
+    return item.id == id
+  })
+  try {
+    return category[0].name
+  } catch (error) {
+    return 'Uncategorized'
+  }
 }
 
 export {
@@ -77,5 +83,6 @@ export {
   createCategory,
   deleteCategory,
   updateCategory,
-  listCategoryNames
+  listCategoryNames,
+  getCategoryName
 }

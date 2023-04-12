@@ -29,7 +29,7 @@
                             <td class="hidden lg:table-cell" id="description">{{description}}</td>
                             <td class="hidden md:table-cell" id="status">{{status}}</td>
                             <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment}}</td>
-                            <td class="hidden md:table-cell" id="category">{{category}}</td>
+                            <td class="hidden md:table-cell" id="category">{{getCategoryName ../categories category}}</td>
                             <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i
                                             class="fa fa-pencil"></i></a></label></td>
                         </tr>
@@ -39,7 +39,6 @@
         </tbody>
     </table>
 </div>
-{{categories}}
 <br />
 {{#gt pagination.pageCount 1}}
     <ul class="paginate-bar">
@@ -64,7 +63,7 @@
 {{/gt}}
 <script>
     let test = "test"
-    const categories = JSON.stringify("{{categories}}")
+    const categories = '{{categories}}'
     let category = document.getElementById('category').innerText
-    console.log(categories)
+    console.log('client side' + categories)
 </script>
