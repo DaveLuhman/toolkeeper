@@ -41,7 +41,7 @@
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
     "helmet": "^6.1.5",
-    "mongoose": "^6.10.4",
+    "mongoose": "^7.0.3",
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
