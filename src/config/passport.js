@@ -31,9 +31,9 @@ const passportConfig = (app) => {
     done(null, user._id)
   })
 
-  passport.deserializeUser(function (id, done) {
+  passport.deserializeUser(async function (id, done) {
     try {
-      const user = User.findOne(id)
+      const user = await User.findById(id).lean().exec()
       done(null, user)
     } catch (err) {
       done(err)
