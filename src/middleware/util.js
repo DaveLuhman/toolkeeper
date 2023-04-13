@@ -45,7 +45,7 @@ export function sortByUserPreference (data, sortField, sortOrder) {
  * It will only allow alphanumeric characters and spaces
  **/
 function sanitize (string) {
-  return string.replace(/[^a-zA-Z0-9@. ]/g, '')
+  return string.replace(/[^a-zA-Z0-9\-@. ]/g, '')
 }
 
 /**

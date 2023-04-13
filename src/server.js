@@ -122,10 +122,8 @@ app.use('/tool', toolRouter)
 app.use(isManager)
 app.use('/settings', settingsRouter)
 // catch 404 and forward to error handler
-app.use(function (_req, _res, next) {
-  const err = new Error('Not Found')
-  err.status = 404
-  next(err)
+app.use((_req, res) => {
+  res.status(404).render('error/404', { layout: 'public', title: '404' })
 })
 
 app.listen(PORT, () => {
