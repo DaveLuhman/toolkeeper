@@ -4,6 +4,11 @@ import { Schema, model } from 'mongoose'
 // that are automatically added when the user is created and updated
 const UserSchema = new Schema(
   {
+    _id: {
+      type: Schema.Types.ObjectId,
+      auto: true,
+      get: (_id) => _id.toString()
+    },
     firstName: {
       type: String,
       trim: true
