@@ -14,7 +14,9 @@ import { mutateToArray, paginate } from './util.js'
 async function getAllTools (req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   console.info('[MW] getAllTools-in'.bgBlue.white)
-  const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
+  const tools = await Tool.find({})
+    .sort({ [sortField]: sortOrder })
+    .populate({ path: 'category', select: 'name' })
 
   const { trimmedData, targetPage, pageCount } = paginate(
     tools,
@@ -135,7 +137,14 @@ async function updateTool (req, res, next) {
   console.info('[MW] updateTool-in'.bgBlue.white)
   const updatedToolArray = []
   if (typeof req.body._id === 'string') {
-    const { _id, partNumber, description, serviceAssignment, status, category } = req.body
+    const {
+      _id,
+      partNumber,
+      description,
+      serviceAssignment,
+      status,
+      category
+    } = req.body
     const updatedTool = await Tool.findByIdAndUpdate(
       _id,
       {
@@ -151,7 +160,14 @@ async function updateTool (req, res, next) {
     updatedToolArray.push(updatedTool)
   }
   if (Array.isArray(req.body._id) && req.body._id.length > 1) {
-    const { _id, partNumber, description, serviceAssignment, status, category } = req.body
+    const {
+      _id,
+      partNumber,
+      description,
+      serviceAssignment,
+      status,
+      category
+    } = req.body
     for (let i = 0; i < _id.length > 100; i++) {
       const updatedTool = await Tool.findByIdAndUpdate(
         _id[i],
