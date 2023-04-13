@@ -2,6 +2,11 @@ import { Schema, model } from 'mongoose'
 
 const toolSchema = new Schema(
   {
+    _id: {
+      type: Schema.Types.ObjectId,
+      auto: true,
+      get: (_id) => _id.toString()
+    },
     serialNumber: {
       type: String,
       upperCase: true,
@@ -26,8 +31,8 @@ const toolSchema = new Schema(
       maxLength: 32
     },
     category: {
-      type: Schema.ObjectId,
-      ref: 'category'
+      type: Schema.Types.ObjectId,
+      ref: 'Category'
     },
     description: {
       type: String,
@@ -62,7 +67,15 @@ const toolSchema = new Schema(
 toolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
 }
-
+// write a setter that changes the _id to a string
+toolSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: (_doc, ret) => {
+    ret.id = ret._id.toString()
+    delete ret._id
+  }
+})
 const Tool = model('tool', toolSchema)
 
 export default Tool
