@@ -6,7 +6,6 @@ import morgan from 'morgan'
 // db depenancies
 import connectMongoDBSession from 'connect-mongodb-session'
 import connectDB from './db.js'
-
 // express depenancies
 import cookieParser from 'cookie-parser'
 import csurf from 'csurf'
@@ -34,12 +33,4 @@ import { settingsRouter } from '../routes/settings/index.routes.js'
 import { toolRouter } from '../routes/tool.routes.js'
 import { userRouter } from '../routes/user.routes.js'
 
-export {
-  checkAuth, colors, connectDB, connectMongoDBSession,
-  cookieParser, create, csurf, dashboardRouter, dotenv,
-  express,
-  fileUpload,
-  flash, getCategoryName, handlebarsHelpers, helmet, indexRouter, isManager, isSelected, listCategoryNames, morgan, paginate, passport, passportConfig,
-  rateLimiter, session, settingsRouter, userRouter,
-  toolRouter
-}
+export default { checkAuth, colors, connectDB, connectMongoDBSession, cookieParser, create, csurf, dashboardRouter, dotenv, express, fileUpload, flash, getCategoryName, handlebarsHelpers, helmet, indexRouter, isManager, isSelected, listCategoryNames, morgan, paginate, passport, passportConfig, rateLimiter, session, settingsRouter, userRouter, toolRouter }
