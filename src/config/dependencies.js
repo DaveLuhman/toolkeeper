@@ -15,7 +15,7 @@ import flash from 'express-flash'
 import session from 'express-session'
 import helmet from 'helmet'
 // handlebars depenancies
-import { create } from 'express-handlebars'; // templating engine
+import { create } from 'express-handlebars' // templating engine
 import handlebarsHelpers from 'handlebars-helpers'
 import paginate from 'handlebars-paginate'
 // auth depenancies
