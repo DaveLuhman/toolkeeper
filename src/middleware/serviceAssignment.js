@@ -48,7 +48,11 @@ export async function getServiceAssignmentByID (req, res, next) {
 export async function updateServiceAssignment (req, res, next) {
   try {
     const { _id, vehicle, employee, jobName, jobNumber } = req.body
-    const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(_id, { vehicle, employee, jobName, jobNumber }, { new: true }).exec()
+    const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(
+      _id,
+      { vehicle, employee, jobName, jobNumber },
+      { new: true }
+    ).exec()
     res.locals.serviceAssignments = mutateToArray(updatedServiceAssignment)
     return next()
   } catch (error) {
@@ -67,7 +71,12 @@ export async function updateServiceAssignment (req, res, next) {
 export async function createServiceAssignment (req, res, next) {
   try {
     const { vehicle, employee, jobName, jobNumber } = req.body
-    const newServiceAssignment = await ServiceAssignment.create({ vehicle, employee, jobName, jobNumber })
+    const newServiceAssignment = await ServiceAssignment.create({
+      vehicle,
+      employee,
+      jobName,
+      jobNumber
+    })
     res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
     return next()
   } catch (error) {
@@ -95,21 +104,12 @@ export async function deleteServiceAssignment (req, res, next) {
     res.status(500).send('Server Error')
   }
 }
-/**
- *  @function enumerateServiceAssignments
- * @param {*} req
- * @param {*} res
- * @param {*} next
- * @returns   {void}
- * @description Gets all service assignments and adds them to res.locals.serviceAssignments as an array specifically to be displayed in a table
- */
-export async function enumerateServiceAssignments (req, res, next) {
-  try {
-    const serviceAssignments = await ServiceAssignment.find({}, { displayName: 1 })
-    res.locals.serviceAssignments = mutateToArray(serviceAssignments)
-    return next()
-  } catch (error) {
-    console.error(error)
-    res.status(500).send('Server Error')
-  }
+
+// TODO: Use updatedAt value hashed to check for changes
+export async function listServiceAssignnmentNames (_req, res, next) {
+  res.locals.serviceAssignments = await ServiceAssignment.find(
+    {},
+    { displayName: 1 }
+  )
+  return next()
 }

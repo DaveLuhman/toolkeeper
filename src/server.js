@@ -17,7 +17,7 @@ import {
   indexRouter,
   isManager,
   isSelected,
-  listCategoryNames,
+  populateDropdownItems,
   morgan,
   paginate,
   passport,
@@ -115,7 +115,7 @@ app.use(rateLimiter)
 app.use('/', indexRouter)
 // Routes (User Context)
 app.use(checkAuth)
-app.use(listCategoryNames)
+app.use(populateDropdownItems)
 app.use('/user', userRouter)
 app.use('/dashboard', dashboardRouter)
 app.use('/tool', toolRouter)
