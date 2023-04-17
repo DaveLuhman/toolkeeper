@@ -67,6 +67,15 @@ const toolSchema = new Schema(
 toolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
 }
+toolSchema.add = function (tool, callback) {
+  return this.model('tool').create(tool, callback)
+}
+toolSchema.findById = function (id, callback) {
+  return this.model('tool').findOne({ _id: id }, callback)
+}
+toolSchema.update = function (id, tool, callback) {
+  return this.model('tool').findByIdAndUpdate(id, tool, callback)
+}
 // write a setter that changes the _id to a string
 toolSchema.set('toJSON', {
   virtuals: true,
