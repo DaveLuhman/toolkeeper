@@ -1,3 +1,6 @@
+import { listCategoryNames } from "./category"
+import { listServiceAssignnmentNames } from "./serviceAssignment"
+
 /**
  *
  * @param {array} data
@@ -67,4 +70,10 @@ export function isSelected (option, objectProperty) {
   console.log(String.toString(option), String.toString(objectProperty))
   console.log(option, objectProperty)
   if (toString(option) === toString(objectProperty)) return 'selected'
+}
+
+export function populateDropdownItems (req, res, next) {
+  listServiceAssignnmentNames({}, res, next)
+  listCategoryNames({}, res, next)
+  return next()
 }

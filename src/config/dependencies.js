@@ -24,8 +24,8 @@ import passport from 'passport'
 import passportConfig from './passport.js'
 import { checkAuth, isManager } from '../middleware/auth.js'
 // utility depenancies
-import { getCategoryName, listCategoryNames } from '../middleware/category.js'
-import { isSelected } from '../middleware/util.js'
+import { getCategoryName } from '../middleware/category.js'
+import { isSelected, populateDropdownItems } from '../middleware/util.js'
 import { rateLimiter } from './util.config.js'
 // routers
 import { dashboardRouter } from '../routes/dashboard.routes.js'
@@ -39,7 +39,7 @@ export {
   cookieParser, create, csurf, dashboardRouter, dotenv,
   express,
   fileUpload,
-  flash, getCategoryName, handlebarsHelpers, helmet, indexRouter, isManager, isSelected, listCategoryNames, morgan, paginate, passport, passportConfig,
+  flash, getCategoryName, handlebarsHelpers, helmet, indexRouter, isManager, isSelected, populateDropdownItems, morgan, paginate, passport, passportConfig,
   rateLimiter, session, settingsRouter, userRouter,
   toolRouter
 }
