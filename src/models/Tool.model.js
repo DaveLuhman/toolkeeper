@@ -27,8 +27,8 @@ const toolSchema = new Schema(
       enum: ['Checked In', 'Checked Out', 'Missing']
     },
     serviceAssignment: {
-      type: String,
-      maxLength: 32
+      type: Schema.Types.ObjectId,
+      ref: 'ServiceAssignment'
     },
     category: {
       type: Schema.Types.ObjectId,
