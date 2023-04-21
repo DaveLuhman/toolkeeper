@@ -13,7 +13,7 @@
                 <input name="description" type="text" placeholder="Description" class="input input-bordered" />
                 <select name="serviceAssignment" class="select select-bordered">
                     {{#each serviceAssignments}}
-                        <option name='{{ this.name }}' value='{{ this._id }}'>{{ this.name }}
+                        <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }}
                         </option>
                     {{/each}}
                 </select>
@@ -25,7 +25,7 @@
                 </select>
                 <select name="category" class="select select-bordered">
                     {{#each categories}}
-                        <option name='{{ this.name }}' value='{{ this._id }}'>{{ this.name }}
+                        <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }}
                         </option>
                     {{/each}}
                 </select>

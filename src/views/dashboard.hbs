@@ -28,8 +28,8 @@
                             <td id="barcode">{{barcode}}</td>
                             <td class="hidden lg:table-cell" id="description">{{description}}</td>
                             <td class="hidden md:table-cell" id="status">{{status}}</td>
-                            <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment}}</td>
-                            <td class="hidden md:table-cell" id="category">{{getCategoryName ../categories category}}
+                            <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment.displayName}}</td>
+                            <td class="hidden md:table-cell" id="category">{{category.name}}
                             </td>
                             <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i
                                             class="fa fa-pencil"></i></a></label></td>
