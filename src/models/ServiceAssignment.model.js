@@ -34,4 +34,4 @@ ServiceAssignmentSchema.virtual('displayName')
     }
   })
 
-export default model('serviceAssignment', ServiceAssignmentSchema)
+export default model('ServiceAssignment', ServiceAssignmentSchema)
