@@ -29,7 +29,8 @@
                             <td class="hidden lg:table-cell" id="description">{{description}}</td>
                             <td class="hidden md:table-cell" id="status">{{status}}</td>
                             <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment}}</td>
-                            <td class="hidden md:table-cell" id="category">{{getCategoryName ../categories category}}</td>
+                            <td class="hidden md:table-cell" id="category">{{getCategoryName ../categories category}}
+                            </td>
                             <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i
                                             class="fa fa-pencil"></i></a></label></td>
                         </tr>
@@ -38,6 +39,21 @@
         {{/if}}
         </tbody>
     </table>
+</div>
+<div class="text-blue-600">
+    <h1>Test Section</h1>
+    <h2>Categories</h2>
+    <section>{{categories}}</section>
+    <hr />
+    <h2>Tools</h2>
+    <section>{{tools}}</section>
+    <hr />
+    <h2>Service Assignments</h2>
+    <section>{{serviceAssignments}}</section>
+    <hr />
+    <h2>User</h2>
+    <section>{{JSONstringify user}}</section>
+    <hr />
 </div>
 <br />
 {{#gt pagination.pageCount 1}}
@@ -61,9 +77,3 @@
         {{/paginate}}
     </ul>
 {{/gt}}
-<script>
-    let test = "test"
-    const categories = '{{categories}}'
-    let category = document.getElementById('category').innerText
-    console.log('client side' + categories)
-</script>
