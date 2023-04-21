@@ -3,8 +3,7 @@ import { Schema, model } from 'mongoose'
 const CategorySchema = new Schema({
   _id: {
     type: Schema.Types.ObjectId,
-    auto: true,
-    get: (_id) => _id.toString()
+    auto: true
   },
   name: {
     type: String,
@@ -16,16 +15,10 @@ const CategorySchema = new Schema({
     required: true,
     maxLength: 64
   }
-})
-
-// write a setter that changes the _id to a string
-CategorySchema.set('toJSON', {
-  virtuals: true,
-  versionKey: false,
-  transform: (_doc, ret) => {
-    ret.id = ret._id.toString()
-    delete ret._id
-  }
+}, {
+  toObject: { virtuals: true },
+  toJSON: { virtuals: true },
+  timestamps: true
 })
 
 // eslint-disable-next-line new-cap

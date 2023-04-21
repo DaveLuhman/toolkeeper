@@ -4,8 +4,7 @@ const toolSchema = new Schema(
   {
     _id: {
       type: Schema.Types.ObjectId,
-      auto: true,
-      get: (_id) => _id.toString()
+      auto: true
     },
     serialNumber: {
       type: String,
@@ -59,6 +58,8 @@ const toolSchema = new Schema(
     }
   },
   {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
     timestamps: true,
     strict: false
   }
@@ -68,7 +69,7 @@ toolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
 }
 
-// write a setter that changes the _id to a string
+// write a setter that changes the _id to a string called id
 toolSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
