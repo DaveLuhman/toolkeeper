@@ -1,5 +1,5 @@
-import { listCategoryNames } from './category'
-import { listServiceAssignnmentNames } from './serviceAssignment'
+import { listCategoryNames } from './category.js'
+import { listServiceAssignnmentNames } from './serviceAssignment.js'
 
 /**
  *
