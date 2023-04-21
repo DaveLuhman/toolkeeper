@@ -73,7 +73,7 @@ export function isSelected (option, objectProperty) {
 }
 
 export function populateDropdownItems (_req, res, next) {
-  listServiceAssignnmentNames({}, res, next)
-  listCategoryNames({}, res, next)
+  listServiceAssignnmentNames()
+  listCategoryNames()
   return next()
 }
