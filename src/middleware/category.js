@@ -59,7 +59,7 @@ const updateCategory = async (req, res, next) => {
 }
 // TODO: Use updatedAt value hashed to check for changes
 const listCategoryNames = async (_req, res, next) => {
-  res.locals.categories = await Category.find({}, { name: 1 })
+  res.locals.categories = await Category.find({}, { name: 1, id: 1})
   return next()
 }
 
