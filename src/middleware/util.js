@@ -72,8 +72,4 @@ export function isSelected (option, objectProperty) {
   if (toString(option) === toString(objectProperty)) return 'selected'
 }
 
-export function populateDropdownItems (_req, res, next) {
-  listServiceAssignnmentNames()
-  listCategoryNames()
-  return next()
-}
+export const populateDropdownItems = [listCategoryNames, listServiceAssignnmentNames]
