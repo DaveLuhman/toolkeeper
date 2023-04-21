@@ -109,7 +109,7 @@ export async function deleteServiceAssignment (req, res, next) {
 export async function listServiceAssignnmentNames (_req, res, next) {
   res.locals.serviceAssignments = await ServiceAssignment.find(
     {},
-    { displayName: 1 }
+    { displayName: 1, _id: 1 }
   )
   return next()
 }
