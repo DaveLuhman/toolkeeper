@@ -87,7 +87,6 @@ async function updateUser (req, res, next) {
       $set: {
         firstName,
         lastName,
-        email,
         preferences: {
           theme,
           sortField,
