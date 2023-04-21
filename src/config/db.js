@@ -8,5 +8,6 @@ const connectDB = async () => {
     console.error('DB INIT' + err)
     process.exit(1)
   }
+  mongoose.ObjectId.get(v => v.toString())
 }
 export default connectDB
