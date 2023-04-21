@@ -107,9 +107,6 @@ export async function deleteServiceAssignment (req, res, next) {
 
 // TODO: Use updatedAt value hashed to check for changes
 export async function listServiceAssignnmentNames (_req, res, next) {
-  res.locals.serviceAssignments = await ServiceAssignment.find(
-    {},
-    { displayName: 1, _id: 1 }
-  )
+  res.locals.serviceAssignments = await ServiceAssignment.find()
   return next()
 }
