@@ -33,4 +33,4 @@ import { settingsRouter } from '../routes/settings/index.routes.js'
 import { toolRouter } from '../routes/tool.routes.js'
 import { userRouter } from '../routes/user.routes.js'
 
-export default { checkAuth, colors, connectDB, connectMongoDBSession, cookieParser, create, csurf, dashboardRouter, populateDropdownItems, dotenv, express, fileUpload, flash, getCategoryName, handlebarsHelpers, helmet, indexRouter, isManager, isSelected, morgan, paginate, passport, passportConfig, rateLimiter, session, settingsRouter, userRouter, toolRouter }
+export { checkAuth, colors, connectDB, connectMongoDBSession, cookieParser, create, csurf, dashboardRouter, populateDropdownItems, dotenv, express, fileUpload, flash, getCategoryName, handlebarsHelpers, helmet, indexRouter, isManager, isSelected, morgan, paginate, passport, passportConfig, rateLimiter, session, settingsRouter, userRouter, toolRouter }
