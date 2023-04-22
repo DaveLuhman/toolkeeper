@@ -15,7 +15,7 @@
         {{#if serviceAssignments}}
           {{#each serviceAssignments}}
             <tr>
-              <td>{{displayName}}</td>
+              <td>{{name}}</td>
               <td><a href="/settings/serviceAssignments/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
               <td><a href="/settings/serviceAssignments/delete/{{id}}"><i class="fa fa-trash"></i></a></td>
             </tr>
@@ -41,12 +41,8 @@
           <h3 class="title-text">New Service Assignment</h3>
         </div>
         <div class="m-3">
-          <input placeholder="Employee" type="text" name="employee" class="input input-bordered">
-          <input placeholder="Vehicle" type="text" name="vehicle" class="input input-bordered">
-        </div>
-        <div>
-          <input placeholder="Job Num" type="text" name="jobNumber" class="input input-bordered">
-          <input placeholder="Job Name" type="text" name="jobName" class="input input-bordered">
+          <input placeholder="Name" type="text" name="name" class="input input-bordered">
+          <input placeholder="Description" type="text" name="description" class="input input-bordered">
         </div>
         <div class="modal-button-row">
           <label class="btn btn-sm"> <button type="submit">Submit</button></label>

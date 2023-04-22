@@ -6,8 +6,7 @@ const UserSchema = new Schema(
   {
     _id: {
       type: Schema.Types.ObjectId,
-      auto: true,
-      get: (_id) => _id.toString()
+      auto: true
     },
     firstName: {
       type: String,
@@ -50,6 +49,8 @@ const UserSchema = new Schema(
     }
   },
   {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
     timestamps: true
   }
 )

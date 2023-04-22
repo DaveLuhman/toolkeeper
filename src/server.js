@@ -34,7 +34,6 @@ import {
 dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
 const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
-
 const app = express() // Create Express App
 
 connectDB() // Connect to MongoDB and report status to console

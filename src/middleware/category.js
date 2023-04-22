@@ -59,17 +59,17 @@ const updateCategory = async (req, res, next) => {
 }
 // TODO: Use updatedAt value hashed to check for changes
 const listCategoryNames = async (_req, res, next) => {
-  res.locals.categories = await Category.find({}, { name: 1 })
+  res.locals.categories = await Category.find({}, { name: 1, id: 1 })
   return next()
 }
 
 // write a handlebars helper to lookup the category name based on the id
 // https://stackoverflow.com/questions/28223460/handlebars-js-lookup-value-in-array-of-objects
 const getCategoryName = (categories, id) => {
-  const category = categories.filter((item) => {
-    return item.id == id
-  })
   try {
+    const category = categories.filter((item) => {
+      return item.id == id
+    })
     return category[0].name
   } catch (error) {
     return 'Uncategorized'

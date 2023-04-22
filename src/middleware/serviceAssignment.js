@@ -47,12 +47,12 @@ export async function getServiceAssignmentByID (req, res, next) {
  */
 export async function updateServiceAssignment (req, res, next) {
   try {
-    const { _id, vehicle, employee, jobName, jobNumber } = req.body
+    const { id, name, description } = req.body
     const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(
-      _id,
-      { vehicle, employee, jobName, jobNumber },
+      id,
+      { name, description },
       { new: true }
-    ).exec()
+    )
     res.locals.serviceAssignments = mutateToArray(updatedServiceAssignment)
     return next()
   } catch (error) {
@@ -70,12 +70,10 @@ export async function updateServiceAssignment (req, res, next) {
  */
 export async function createServiceAssignment (req, res, next) {
   try {
-    const { vehicle, employee, jobName, jobNumber } = req.body
+    const { name, description } = req.body
     const newServiceAssignment = await ServiceAssignment.create({
-      vehicle,
-      employee,
-      jobName,
-      jobNumber
+      name,
+      description
     })
     res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
     return next()
@@ -107,9 +105,6 @@ export async function deleteServiceAssignment (req, res, next) {
 
 // TODO: Use updatedAt value hashed to check for changes
 export async function listServiceAssignnmentNames (_req, res, next) {
-  res.locals.serviceAssignments = await ServiceAssignment.find(
-    {},
-    { displayName: 1 }
-  )
+  res.locals.serviceAssignments = await ServiceAssignment.find()
   return next()
 }

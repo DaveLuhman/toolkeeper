@@ -1,11 +1,11 @@
 import { Schema, model } from 'mongoose'
+import mongooseAutoPopulate from 'mongoose-autopopulate'
 
 const toolSchema = new Schema(
   {
     _id: {
       type: Schema.Types.ObjectId,
-      auto: true,
-      get: (_id) => _id.toString()
+      auto: true
     },
     serialNumber: {
       type: String,
@@ -28,11 +28,13 @@ const toolSchema = new Schema(
     },
     serviceAssignment: {
       type: Schema.Types.ObjectId,
-      ref: 'ServiceAssignment'
+      ref: 'ServiceAssignment',
+      autopopulate: { select: 'displayName' }
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: 'Category'
+      ref: 'Category',
+      autopopulate: { select: 'name' }
     },
     description: {
       type: String,
@@ -59,6 +61,8 @@ const toolSchema = new Schema(
     }
   },
   {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true },
     timestamps: true,
     strict: false
   }
@@ -67,16 +71,8 @@ const toolSchema = new Schema(
 toolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
 }
-toolSchema.add = function (tool, callback) {
-  return this.model('tool').create(tool, callback)
-}
-toolSchema.findById = function (id, callback) {
-  return this.model('tool').findOne({ _id: id }, callback)
-}
-toolSchema.update = function (id, tool, callback) {
-  return this.model('tool').findByIdAndUpdate(id, tool, callback)
-}
-// write a setter that changes the _id to a string
+
+// write a setter that changes the _id to a string called id
 toolSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
@@ -85,6 +81,8 @@ toolSchema.set('toJSON', {
     delete ret._id
   }
 })
+toolSchema.plugin(mongooseAutoPopulate)
+
 const Tool = model('tool', toolSchema)
 
 export default Tool

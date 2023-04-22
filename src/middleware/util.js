@@ -1,5 +1,5 @@
-import { listCategoryNames } from './category'
-import { listServiceAssignnmentNames } from './serviceAssignment'
+import { listCategoryNames } from './category.js'
+import { listServiceAssignnmentNames } from './serviceAssignment.js'
 
 /**
  *
@@ -72,8 +72,4 @@ export function isSelected (option, objectProperty) {
   if (toString(option) === toString(objectProperty)) return 'selected'
 }
 
-export function populateDropdownItems (_req, res, next) {
-  listServiceAssignnmentNames({}, res, next)
-  listCategoryNames({}, res, next)
-  return next()
-}
+export const populateDropdownItems = [listCategoryNames, listServiceAssignnmentNames]

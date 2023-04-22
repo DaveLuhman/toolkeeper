@@ -11,8 +11,12 @@
                 <input name="partNumber" type="text" placeholder="Part Number" class="input input-bordered" />
                 <input name="barcode" type="text" placeholder="Barcode" class="input input-bordered" />
                 <input name="description" type="text" placeholder="Description" class="input input-bordered" />
-                <input name="serviceAssignment" type="text" placeholder="Service Assignment"
-                    class="input input-bordered" />
+                <select name="serviceAssignment" class="select select-bordered">
+                    {{#each serviceAssignments}}
+                        <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }}
+                        </option>
+                    {{/each}}
+                </select>
                 {{!--  TODO: Make Status Radio Buttoned In A Dropdown - see partials/components/_statusDropdown.hbs --}}
                 <select name="status" class="select select-bordered">
                     <option>Status</option>
@@ -20,10 +24,10 @@
                     <option value="Checked Out">Checked Out</option>
                 </select>
                 <select name="category" class="select select-bordered">
-                    {{#forEach categories}}
-                        <option name='{{ this.name }}' value='{{ this._id }}'>{{ this.name }}
+                    {{#each categories}}
+                        <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }}
                         </option>
-                    {{/forEach}}
+                    {{/each}}
                 </select>
                 <div class="modal-button-row">
                     <label class="modal-button" for="newToolModal">Cancel</label>
