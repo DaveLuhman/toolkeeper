@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import mongooseAutoPopulate from 'mongoose-autopopulate'
 
 const toolSchema = new Schema(
   {
@@ -27,11 +28,13 @@ const toolSchema = new Schema(
     },
     serviceAssignment: {
       type: Schema.Types.ObjectId,
-      ref: 'ServiceAssignment'
+      ref: 'ServiceAssignment',
+      autopopulate: { select: 'displayName' }
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: 'Category'
+      ref: 'Category',
+      autopopulate: { select: 'name' }
     },
     description: {
       type: String,
@@ -78,6 +81,8 @@ toolSchema.set('toJSON', {
     delete ret._id
   }
 })
+toolSchema.plugin(mongooseAutoPopulate)
+
 const Tool = model('tool', toolSchema)
 
 export default Tool
