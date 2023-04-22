@@ -16,8 +16,6 @@ async function getAllTools (req, res, next) {
   console.info('[MW] getAllTools-in'.bgBlue.white)
   const tools = await Tool.find({})
     .sort({ [sortField]: sortOrder })
-    .populate({ path: 'category', select: 'name' })
-    .populate({ path: 'serviceAssignment', select: 'displayName' })
 
   const { trimmedData, targetPage, pageCount } = paginate(
     tools,
