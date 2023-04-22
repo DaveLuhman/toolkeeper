@@ -5,33 +5,18 @@ const ServiceAssignmentSchema = new Schema({
     type: Schema.Types.ObjectId,
     auto: true
   },
-  vehicle: {
-    type: String
+  name: {
+    type: String,
+    required: true
   },
-  jobName: {
-    type: String
-  },
-  jobNumber: {
-    type: String
-  },
-  employee: {
-    type: String
+  description: {
+    type: String,
+    required: false
   }
 }, {
   toObject: { virtuals: true },
   toJSON: { virtuals: true },
   timestamps: true
 })
-
-ServiceAssignmentSchema.virtual('displayName')
-  .get(function () {
-    if (this.vehicle) {
-      return this.vehicle + ' - ' + this.employee
-    } else if (this.jobName) {
-      return this.jobName + ' - ' + this.jobNumber
-    } else {
-      return this.employee
-    }
-  })
 
 export default model('ServiceAssignment', ServiceAssignmentSchema)
