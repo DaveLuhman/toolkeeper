@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import { mutateToArray } from './util.js'
 /**
@@ -107,4 +108,15 @@ export async function deleteServiceAssignment (req, res, next) {
 export async function listServiceAssignnmentNames (_req, res, next) {
   res.locals.serviceAssignments = await ServiceAssignment.find()
   return next()
+}
+
+export const getServiceAssignmentName = (categories, id) => {
+  try {
+    const category = categories.filter((item) => {
+      return item.id == id
+    })
+    return category[0].name
+  } catch (error) {
+    return 'Uncategorized'
+  }
 }
