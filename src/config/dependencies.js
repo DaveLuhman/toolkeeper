@@ -24,6 +24,7 @@ import { checkAuth, isManager } from '../middleware/auth.js'
 import passportConfig from './passport.js'
 // utility depenancies
 import { getCategoryName } from '../middleware/category.js'
+import { getServiceAssignmentName } from '../middleware/serviceAssignment.js'
 import { isSelected, populateDropdownItems } from '../middleware/util.js'
 import { rateLimiter } from './util.config.js'
 // routers
@@ -33,4 +34,4 @@ import { settingsRouter } from '../routes/settings/index.routes.js'
 import { toolRouter } from '../routes/tool.routes.js'
 import { userRouter } from '../routes/user.routes.js'
 
-export { checkAuth, colors, connectDB, connectMongoDBSession, cookieParser, create, csurf, dashboardRouter, populateDropdownItems, dotenv, express, fileUpload, flash, getCategoryName, handlebarsHelpers, helmet, indexRouter, isManager, isSelected, morgan, paginate, passport, passportConfig, rateLimiter, session, settingsRouter, userRouter, toolRouter }
+export { checkAuth, colors, connectDB, connectMongoDBSession, cookieParser, create, csurf, dashboardRouter, populateDropdownItems, dotenv, express, fileUpload, flash, getCategoryName, getServiceAssignmentName, handlebarsHelpers, helmet, indexRouter, isManager, isSelected, morgan, paginate, passport, passportConfig, rateLimiter, session, settingsRouter, userRouter, toolRouter }

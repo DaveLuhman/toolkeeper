@@ -12,6 +12,7 @@ import {
   fileUpload,
   flash,
   getCategoryName,
+  getServiceAssignmentName,
   handlebarsHelpers,
   helmet,
   indexRouter,
@@ -79,6 +80,7 @@ const hbs = create({
   helpers: {
     isSelected,
     getCategoryName,
+    getServiceAssignmentName,
     paginate,
     ...handlebarsHelpers()
   },
