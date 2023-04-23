@@ -81,52 +81,57 @@ async function searchTools (req, res, next) {
  * @returns
  */
 async function createTool (req, res, next) {
-  console.info('[MW] createTool-in'.bgBlue.white)
-  const {
-    serialNumber,
-    partNumber,
-    barcode,
-    description,
-    serviceAssignment,
-    status,
-    category
-  } = req.body
-  if (!(serialNumber || partNumber) || !barcode) {
-    res.locals.message =
-      'Either Serial Num and Barcode or Part Num and Barcode required'
-    console.error('[MW] createTool-out-1'.red)
-    res.status(400).redirect('back')
-    return
+  try {
+    console.info('[MW] createTool-in'.bgBlue.white)
+    const {
+      serialNumber,
+      partNumber,
+      barcode,
+      description,
+      serviceAssignment,
+      status,
+      category
+    } = req.body
+    if (!(serialNumber || partNumber) || !barcode) {
+      throw new Error({ message: 'Missing required fields', status: 400 })
+    }
+    const existing = await Tool.findOne({
+      $or: [{ serialNumber }, { barcode }]
+    })
+    if (existing) {
+      res.locals.tools = mutateToArray(existing)
+      throw new Error({ message: 'Tool already exists', status: 400 })
+    }
+    // TODO: verify input data is sanitized
+    const newTool = await Tool.create({
+      serialNumber,
+      partNumber,
+      barcode,
+      description,
+      serviceAssignment,
+      status,
+      category,
+      updatedBy: req.user._id,
+      createdBy: req.user._id
+    })
+    if (!newTool) {
+      throw new Error({ message: 'Could not create tool', status: 500 })
+    }
+    await ToolHistory.create({
+      _id: newTool._id,
+      history: [newTool]
+    })
+    res.locals.message = 'Successfully Made A New Tool'
+    res.locals.tools = [newTool]
+    res.locals.pagination = { pageCount: 1 }
+    res.status(201)
+    console.info(`[MW] Tool Successfully Created ${newTool._id}`.green)
+    console.info('[MW] createTool-out-3'.bgWhite.blue)
+    next()
+  } catch (error) {
+    res.locals.message = error.message
+    res.status(error.status || 500).redirect('back')
   }
-  const existing = await Tool.findOne({
-    $or: [{ serialNumber }, { barcode }]
-  })
-  if (existing) {
-    res.locals.message = 'Tool already exists'
-    res.locals.tools = mutateToArray(existing)
-    console.error('[MW] createTool-out-2'.red)
-    res.status(400).redirect('back')
-    return next()
-  }
-  // TODO: verify input data is sanitized
-  const newTool = await Tool.create({
-    serialNumber,
-    partNumber,
-    barcode,
-    description,
-    serviceAssignment,
-    status,
-    category,
-    updatedBy: req.user._id,
-    createdBy: req.user._id
-  })
-  res.locals.message = 'Successfully Made A New Tool'
-  res.locals.tools = [newTool]
-  res.locals.pagination = { pageCount: 1 }
-  res.status(201)
-  console.info(`[MW] Tool Successfully Created ${newTool._id}`.green)
-  console.info('[MW] createTool-out-3'.bgWhite.blue)
-  next()
 }
 /**
  *
@@ -136,8 +141,7 @@ async function createTool (req, res, next) {
  */
 async function updateTool (req, res, next) {
   console.info('[MW] updateTool-in'.bgBlue.white)
-  const updatedToolArray = []
-  if (typeof req.body._id === 'string') {
+  const ut = async (newToolData) => {
     const {
       _id,
       partNumber,
@@ -145,9 +149,10 @@ async function updateTool (req, res, next) {
       serviceAssignment,
       status,
       category
-    } = req.body
+    } = newToolData
+    const oldTool = await Tool.findById({ $eq: _id })
     const updatedTool = await Tool.findByIdAndUpdate(
-      _id,
+      { $eq: _id },
       {
         partNumber,
         description,
@@ -156,38 +161,36 @@ async function updateTool (req, res, next) {
         category
       },
       { new: true }
-    ).exec()
-    console.info(`updatedTool: ${updatedTool}`.green)
+    )
+    await ToolHistory.findByIdAndUpdate(
+      { $eq: _id },
+      {
+        $push: { history: [oldTool] }
+      },
+      { new: true })
+    return updatedTool
+  }
+  const updatedToolArray = []
+  if (typeof req.body._id === 'string') {
+    const updatedTool = await ut(req.body)
     updatedToolArray.push(updatedTool)
   }
-  if (Array.isArray(req.body._id) && req.body._id.length > 1) {
-    const {
-      _id,
-      partNumber,
-      description,
-      serviceAssignment,
-      status,
-      category
-    } = req.body
-    for (let i = 0; i < _id.length > 100; i++) {
-      const updatedTool = await Tool.findByIdAndUpdate(
-        _id[i],
-        {
-          partNumber: partNumber[i],
-          description: description[i],
-          serviceAssignment: serviceAssignment[i],
-          status: status[i],
-          category: category[i]
-        },
-        { new: true }
-      ).exec()
-      console.info(`updatedTool: ${updatedTool}`.green)
+  if (Array.isArray(req.body._id) && req.body._id.length > 0) {
+    for (let i = 0; i < req.body._id.length > 100; i++) {
+      const updatedTool = await ut({
+        _id: req.body._id[i],
+        partNumber: req.body.partNumber[i],
+        description: req.body.description[i],
+        serviceAssignment: req.body.serviceAssignment[i],
+        status: req.body.status[i],
+        category: req.body.category[i]
+      })
       updatedToolArray.push(updatedTool)
     }
   }
   res.locals.tools = updatedToolArray
   res.locals.pagination = { page: 1, pageCount: 1 }
-  res.status(201)
+  res.status(200)
   console.info('[MW] Successfully Updated Tools: '.green + updatedToolArray)
   console.info('[MW] updateTool-out-1'.bgWhite.blue)
   next()
@@ -208,6 +211,10 @@ async function archiveTool (req, res, next) {
     { archived: true },
     { new: true }
   )
+  await ToolHistory.findByIdAndUpdate(
+    { _id: id },
+    { $push: { history: [archivedTool] } },
+    { new: true })
   res.locals.message = 'Successfully Marked Tool Archived'
   res.locals.tools = [archivedTool]
   res.status(201)
