@@ -39,10 +39,7 @@ async function getAllTools (req, res, next) {
 async function getToolByID (req, res, next) {
   const id = req.params.id
   console.info(`[MW] searching id: ${id}`)
-  const tools = await Tool.findById({ $eq: id }).populate({
-    path: 'category',
-    select: 'name'
-  })
+  const tools = await Tool.findById({ $eq: id })
   res.locals.tools = [tools]
   return next()
 }
