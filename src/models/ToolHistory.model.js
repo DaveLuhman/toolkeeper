@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { Schema, model } from 'mongoose'
-const ToolHistorySchema = new Schema({
+const toolHistorySchema = new Schema({
   _id: {
     type: Schema.Types.ObjectId,
     auto: false
@@ -10,6 +10,6 @@ const ToolHistorySchema = new Schema({
     ref: 'tool'
   }]
 })
-const Tool_History = model('tool_history', ToolHistorySchema)
+const ToolHistory = model('toolHistory', toolHistorySchema)
 
-export default Tool_History
+export default ToolHistory
