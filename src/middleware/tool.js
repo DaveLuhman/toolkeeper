@@ -1,4 +1,5 @@
 import Tool from '../models/Tool.model.js'
+import ToolHistory from '../models/ToolHistory.model.js'
 import { mutateToArray, paginate } from './util.js'
 
 /**
@@ -40,7 +41,9 @@ async function getToolByID (req, res, next) {
   const id = req.params.id
   console.info(`[MW] searching id: ${id}`)
   const tools = await Tool.findById({ $eq: id })
+  const toolHistory = await ToolHistory.findById({ $eq: id }, 'history')
   res.locals.tools = [tools]
+  res.locals.toolHistory = toolHistory
   return next()
 }
 /**
