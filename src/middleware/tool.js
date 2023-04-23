@@ -128,7 +128,6 @@ async function createTool (req, res, next) {
   console.info('[MW] createTool-out-3'.bgWhite.blue)
   next()
 }
-
 /**
  *
  * @param {*} req.body._id The id of the tool to update
@@ -215,7 +214,6 @@ async function archiveTool (req, res, next) {
   console.info('[MW] archiveTool-out-1'.bgWhite.blue)
   next()
 }
-
 /**
  * checkTools - Checks whether tools are checked in/out and returns the inverse.
  * @param {string} req.body.searchTerm The serialNumber/barcode of the tool to archive
