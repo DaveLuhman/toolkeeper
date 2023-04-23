@@ -29,7 +29,7 @@ const toolSchema = new Schema(
     serviceAssignment: {
       type: Schema.Types.ObjectId,
       ref: 'ServiceAssignment',
-      autopopulate: { select: 'displayName' }
+      autopopulate: { select: 'name' }
     },
     category: {
       type: Schema.Types.ObjectId,
