@@ -158,14 +158,16 @@ async function updateTool (req, res, next) {
         description,
         serviceAssignment,
         status,
-        category
+        category,
+        $inc: { __v: 1 }
       },
       { new: true }
     )
     await ToolHistory.findByIdAndUpdate(
       { $eq: _id },
       {
-        $push: { history: [oldTool] }
+        $push: { history: oldTool },
+        $inc: { __v: 1 }
       },
       { new: true })
     return updatedTool

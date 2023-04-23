@@ -5,10 +5,10 @@ const toolHistorySchema = new Schema({
     type: Schema.Types.ObjectId,
     auto: false
   },
-  history: [{
-    type: Schema.Types.ObjectId,
-    ref: 'tool'
-  }]
+  history: []
+}, {
+  strict: false,
+  timestamps: true
 })
 const ToolHistory = model('toolHistory', toolHistorySchema)
 
