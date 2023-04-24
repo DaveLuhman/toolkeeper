@@ -30,6 +30,11 @@
                             class="input input-bordered" />
                     </div>
                     <div class="form-control">
+                        <label for="manufacturer" class="label"><span class="label-text">Manufacturer:</span></label>
+                        <input name="manufacturer" value="{{manufacturer}}" type="text" placeholder="Manufacturer"
+                            class="input input-bordered" />
+                    </div>
+                    <div class="form-control">
                         <label for="serviceAssignment" class="label"><span class="label-text">Service
                                 Assignment</span></label>
                         <select name="serviceAssignment" class="select select-bordered">
@@ -68,8 +73,9 @@
         </form>
     {{else}}
         <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
-    {{/if}}</div>
-    <div class="main-view">
+    {{/if}}
+</div>
+<div class="main-view">
     {{#if toolHistory}}
         <table>
             <thead>
@@ -84,18 +90,18 @@
                 </tr>
             </thead>
             {{#each toolHistory as |entry|}}
-            <tr>
-                <td>{{entry.partNumber}}</td>
-                <td>{{entry.description}}</td>
-                <td>{{entry.status}}</td>
-                <td>{{getServiceAssignmentName ../serviceAssignments entry.serviceAssignment}}</td>
-                <td>{{getCategoryName ../categories entry.category}}</td>
-                <td>{{moment entry.updatedAt format="MM/DD/YYYY hh:mm A"}}</td>
-                <td>{{entry.__v}}</td>
+                <tr>
+                    <td>{{entry.partNumber}}</td>
+                    <td>{{entry.description}}</td>
+                    <td>{{entry.status}}</td>
+                    <td>{{getServiceAssignmentName ../serviceAssignments entry.serviceAssignment}}</td>
+                    <td>{{getCategoryName ../categories entry.category}}</td>
+                    <td>{{moment entry.updatedAt format="MM/DD/YYYY hh:mm A"}}</td>
+                    <td>{{entry.__v}}</td>
                 </tr>
             {{/each}}
         </table>
-        {{else}}
+    {{else}}
         <p>We don't have any history for this tool.</p>
     {{/if}}
 </div>
