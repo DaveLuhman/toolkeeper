@@ -117,6 +117,6 @@ export const getServiceAssignmentName = (categories, id) => {
     })
     return category[0].name
   } catch (error) {
-    return 'Uncategorized'
+    return 'Unassigned'
   }
 }
