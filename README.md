@@ -78,21 +78,24 @@ This is a full-stack web application built with NodeJS and Express that allows a
 - NodeJS 19+
 - MongoDB Target
 
-### Installation
+### Docker-Compose
+1. In the repo, there is a docker-compose folder. Either download, or copy the contents of both the docker-compose.yml and compose.env to the same folder on your local machine.
+2. Edit the contents of the .env file to your environment
+3. In a terminal, run `docker compose up -d` to start the containers.
 
-1. Clone the repository to your local machine
+Note: This is configured with /data/db and /data/configdb persistent storage volumes. No secrets are left unencrypted at rest, other than in your .env file.
 
-`git clone https://github.com/DaveLuhman/toolkeeper.git`
+### Node.js Native
+#### Note: this assumes you have your own MongoDB to point TK at.
+1. Clone the `master` branch either from the GH repo [Link](https://github.com/DaveLuhman/toolkeeper) or via terminal
+	`git clone https://github.com/DaveLuhman/toolkeeper.git`
 
-2. Install the dependencies
+2. Edit the contents of the .env file to your environment
+	a. note the .env file in the monorepo is in ./src/config/.env
 
-`npm install`
-
-3. Start the server
-
-`npm start`
-
-4. Open a web browser and navigate to http://localhost:3000
+3. In a terminal, run `npm ci` to perform a clean install of the node dependancies
+4. Next, we'll run `npm run build:css` to build the tailwind CSS files
+5. Finally, we'll run `npm start` to start the services
 
 ## For Developers
 
