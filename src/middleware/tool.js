@@ -91,7 +91,8 @@ async function createTool (req, res, next) {
       description,
       serviceAssignment,
       status,
-      category
+      category,
+      manufacturer
     } = req.body
     if (!(serialNumber || partNumber) || !barcode) {
       throw new Error({ message: 'Missing required fields', status: 400 })
@@ -112,6 +113,7 @@ async function createTool (req, res, next) {
       serviceAssignment,
       status,
       category,
+      manufacturer,
       updatedBy: req.user._id,
       createdBy: req.user._id
     })
@@ -149,7 +151,8 @@ async function updateTool (req, res, next) {
       description,
       serviceAssignment,
       status,
-      category
+      category,
+      manufacturer
     } = newToolData
     const oldTool = await Tool.findById({ $eq: _id })
     const updatedTool = await Tool.findByIdAndUpdate(
@@ -160,6 +163,7 @@ async function updateTool (req, res, next) {
         serviceAssignment,
         status,
         category,
+        manufacturer,
         $inc: { __v: 1 }
       },
       { new: true }
@@ -186,7 +190,8 @@ async function updateTool (req, res, next) {
         description: req.body.description[i],
         serviceAssignment: req.body.serviceAssignment[i],
         status: req.body.status[i],
-        category: req.body.category[i]
+        category: req.body.category[i],
+        manufacturer: req.body.manufacturer[i]
       })
       updatedToolArray.push(updatedTool)
     }
@@ -301,10 +306,10 @@ async function checkTools (req, res, next) {
 async function lookupTool (searchTerm, searchField) {
   let query
   if (searchField === '' || searchField === undefined) {
-    query = await Tool.findOne({ $text: { $search: searchTerm } }).populate({ path: 'category', select: 'name' }) // generic search
+    query = await Tool.findOne({ $text: { $search: searchTerm } })
   }
   if (searchField) {
-    query = await Tool.findOne({ [searchField]: { $eq: searchTerm } }).populate({ path: 'category', select: 'name' })
+    query = await Tool.findOne({ [searchField]: { $eq: searchTerm } })
   }
   if (!query) {
     console.warn('[MW] Tool Not Found'.yellow)
