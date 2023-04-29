@@ -1,4 +1,4 @@
-<div class="main-view">
+<div class="flex flex-wrap items-center justify-evenly">
     {{#if tools}}
         <div class="title-bar">
             <h3 class="title-text">Edit Tool(s)</h3>
@@ -6,7 +6,7 @@
         <form action="/tool/update" method="POST">
             {{#each tools as |tool|}}
                 <!-- this is the table of inputs -->
-                <div class="grid grid-cols-1 gap-2 form-control md:grid-cols-3">
+                <div class="grid grid-flow-row-dense grid-cols-3 gap-2 form-control">
                     <input name="id" value="{{id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
                     <div class="form-control">
                         <label for="serialNumber" class="label"><span class="label-text">SN:</span></label>
@@ -38,7 +38,7 @@
                                 Assignment</span></label>
                         <select name="serviceAssignment" class="select select-bordered">
                             {{#each ../serviceAssignments}}
-                                <option name='{{name}}' value='{{id}}' {{isSelected id tool.serviceAssignment}}>
+                                <option name='{{name}}' value='{{id}}' {{isSelected id tool.serviceAssignment.id}}>
                                     {{name}}
                                 </option>
                             {{/each}}
@@ -57,7 +57,7 @@
                         <label for="category" class="label"><span class="label-text">Category</span></label>
                         <select name="category" class="select select-bordered">
                             {{#each ../categories}}
-                                <option name='{{ name }}' value='{{id}}' {{isSelected id tool.category}}>{{name}}
+                                <option name='{{ name }}' value='{{id}}' {{isSelected id tool.category.id}}>{{name}}
                                 </option>
                             {{/each}}
                         </select>
