@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
-import { mutateToArray, sanitizeReqBody } from './util.js'
+import { mutateToArray } from './util.js'
 /**
  * @function getServiceAssignments
  * @param {*} req
