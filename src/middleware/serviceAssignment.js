@@ -110,12 +110,12 @@ export async function listServiceAssignnmentNames (_req, res, next) {
   return next()
 }
 
-export const getServiceAssignmentName = (categories, id) => {
+export const getServiceAssignmentName = (serviceAssignments, id) => {
   try {
-    const category = categories.filter((item) => {
+    const serviceAssignment = serviceAssignments.filter((item) => {
       return item.id == id
     })
-    return category[0].name
+    return serviceAssignment[0].name
   } catch (error) {
     return 'Unassigned'
   }

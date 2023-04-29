@@ -67,7 +67,9 @@ export function sanitizeReqBody (req, _res, next) {
   return next()
 }
 export function isSelected (option, objectProperty) {
-  if (toString(option) === toString(objectProperty)) return 'selected'
+  console.log('This is the option being iterated over: ', option)
+  console.log('This is the property being saught: ', objectProperty)
+  if (option === objectProperty) return 'selected'
 }
 
 export const populateDropdownItems = [listCategoryNames, listServiceAssignnmentNames]

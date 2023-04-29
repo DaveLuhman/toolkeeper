@@ -1,4 +1,4 @@
-<div class="main-view">
+<div class="flex flex-wrap items-center justify-evenly">
     {{#if tools}}
         <div class="title-bar">
             <h3 class="title-text">Edit Tool(s)</h3>
@@ -6,9 +6,8 @@
         <form action="/tool/update" method="POST">
             {{#each tools as |tool|}}
                 <!-- this is the table of inputs -->
-                <div class="grid grid-cols-1 gap-2 form-control md:grid-cols-3">
-                    <input name="_id" value="{{_id}}" type="hidden" placeholder="Tool ID"
-                        class="input input-bordered" />
+                <div class="grid grid-flow-row-dense grid-cols-3 gap-2 form-control">
+                    <input name="id" value="{{id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
                     <div class="form-control">
                         <label for="serialNumber" class="label"><span class="label-text">SN:</span></label>
                         <input name="serialNumber" disabled value="{{serialNumber}}" type="text"
@@ -39,8 +38,8 @@
                                 Assignment</span></label>
                         <select name="serviceAssignment" class="select select-bordered">
                             {{#each ../serviceAssignments}}
-                                <option name='{{ name }}' value='{{ _id }}' {{isSelected _id ../serviceAssignment}}>
-                                    {{ name }}
+                                <option name='{{name}}' value='{{id}}' {{isSelected id tool.serviceAssignment.id}}>
+                                    {{name}}
                                 </option>
                             {{/each}}
                         </select>
@@ -48,9 +47,9 @@
                     <div class="form-control">
                         <label for="status" class="label"><span class="label-text">Status</span></label>
                         <select name="status" class="select select-bordered">
-                            <option value="Checked In" {{#eq status "Checked In" }}selected{{/eq}}>Checked-In
+                            <option value="Checked In" {{#eq status "Checked In"}}selected{{/eq}}>Checked-In
                             </option>
-                            <option value="Checked Out" {{#eq status "Checked Out" }}selected{{/eq}}>Checked-Out
+                            <option value="Checked Out" {{#eq status "Checked Out"}}selected{{/eq}}>Checked-Out
                             </option>
                         </select>
                     </div>
@@ -58,7 +57,7 @@
                         <label for="category" class="label"><span class="label-text">Category</span></label>
                         <select name="category" class="select select-bordered">
                             {{#each ../categories}}
-                                <option name='{{ name }}' value='{{ _id }}' {{isSelected _id ../category}}>{{ name }}
+                                <option name='{{ name }}' value='{{id}}' {{isSelected id tool.category.id}}>{{name}}
                                 </option>
                             {{/each}}
                         </select>
@@ -86,7 +85,7 @@
                     <th>Service Assignment</th>
                     <th>Category</th>
                     <th>Date Updated (UTC)</th>
-                    <th>Version Number</th>
+                    <th>Version</th>
                 </tr>
             </thead>
             {{#each toolHistory as |entry|}}
