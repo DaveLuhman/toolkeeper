@@ -3,6 +3,7 @@ import { getUsers } from '../../middleware/user.js'
 import { userSettingsRouter } from './userSettings.routes.js'
 import { serviceAssignmentRouter } from './serviceAssignment.routes.js'
 import { categoryRouter } from './category.routes.js'
+import { materialRouter } from './material.routes.js'
 
 export const settingsRouter = expressRouter()
 
@@ -22,3 +23,7 @@ settingsRouter.use('/serviceAssignments', serviceAssignmentRouter)
 // all category routes go to categoryRouter
 // @route  * /settings/categories
 settingsRouter.use('/categories', categoryRouter)
+
+// all material routes go to categoryRouter
+// @route  * /settings/categories
+settingsRouter.use('/materials', materialRouter)
