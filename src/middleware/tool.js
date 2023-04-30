@@ -146,7 +146,7 @@ async function updateTool (req, res, next) {
   console.info('[MW] updateTool-in'.bgBlue.white)
   const ut = async (newToolData) => {
     const {
-      _id,
+      id,
       partNumber,
       description,
       serviceAssignment,
@@ -154,9 +154,9 @@ async function updateTool (req, res, next) {
       category,
       manufacturer
     } = newToolData
-    const oldTool = await Tool.findById({ $eq: _id })
+    const oldTool = await Tool.findById({ $eq: id })
     const updatedTool = await Tool.findByIdAndUpdate(
-      { $eq: _id },
+      { $eq: id },
       {
         partNumber,
         description,
@@ -169,7 +169,7 @@ async function updateTool (req, res, next) {
       { new: true }
     )
     await ToolHistory.findByIdAndUpdate(
-      { $eq: _id },
+      { $eq: id },
       {
         $push: { history: oldTool },
         $inc: { __v: 1 }
@@ -178,14 +178,15 @@ async function updateTool (req, res, next) {
     return updatedTool
   }
   const updatedToolArray = []
-  if (typeof req.body._id === 'string') {
+  console.log(typeof req.body._id)
+  if (typeof req.body.id === 'string') {
     const updatedTool = await ut(req.body)
     updatedToolArray.push(updatedTool)
   }
   if (Array.isArray(req.body._id) && req.body._id.length > 0) {
-    for (let i = 0; i < req.body._id.length > 100; i++) {
+    for (let i = 0; i < req.body.id.length > 100; i++) {
       const updatedTool = await ut({
-        _id: req.body._id[i],
+        _id: req.body.id[i],
         partNumber: req.body.partNumber[i],
         description: req.body.description[i],
         serviceAssignment: req.body.serviceAssignment[i],
