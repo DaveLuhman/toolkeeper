@@ -44,10 +44,10 @@ const deleteMaterial = async (req, res, next) => {
 }
 
 const updateMaterial = async (req, res, next) => {
-  const { _id, name, description } = req.body
+  const { id, name, description } = req.body
   try {
     const updatedMaterial = await Material.findByIdAndUpdate(
-      { $eq: _id },
+      { $eq: id },
       { name, description },
       { new: true }
     )

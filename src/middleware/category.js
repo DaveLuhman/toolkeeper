@@ -44,10 +44,10 @@ const deleteCategory = async (req, res, next) => {
 }
 
 const updateCategory = async (req, res, next) => {
-  const { _id, name, description } = req.body
+  const { id, name, description } = req.body
   try {
     const updatedCategory = await Category.findByIdAndUpdate(
-      { $eq: _id },
+      { $eq: id },
       { name, description },
       { new: true }
     )
