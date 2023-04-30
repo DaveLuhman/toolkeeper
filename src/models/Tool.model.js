@@ -44,6 +44,28 @@ const toolSchema = new Schema(
       type: String,
       trim: true
     },
+    material: {
+      type: Schema.Types.ObjectId,
+      ref: 'Material'
+    },
+    size: {
+      width: {
+        type: Number
+      },
+      height: {
+        type: Number
+      },
+      depth: {
+        type: Number
+      },
+      length: {
+        type: Number
+      },
+      units: {
+        type: String,
+        enum: ['mm', 'cm', 'in', 'ft', 'mi', 'km']
+      }
+    },
     archived: {
       type: Boolean,
       default: false

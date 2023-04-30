@@ -1,0 +1,58 @@
+<div class="flex flex-wrap">
+  <div id="settings-nav">
+    {{> _settings}}
+  </div>
+  <div id="materialsTable">
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#if materials}}
+          {{#each materials}}
+            <tr>
+              <td>{{name}}</td>
+              <td>{{description}}</td>
+              <td><a href="/settings/materials/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
+              <td><a href="/settings/materials/delete/{{id}}"><i class="fa fa-trash"></i></a></td>
+            </tr>
+          {{/each}}
+        {{/if}}
+      </tbody>
+    </table>
+    <div class="mx-5">
+      <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
+        <label for="newMaterialModal">New Tool Material</label>
+      </div>
+    </div>
+  </div>
+</div>
+{{!-- New Material Modal --}}
+<input type="checkbox" id="newMaterialModal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-inner-md">
+    <label for="newMaterialModal" class="modal-close-btn">✕</label>
+    <form action="/settings/materials/create" method="POST">
+      <div class="grid items-center w-full grid-rows-2">
+        <div class="title-bar">
+          <h3 class="title-text">New Tool Material</h3>
+        </div>
+        <div class="m-3">
+          <input placeholder="Title" type="text" name="name" class="input input-bordered">
+        </div>
+        <div>
+          <input placeholder="Description" type="text" name="description" class="input input-bordered">
+        </div>
+        <div class="modal-button-row">
+          <label class="btn btn-sm"> <button type="submit">Submit</button></label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
