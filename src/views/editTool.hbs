@@ -57,7 +57,7 @@
                         <label for="category" class="label"><span class="label-text">Category</span></label>
                         <select name="category" class="select select-bordered">
                             {{#each ../categories}}
-                                <option name='{{ name }}' value='{{id}}' {{isSelected id tool.category.id}}>{{name}}
+                                <option name='{{name}}' value='{{id}}' {{isSelected id tool.category.id}}>{{name}}
                                 </option>
                             {{/each}}
                         </select>
