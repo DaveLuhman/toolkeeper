@@ -152,7 +152,10 @@ async function updateTool (req, res, next) {
       status,
       category,
       manufacturer,
-      size
+      width,
+      height,
+      length,
+      weight
     } = newToolData
     const oldTool = await Tool.findById({ $eq: id })
     const updatedTool = await Tool.findByIdAndUpdate(
@@ -164,7 +167,12 @@ async function updateTool (req, res, next) {
         status,
         category,
         manufacturer,
-        size,
+        size: {
+          width,
+          height,
+          length,
+          weight
+        },
         $inc: { __v: 1 }
       },
       { new: true }
@@ -180,8 +188,8 @@ async function updateTool (req, res, next) {
     return updatedTool
   }
   const updatedToolArray = []
-  console.log(typeof req.body._id)
   if (typeof req.body.id === 'string') {
+    console.table(req.body)
     const updatedTool = await ut(req.body)
     updatedToolArray.push(updatedTool)
   }
