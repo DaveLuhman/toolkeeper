@@ -1,12 +1,12 @@
 <div class="flex flex-wrap items-center justify-evenly">
     {{#if tools}}
         <div class="title-bar">
-            <h3 class="title-text">Edit Tool(s)</h3>
+            <h3 class="title-text">Edit Tool</h3>
         </div>
         <form action="/tool/update" method="POST">
             {{#each tools as |tool|}}
                 <!-- this is the table of inputs -->
-                <div class="grid grid-flow-row-dense grid-cols-3 gap-2 form-control">
+                <div class="grid grid-flow-row-dense grid-cols-3 gap-2">
                     <input name="id" value="{{id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
                     <div class="form-control">
                         <label for="serialNumber" class="label"><span class="label-text">SN:</span></label>
@@ -63,12 +63,41 @@
                         </select>
                     </div>
                 </div>
+                <div class="collapse">
+                    <input type="checkbox" />
+                    <div class="collapse-title">
+                        Size: click to expand
+                    </div>
+                    <div class="grid grid-flow-row-dense grid-cols-4 gap-2 collapse-content">
+                        <div class="form-control">
+                            <label for="width" class="label"><span class="label-text">Width:</span></label>
+                            <input name="width" value="{{size.width}}" type="text" class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label for="length" class="label"><span class="label-text">Length:</span></label>
+                            <input name="length" value="{{size.length}}" type="text"
+                                class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label for="height" class="label"><span class="label-text">Height:</span></label>
+                            <input name="height" value="{{size.height}}" type="text"
+                                class="input input-bordered" />
+                        </div>
+                        <div class="form-control">
+                            <label for="weight" class="label"><span class="label-text">Weight:</span></label>
+                            <input name="weight" placeholder="Lbs" value="{{size.weight}}" type="number"
+                                class="input input-bordered" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-button-row">
+                    <label class="modal-button"><a href="/tool/archive/{{tool.id}}">Archive</a></label>
+                    <label class="modal-button"><a href="/dashboard">Cancel</a></label>
+                    <label class="modal-button"><button type="submit">Submit</button></label>
+                </div>
             {{/each}}
             <!-- this is the button row -->
-            <div class="modal-button-row">
-                <label class="modal-button"><a href="/dashboard">Cancel</a></label>
-                <label class="modal-button"><button type="submit">Submit</button></label>
-            </div>
+
         </form>
     {{else}}
         <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
