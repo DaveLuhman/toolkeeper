@@ -91,7 +91,11 @@ async function createTool (req, res, next) {
       serviceAssignment,
       status,
       category,
-      manufacturer
+      manufacturer,
+      width,
+      height,
+      length,
+      weight
     } = req.body
     if (!(serialNumber || partNumber) || !barcode) {
       throw new Error({ message: 'Missing required fields', status: 400 })
@@ -113,6 +117,12 @@ async function createTool (req, res, next) {
       status,
       category,
       manufacturer,
+      size: {
+        height,
+        width,
+        length,
+        weight
+      },
       updatedBy: req.user._id,
       createdBy: req.user._id
     })

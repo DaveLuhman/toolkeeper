@@ -30,21 +30,24 @@
                         </option>
                     {{/each}}
                 </select>
-                    <div class="grid grid-flow-row-dense grid-cols-4 gap-2">
-                        <div class="form-control">
-                            <input name="width" placeholder="W" value="{{size.width}}" type="text" class="input input-bordered" />
-                        </div>
-                        <div class="form-control">
-                            <input name="length" placeholder="L" value="{{size.length}}" type="text" class="input input-bordered" />
-                        </div>
-                        <div class="form-control">
-                            <input name="height" placeholder="H" value="{{size.height}}" type="text" class="input input-bordered" />
-                        </div>
-                        <div class="form-control">
-                            <input name="weight" placeholder="Lbs" value="{{size.weight}}" type="number"
-                                class="input input-bordered" />
-                        </div>
+                <div class="grid grid-flow-row-dense grid-cols-4 gap-2">
+                    <div class="form-control">
+                        <input name="width" placeholder="W" value="{{size.width}}" type="text"
+                            class="input input-bordered" />
                     </div>
+                    <div class="form-control">
+                        <input name="length" placeholder="L" value="{{size.length}}" type="text"
+                            class="input input-bordered" />
+                    </div>
+                    <div class="form-control">
+                        <input name="height" placeholder="H" value="{{size.height}}" type="text"
+                            class="input input-bordered" />
+                    </div>
+                    <div class="form-control">
+                        <input name="weight" placeholder="Lbs" value="{{size.weight}}" type="number"
+                            class="input input-bordered" />
+                    </div>
+                </div>
                 <div class="modal-button-row">
                     <label class="modal-button" for="newToolModal">Cancel</label>
                     <label class="modal-button"><button type="submit">Submit</button></label>
