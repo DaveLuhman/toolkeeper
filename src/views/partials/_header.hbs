@@ -3,13 +3,13 @@
     <div class="flex items-center justify-between w-full px-6 py-2 mt-0">
       {{!-- Logo that links to dashboard so we can't get lost --}}
       <a href="/dashboard"> <img src="/img/toolKeeperLogo-dark-small.png" width="125px" height="auto"></a>
-      {{!-- Small Viewport NavBar --}}
+      {{!-- Mobile NavBar --}}
       <div class="justify-between order-2 md:hidden" id="menu">
         <ul class="flex items-center justify-between gap-5 pt-4 text-base">
           <li><a href="/dashboard"><i class="fa-solid fa-house"></i></a></li>
-          <li><label for="newToolModal"><i class="fa-sharp fa-solid fa-plus"></i></label></li>
-          <li><label for="checkInOutModal"><i class="fa-solid fa-rotate-right"></i></label></li>
-          <li><label for="searchToolModal"><i class="fa-solid fa-magnifying-glass"></i></label></li>
+          <li><label for="newToolModal" style="cursor:pointer"><i class="fa-sharp fa-solid fa-plus"></i></label></li>
+          <li><label for="checkInOutModal" style="cursor:pointer"><i class="fa-solid fa-rotate-right"></i></label></li>
+          <li><label for="searchToolModal" style="cursor:pointer"><i class="fa-solid fa-magnifying-glass"></i></label></li>
         </ul>
       </div>
       {{!-- Medium+ Viewport NavBar --}}
@@ -18,11 +18,11 @@
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"
               href="/dashboard">Dashboard</a></li>
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"><label
-                for="newToolModal">Create A New Tool</label></a></li>
+                for="newToolModal" style="cursor:pointer">Create A New Tool</label></a></li>
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"><label
-                for="checkInOutModal">Check-In/Out</label></a></li>
+                for="checkInOutModal" style="cursor:pointer">Check-In/Out</label></a></li>
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"><label
-                for="searchToolModal">Search Tools</label></a></li>
+                for="searchToolModal" style="cursor:pointer">Search Tools</label></a></li>
         </ul>
 
       </div>
@@ -31,7 +31,7 @@
         <div class="flex items-center w-full md:w-full">
           <div class="dropdown dropdown-end">
             <label tabindex="0"
-              class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:text-black">{{user.firstName}}
+              class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:text-black"  style="cursor:pointer">{{user.firstName}}
               {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
             <ul tabindex="0" class="w-full mt-2 rounded shadow menu dropdown-content rounded-b-box">
               <li class="hover:border-gray-300 bg-base-100"><a href="/user/profile">Profile</a></li>
