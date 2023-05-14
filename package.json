@@ -1,6 +1,6 @@
 {
   "name": "toolkeeper",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Tool Crib Web Application",
   "main": "server.js",
   "type": "module",
