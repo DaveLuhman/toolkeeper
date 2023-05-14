@@ -50,7 +50,7 @@
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
         </svg>
     </label>
-    <div class="bg-white shadow w-max card dropdown-content">
+    <div class="p-5 bg-white shadow w-100 card dropdown-content">
         <h2>Categories:</h2>
         <div class="bg-fuchsia-500">
         <ul class="text-white list-disc">
@@ -62,13 +62,14 @@
         <h2>Tools:</h2>
         <ul class="list-decimal">
             {{#each tools}}
-                <li><div class="bg-teal-500">{{this.id}}: </div><ul class="list-disc">
+                <li><div class="bg-teal-500">{{this.id}}: </div><ul class="pl-10 list-disc">
                         <li>SN: {{this.serialNumber}}</li>
                         <li>PN: {{this.partNumber}}</li>
                         <li>Barcode: {{this.barcode}}</li>
                         <li>Status: {{this.status}}</li>
                         <li>SA: {{this.serviceAssignment.name}}</li>
                         <li>Desc: {{this.description}}</li>
+                        <li>Raw: {{this}}</li>
                     </ul>
                 </li>
             {{/each}}

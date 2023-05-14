@@ -15,8 +15,7 @@ import { mutateToArray, paginate } from './util.js'
 async function getAllTools (req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   console.info('[MW] getAllTools-in'.bgBlue.white)
-  const tools = await Tool.find({})
-    .sort({ [sortField]: sortOrder })
+  const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
 
   const { trimmedData, targetPage, pageCount } = paginate(
     tools,
@@ -152,7 +151,8 @@ async function updateTool (req, res, next) {
       serviceAssignment,
       status,
       category,
-      manufacturer
+      manufacturer,
+      size
     } = newToolData
     const oldTool = await Tool.findById({ $eq: id })
     const updatedTool = await Tool.findByIdAndUpdate(
@@ -164,6 +164,7 @@ async function updateTool (req, res, next) {
         status,
         category,
         manufacturer,
+        size,
         $inc: { __v: 1 }
       },
       { new: true }
@@ -174,7 +175,8 @@ async function updateTool (req, res, next) {
         $push: { history: oldTool },
         $inc: { __v: 1 }
       },
-      { new: true })
+      { new: true }
+    )
     return updatedTool
   }
   const updatedToolArray = []
@@ -192,7 +194,13 @@ async function updateTool (req, res, next) {
         serviceAssignment: req.body.serviceAssignment[i],
         status: req.body.status[i],
         category: req.body.category[i],
-        manufacturer: req.body.manufacturer[i]
+        manufacturer: req.body.manufacturer[i],
+        size: {
+          width: req.body.size.width[i],
+          height: req.body.size.height[i],
+          length: req.body.size.length[i],
+          weight: req.body.size.weight[i]
+        }
       })
       updatedToolArray.push(updatedTool)
     }
@@ -223,7 +231,8 @@ async function archiveTool (req, res, next) {
   await ToolHistory.findByIdAndUpdate(
     { _id: id },
     { $push: { history: [archivedTool] } },
-    { new: true })
+    { new: true }
+  )
   res.locals.message = 'Successfully Marked Tool Archived'
   res.locals.tools = [archivedTool]
   res.status(201)

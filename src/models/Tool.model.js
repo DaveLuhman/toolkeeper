@@ -50,20 +50,16 @@ const toolSchema = new Schema(
     },
     size: {
       width: {
-        type: Number
+        type: String
       },
       height: {
-        type: Number
-      },
-      depth: {
-        type: Number
+        type: String
       },
       length: {
-        type: Number
+        type: String
       },
-      units: {
-        type: String,
-        enum: ['mm', 'cm', 'in', 'ft', 'mi', 'km']
+      weight: {
+        type: String
       }
     },
     archived: {
