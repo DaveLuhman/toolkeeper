@@ -41,13 +41,14 @@
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
     "helmet": "^6.1.5",
-    "mongoose-autopopulate": "^1.0.1",
     "mongoose": "^7.1.0",
+    "mongoose-autopopulate": "^1.0.1",
     "morgan": "^1.10.0",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "postcss": "^8.4.23",
+    "sqlite3": "^5.1.6",
     "tailwindcss-dropdown": "^1.0.0"
   },
   "devDependencies": {
