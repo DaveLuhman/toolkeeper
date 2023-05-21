@@ -43,6 +43,18 @@
         <div class="m-3">
           <input placeholder="Name" type="text" name="name" class="input input-bordered">
           <input placeholder="Description" type="text" name="description" class="input input-bordered">
+          <input placeholder="Phone" type="text" name="phone" class="input input-bordered">
+          <select name="type" class="select select-bordered">
+            <option value="contractJob" {{isSelected type 'contractJob'}}>Contract Job</option>
+            <option value="serviceJob" {{isSelected type 'serviceJob'}}>Service Job</option>
+            <option value="vehicle" {{isSelected type 'vehicle'}}>Vehicle</option>
+            <option value="employee" {{isSelected type 'employee'}}>Employee</option>
+            <option value="stockroom" {{isSelected type 'stockroom'}}>Stockroom</option>
+            <option value="importedUncategorized" {{isSelected type 'importedUncategorized'}}>Imported - Uncategorized
+            </option>
+            <option value="errorUncategorized" {{isSelected type 'errorUncategorized'}}>Error - Uncategorized</option>
+          </select>
+          <input placeholder="Misc Notes" type="textarea" name="notes" class="input input-bordered">
         </div>
         <div class="modal-button-row">
           <label class="btn btn-sm"> <button type="submit">Submit</button></label>

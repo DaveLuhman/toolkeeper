@@ -15,6 +15,26 @@
             <label class="label"><span class="label-text">Description</span></label>
             <input name="description" value="{{description}}" type="text" class="input input-bordered" />
           </div>
+          <div class="form-control">
+            <label for="type" class="label"><span class="label-text">Type</span></label>
+            <select name="type" class="select select-bordered">
+             <option value="contractJob" {{isSelected type 'contractJob'}}>Contract Job</option>
+             <option value="serviceJob" {{isSelected type 'serviceJob'}}>Service Job</option>
+             <option value="vehicle" {{isSelected type 'vehicle'}}>Vehicle</option>
+             <option value="employee" {{isSelected type 'employee'}}>Employee</option>
+             <option value="stockroom" {{isSelected type 'stockroom'}}>Stockroom</option>
+             <option value="importedUncategorized" {{isSelected type 'importedUncategorized'}}>Imported - Uncategorized</option>
+             <option value="errorUncategorized" {{isSelected type 'errorUncategorized'}}>Error - Uncategorized</option>
+            </select>
+          </div>
+          <div class="form-control">
+            <label class="label"><span class="label-text">Phone Number</span></label>
+            <input name="phone" value="{{phone}}" type="text" class="input input-bordered" />
+          </div>
+          <div class="form-control">
+            <label class="label"><span class="label-text">Notes</span></label>
+            <input name="notes" value="{{notes}}" type="textarea" class="input input-bordered" />
+          </div>
         </div>
       {{/each}}
       <div class="modal-button-row">

@@ -18,12 +18,6 @@
                         </option>
                     {{/each}}
                 </select>
-                {{!--  TODO: Make Status Radio Buttoned In A Dropdown - see partials/components/_statusDropdown.hbs --}}
-                <select name="status" class="select select-bordered">
-                    <option>Status</option>
-                    <option value="Checked In">Checked In</option>
-                    <option value="Checked Out">Checked Out</option>
-                </select>
                 <select name="category" class="select select-bordered">
                     {{#each categories}}
                         <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }}
