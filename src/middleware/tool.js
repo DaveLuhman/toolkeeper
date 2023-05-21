@@ -89,7 +89,6 @@ async function createTool (req, res, next) {
       barcode,
       description,
       serviceAssignment,
-      status,
       category,
       manufacturer,
       width,
@@ -114,7 +113,6 @@ async function createTool (req, res, next) {
       barcode,
       description,
       serviceAssignment,
-      status,
       category,
       manufacturer,
       size: {
@@ -159,7 +157,6 @@ async function updateTool (req, res, next) {
       partNumber,
       description,
       serviceAssignment,
-      status,
       category,
       manufacturer,
       width,
@@ -174,7 +171,6 @@ async function updateTool (req, res, next) {
         partNumber,
         description,
         serviceAssignment,
-        status,
         category,
         manufacturer,
         size: {
@@ -210,7 +206,6 @@ async function updateTool (req, res, next) {
         partNumber: req.body.partNumber[i],
         description: req.body.description[i],
         serviceAssignment: req.body.serviceAssignment[i],
-        status: req.body.status[i],
         category: req.body.category[i],
         manufacturer: req.body.manufacturer[i],
         size: {
@@ -290,8 +285,6 @@ async function checkTools (req, res, next) {
         description: tempTool.description,
         serviceAssignment: 'FILL THIS IN',
         serviceAssignmentChanged: true,
-        status: 'Checked Out',
-        statusChanged: true,
         category: tempTool.category
       }
       checkingTools.push(pendingTool)
@@ -303,8 +296,6 @@ async function checkTools (req, res, next) {
         partNumber: tempTool.partNumber,
         barcode: tempTool.barcode,
         description: tempTool.description,
-        status: 'Checked In',
-        statusChanged: true,
         serviceAssignment: 'Tool Room',
         serviceAssignmentChanged: false,
         category: tempTool.category
