@@ -1,5 +1,5 @@
-import { ServiceAssignment } from '../../../models/ServiceAssignment.model.js'
-import { sqlite3 } from '../../../config/dependencies'
+import ServiceAssignment from '../../../models/ServiceAssignment.model.js'
+import { sqlite3 } from '../../../config/dependencies.js'
 
 function mountSqliteDatabase() {
   return sqlite3.Database('/database.sqlite', sqlite3.OPEN_READONLY, (err) => {
@@ -10,6 +10,14 @@ function mountSqliteDatabase() {
   })
 }
 
+function closeSqliteDatabase(db) {
+  db.close((err) => {
+    if (err) {
+      console.error(err.message)
+    }
+    console.log('Closed the database connection.')
+  })
+}
 function checkForDuplicates(memberID, mLastName) {
   const searchResult = ServiceAssignment.find({
     $or: [{ name: memberID }, { description: mLastName }],
@@ -79,13 +87,8 @@ export function importServiceAssignments(_req, res, next) {
       // no it's not
     }
   })
+  closeSqliteDatabase(db)
   res.locals.message = `${successCount} records were successfully imported.`
   next()
 }
 
-db.close((err) => {
-  if (err) {
-    console.error(err.message)
-  }
-  console.log('Closed the database connection.')
-})

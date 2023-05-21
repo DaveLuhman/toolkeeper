@@ -28,3 +28,7 @@ settingsRouter.use('/categories', categoryRouter)
 // all material routes go to categoryRouter
 // @route  * /settings/categories
 settingsRouter.use('/materials', materialRouter)
+
+// all import routes go to importRouter
+// @route * /settings/import
+settingsRouter.use('/import', importRouter)
