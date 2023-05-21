@@ -1,0 +1,41 @@
+<div class="flex flex-wrap">
+    <div id="settings-nav">
+        {{> _settings}}
+    </div>
+    <div id="root-container" class="grid justify-items-center">
+        <div id="csv-container">
+            <div id="title-bar">
+                <label class="title-text">CSV Import</label>
+                <hr />
+                <label class="font-thin">What Would You Like To Import?</label>
+            </div>
+            <form action="/settings/import/csv" method="POST" id="csv-import">
+                <label for="tools" class="label"><span class="label-text">Tools</span></label>
+                <input type="radio" name="tools" id="tools">
+                <label for="serviceAssignments" class="label"><span class="label-text">Service
+                        Assignments</span></label>
+                <input type="radio" name="serviceAssignments" id="serviceAssignments">
+                <label for="categories" class="label"><span class="label-text">Categories</span></label>
+                <input type="radio" name="categories" id="categories">
+                <label for="materials" class="label"><span class="label-text">Materials</span></label>
+                <input type="radio" name="materials" id="tools" disabled>
+                <br>
+                <input type="file" name="csvFileImport" id="csvFileImport">
+                <button type="submit" class="btn btn-submit">Import</button>
+            </form>
+        </div>
+        <div id="sqlite-container">
+            <div id="title-bar">
+                <label class="title-text">SQLite Import</label>
+                <hr />
+                <label class="title-text">This is a full-import only method. Duplicates <i>WILL</i>be imported and
+                    labeled as such, so please be sure the database is cleared out first.</label>
+            </div
+            <form action="/settings/import/submit" method="POST" id="sqlite-import">
+                <label for="consent">Check this box to confirm you know what you're doing</label>
+                <input type="checkbox" name="consent" id="consent">
+                <button id="submit" class="btn btn-primary">Import</button>
+            </form>
+        </div>
+    </div>
+</div>
