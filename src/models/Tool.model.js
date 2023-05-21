@@ -22,10 +22,6 @@ const toolSchema = new Schema(
       type: Number,
       maxLength: 32
     },
-    status: {
-      type: String,
-      enum: ['Checked In', 'Checked Out', 'Missing']
-    },
     serviceAssignment: {
       type: Schema.Types.ObjectId,
       ref: 'ServiceAssignment',
@@ -89,6 +85,18 @@ const toolSchema = new Schema(
 toolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
 }
+
+toolSchema.virtual('status')
+ .get(function () {
+  switch(this.serviceAssignment.type) {
+    case 'stockroom': return 'Checked In'
+    case 'contractJob': return 'Checked Out'
+    case 'serviceJob': return 'Checked Out'
+    case 'employee': return 'Checked Out'
+    case 'vehicle': return 'Checked Out'
+    default: return 'Checked In'
+  }
+ })
 
 // write a setter that changes the _id to a string called id
 toolSchema.set('toJSON', {
