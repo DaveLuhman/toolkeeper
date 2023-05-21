@@ -1,5 +1,3 @@
-import { Tool } from '../../../models/Tool.model'
-import { ToolHistory } from '../../../models/ToolHistory.model'
 import { ServiceAssignment } from '../../../models/ServiceAssignment.model.js'
 import { sqlite3 } from '../../../config/dependencies'
 

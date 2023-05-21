@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { importServiceAssignments } from '../../middleware/import/sqlite'
+import { importServiceAssignments } from '../../middleware/import/sqlite/serviceAssignment.js'
 export const importRouter = Router()
 
 // load import index page

@@ -4,6 +4,7 @@ import { userSettingsRouter } from './userSettings.routes.js'
 import { serviceAssignmentRouter } from './serviceAssignment.routes.js'
 import { categoryRouter } from './category.routes.js'
 import { materialRouter } from './material.routes.js'
+import { importRouter } from './import.routes.js'
 
 export const settingsRouter = expressRouter()
 
