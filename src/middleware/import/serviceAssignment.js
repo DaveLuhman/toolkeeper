@@ -1,23 +1,5 @@
-import ServiceAssignment from '../../../models/ServiceAssignment.model.js'
-import { sqlite3 } from '../../../config/dependencies.js'
+import ServiceAssignment from '../../models/ServiceAssignment.model.js'
 
-function mountSqliteDatabase() {
-  return sqlite3.Database('/database.sqlite', sqlite3.OPEN_READONLY, (err) => {
-    if (err) {
-      console.error(err.message)
-    }
-    console.log('connected to sqlite legacy database.')
-  })
-}
-
-function closeSqliteDatabase(db) {
-  db.close((err) => {
-    if (err) {
-      console.error(err.message)
-    }
-    console.log('Closed the database connection.')
-  })
-}
 function checkForDuplicates(memberID, mLastName) {
   const searchResult = ServiceAssignment.find({
     $or: [{ name: memberID }, { description: mLastName }],
@@ -52,11 +34,11 @@ function determineServiceAssignmentType(memberID, mLastName) {
   }
 }
 
-export function importServiceAssignments(_req, res, next) {
-  const db = mountSqliteDatabase()
-  const query = 'SELECT x.*,x.rowid FROM "MEMBER" x'
-  const members = db.all(query)
-  let successCount
+export function importServiceAssignments(file) {
+
+
+  let successCount = new Number
+  let result = []
   members.forEach((row) => {
     try {
       let name = row[0]
@@ -77,9 +59,7 @@ export function importServiceAssignments(_req, res, next) {
         successCount++
       } catch (error) {
         console.error(`${row[0]} was unable to be imported due to ${error}`)
-        res.locals.message =
-          res.locals.message +
-          `${row[0]} was unable to be imported due to ${error}`
+        failedRows.push(`${row[0]} was unable to be imported due to ${error}`)
       }
     } catch (error) {
       // error handling is hard
@@ -87,8 +67,22 @@ export function importServiceAssignments(_req, res, next) {
       // no it's not
     }
   })
-  closeSqliteDatabase(db)
-  res.locals.message = `${successCount} records were successfully imported.`
-  next()
+  return {
+    successMsg: `${successCount} successfully imported.`,
+    errorMsg: `${failedRows.length} failed to import properly.`,
+    successCount: successCount,
+    failedRows
+  }
 }
 
+export function countImportServiceAssignments(db) {
+  let targetRows = []
+  function hoistRows(err, rows) { if(err) {console.error(err)} targetRows = rows}
+  const query = `SELECT COUNT(*) DISTINCT x.memberid,x.mlastname FROM "MEMBER" x`
+  try {
+    db.all(query, hoistRows)
+  } catch (error) {
+    return "failed to process service assignment import target"
+  }
+  return targetRows.length
+}

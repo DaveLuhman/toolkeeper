@@ -3,46 +3,31 @@
         {{> _settings}}
     </div>
     <div id="root-container" class="flex flex-wrap p-5 m-5 justify-items-center">
-        <div id="csv-container" class="col-auto gap-5 pl-5 m3">
-            <div id="title-bar">
-                <label class="title-text">CSV Import</label>
-                <hr />
-                <label class="font-thin">What Would You Like To Import?</label>
+        <div id="title-bar">
+            <label class="title-text">CSV Import</label>
+            <hr />
+            <label class="font-thin">What Would You Like To Import?</label>
+        </div>
+        <form action="/settings/import/submit" method="POST" id="csv-import" encType="multipart/form-data">
+            <div class="form-control">
+                <label for="tools" class="label"><span class="label-text">Tools</span></label>
+                <input type="radio" name="importTarget" value="tools" id="tools">
             </div>
-            <form action="/settings/import/csv/submit" method="POST" id="csv-import">
-                <div class="form-control">
-                    <label for="tools" class="label"><span class="label-text">Tools</span></label>
-                    <input type="radio" name="tools" id="tools">
-                </div>
-                <div class="form-control">
-                    <label for="serviceAssignments" class="label"><span class="label-text">Service
-                            Assignments</span></label>
-                    <input type="radio" name="serviceAssignments" id="serviceAssignments">
-                </div>
-                <div class="form-control">
-                    <label for="categories" class="label"><span class="label-text">Categories</span></label>
-                    <input type="radio" name="categories" id="categories">
-                </div>
-                <div class="form-control">
-                    <label for="materials" class="label"><span class="label-text">Materials</span></label>
-                    <input type="radio" name="materials" id="tools" disabled>Not Yet Available
-                </div>
-                <input type="file" name="csvFileImport" id="csvFileImport">
-                <button type="submit" class="btn btn-submit">Import</button>
-            </form>
-        </div>
-        <div id="sqlite-container" class="pl-5 m-5">
-            <div id="title-bar">
-                <label class="title-text">SQLite Import</label>
-                <hr />
-                <label class="title-text">This is a full-import only method. Duplicates <i>WILL</i> be imported and
-                    labeled as such, so please be sure the database is cleared out first.</label>
-            </div <form action="/settings/import/sqlite/submit" method="POST" id="sqlite-import">
-            <label for="consent">Check this box to confirm you know what you're doing</label>
-            <input type="checkbox" name="consent" id="consent">
-            <br><br>
-            <button id="submit" class="btn btn-primary">Import</button>
-            </form>
-        </div>
+            <div class="form-control">
+                <label for="serviceAssignments" class="label"><span class="label-text">Service
+                        Assignments</span></label>
+                <input type="radio" name="importTarget" value="serviceAssignments" id="serviceAssignments">
+            </div>
+            <div class="form-control">
+                <label for="categories" class="label"><span class="label-text">Categories</span></label>
+                <input type="radio" name="importTarget" value="categories" id="categories">
+            </div>
+            <div class="form-control">
+                <label for="materials" class="label"><span class="label-text">Materials</span></label>
+                <input type="radio" name="importTarget" value="materials" id="tools" disabled>Not Yet Available
+            </div>
+            <input type="file" name="importFile" id="importFile">
+            <button type="submit" class="btn btn-submit">Import</button>
+        </form>
     </div>
 </div>

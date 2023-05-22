@@ -110,3 +110,6 @@ src/public/css/style.css
 
 # sqlite dbs
 *.sqlite
+
+# tmp files
+.tmp

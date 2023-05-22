@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { importServiceAssignments } from '../../middleware/import/sqlite/serviceAssignment.js'
+import { testImportFunction } from '../../middleware/import/index.js'
 export const importRouter = Router()
 
 // load import index page
@@ -7,11 +7,7 @@ importRouter.get('/', (_req, res) => {
   res.render('settings/import')
 })
 
-// start serviceAssignment import
-importRouter.post(
-  '/serviceAssignments',
-  importServiceAssignments,
-  (_req, res) => {
-    res.render('settings/importServiceAssignment')
-  }
-)
+// pre-import check and validation
+importRouter.post('/submit', testImportFunction, (_req, res) => {
+  res.render('settings/import')
+})
