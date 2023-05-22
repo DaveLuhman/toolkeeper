@@ -48,7 +48,7 @@ export async function getServiceAssignmentByID (req, res, next) {
  */
 export async function updateServiceAssignment (req, res, next) {
   try {
-    const { id, name, description } = req.body
+    const { id, name, description,type,phone,notes } = req.body
     const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(
       id,
       { name, description },
