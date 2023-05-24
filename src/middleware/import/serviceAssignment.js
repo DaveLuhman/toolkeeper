@@ -1,8 +1,9 @@
+import { fs } from 'fs/promises'
 import ServiceAssignment from '../../models/ServiceAssignment.model.js'
 
-function checkForDuplicates(memberID, mLastName) {
+function checkForDuplicates (memberID, mLastName) {
   const searchResult = ServiceAssignment.find({
-    $or: [{ name: memberID }, { description: mLastName }],
+    $or: [{ name: memberID }, { description: mLastName }]
   })
   if (searchResult.length > 0) return true
   else return false
@@ -14,11 +15,12 @@ function checkForDuplicates(memberID, mLastName) {
  * @param {string} mLastName
  * @returns Service Assignment Type
  */
-function determineServiceAssignmentType(memberID, mLastName) {
+function determineServiceAssignmentType (memberID, mLastName) {
   try {
     const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
-    if (!memberID || memberID === '' || memberID.length == 5)
+    if (!memberID || memberID === '' || memberID.length == 5) {
       throw new Error('Invalid Member ID')
+    }
     if (memberID[0] === 'C') return 'Contract Jobsite'
     if (memberID[0] === 'S') return 'Service Jobsite'
     if (stockrooms.includes(memberID)) return 'Stockroom'
@@ -34,11 +36,16 @@ function determineServiceAssignmentType(memberID, mLastName) {
   }
 }
 
-export function importServiceAssignments(file) {
-
-
-  let successCount = new Number
-  let result = []
+export function importServiceAssignments (file) {
+  const members = [...file.data]
+  let successCount
+  const failedRows = []
+  const result = {
+    successMsg: `${successCount} successfully imported.`,
+    errorMsg: `${failedRows.length} failed to import properly.`,
+    successCount,
+    failedRows
+  }
   members.forEach((row) => {
     try {
       let name = row[0]
@@ -52,7 +59,7 @@ export function importServiceAssignments(file) {
         description,
         notes: `${row[4]}\n${row[5]}\n'Legacy Service Creation Date: ${row[10]}`,
         phone: row[2].match(/[0-9]{3}.[0-9]{3}.[0-9]{4}/),
-        type: determineServiceAssignmentType(row[0], row[1]),
+        type: determineServiceAssignmentType(row[0], row[1])
       }
       try {
         ServiceAssignment.create(serviceAssignmentDocument)
@@ -67,22 +74,23 @@ export function importServiceAssignments(file) {
       // no it's not
     }
   })
-  return {
-    successMsg: `${successCount} successfully imported.`,
-    errorMsg: `${failedRows.length} failed to import properly.`,
-    successCount: successCount,
-    failedRows
-  }
+  return result
 }
 
-export function countImportServiceAssignments(db) {
+export function countImportServiceAssignments (db) {
   let targetRows = []
-  function hoistRows(err, rows) { if(err) {console.error(err)} targetRows = rows}
-  const query = `SELECT COUNT(*) DISTINCT x.memberid,x.mlastname FROM "MEMBER" x`
+  function hoistRows (err, rows) {
+    if (err) {
+      console.error(err)
+    }
+    targetRows = rows
+  }
+  const query =
+    'SELECT COUNT(*) DISTINCT x.memberid,x.mlastname FROM "MEMBER" x'
   try {
     db.all(query, hoistRows)
   } catch (error) {
-    return "failed to process service assignment import target"
+    return 'failed to process service assignment import target'
   }
   return targetRows.length
 }
