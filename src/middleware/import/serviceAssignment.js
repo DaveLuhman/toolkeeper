@@ -20,6 +20,7 @@ async function determineServiceAssignmentType (memberID, mLastName) {
     const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
     if (!memberID || memberID === '' || memberID.length == 7) {
       throw new Error('Invalid Member ID')
+    }
     if (memberID[1] === 'C') return 'Contract Jobsite'
     if (memberID[1] === 'S') return 'Service Jobsite'
     if (stockrooms.includes(memberID)) return 'Stockroom'
@@ -29,12 +30,15 @@ async function determineServiceAssignmentType (memberID, mLastName) {
     } else return 'Imported - Uncategorized'
   } catch (e) {
     console.error(
-      'An error has occured while importing service assignments: \n' + memberID + '\n' + e.message
+      'An error has occured while importing service assignments: \n' +
+        memberID +
+        '\n' +
+        e.message
     )
     return 'Error - Uncategorized'
   }
 }
-async function createServiceAssignment(row) {
+async function createServiceAssignment (row) {
   try {
     console.table(row)
     let name = row[0]
@@ -48,33 +52,41 @@ async function createServiceAssignment(row) {
       description,
       notes: `${row[4]} ${row[5]} Legacy Service Creation Date: ${row[10]}`,
       phone: row[2].match(/[0-9]{3}.[0-9]{3}.[0-9]{4}/),
-      type: determineServiceAssignmentType(row[0], row[1]),
+      type: determineServiceAssignmentType(row[0], row[1])
     }
-      const newSA = await ServiceAssignment.create(serviceAssignmentDocument)
-      console.log(newSA)
-      successCount++
+    const newSA = await ServiceAssignment.create(serviceAssignmentDocument)
+    console.log(newSA)
+    successCount++
   } catch (error) {
     // error handling is hard
     console.log(error)
     // no it's not
   }
 }
-export async function importServiceAssignments(file) {
+export async function importServiceAssignments (file) {
   const importDataBuffer = Buffer.from(file.data)
-  const importDataString = importDataBuffer.toString('ascii').replaceAll(`"`, '').replaceAll(`'`, '').replaceAll(` `, '')
+  const importDataString = importDataBuffer
+    .toString('ascii')
+    .replaceAll('"', '')
+    .replaceAll('\'', '')
+    .replaceAll(' ', '')
   const importDataParentArray = importDataString.split('\n')
   const members = []
-  importDataParentArray.forEach((row) => { return members.push(row.split(','))})
-  let successCount = new Number
-  let failedRows = new Array
-  let result =  {
+  importDataParentArray.forEach((row) => {
+    return members.push(row.split(','))
+  })
+  const successCount = new Number()
+  const failedRows = new Array()
+  const result = {
     successMsg: `${successCount} successfully imported.`,
     errorMsg: `${failedRows.length} failed to import properly.`,
-    successCount: successCount,
+    successCount,
     failedRows
   }
-  members.forEach(async (row) => { await createServiceAssignment(row)})
-  return result;
+  members.forEach(async (row) => {
+    await createServiceAssignment(row)
+  })
+  return result
 }
 
 export function countImportServiceAssignments (db) {
