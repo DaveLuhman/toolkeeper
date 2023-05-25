@@ -100,12 +100,7 @@ app.set('views', './src/views')
 app.use(cookieParser())
 if (process.NODE_ENV === 'PRODUCTION') app.use(csurf({ cookie: true })) // Cross Site Request Forgery protection middleware
 app.use(express.static('./src/public')) // Serve Static Files
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: '/tmp/',
-  })
-)
+app.use(fileUpload())
 app.use(express.json()) // JSON Body Parser
 app.use(express.urlencoded({ extended: false })) // Parse URL-encoded values
 app.use(session(sessionConfig))

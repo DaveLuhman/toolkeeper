@@ -94,6 +94,7 @@ toolSchema.virtual('status')
     case 'serviceJob': return 'Checked Out'
     case 'employee': return 'Checked Out'
     case 'vehicle': return 'Checked Out'
+    case null: return 'Checked In'
     default: return 'Checked In'
   }
  })
