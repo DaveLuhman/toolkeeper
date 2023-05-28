@@ -14,7 +14,7 @@
                 <input name="manufacturer" type="text" placeholder="Manufacturer" class="input input-bordered" />
                 <select name="serviceAssignment" class="select select-bordered">
                     {{#each serviceAssignments}}
-                        <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }}
+                        <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }} - {{ this.description}}
                         </option>
                     {{/each}}
                 </select>
