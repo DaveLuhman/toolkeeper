@@ -109,7 +109,7 @@ export async function deleteServiceAssignment(req, res, next) {
 
 // TODO: Use updatedAt value hashed to check for changes
 export async function listServiceAssignnmentNames(_req, res, next) {
-  res.locals.serviceAssignments = await ServiceAssignment.find()
+  res.locals.serviceAssignments = await ServiceAssignment.find().sort({ name: 'asc' })
   return next()
 }
 
