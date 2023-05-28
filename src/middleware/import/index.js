@@ -1,4 +1,4 @@
-import { importServiceAssignments, countImportServiceAssignments } from './serviceAssignment.js'
+import { importServiceAssignments } from './serviceAssignment.js'
 import { countImportTools } from './tool.js'
 import 'fs/promises'
 
@@ -6,6 +6,6 @@ import 'fs/promises'
 export async function testImportFunction(req, res, next) {
   if (!req.files) return next();
   const serviceAssignmentImport = importServiceAssignments(req.files.importFile)
-  console.log(JSON.stringify(serviceAssignmentImport))
+  res.locals.message = JSON.stringify(serviceAssignmentImport)
   next()
 }
