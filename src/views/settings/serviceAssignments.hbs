@@ -7,6 +7,10 @@
       <thead>
         <tr>
           <th>Display Name</th>
+          <th>Description</th>
+          <th>Type</th>
+          <th>Phone</th>
+          <th>Notes</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
@@ -16,6 +20,10 @@
           {{#each serviceAssignments}}
             <tr>
               <td>{{name}}</td>
+              <td>{{description}}</td>
+              <td>{{type}}</td>
+              <td>{{phone}}</td>
+              <td>{{notes}}</td>
               <td><a href="/settings/serviceAssignments/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
               <td><a href="/settings/serviceAssignments/delete/{{id}}"><i class="fa fa-trash"></i></a></td>
             </tr>
