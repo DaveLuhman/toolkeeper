@@ -16,16 +16,6 @@ export const userSettingsRouter = Router()
 userSettingsRouter.get('/', getUsers, (_req, res) => {
   res.render('settings/users')
 })
-// @desc get user by ID and render edit page
-// @endpoint GET /settings/users/:id
-userSettingsRouter.get('/:id', getUserByID, (_req, res) => {
-  res.render('settings/editUser')
-})
-// @desc update user and redirect to settings page
-// @endpoint POST /settings/users/:id
-userSettingsRouter.post('/:id', sanitizeReqBody, updateUser, (_req, res) => {
-  res.redirect('./')
-})
 // @desc reset another user's password
 // @endpoint POST /settings/users/resetPW/:id
 userSettingsRouter.post('/resetPW/:id', resetPassword, (_req, res) => {
@@ -40,4 +30,14 @@ userSettingsRouter.post('/disableUser/:id', disableUser, (_req, res) => {
 // @endpoint POST /settings/users/create
 userSettingsRouter.post('/create', sanitizeReqBody, createUser, (_req, res) => {
   res.render('settings')
+})
+// @desc get user by ID and render edit page
+// @endpoint GET /settings/users/:id
+userSettingsRouter.get('/:id', getUserByID, (_req, res) => {
+  res.render('settings/editUser')
+})
+// @desc update user and redirect to settings page
+// @endpoint POST /settings/users/:id
+userSettingsRouter.post('/:id', sanitizeReqBody, updateUser, (_req, res) => {
+  res.redirect('./')
 })
