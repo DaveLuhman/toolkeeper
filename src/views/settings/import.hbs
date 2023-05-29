@@ -2,7 +2,7 @@
     <div id="settings-nav">
         {{> _settings}}
     </div>
-    <div id="root-container" class="grid items-center grid-flow-row">
+    <div id="root-container" class="grid items-center grid-flow-row pl-5">
         <div id="title-bar">
             <label class="title-text">CSV Import</label>
             <hr />
@@ -27,7 +27,7 @@
                 <input type="radio" name="importTarget" value="materials" id="tools" disabled>Not Yet Available
             </div>
             <input type="file" name="importFile" id="importFile">
-            <button type="submit" class="btn btn-submit">Import</button>
+            <button type="submit" class="modal-button">Import</button>
         </form>
 {{#if message}}
 {{message}}

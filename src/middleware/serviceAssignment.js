@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
-import { mutateToArray } from './util.js'
+import { mutateToArray, paginate } from './util.js'
 /**
  * @function getServiceAssignments
  * @param {*} req
@@ -9,10 +9,18 @@ import { mutateToArray } from './util.js'
  * @returns  {void}
  * @description Gets all service assignments and adds them to res.locals.serviceAssignments as an array
  */
-export async function getServiceAssignments(_req, res, next) {
+export async function getServiceAssignments(req, res, next) {
+  console.info('[MW] getServiceAssignments-in'.bgBlue.white)
   try {
     const serviceAssignments = await ServiceAssignment.find()
-    res.locals.serviceAssignments = mutateToArray(serviceAssignments)
+    const { trimmedData, targetPage, pageCount } = paginate(
+      serviceAssignments,
+      req.query.p || 1,
+      req.user.preferences.pageSize
+    )
+    res.locals.serviceAssignments = trimmedData
+    res.locals.pagination = { page: targetPage, pageCount } // pagination
+    console.info('[MW] getServiceAssignments-out'.bgWhite.blue)
     return next()
   } catch (error) {
     console.error(error)
