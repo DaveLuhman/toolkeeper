@@ -1,5 +1,20 @@
+/*
+List of Functions in order (* at beginning means exported)
+*paginate
+*mutateToArray
+*sortByUserPreference
+sanitize
+*sanitizeReqBody
+*isSelected
+*populateDropdownItems (const, not function)
+*rateLimiter
+*createAccountLimiter
+*/
+
+import rateLimit from 'express-rate-limit'
 import { listCategoryNames } from './category.js'
 import { listServiceAssignnmentNames } from './serviceAssignment.js'
+
 
 /**
  *
@@ -57,8 +72,7 @@ function sanitize (string) {
  * @param {*} next
  * @returns {object} sanitized req.body
  * This function will sanitize the request body
- * It will only allow alphanumeric characters and spaces
- * It will mutate the req.body
+ * It will only allow alphanumeric characters and - @ . (required for emails)
  **/
 export function sanitizeReqBody (req, _res, next) {
   for (const key in req.body) {
@@ -76,4 +90,22 @@ export function isSelected (option, objectProperty) {
   if (option === objectProperty) return 'selected'
 }
 
-export const populateDropdownItems = [listCategoryNames, listServiceAssignnmentNames]
+export const populateDropdownItems = [
+  listCategoryNames,
+  listServiceAssignnmentNames
+]
+
+export const rateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false // Disable the `X-RateLimit-*` headers
+})
+
+export const createAccountLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000, // 1 hour
+  max: 5, // Limit each IP to 5 create account requests per `window` (here, per hour)
+  message: 'Too many accounts created from this IP, please try again after an hour',
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false // Disable the `X-RateLimit-*` headers
+})
