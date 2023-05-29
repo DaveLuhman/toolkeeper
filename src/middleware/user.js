@@ -57,6 +57,8 @@ async function createUser (req, res, next) {
     password: hash,
     role
   })
+  newUser.save()
+  console.log(newUser)
   console.info(`Created User ${newUser._id}`.green)
   console.info('[MW] createUser-out-4'.bgWhite.blue)
   return next()
