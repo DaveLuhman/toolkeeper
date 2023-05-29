@@ -66,9 +66,13 @@ export function sanitizeReqBody (req, _res, next) {
   }
   return next()
 }
+/**
+ *
+ * @param {string} option option in the list
+ * @param {string} objectProperty property on the object you want checked
+ * @returns
+ */
 export function isSelected (option, objectProperty) {
-  console.log('This is the option being iterated over: ', option)
-  console.log('This is the property being saught: ', objectProperty)
   if (option === objectProperty) return 'selected'
 }
 
