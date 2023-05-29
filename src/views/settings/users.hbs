@@ -21,9 +21,9 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Display Name</th>
+                    <th class="hidden md:table-cell">Display Name</th>
                     <th>Email</th>
-                    <th>Role</th>
+                    <th class="hidden lg:table-cell">Role</th>
                     <th>Disabled?</th>
                     <th>Edit</th>
                 </tr>
@@ -32,22 +32,24 @@
             <tbody>
                 {{#if users}}
                     {{#each users}}
-                        <tr class="text-center">
-                            <td>{{displayName}}</td>
-                            <td>{{email}}</td>
-                            <td>{{role}}</td>
-                            <td>
-                                {{#eq false isDisabled}}<i class="fa-regular fa-square"></i>{{/eq}}
-                                {{#eq true isDisabled}}<i class="fa-regular fa-square-check"></i>{{/eq}}
-                            </td>
-                            <td>
-                                <label class="rounded-badge btn-xs">
-                                    <a href="/settings/users/{{id}}">
-                                        <i class="fa fa-pencil"></i>
-                                    </a>
-                                </label>
-                            </td>
-                        </tr>
+                        {{#unless isDisabled}}
+                            <tr class="text-center">
+                                <td class="hidden md:table-cell">{{displayName}}</td>
+                                <td>{{email}}</td>
+                                <td class="hidden lg:table-cell">{{role}}</td>
+                                <td>
+                                    {{#eq false isDisabled}}<i class="fa-regular fa-square"></i>{{/eq}}
+                                    {{#eq true isDisabled}}<i class="fa-regular fa-square-check"></i>{{/eq}}
+                                </td>
+                                <td>
+                                    <label class="rounded-badge btn-xs">
+                                        <a href="/settings/users/{{id}}">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
+                                    </label>
+                                </td>
+                            </tr>
+                        {{/unless}}
                     {{/each}}
                 {{/if}}
             </tbody>
