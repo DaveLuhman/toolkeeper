@@ -19,17 +19,17 @@ userSettingsRouter.get('/', getUsers, (_req, res) => {
 // @desc reset another user's password
 // @endpoint POST /settings/users/resetPW/:id
 userSettingsRouter.post('/resetPW/:id', resetPassword, (_req, res) => {
-  res.render('settings')
+  res.render('settings/users')
 })
 // @desc disable user
 // @endpoint POST /settings/users/disableUser/:id
 userSettingsRouter.post('/disableUser/:id', disableUser, (_req, res) => {
-  res.render('settings')
+  res.render('settings/users')
 })
 // @desc create new user
 // @endpoint POST /settings/users/create
 userSettingsRouter.post('/create', sanitizeReqBody, createUser, (_req, res) => {
-  res.render('settings')
+  res.render('settings/users')
 })
 // @desc get user by ID and render edit page
 // @endpoint GET /settings/users/:id

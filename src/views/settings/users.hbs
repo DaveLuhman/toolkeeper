@@ -1,13 +1,20 @@
 <div class="flex flex-wrap">
 
-    <div id="message">
-        {{#if message}}
+    {{#if message}}
+        <div id="message">
             <span title="message">
                 <div class="alert">{{message}}</div>
             </span>
-        {{/if}}
-    </div>
-    <div id="settings-nav" >
+        </div>
+    {{/if}}
+    {{#if error}}
+        <div id="error">
+            <span title="error">
+                <div class="alert">{{error}}</div>
+            </span>
+        </div>
+    {{/if}}
+    <div id="settings-nav">
         {{> _settings}}
     </div>
     <div class="flex-grow">
@@ -47,8 +54,7 @@
         </table>
 
         <div class="mx-5">
-            <div
-                class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
+            <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
                 <label for="newUserModal">New User</label>
             </div>
         </div>
