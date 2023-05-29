@@ -40,7 +40,7 @@
     "express-session": "^1.17.3",
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
-    "helmet": "^6.1.5",
+    "helmet": "^7.0.0",
     "mongoose-autopopulate": "^1.0.1",
     "mongoose": "^7.2.0",
     "morgan": "^1.10.0",
