@@ -1,5 +1,6 @@
 import { importServiceAssignments } from './serviceAssignment.js'
 import { importTools } from './tool.js'
+import { importCategories } from './categories.js'
 import 'fs/promises'
 
 export async function importByFile (req, res, next) {
