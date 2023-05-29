@@ -33,21 +33,21 @@ async function createUser (req, res, next) {
     console.warn('Email and Password are both required'.yellow)
     console.info('[MW] createUser-out-1'.bgWhite.blue)
     res.redirect('back')
-    return
+    return next()
   }
   if (await User.findOne({ email })) {
     res.locals.error = 'Email is already registered'
     console.warn('Email is already registered'.yellow)
     console.info('[MW] createUser-out-2'.bgWhite.blue)
     res.redirect('back')
-    return
+    return next()
   }
   if (password !== confirmPassword) {
     res.locals.error = 'Passwords do not match'
     console.warn('Passwords do not match'.yellow)
     console.info('[MW] createUser-out-3'.bgWhite.blue)
     res.redirect('back')
-    return
+    return next()
   }
   const hash = bcrypt.hashSync(password, 10)
   const newUser = await User.create({
@@ -57,7 +57,6 @@ async function createUser (req, res, next) {
     password: hash,
     role
   })
-  res.locals.user = [newUser]
   console.info(`Created User ${newUser._id}`.green)
   console.info('[MW] createUser-out-4'.bgWhite.blue)
   return next()
@@ -78,7 +77,15 @@ async function verifySelf (req, res, next) {
   return next()
 }
 async function updateUser (req, res, next) {
-  const { firstName, lastName, email, theme, sortField, sortDirection, pageSize } = req.body
+  const {
+    firstName,
+    lastName,
+    email,
+    theme,
+    sortField,
+    sortDirection,
+    pageSize
+  } = req.body
   console.table(req.body)
   console.info('[MW] updateUser-in'.bgBlue.white)
   const user = await User.findByIdAndUpdate(
@@ -98,7 +105,9 @@ async function updateUser (req, res, next) {
     { new: true }
   )
   res.locals.user = user
-  req.login(user, (error) => { console.log('This is an error' + error) })
+  req.login(user, (error) => {
+    console.log('This is an error' + error)
+  })
   console.info('[MW] updateUser-out'.bgWhite.blue)
   return next()
 }
