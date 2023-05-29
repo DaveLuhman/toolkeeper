@@ -29,25 +29,25 @@ async function createUser (req, res, next) {
   const { firstName, lastName, email, password, confirmPassword, role } =
     req.body
   if (!email || !password) {
-    res.locals.error = 'Email and Password are required'
+    const error = 'Email and Password are required'
     console.warn('Email and Password are both required'.yellow)
     console.info('[MW] createUser-out-1'.bgWhite.blue)
     res.redirect('back')
-    return next()
+    return next(error)
   }
   if (await User.findOne({ email })) {
-    res.locals.error = 'Email is already registered'
+    const error = 'Email is already registered'
     console.warn('Email is already registered'.yellow)
     console.info('[MW] createUser-out-2'.bgWhite.blue)
     res.redirect('back')
-    return next()
+    return next(error)
   }
   if (password !== confirmPassword) {
-    res.locals.error = 'Passwords do not match'
-    console.warn('Passwords do not match'.yellow)
+    const error = 'Passwords do not match'
+    console.warn('Passwords do not match  '.yellow + password + ' & ' + confirmPassword)
     console.info('[MW] createUser-out-3'.bgWhite.blue)
     res.redirect('back')
-    return next()
+    return next(error)
   }
   const hash = bcrypt.hashSync(password, 10)
   const newUser = await User.create({
