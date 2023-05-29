@@ -30,7 +30,10 @@
             <button type="submit" class="modal-button">Import</button>
         </form>
 {{#if message}}
-{{message}}
+<h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
+{{/if}}
+{{#if error}}
+{{error}}
 {{/if}}
     </div>
 </div>

@@ -4,11 +4,12 @@ import { importCategories } from './categories.js'
 import 'fs/promises'
 
 export async function importByFile (req, res, next) {
-  const file = req.files.importFile
-  if (!req.files) {
-    res.locals.message = 'No File to import'
-    return next()
+  if (!req.files || !req.body.importTarget) {
+    res.locals.error = 'No file uploaded or no selection made'
+    res.render('settings/import', { message: 'No file uploaded or selection made' })
+    return next('router')
   }
+  const file = req.files.importFile
   const { importTarget } = req.body.importTarget
   let result
   switch (importTarget) {
@@ -20,9 +21,6 @@ export async function importByFile (req, res, next) {
       break
     case 'categories':
       result = importCategories(file)
-      break
-    case undefined:
-      res.locals.message = 'You must specify what you plan to import'
       break
     default:
       res.locals.message = 'not sure how you managed this response.'
