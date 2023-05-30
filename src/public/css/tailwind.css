@@ -225,7 +225,7 @@ td {
 #settings-nav {
   @apply w-auto;
   @apply mt-10;
-  }
+}
 /* ----------------TOOL MODALS------------- */
 .modal-inner-lg {
   @apply modal-box;
