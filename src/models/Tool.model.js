@@ -34,12 +34,12 @@ const toolSchema = new Schema(
     serviceAssignment: {
       type: Schema.Types.ObjectId,
       ref: 'ServiceAssignment',
-      autopopulate: { select: 'name' }
+      autopopulate: true
     },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
-      autopopulate: { select: 'name' }
+      autopopulate: true
     },
     description: {
       type: String,
@@ -98,15 +98,14 @@ toolSchema.findAll = function (callback) {
 
 toolSchema.virtual('status')
  .get(function () {
-  if(this.serviceAssignment == undefined) return 'Unavailable'
+  if(this.serviceAssignment == undefined) return 'Unavailable 1'
   switch(this.serviceAssignment.type) {
-    case 'stockroom': return 'Checked In'
-    case 'contractJob': return 'Checked Out'
-    case 'serviceJob': return 'Checked Out'
-    case 'employee': return 'Checked Out'
-    case 'vehicle': return 'Checked Out'
-    case undefined: return 'Checked In'
-    default: return 'Checked In'
+    case 'Stockroom': return 'Checked In'
+    case 'Contract Jobsite': return 'Checked Out'
+    case 'Service Jobsite': return 'Checked Out'
+    case 'Employee': return 'Checked Out'
+    case 'Vehicle': return 'Checked Out'
+    default: return 'Unavailable 2'
   }
  })
 
