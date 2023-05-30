@@ -48,7 +48,7 @@ const toolSchema = new Schema(
     },
     manufacturer: {
       type: String,
-      trim: true,
+      trim: true
     },
     material: {
       type: Schema.Types.ObjectId,
@@ -96,18 +96,23 @@ toolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
 }
 
-toolSchema.virtual('status')
- .get(function () {
-  if(this.serviceAssignment == undefined) return 'Unavailable 1'
-  switch(this.serviceAssignment.type) {
-    case 'Stockroom': return 'Checked In'
-    case 'Contract Jobsite': return 'Checked Out'
-    case 'Service Jobsite': return 'Checked Out'
-    case 'Employee': return 'Checked Out'
-    case 'Vehicle': return 'Checked Out'
-    default: return 'Unavailable 2'
+toolSchema.virtual('status').get(function () {
+  if (this.serviceAssignment == undefined) return 'Undefined'
+  switch (this.serviceAssignment.type) {
+    case 'Stockroom':
+      return 'Checked In'
+    case 'Contract Jobsite':
+      return 'Checked Out'
+    case 'Service Jobsite':
+      return 'Checked Out'
+    case 'Employee':
+      return 'Checked Out'
+    case 'Vehicle':
+      return 'Checked Out'
+    default:
+      return 'Unavailable '
   }
- })
+})
 
 // write a setter that changes the _id to a string called id
 toolSchema.set('toJSON', {

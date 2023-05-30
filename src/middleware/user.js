@@ -44,7 +44,9 @@ async function createUser (req, res, next) {
   }
   if (password !== confirmPassword) {
     const error = 'Passwords do not match'
-    console.warn('Passwords do not match  '.yellow + password + ' & ' + confirmPassword)
+    console.warn(
+      'Passwords do not match  '.yellow + password + ' & ' + confirmPassword
+    )
     console.info('[MW] createUser-out-3'.bgWhite.blue)
     res.redirect('back')
     return next(error)
@@ -82,7 +84,6 @@ async function updateUser (req, res, next) {
   const {
     firstName,
     lastName,
-    email,
     theme,
     sortField,
     sortDirection,
