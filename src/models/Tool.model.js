@@ -21,7 +21,7 @@ const toolSchema = new Schema(
       trim: true
     },
     barcode: {
-      type: Number,
+      type: String,
       maxLength: 32,
       trim: true
     },
