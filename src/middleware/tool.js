@@ -42,8 +42,9 @@ async function getToolByID (req, res, next) {
   const tools = await Tool.findById({ $eq: id })
   const toolHistory = await ToolHistory.findById({ $eq: id })
   res.locals.tools = [tools]
-  if(toolHistory){
-  res.locals.toolHistory = toolHistory.history}
+  if (toolHistory) {
+    res.locals.toolHistory = toolHistory.history
+  }
   return next()
 }
 /**

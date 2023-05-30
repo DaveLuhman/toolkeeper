@@ -9,7 +9,7 @@ import { mutateToArray, paginate } from './util.js'
  * @returns  {void}
  * @description Gets all service assignments and adds them to res.locals.serviceAssignments as an array
  */
-export async function getServiceAssignments(req, res, next) {
+export async function getServiceAssignments (req, res, next) {
   console.info('[MW] getServiceAssignments-in'.bgBlue.white)
   try {
     const serviceAssignments = await ServiceAssignment.find()
@@ -35,7 +35,7 @@ export async function getServiceAssignments(req, res, next) {
  * @returns {void}
  * @description Gets a service assignment by ID and adds it to res.locals.serviceAssignments as an array
  */
-export async function getServiceAssignmentByID(req, res, next) {
+export async function getServiceAssignmentByID (req, res, next) {
   try {
     const id = req.params.id
     const serviceAssignment = await ServiceAssignment.findById({ $eq: id })
@@ -54,7 +54,7 @@ export async function getServiceAssignmentByID(req, res, next) {
  * @returns {void}
  * @description Updates a service assignment by ID and adds it to res.locals.serviceAssignments as an array
  */
-export async function updateServiceAssignment(req, res, next) {
+export async function updateServiceAssignment (req, res, next) {
   try {
     const { id, name, description, type, phone, notes } = req.body
     const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(
@@ -77,7 +77,7 @@ export async function updateServiceAssignment(req, res, next) {
  * @return {void}
  * @description Creates a service assignment and adds it to res.locals.serviceAssignments as an array
  */
-export async function createServiceAssignment(req, res, next) {
+export async function createServiceAssignment (req, res, next) {
   try {
     const { name, description, type, phone, notes } = req.body
     const newServiceAssignment = await ServiceAssignment.create({
@@ -85,7 +85,7 @@ export async function createServiceAssignment(req, res, next) {
       description,
       type,
       phone,
-      notes,
+      notes
     })
     res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
     return next()
@@ -104,7 +104,7 @@ export async function createServiceAssignment(req, res, next) {
  * @description Deletes a service assignment by ID
  */
 
-export async function deleteServiceAssignment(req, res, next) {
+export async function deleteServiceAssignment (req, res, next) {
   try {
     const id = req.params.id
     await ServiceAssignment.findByIdAndDelete(id)
@@ -116,8 +116,10 @@ export async function deleteServiceAssignment(req, res, next) {
 }
 
 // TODO: Use updatedAt value hashed to check for changes
-export async function listServiceAssignnmentNames(_req, res, next) {
-  res.locals.serviceAssignments = await ServiceAssignment.find().sort({ name: 'asc' })
+export async function listServiceAssignnmentNames (_req, res, next) {
+  res.locals.serviceAssignments = await ServiceAssignment.find().sort({
+    name: 'asc'
+  })
   return next()
 }
 

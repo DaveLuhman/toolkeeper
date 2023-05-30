@@ -10,7 +10,7 @@ import passport from 'passport'
  * app.get('/dashboard', checkAuth, (req, res) => {
  *  res.render('dashboard')
  * })
-  **/
+ **/
 function checkAuth (req, res, next) {
   if (req.isAuthenticated()) {
     res.locals.user = req.user
