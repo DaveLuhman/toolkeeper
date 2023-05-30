@@ -1,19 +1,12 @@
 import ServiceAssignment from '../../models/ServiceAssignment.model.js'
 
-function checkForDuplicates (memberID, mLastName) {
+function checkForDuplicates (name, description) {
   const searchResult = ServiceAssignment.find({
-    $or: [{ name: memberID }, { description: mLastName }]
+    $or: [{ name }, { description }]
   }).exec()
-  if (searchResult.length > 0) return true
-  else return false
+  return searchResult.length > 0
 }
 
-/**
- * @description Check what type of service assignment is currently being imported
- * @param {string} memberID
- * @param {string} mLastName
- * @returns Service Assignment Type
- */
 function determineServiceAssignmentType (memberID, mLastName) {
   const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
   if (!memberID || memberID === '') {
@@ -29,39 +22,50 @@ function determineServiceAssignmentType (memberID, mLastName) {
   } else return 'Imported - Uncategorized'
 }
 
-async function createServiceAssignment (row) {
+function createServiceAssignmentDocument (row) {
   let name = row[0]
   let description = row[1].trim()
-  if (checkForDuplicates(row[0], row[1])) {
+  if (checkForDuplicates(name, description)) {
     name = `Duplicate ${row[0]}`
     description = `Duplicate ${row[1]}`
   }
-  const serviceAssignmentDocument = {
-    name,
-    description,
-    notes: row[4].trim() + ' ' + row[5].trim() + ' ' + row[10].trim(),
-    phone: row[2].trim(),
-    type: determineServiceAssignmentType(row[0], row[1])
-  }
-  console.log(serviceAssignmentDocument)
-  await ServiceAssignment.create(serviceAssignmentDocument).save
+  const notes = row[4].trim() + ' ' + row[5].trim() + ' ' + row[10].trim()
+  const phone = row[2].trim()
+  const type = determineServiceAssignmentType(row[0], row[1])
+  const serviceAssignmentDocument = { name, description, notes, phone, type }
+  return serviceAssignmentDocument
 }
-export function importServiceAssignments (file) {
+
+async function saveServiceAssignmentDocument (serviceAssignmentDocument) {
+  await ServiceAssignment.create(serviceAssignmentDocument).save()
+}
+
+function importDataToString (file) {
   const importDataBuffer = Buffer.from(file.data)
   const importDataString = importDataBuffer
     .toString('ascii')
     .replaceAll('"', '')
     .replaceAll("'", '')
+  return importDataString
+}
+
+function parseImportData (importDataString) {
   const importDataParentArray = importDataString.split('\n')
-  const members = []
-  importDataParentArray.forEach((row) => {
-    return members.push(row.split(','))
+  const members = importDataParentArray.map((row) => row.split(','))
+  return members
+}
+
+function createServiceAssignments (members) {
+  const serviceAssignmentsPromises = members.map((row) => {
+    const serviceAssignmentDocument = createServiceAssignmentDocument(row)
+    return saveServiceAssignmentDocument(serviceAssignmentDocument)
   })
-  const result = {
-    successMsg: `${members.length} successfully processed.`
-  }
-  for (let i = 0; i < members.length; i++) {
-    createServiceAssignment(members[i])
-  }
-  return result
+  return Promise.all(serviceAssignmentsPromises)
+}
+
+export function importServiceAssignments (file) {
+  const importDataString = importDataToString(file)
+  const members = parseImportData(importDataString)
+  const successMsg = `${members.length} successfully processed.`
+  return createServiceAssignments(members).then(() => ({ successMsg }))
 }
