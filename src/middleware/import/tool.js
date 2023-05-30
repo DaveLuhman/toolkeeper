@@ -1,31 +1,35 @@
-import Tool from '../../models/Tool.model'
+import Tool from '../../models/Tool.model.js'
+import { importedFileToArrayByRow } from '../util.js'
 
-function createImportedTool (row) {
-  let serialNumber = row[x]
-  let barcode
-  let description
-  let modelNumber
-  let toolID
-  let manufacturer
+async function createImportedTool (row) {
+  const toolDocument = {
+    serialNumber: row[0],
+    barcode: row[1],
+    description: row[2],
+    modelNumber: row[9],
+    toolID: row[10],
+    manufacturer: row[11]
+  }
+  try{
+  const newTool = (await Tool.create(toolDocument)).save
+  return newTool.id
+  } catch (err) {
+    console.log(err)
+  }
 
 }
 
 export function importTools (file) {
-  const importDataBuffer = Buffer.from(file.data)
-  const importDataString = importDataBuffer
-    .toString('ascii')
-    .replaceAll('"', '')
-    .replaceAll("'", '')
-  const importDataParentArray = importDataString.split('\n')
+  const importDataParentArray = importedFileToArrayByRow(file)
   const tools = []
   importDataParentArray.forEach((row) => {
     return tools.push(row.split(','))
   })
-
+  let newTools = []
   for (let i = 0; i < tools.length; i++) {
-    createImportedTool(tools[i])
+    newTools.push(createImportedTool(tools[i]))
   }
-  return tools
+  return newTools.length + 'Tools added successfully.'
 }
 
 export function determineLastUpdatedTool (db) {

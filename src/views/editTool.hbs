@@ -47,6 +47,11 @@
                                     {{name}}
                                 </option>
                             {{/each}}
+                            {{#unless tool.serviceAssignment}}
+                                <option name='Unassigned' value=null selected>
+                                    Choose A Service Assignment
+                                </option>
+                            {{/unless}}
                         </select>
                     </div>
                     <div class="form-control">
@@ -71,13 +76,11 @@
                         </div>
                         <div class="form-control">
                             <label for="length" class="label"><span class="label-text">Length:</span></label>
-                            <input name="length" value="{{size.length}}" type="text"
-                                class="input input-bordered" />
+                            <input name="length" value="{{size.length}}" type="text" class="input input-bordered" />
                         </div>
                         <div class="form-control">
                             <label for="height" class="label"><span class="label-text">Height:</span></label>
-                            <input name="height" value="{{size.height}}" type="text"
-                                class="input input-bordered" />
+                            <input name="height" value="{{size.height}}" type="text" class="input input-bordered" />
                         </div>
                         <div class="form-control">
                             <label for="weight" class="label"><span class="label-text">Weight:</span></label>

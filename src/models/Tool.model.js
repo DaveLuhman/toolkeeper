@@ -11,21 +11,25 @@ const toolSchema = new Schema(
       type: String,
       upperCase: true,
       unique: true,
-      maxLength: 32
+      maxLength: 32,
+      trim: true
     },
     modelNumber: {
       type: String,
       upperCase: true,
-      maxLength: 32
+      maxLength: 32,
+      trim: true
     },
     barcode: {
       type: Number,
-      maxLength: 32
+      maxLength: 32,
+      trim: true
     },
     toolID: {
       type: String,
       upperCase: true,
       required: false,
+      trim: true
     },
     serviceAssignment: {
       type: Schema.Types.ObjectId,
@@ -39,11 +43,12 @@ const toolSchema = new Schema(
     },
     description: {
       type: String,
-      maxLength: 128
+      maxLength: 128,
+      trim: true
     },
     manufacturer: {
       type: String,
-      trim: true
+      trim: true,
     },
     material: {
       type: Schema.Types.ObjectId,
@@ -93,13 +98,14 @@ toolSchema.findAll = function (callback) {
 
 toolSchema.virtual('status')
  .get(function () {
+  if(this.serviceAssignment == undefined) return 'Unavailable'
   switch(this.serviceAssignment.type) {
     case 'stockroom': return 'Checked In'
     case 'contractJob': return 'Checked Out'
     case 'serviceJob': return 'Checked Out'
     case 'employee': return 'Checked Out'
     case 'vehicle': return 'Checked Out'
-    case null: return 'Checked In'
+    case undefined: return 'Checked In'
     default: return 'Checked In'
   }
  })

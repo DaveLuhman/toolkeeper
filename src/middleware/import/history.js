@@ -1,3 +1,3 @@
-export function importCategories(file) {
+export function importHistory(file) {
     console.log('import categores dummy function')
 }

@@ -9,12 +9,12 @@ sanitize
 *populateDropdownItems (const, not function)
 *rateLimiter
 *createAccountLimiter
+*importedFileToArrayByRow
 */
 
 import rateLimit from 'express-rate-limit'
 import { listCategoryNames } from './category.js'
 import { listServiceAssignnmentNames } from './serviceAssignment.js'
-
 
 /**
  *
@@ -105,7 +105,18 @@ export const rateLimiter = rateLimit({
 export const createAccountLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
   max: 5, // Limit each IP to 5 create account requests per `window` (here, per hour)
-  message: 'Too many accounts created from this IP, please try again after an hour',
+  message:
+    'Too many accounts created from this IP, please try again after an hour',
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
+
+export function importedFileToArrayByRow (file) {
+  const importDataBuffer = Buffer.from(file.data)
+  const importDataString = importDataBuffer
+    .toString('ascii')
+    .replaceAll('"', '')
+    .replaceAll("'", '')
+  const importDataParentArray = importDataString.split('\n')
+  return importDataParentArray
+}

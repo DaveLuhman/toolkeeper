@@ -1,6 +1,6 @@
 import { importServiceAssignments } from './serviceAssignment.js'
 import { importTools } from './tool.js'
-import { importCategories } from './categories.js'
+import { importHistory } from './history.js'
 import 'fs/promises'
 
 export async function importByFile (req, res, next) {
@@ -10,7 +10,7 @@ export async function importByFile (req, res, next) {
     return next('router')
   }
   const file = req.files.importFile
-  const { importTarget } = req.body.importTarget
+  const  importTarget  = req.body.importTarget
   let result
   switch (importTarget) {
     case 'tools':
@@ -19,8 +19,8 @@ export async function importByFile (req, res, next) {
     case 'serviceAssignment':
       result = importServiceAssignments(file)
       break
-    case 'categories':
-      result = importCategories(file)
+    case 'history':
+      result = importHistory(file)
       break
     default:
       res.locals.message = 'not sure how you managed this response.'
