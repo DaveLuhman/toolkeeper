@@ -23,6 +23,11 @@
                         <input name="barcode" value="{{barcode}}" type="text" placeholder="Barcode"
                             class="input input-bordered" />
                     </div>
+                    <div class="form-control">
+                        <label for="toolID" class="label"><span class="label-text">Tool ID:</span></label>
+                        <input name="toolID" value="{{toolID}}" type="text" placeholder="Tool ID"
+                            class="input input-bordered" />
+                    </div>
                     <div class="col-span-2 form-control">
                         <label for="description" class="label"><span class="label-text">Description:</span></label>
                         <input name="description" value="{{description}}" type="text" placeholder="Description"
@@ -42,15 +47,6 @@
                                     {{name}}
                                 </option>
                             {{/each}}
-                        </select>
-                    </div>
-                    <div class="form-control">
-                        <label for="status" class="label"><span class="label-text">Status</span></label>
-                        <select name="status" class="select select-bordered">
-                            <option value="Checked In" {{#eq status "Checked In"}}selected{{/eq}}>Checked-In
-                            </option>
-                            <option value="Checked Out" {{#eq status "Checked Out"}}selected{{/eq}}>Checked-Out
-                            </option>
                         </select>
                     </div>
                     <div class="form-control">
