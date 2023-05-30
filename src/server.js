@@ -58,7 +58,7 @@ if (process.env.NODE_ENV === 'production') {
     maxAge: 1000 * 60 * 60 * 24,
   }
   sessionConfig.store = mongoStore
-  app.use(helmet()) // Add Helmet for HTTP Header controls
+  // app.use(helmet()) // Add Helmet for HTTP Header controls
 }
 
 // Morgan Logging in development
