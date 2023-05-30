@@ -215,7 +215,7 @@ tr {
   @apply bg-opacity-5;
 }
 td {
-  @apply text-base-content;
+  @apply text-sm;
   @apply p-2;
   @apply border-b;
   @apply border-base-300;
@@ -320,7 +320,6 @@ td {
 }
 .btn-paginate {
   @apply btn;
-  @apply btn-accent;
 }
 
 /* ------- FOOTER ---------- */

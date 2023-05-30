@@ -61,6 +61,11 @@
                                 <option name='{{name}}' value='{{id}}' {{isSelected id tool.category.id}}>{{name}}
                                 </option>
                             {{/each}}
+                            {{#unless tool.serviceAssignment}}
+                                <option name='Unassigned' value=null selected>
+                                    Choose A Service Assignment
+                                </option>
+                            {{/unless}}
                         </select>
                     </div>
                 </div>
