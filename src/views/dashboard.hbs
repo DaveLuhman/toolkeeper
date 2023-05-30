@@ -9,7 +9,7 @@
         <thead>
             <tr>
                 <th>Serial number</th>
-                <th class="hidden md:table-cell">Part Number</th>
+                <th class="hidden md:table-cell">Model Number</th>
                 <th>Barcode #</th>
                 <th class="hidden lg:table-cell">Description</th>
                 <th class="hidden lg:table-cell">Manufacturer</th>
@@ -25,7 +25,7 @@
                     {{#unless archived}}
                         <tr>
                             <td id="serialNumber">{{serialNumber}}</td>
-                            <td class="hidden md:table-cell" id="partNumber">{{partNumber}}</td>
+                            <td class="hidden md:table-cell" id="modelNumber">{{modelNumber}}</td>
                             <td id="barcode">{{barcode}}</td>
                             <td class="hidden lg:table-cell" id="description">{{description}}</td>
                             <td class="hidden lg:table-cell" id="manufacturer">{{manufacturer}}</td>
@@ -64,7 +64,7 @@
             {{#each tools}}
                 <li><div class="bg-teal-500">{{this.id}}: </div><ul class="pl-10 list-disc">
                         <li>SN: {{this.serialNumber}}</li>
-                        <li>PN: {{this.partNumber}}</li>
+                        <li>PN: {{this.modelNumber}}</li>
                         <li>Barcode: {{this.barcode}}</li>
                         <li>Status: {{this.status}}</li>
                         <li>SA: {{this.serviceAssignment.name}}</li>

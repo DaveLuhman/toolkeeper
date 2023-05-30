@@ -13,7 +13,7 @@ const toolSchema = new Schema(
       unique: true,
       maxLength: 32
     },
-    partNumber: {
+    modelNumber: {
       type: String,
       upperCase: true,
       maxLength: 32
@@ -21,6 +21,11 @@ const toolSchema = new Schema(
     barcode: {
       type: Number,
       maxLength: 32
+    },
+    toolID: {
+      type: String,
+      upperCase: true,
+      required: false,
     },
     serviceAssignment: {
       type: Schema.Types.ObjectId,

@@ -85,7 +85,7 @@ async function createTool (req, res, next) {
     console.info('[MW] createTool-in'.bgBlue.white)
     const {
       serialNumber,
-      partNumber,
+      modelNumber,
       barcode,
       description,
       serviceAssignment,
@@ -96,7 +96,7 @@ async function createTool (req, res, next) {
       length,
       weight
     } = req.body
-    if (!(serialNumber || partNumber) || !barcode) {
+    if (!(serialNumber || modelNumber) || !barcode) {
       throw new Error({ message: 'Missing required fields', status: 400 })
     }
     const existing = await Tool.findOne({
@@ -109,7 +109,7 @@ async function createTool (req, res, next) {
     // TODO: verify input data is sanitized
     const newTool = await Tool.create({
       serialNumber,
-      partNumber,
+      modelNumber,
       barcode,
       description,
       serviceAssignment,
@@ -154,7 +154,7 @@ async function updateTool (req, res, next) {
   const ut = async (newToolData) => {
     const {
       id,
-      partNumber,
+      modelNumber,
       description,
       serviceAssignment,
       category,
@@ -168,7 +168,7 @@ async function updateTool (req, res, next) {
     const updatedTool = await Tool.findByIdAndUpdate(
       { $eq: id },
       {
-        partNumber,
+        modelNumber,
         description,
         serviceAssignment,
         category,
@@ -203,7 +203,7 @@ async function updateTool (req, res, next) {
     for (let i = 0; i < req.body.id.length > 100; i++) {
       const updatedTool = await ut({
         _id: req.body.id[i],
-        partNumber: req.body.partNumber[i],
+        modelNumber: req.body.modelNumber[i],
         description: req.body.description[i],
         serviceAssignment: req.body.serviceAssignment[i],
         category: req.body.category[i],
@@ -280,7 +280,7 @@ async function checkTools (req, res, next) {
       const pendingTool = {
         _id: tempTool._id,
         serialNumber: tempTool.serialNumber,
-        partNumber: tempTool.partNumber,
+        modelNumber: tempTool.modelNumber,
         barcode: tempTool.barcode,
         description: tempTool.description,
         serviceAssignment: 'FILL THIS IN',
@@ -293,7 +293,7 @@ async function checkTools (req, res, next) {
       const pendingTool = {
         _id: tempTool._id,
         serialNumber: tempTool.serialNumber,
-        partNumber: tempTool.partNumber,
+        modelNumber: tempTool.modelNumber,
         barcode: tempTool.barcode,
         description: tempTool.description,
         serviceAssignment: 'Tool Room',

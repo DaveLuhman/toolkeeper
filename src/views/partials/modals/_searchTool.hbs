@@ -10,7 +10,7 @@
                 <select id="searchBy" name="searchBy" class="select select-bordered">
                     <option>Search By: </option>
                     <option value="serialNumber" id="serialNumber">Serial Number</option>
-                    <option value="partNumber" id="partNumber">Part Number</option>
+                    <option value="modelNumber" id="modelNumber">Model Number</option>
                     <option value="barcode" id="barcode">Barcode</option>
                     <option value="serviceAssignment" id="serviceAssignment">Service Assignment</option>
                     <option value="status" id="status">In/Out Status</option>
@@ -35,7 +35,7 @@
             case 'serialNumber':
                 searchInput.innerHTML = '<input id="searchValue" name="searchValue" type="text" placeholder="Search Term" class="input input-bordered" />'
                 break
-            case 'partNumber':
+            case 'modelNumber':
                 searchInput.innerHTML = '<input id="searchValue" name="searchValue" type="text" placeholder="Search Term" class="input input-bordered" />'
                 break
             case 'barcode':

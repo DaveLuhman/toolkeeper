@@ -14,8 +14,8 @@
                             placeholder="Serial Number" class="input input-bordered" />
                     </div>
                     <div class="form-control">
-                        <label for="partNumber" class="label"><span class="label-text">PN:</span></label>
-                        <input name="partNumber" value="{{partNumber}}" type="text" placeholder="Part Number"
+                        <label for="modelNumber" class="label"><span class="label-text">PN:</span></label>
+                        <input name="modelNumber" value="{{modelNumber}}" type="text" placeholder="Model Number"
                             class="input input-bordered" />
                     </div>
                     <div class="form-control">
@@ -119,7 +119,7 @@
             </thead>
             {{#each toolHistory as |entry|}}
                 <tr>
-                    <td>{{entry.partNumber}}</td>
+                    <td>{{entry.modelNumber}}</td>
                     <td>{{entry.description}}</td>
                     <td>{{entry.status}}</td>
                     <td>{{getServiceAssignmentName ../serviceAssignments entry.serviceAssignment}}</td>
