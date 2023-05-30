@@ -14,13 +14,18 @@
                             placeholder="Serial Number" class="input input-bordered" />
                     </div>
                     <div class="form-control">
-                        <label for="partNumber" class="label"><span class="label-text">PN:</span></label>
-                        <input name="partNumber" value="{{partNumber}}" type="text" placeholder="Part Number"
+                        <label for="modelNumber" class="label"><span class="label-text">PN:</span></label>
+                        <input name="modelNumber" value="{{modelNumber}}" type="text" placeholder="Model Number"
                             class="input input-bordered" />
                     </div>
                     <div class="form-control">
                         <label for="barcode" class="label"><span class="label-text">Barcode:</span></label>
                         <input name="barcode" value="{{barcode}}" type="text" placeholder="Barcode"
+                            class="input input-bordered" />
+                    </div>
+                    <div class="form-control">
+                        <label for="toolID" class="label"><span class="label-text">Tool ID:</span></label>
+                        <input name="toolID" value="{{toolID}}" type="text" placeholder="Tool ID"
                             class="input input-bordered" />
                     </div>
                     <div class="col-span-2 form-control">
@@ -42,15 +47,11 @@
                                     {{name}}
                                 </option>
                             {{/each}}
-                        </select>
-                    </div>
-                    <div class="form-control">
-                        <label for="status" class="label"><span class="label-text">Status</span></label>
-                        <select name="status" class="select select-bordered">
-                            <option value="Checked In" {{#eq status "Checked In"}}selected{{/eq}}>Checked-In
-                            </option>
-                            <option value="Checked Out" {{#eq status "Checked Out"}}selected{{/eq}}>Checked-Out
-                            </option>
+                            {{#unless tool.serviceAssignment}}
+                                <option name='Unassigned' value=null selected>
+                                    Choose A Service Assignment
+                                </option>
+                            {{/unless}}
                         </select>
                     </div>
                     <div class="form-control">
@@ -60,6 +61,11 @@
                                 <option name='{{name}}' value='{{id}}' {{isSelected id tool.category.id}}>{{name}}
                                 </option>
                             {{/each}}
+                            {{#unless tool.serviceAssignment}}
+                                <option name='Unassigned' value=null selected>
+                                    Choose A Service Assignment
+                                </option>
+                            {{/unless}}
                         </select>
                     </div>
                 </div>
@@ -75,13 +81,11 @@
                         </div>
                         <div class="form-control">
                             <label for="length" class="label"><span class="label-text">Length:</span></label>
-                            <input name="length" value="{{size.length}}" type="text"
-                                class="input input-bordered" />
+                            <input name="length" value="{{size.length}}" type="text" class="input input-bordered" />
                         </div>
                         <div class="form-control">
                             <label for="height" class="label"><span class="label-text">Height:</span></label>
-                            <input name="height" value="{{size.height}}" type="text"
-                                class="input input-bordered" />
+                            <input name="height" value="{{size.height}}" type="text" class="input input-bordered" />
                         </div>
                         <div class="form-control">
                             <label for="weight" class="label"><span class="label-text">Weight:</span></label>
@@ -119,7 +123,7 @@
             </thead>
             {{#each toolHistory as |entry|}}
                 <tr>
-                    <td>{{entry.partNumber}}</td>
+                    <td>{{entry.modelNumber}}</td>
                     <td>{{entry.description}}</td>
                     <td>{{entry.status}}</td>
                     <td>{{getServiceAssignmentName ../serviceAssignments entry.serviceAssignment}}</td>

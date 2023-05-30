@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
-import { mutateToArray } from './util.js'
+import { mutateToArray, paginate } from './util.js'
 /**
  * @function getServiceAssignments
  * @param {*} req
@@ -9,10 +9,18 @@ import { mutateToArray } from './util.js'
  * @returns  {void}
  * @description Gets all service assignments and adds them to res.locals.serviceAssignments as an array
  */
-export async function getServiceAssignments (_req, res, next) {
+export async function getServiceAssignments(req, res, next) {
+  console.info('[MW] getServiceAssignments-in'.bgBlue.white)
   try {
     const serviceAssignments = await ServiceAssignment.find()
-    res.locals.serviceAssignments = mutateToArray(serviceAssignments)
+    const { trimmedData, targetPage, pageCount } = paginate(
+      serviceAssignments,
+      req.query.p || 1,
+      req.user.preferences.pageSize
+    )
+    res.locals.serviceAssignments = trimmedData
+    res.locals.pagination = { page: targetPage, pageCount } // pagination
+    console.info('[MW] getServiceAssignments-out'.bgWhite.blue)
     return next()
   } catch (error) {
     console.error(error)
@@ -27,7 +35,7 @@ export async function getServiceAssignments (_req, res, next) {
  * @returns {void}
  * @description Gets a service assignment by ID and adds it to res.locals.serviceAssignments as an array
  */
-export async function getServiceAssignmentByID (req, res, next) {
+export async function getServiceAssignmentByID(req, res, next) {
   try {
     const id = req.params.id
     const serviceAssignment = await ServiceAssignment.findById({ $eq: id })
@@ -46,12 +54,12 @@ export async function getServiceAssignmentByID (req, res, next) {
  * @returns {void}
  * @description Updates a service assignment by ID and adds it to res.locals.serviceAssignments as an array
  */
-export async function updateServiceAssignment (req, res, next) {
+export async function updateServiceAssignment(req, res, next) {
   try {
-    const { id, name, description } = req.body
+    const { id, name, description, type, phone, notes } = req.body
     const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(
       id,
-      { name, description },
+      { name, description, type, phone, notes },
       { new: true }
     )
     res.locals.serviceAssignments = mutateToArray(updatedServiceAssignment)
@@ -69,12 +77,15 @@ export async function updateServiceAssignment (req, res, next) {
  * @return {void}
  * @description Creates a service assignment and adds it to res.locals.serviceAssignments as an array
  */
-export async function createServiceAssignment (req, res, next) {
+export async function createServiceAssignment(req, res, next) {
   try {
-    const { name, description } = req.body
+    const { name, description, type, phone, notes } = req.body
     const newServiceAssignment = await ServiceAssignment.create({
       name,
-      description
+      description,
+      type,
+      phone,
+      notes,
     })
     res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
     return next()
@@ -93,7 +104,7 @@ export async function createServiceAssignment (req, res, next) {
  * @description Deletes a service assignment by ID
  */
 
-export async function deleteServiceAssignment (req, res, next) {
+export async function deleteServiceAssignment(req, res, next) {
   try {
     const id = req.params.id
     await ServiceAssignment.findByIdAndDelete(id)
@@ -105,8 +116,8 @@ export async function deleteServiceAssignment (req, res, next) {
 }
 
 // TODO: Use updatedAt value hashed to check for changes
-export async function listServiceAssignnmentNames (_req, res, next) {
-  res.locals.serviceAssignments = await ServiceAssignment.find()
+export async function listServiceAssignnmentNames(_req, res, next) {
+  res.locals.serviceAssignments = await ServiceAssignment.find().sort({ name: 'asc' })
   return next()
 }
 

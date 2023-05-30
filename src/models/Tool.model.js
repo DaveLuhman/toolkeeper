@@ -11,38 +11,44 @@ const toolSchema = new Schema(
       type: String,
       upperCase: true,
       unique: true,
-      maxLength: 32
+      maxLength: 32,
+      trim: true
     },
-    partNumber: {
+    modelNumber: {
       type: String,
       upperCase: true,
-      maxLength: 32
+      maxLength: 32,
+      trim: true
     },
     barcode: {
-      type: Number,
-      maxLength: 32
-    },
-    status: {
       type: String,
-      enum: ['Checked In', 'Checked Out', 'Missing']
+      maxLength: 32,
+      trim: true
+    },
+    toolID: {
+      type: String,
+      upperCase: true,
+      required: false,
+      trim: true
     },
     serviceAssignment: {
       type: Schema.Types.ObjectId,
       ref: 'ServiceAssignment',
-      autopopulate: { select: 'name' }
+      autopopulate: true
     },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
-      autopopulate: { select: 'name' }
+      autopopulate: true
     },
     description: {
       type: String,
-      maxLength: 128
+      maxLength: 128,
+      trim: true
     },
     manufacturer: {
       type: String,
-      trim: true
+      trim: true,
     },
     material: {
       type: Schema.Types.ObjectId,
@@ -89,6 +95,19 @@ const toolSchema = new Schema(
 toolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
 }
+
+toolSchema.virtual('status')
+ .get(function () {
+  if(this.serviceAssignment == undefined) return 'Unavailable 1'
+  switch(this.serviceAssignment.type) {
+    case 'Stockroom': return 'Checked In'
+    case 'Contract Jobsite': return 'Checked Out'
+    case 'Service Jobsite': return 'Checked Out'
+    case 'Employee': return 'Checked Out'
+    case 'Vehicle': return 'Checked Out'
+    default: return 'Unavailable 2'
+  }
+ })
 
 // write a setter that changes the _id to a string called id
 toolSchema.set('toJSON', {

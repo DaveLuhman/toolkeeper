@@ -42,8 +42,8 @@ async function getToolByID (req, res, next) {
   const tools = await Tool.findById({ $eq: id })
   const toolHistory = await ToolHistory.findById({ $eq: id })
   res.locals.tools = [tools]
-  console.log(toolHistory)
-  res.locals.toolHistory = toolHistory.history
+  if(toolHistory){
+  res.locals.toolHistory = toolHistory.history}
   return next()
 }
 /**
@@ -85,11 +85,10 @@ async function createTool (req, res, next) {
     console.info('[MW] createTool-in'.bgBlue.white)
     const {
       serialNumber,
-      partNumber,
+      modelNumber,
       barcode,
       description,
       serviceAssignment,
-      status,
       category,
       manufacturer,
       width,
@@ -97,7 +96,7 @@ async function createTool (req, res, next) {
       length,
       weight
     } = req.body
-    if (!(serialNumber || partNumber) || !barcode) {
+    if (!(serialNumber || modelNumber) || !barcode) {
       throw new Error({ message: 'Missing required fields', status: 400 })
     }
     const existing = await Tool.findOne({
@@ -110,11 +109,10 @@ async function createTool (req, res, next) {
     // TODO: verify input data is sanitized
     const newTool = await Tool.create({
       serialNumber,
-      partNumber,
+      modelNumber,
       barcode,
       description,
       serviceAssignment,
-      status,
       category,
       manufacturer,
       size: {
@@ -156,10 +154,9 @@ async function updateTool (req, res, next) {
   const ut = async (newToolData) => {
     const {
       id,
-      partNumber,
+      modelNumber,
       description,
       serviceAssignment,
-      status,
       category,
       manufacturer,
       width,
@@ -171,10 +168,9 @@ async function updateTool (req, res, next) {
     const updatedTool = await Tool.findByIdAndUpdate(
       { $eq: id },
       {
-        partNumber,
+        modelNumber,
         description,
         serviceAssignment,
-        status,
         category,
         manufacturer,
         size: {
@@ -207,10 +203,9 @@ async function updateTool (req, res, next) {
     for (let i = 0; i < req.body.id.length > 100; i++) {
       const updatedTool = await ut({
         _id: req.body.id[i],
-        partNumber: req.body.partNumber[i],
+        modelNumber: req.body.modelNumber[i],
         description: req.body.description[i],
         serviceAssignment: req.body.serviceAssignment[i],
-        status: req.body.status[i],
         category: req.body.category[i],
         manufacturer: req.body.manufacturer[i],
         size: {
@@ -285,13 +280,11 @@ async function checkTools (req, res, next) {
       const pendingTool = {
         _id: tempTool._id,
         serialNumber: tempTool.serialNumber,
-        partNumber: tempTool.partNumber,
+        modelNumber: tempTool.modelNumber,
         barcode: tempTool.barcode,
         description: tempTool.description,
         serviceAssignment: 'FILL THIS IN',
         serviceAssignmentChanged: true,
-        status: 'Checked Out',
-        statusChanged: true,
         category: tempTool.category
       }
       checkingTools.push(pendingTool)
@@ -300,11 +293,9 @@ async function checkTools (req, res, next) {
       const pendingTool = {
         _id: tempTool._id,
         serialNumber: tempTool.serialNumber,
-        partNumber: tempTool.partNumber,
+        modelNumber: tempTool.modelNumber,
         barcode: tempTool.barcode,
         description: tempTool.description,
-        status: 'Checked In',
-        statusChanged: true,
         serviceAssignment: 'Tool Room',
         serviceAssignmentChanged: false,
         category: tempTool.category

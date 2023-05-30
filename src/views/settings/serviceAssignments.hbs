@@ -7,6 +7,10 @@
       <thead>
         <tr>
           <th>Display Name</th>
+          <th class="hidden md:table-cell" >Description</th>
+          <th class="hidden lg:table-cell">Type</th>
+          <th class="hidden lg:table-cell">Phone</th>
+          <th class="hidden lg:table-cell">Notes</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
@@ -16,6 +20,10 @@
           {{#each serviceAssignments}}
             <tr>
               <td>{{name}}</td>
+              <td class="hidden md:table-cell" >{{description}}</td>
+              <td class="hidden lg:table-cell">{{type}}</td>
+              <td class="hidden lg:table-cell">{{phone}}</td>
+              <td class="hidden lg:table-cell">{{notes}}</td>
               <td><a href="/settings/serviceAssignments/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
               <td><a href="/settings/serviceAssignments/delete/{{id}}"><i class="fa fa-trash"></i></a></td>
             </tr>
@@ -30,20 +38,54 @@
     </div>
   </div>
 </div>
+<br>
+{{#gt pagination.pageCount 1}}
+    <ul class="paginate-bar">
+        {{#paginate pagination type="first"}}
+            <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">First</button></a></div>
+        {{/paginate}}
+        {{#paginate pagination type="previous"}}
+            <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Previous</button></a></div>
+        {{/paginate}}
+        {{#paginate pagination type="middle" limit="4"}}
+            <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}"><button
+                        class="btn-paginate">{{n}}</button></a>
+            </div>
+        {{/paginate}}
+        {{#paginate pagination type="next"}}
+            <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Next</button></a></div>
+        {{/paginate}}
+        {{#paginate pagination type="last"}}
+            <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Last</button></a></div>
+        {{/paginate}}
+    </ul>
+{{/gt}}
 {{!-- New SA Modal --}}
 <input type="checkbox" id="newServiceAssignmentModal" class="modal-toggle" />
 <div class="modal">
   <div class="modal-inner-md">
     <label for="newServiceAssignmentModal" class="modal-close-btn">✕</label>
     <form action="/settings/serviceAssignments/create" method="POST">
-      <div class="grid items-center w-full grid-rows-2">
+      <div class="grid items-center w-full grid-cols-2 grid-rows-3 gap-1">
         <div class="title-bar">
           <h3 class="title-text">New Service Assignment</h3>
         </div>
-        <div class="m-3">
-          <input placeholder="Name" type="text" name="name" class="input input-bordered">
-          <input placeholder="Description" type="text" name="description" class="input input-bordered">
-        </div>
+
+        <input placeholder="Name" type="text" name="name" class="input input-bordered">
+        <input placeholder="Description" type="text" name="description" class="input input-bordered">
+        <input placeholder="Phone" type="text" name="phone" class="input input-bordered">
+        <select name="type" class="select select-bordered">
+          <option value="contractJob">Contract Job</option>
+          <option value="serviceJob">Service Job</option>
+          <option value="vehicle">Vehicle</option>
+          <option value="employee">Employee</option>
+          <option value="stockroom">Stockroom</option>
+          <option value="importedUncategorized">Imported - Uncategorized
+          </option>
+          <option value="errorUncategorized">Error - Uncategorized</option>
+        </select>
+        <input placeholder="Misc Notes" type="textarea" name="notes" class="col-span-2 input input-bordered">
+
         <div class="modal-button-row">
           <label class="btn btn-sm"> <button type="submit">Submit</button></label>
         </div>

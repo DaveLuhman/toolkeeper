@@ -107,3 +107,9 @@ dist
 .vscode
 # built css styles
 src/public/css/style.css
+
+# sqlite dbs
+*.sqlite
+
+# tmp files
+.tmp

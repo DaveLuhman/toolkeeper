@@ -1,6 +1,5 @@
 import { Router } from 'express'
 import { login, logout } from '../middleware/auth.js'
-import { toolController } from '../controllers/tool.js'
 import { createUser } from '../middleware/user.js'
 
 export const indexRouter = Router()
@@ -35,6 +34,3 @@ indexRouter.post('/register', createUser, (_req, res) => {
 })
 // Logout User
 indexRouter.get('/logout', logout)
-
-// Import Tool Data from CSV
-indexRouter.post('/submitFile', toolController.importFromCSV)

@@ -27,7 +27,7 @@ import {
   session,
   settingsRouter,
   toolRouter,
-  userRouter
+  userRouter,
 } from './config/dependencies.js'
 
 // use the imported dependencies as needed in the server.js file
@@ -41,21 +41,21 @@ connectDB() // Connect to MongoDB and report status to console
 // create mongo store for session persistence
 const mongoStore = new MongoDBStore({
   uri: process.env.MONGO_URI,
-  collection: 'sessions'
+  collection: 'sessions',
 })
 // Configure session options
 const sessionConfig = {
   secret: process.env.SESSION_KEY,
   resave: true,
   saveUninitialized: false,
-  cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
+  cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 },
 }
 // If in production, use secure cookies and mongo store
 if (process.env.NODE_ENV === 'production') {
   sessionConfig.cookie = {
     secure: true,
     httpOnly: false,
-    maxAge: 1000 * 60 * 60 * 24
+    maxAge: 1000 * 60 * 60 * 24,
   }
   sessionConfig.store = mongoStore
   app.use(helmet()) // Add Helmet for HTTP Header controls
@@ -70,8 +70,8 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(
     helmet.contentSecurityPolicy({
       directives: {
-        'script-src': ["'unsafe-inline'", "'self'"] // allow client-side inline scripting
-      }
+        'script-src': ["'unsafe-inline'", "'self'"], // allow client-side inline scripting
+      },
     })
   ) // Allow inline scripts for development
 }
@@ -82,15 +82,15 @@ const hbs = create({
     getCategoryName,
     getServiceAssignmentName,
     paginate,
-    ...handlebarsHelpers()
+    ...handlebarsHelpers(),
   },
   extname: '.hbs',
   defaultLayout: 'main',
   partialsDir: ['./src/views/partials', './src/views/partials/modals'],
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
-    allowProtoMethodsByDefault: true
-  }
+    allowProtoMethodsByDefault: true,
+  },
 })
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
@@ -100,8 +100,8 @@ app.set('views', './src/views')
 app.use(cookieParser())
 if (process.NODE_ENV === 'PRODUCTION') app.use(csurf({ cookie: true })) // Cross Site Request Forgery protection middleware
 app.use(express.static('./src/public')) // Serve Static Files
-app.use(express.json()) // JSON Body Parser
 app.use(fileUpload())
+app.use(express.json()) // JSON Body Parser
 app.use(express.urlencoded({ extended: false })) // Parse URL-encoded values
 app.use(session(sessionConfig))
 app.use(flash())

@@ -12,6 +12,16 @@ const ServiceAssignmentSchema = new Schema({
   description: {
     type: String,
     required: false
+  },
+  type: {
+    type: String,
+    enum: ["Contract Jobsite", "Service Jobsite", "Stockroom", "Vehicle", "Employee", "Imported - Uncategorized", "Error - Uncategorized"]
+  },
+  phone: {
+    type: String,
+  },
+  notes: {
+    type: String,
   }
 }, {
   toObject: { virtuals: true },

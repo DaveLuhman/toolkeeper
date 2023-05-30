@@ -1,0 +1,39 @@
+<div class="flex flex-wrap">
+    <div id="settings-nav">
+        {{> _settings}}
+    </div>
+    <div id="root-container" class="grid items-center grid-flow-row pl-5">
+        <div id="title-bar">
+            <label class="title-text">CSV Import</label>
+            <hr />
+            <label class="font-thin">What Would You Like To Import?</label>
+        </div>
+        <form action="/settings/import/submit" method="POST" id="csv-import" encType="multipart/form-data">
+            <div class="form-control">
+                <label for="tools" class="label"><span class="label-text">Tools</span></label>
+                <input type="radio" name="importTarget" value="tools" id="tools">
+            </div>
+            <div class="form-control">
+                <label for="serviceAssignments" class="label"><span class="label-text">Service
+                        Assignments</span></label>
+                <input type="radio" name="importTarget" value="serviceAssignments" id="serviceAssignments">
+            </div>
+            <div class="form-control">
+                <label for="history" class="label"><span class="label-text">Transaction History</span></label>
+                <input type="radio" name="importTarget" value="history" id="history">
+            </div>
+            <div class="form-control">
+                <label for="materials" class="label"><span class="label-text">Materials</span></label>
+                <input type="radio" name="importTarget" value="materials" id="tools" disabled>Not Yet Available
+            </div>
+            <input type="file" name="importFile" id="importFile">
+            <button type="submit" class="modal-button">Import</button>
+        </form>
+{{#if message}}
+<h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
+{{/if}}
+{{#if error}}
+{{error}}
+{{/if}}
+    </div>
+</div>
