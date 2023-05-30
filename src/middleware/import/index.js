@@ -6,11 +6,13 @@ import 'fs/promises'
 export async function importByFile (req, res, next) {
   if (!req.files || !req.body.importTarget) {
     res.locals.error = 'No file uploaded or no selection made'
-    res.render('settings/import', { message: 'No file uploaded or selection made' })
+    res.render('settings/import', {
+      message: 'No file uploaded or selection made'
+    })
     return next('router')
   }
   const file = req.files.importFile
-  const  importTarget  = req.body.importTarget
+  const importTarget = req.body.importTarget
   let result
   switch (importTarget) {
     case 'tools':

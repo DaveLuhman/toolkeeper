@@ -33,8 +33,8 @@ async function updateToolServiceAssignment (row) {
 }
 
 export async function importHistory (file) {
-  var failureCount = 0
-  var successCount = 0
+  let failureCount = 0
+  let successCount = 0
   const importDataParentArray = importedFileToArrayByRow(file)
   const transactions = []
   importDataParentArray.forEach((row) => {
@@ -43,13 +43,9 @@ export async function importHistory (file) {
   const updatedTools = []
   for (let i = 0; i < transactions.length; i++) {
     const result = await updateToolServiceAssignment(transactions[i])
-    if (result == 0) {
+    if (result === 0) {
       successCount = successCount + 1
     } else failureCount = failureCount + 1
-    if (i % 150 == 0) {
-      console.log(`${successCount} successfully imported so far.`)
-      console.log(`${failureCount} failed to imported so far.`)
-    }
   }
   return updatedTools.length
 }

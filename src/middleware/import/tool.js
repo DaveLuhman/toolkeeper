@@ -59,12 +59,3 @@ export function importTools (file) {
   }
   return newTools.length + ' Tools added successfully.'
 }
-
-export function determineLastUpdatedTool (db) {
-  let result
-  const query =
-    'SELECT x.scheckout FROM "TRANSACTION_HISTORY" x ORDER BY x.scheckout DESC LIMIT 1'
-  return db.get(query, function (err, row) {
-    result = row
-  })
-}
