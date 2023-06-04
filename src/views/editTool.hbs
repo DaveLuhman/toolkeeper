@@ -44,7 +44,7 @@
                         <select name="serviceAssignment" class="select select-bordered">
                             {{#each ../serviceAssignments}}
                                 <option name='{{name}}' value='{{id}}' {{isSelected id tool.serviceAssignment.id}}>
-                                    {{name}}
+                                    {{name}} - {{description}}
                                 </option>
                             {{/each}}
                             {{#unless tool.serviceAssignment}}
@@ -63,7 +63,7 @@
                             {{/each}}
                             {{#unless tool.serviceAssignment}}
                                 <option name='Unassigned' value=null selected>
-                                    Choose A Service Assignment
+                                    Choose A Category
                                 </option>
                             {{/unless}}
                         </select>
