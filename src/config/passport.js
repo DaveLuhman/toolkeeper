@@ -6,7 +6,7 @@ import { compare } from 'bcrypt'
 const passportConfig = (app) => {
   passport.use(new LocalStrategy(
     { usernameField: 'email' },
-    async (email, password, done) => {
+    async function (email, password, done)  {
       console.info(`[AUTH] ${email} attempting login`.blue.bold)
       const user = await User.findOne({ email: { $eq: email } })
       if (!user) {
