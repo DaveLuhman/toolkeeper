@@ -20,10 +20,12 @@
                 <li>Tool Materials</li>
             </a>
         </div>
+        {{#eq user.role 'Admin'}}
         <div class="mb-2 hover:border-gray-300 hover:bg-base-200">
             <a href="/settings/import">
                 <li>Import</li>
             </a>
         </div>
+        {{/eq}}
     </ul>
 </div>
