@@ -20,7 +20,7 @@ const passportConfig = (app) => {
         if (isMatch) {
           return done(null, user)
         } else {
-          return done(null, false, { message: 'Password incorrect'.red })
+          return done(null, false, { message: 'Password incorrect'})
         }
       })
     })
