@@ -57,5 +57,5 @@ export function importTools (file) {
   for (let i = 0; i < tools.length; i++) {
     newTools.push(createImportedTool(tools[i]))
   }
-  return newTools.length + ' Tools added successfully.'
+  return newTools.length + ' Tools Submitted for import.'
 }
