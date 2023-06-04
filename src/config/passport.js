@@ -10,7 +10,7 @@ const passportConfig = (app) => {
       console.info(`[AUTH] ${email} attempting login`.blue.bold)
       const user = await User.findOne({ email: { $eq: email } })
       if (!user) {
-        return done(null, false, { message: 'That email is not registered'.red })
+        return done(null, false, { message: 'That email is not registered'})
       }
       if (user.isDisabled === true) {
         return done(null, false, { message: 'That user has been disabled. Contact your manager' })
