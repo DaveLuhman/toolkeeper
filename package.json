@@ -49,7 +49,7 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "postcss": "^8.4.23",
-    "sequelize": "^6.31.1",
+    "sequelize": "^6.32.0",
     "sqlite3": "^5.1.6",
     "tailwindcss-dropdown": "^1.0.0"
   },
