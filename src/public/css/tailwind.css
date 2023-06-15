@@ -7,7 +7,7 @@ body {
   @apply bg-gradient-to-t;
   @apply from-gray-700;
   @apply to-base-300;
-  @apply min-h-min;
+  @apply min-h-fit;
   @apply min-w-min;
   @apply p-0;
 }
