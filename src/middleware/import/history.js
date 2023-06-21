@@ -3,9 +3,8 @@ import ToolHistory from '../../models/ToolHistory.model.js'
 import ServiceAssignmentModel from '../../models/ServiceAssignment.model.js'
 import { importedFileToArrayByRow } from '../util.js'
 
-
-function dateTimeMixer(date, time) {
-  let returnValue = new Date(`${date} ${time}`).toISOString()
+function dateTimeMixer (date, time) {
+  const returnValue = new Date(`${date} ${time}`).toISOString()
   return returnValue
 }
 
