@@ -82,12 +82,19 @@ const toolSchema = new Schema(
     },
     image: {
       type: String
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
     }
   },
   {
     toObject: { virtuals: true },
     toJSON: { virtuals: true },
-    timestamps: true,
     strict: false
   }
 )
@@ -97,7 +104,7 @@ toolSchema.findAll = function (callback) {
 }
 
 toolSchema.virtual('status').get(function () {
-  if (this.serviceAssignment == undefined) return 'Undefined'
+  if (this.serviceAssignment === undefined) return 'Undefined'
   switch (this.serviceAssignment.type) {
     case 'Stockroom':
       return 'Checked In'
