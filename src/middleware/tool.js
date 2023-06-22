@@ -1,6 +1,7 @@
 import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
 import { mutateToArray, paginate } from './util.js'
+import sortArray from 'sort-array'
 
 /**
  *
@@ -40,10 +41,15 @@ async function getToolByID (req, res, next) {
   const id = req.params.id
   console.info(`[MW] searching id: ${id}`)
   const tools = await Tool.findById({ $eq: id })
-  const toolHistory = await ToolHistory.findById({ $eq: id })
+  const toolHistory = await ToolHistory.findById({ $eq: id }).sort({
+    updatedAt: 1
+  })
   res.locals.tools = [tools]
   if (toolHistory) {
-    res.locals.toolHistory = toolHistory.history
+    res.locals.toolHistory = sortArray(toolHistory.history, {
+      by: 'updatedAt',
+      order: 'desc'
+    })
   }
   return next()
 }
@@ -62,7 +68,7 @@ async function searchTools (req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchTerm } = req.body
   const tools = await Tool.find({
-    [searchBy]: { $eq: [searchTerm] }
+    [searchBy]: { $eq: searchTerm }
   }).sort({ [sortField]: sortOrder })
   const { trimmedData, pageCount, targetPage } = paginate(
     tools,
@@ -268,7 +274,7 @@ async function checkTools (req, res, next) {
     res.locals.message = 'No Tools Submitted For Status Change'
     console.warn('[MW checkTools-out-1'.bgWhite.blue)
     res.status(400).redirect('back')
-    return
+    return next()
   }
   const [searchTerm] = req.body
   const checkingTools = []

@@ -21,7 +21,7 @@ async function updateToolServiceAssignment (row) {
   if (!tool) {
     return 1 // error
   }
-  const dateTime = dateTimeMixer(row[0], row[1])
+  const dateTime = dateTimeMixer(row[0], row[1]) // creates a date time object for when there was a relavent transaction
   await Tool.findByIdAndUpdate(
     { _id: tool.id },
     { serviceAssignment: serviceAssignment.id, updatedAt: dateTime },
