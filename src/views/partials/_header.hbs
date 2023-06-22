@@ -9,7 +9,8 @@
           <li><a href="/dashboard"><i class="fa-solid fa-house"></i></a></li>
           <li><label for="newToolModal" style="cursor:pointer"><i class="fa-sharp fa-solid fa-plus"></i></label></li>
           <li><label for="checkInOutModal" style="cursor:pointer"><i class="fa-solid fa-rotate-right"></i></label></li>
-          <li><label for="searchToolModal" style="cursor:pointer"><i class="fa-solid fa-magnifying-glass"></i></label></li>
+          <li><label for="searchToolModal" style="cursor:pointer"><i class="fa-solid fa-magnifying-glass"></i></label>
+          </li>
         </ul>
       </div>
       {{!-- Medium+ Viewport NavBar --}}
@@ -30,10 +31,10 @@
       <div class="flex flex-wrap items-center justify-end order-2 mr-0 md:order-3" id="nav-content">
         <div class="flex items-center w-full md:w-full">
           <div class="dropdown dropdown-end">
-            <label tabindex="0"
-              class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:text-black"  style="cursor:pointer">{{user.firstName}}
+            <label tabindex="0" class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:text-black"
+              style="cursor:pointer">{{user.firstName}}
               {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
-            <ul tabindex="0" class="w-full mt-2 rounded shadow menu dropdown-content rounded-b-box">
+            <ul tabindex="0" class="z-10 w-full mt-2 rounded shadow menu dropdown-content rounded-b-box">
               <li class="hover:border-gray-300 bg-base-100"><a href="/user/profile">Profile</a></li>
               {{#eq user.role "Manager"}}
                 <li class="hover:border-gray-300 bg-base-100"><a href="/settings">Settings</a></li>
@@ -54,8 +55,8 @@
   <nav id="header">
     <div class="flex items-center justify-between w-full px-6 py-2 mt-0">
       <a href="/">
-      <img class="hidden md:flex" src="/img/toolKeeperLogo-dark-full.png" width="275px" height="auto">
-      <img class="flex md:hidden" src="/img/toolKeeperLogo-dark-small.png" width="115px" height="auto">
+        <img class="hidden md:flex" src="/img/toolKeeperLogo-dark-full.png" width="275px" height="auto">
+        <img class="flex md:hidden" src="/img/toolKeeperLogo-dark-small.png" width="115px" height="auto">
       </a>
       <label for="menu-toggle" class="block cursor-pointer md:hidden">
         <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
