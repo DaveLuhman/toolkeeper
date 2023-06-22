@@ -57,11 +57,12 @@ This is a full-stack web application built with NodeJS and Express that allows a
 
 ## Features
 
-- Add and archive tools
-- Search for tools by serial number, barcode, in/out status, or service assignment
-- Add and archive service assignments (employees, vehicles, or jobsites)
-- Checkout and check-in tools to/from service assignments (employees, vehicles, or jobsites)
-- Users can set theme and sorting preferences individually
+- Add and archive tools (No-Deletion Philosophy)
+- Search for tools by a variety of fields
+- Add and delete service assignments (employees, vehicles, or jobsites)
+- Checkout and check-in tools to/from service assignments (employees, vehicles, jobsites, and stockrooms)
+    - Status Assignments are set via service assignment type.
+- Users can set personal theme and sorting preferences
 - Generate reports on tool usage and inventory levels (coming soon...)
 
 ## Technologies Used
@@ -90,7 +91,7 @@ Note: This is configured with /data/db and /data/configdb persistent storage vol
 1. Clone the `master` branch either from the GH repo [Link](https://github.com/DaveLuhman/toolkeeper) or via terminal
 	`git clone https://github.com/DaveLuhman/toolkeeper.git`
 
-2. Edit the contents of the .env file to your environment
+2. Duplicate the .env.sample file and fill in the details to match your environment
 	a. note the .env file in the monorepo is in ./src/config/.env
 
 3. In a terminal, run `npm ci` to perform a clean install of the node dependancies
@@ -113,7 +114,7 @@ Note: This is configured with /data/db and /data/configdb persistent storage vol
 
 ### Route URL Naming Convention
 
-`/container/name/verb/[id]` is the convention, e.g. `/tools/create` would indicate the route is for creating a new tool, and `/tools/update/123456789` would indicate the route is for updating a tool with the id of 123456789
+`/model/verb/[id]` is the convention, e.g. `/tools/create` would indicate the route is for creating a new tool, and `/tools/update/123456789` would indicate the route is for updating a tool with the id of 123456789
 
 ### Route Prefixes
 
