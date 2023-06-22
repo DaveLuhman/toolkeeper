@@ -43,6 +43,7 @@
     </tbody>
   </table>
 </div>
+{{#if user.preferences.developer}}
 <div class="ml-10 pl-18 dropdown dropdown-right">
   <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
     <h1>Test Section</h1>
@@ -92,6 +93,7 @@
   </div>
 </div>
 <br />
+{{/if}}
 {{#gt pagination.pageCount 1}}
   <ul class="paginate-bar">
     {{#paginate pagination type="first"}}

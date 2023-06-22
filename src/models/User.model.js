@@ -44,7 +44,8 @@ const UserSchema = new Schema(
         theme: 'dracula',
         sortField: 'serialNumber',
         sortDirection: 'asc',
-        pageSize: 10
+        pageSize: 10,
+        developer: false
       }
     }
   },
