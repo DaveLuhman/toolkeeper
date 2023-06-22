@@ -9,7 +9,7 @@
     <thead>
       <tr>
         <th>Serial number</th>
-        <th class="hidden md:table-cell">Model Number</th>
+        <th class="hidden md:table-cell">Tool ID</th>
         <th>Barcode #</th>
         <th class="hidden lg:table-cell">Description</th>
         <th class="hidden lg:table-cell">Manufacturer</th>
@@ -25,7 +25,7 @@
           {{#unless archived}}
             <tr>
               <td id="serialNumber">{{serialNumber}}</td>
-              <td class="hidden md:table-cell" id="modelNumber">{{modelNumber}}</td>
+              <td class="hidden md:table-cell" id="modelNumber">{{toolID}}</td>
               <td id="barcode">{{barcode}}</td>
               <td class="hidden lg:table-cell" id="description">{{description}}</td>
               <td class="hidden lg:table-cell" id="manufacturer">{{manufacturer}}</td>
