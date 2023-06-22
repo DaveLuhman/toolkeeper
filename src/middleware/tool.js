@@ -60,9 +60,9 @@ async function getToolByID (req, res, next) {
 async function searchTools (req, res, next) {
   console.info('[MW] searchTools-in'.bgBlue.white)
   const { sortField, sortOrder } = req.user.preferences
-  const { searchBy, searchValue } = req.body
+  const { searchBy, searchTerm } = req.body
   const tools = await Tool.find({
-    [searchBy]: { $eq: searchValue }
+    [searchBy]: { $eq: [searchTerm] }
   }).sort({ [sortField]: sortOrder })
   const { trimmedData, pageCount, targetPage } = paginate(
     tools,
