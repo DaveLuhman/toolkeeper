@@ -87,7 +87,8 @@ async function updateUser (req, res, next) {
     theme,
     sortField,
     sortDirection,
-    pageSize
+    pageSize,
+    developer
   } = req.body
   console.table(req.body)
   console.info('[MW] updateUser-in'.bgBlue.white)
@@ -101,7 +102,8 @@ async function updateUser (req, res, next) {
           theme,
           sortField,
           sortDirection,
-          pageSize
+          pageSize,
+          developer
         }
       }
     },

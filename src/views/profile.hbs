@@ -58,7 +58,8 @@
                         <option value="status" {{isSelected user.preferences.sortField "status" }}>
                             Status
                         </option>
-                        <option value="serviceAssignment" {{isSelected user.preferences.sortField "serviceAssignment" }}>
+                        <option value="serviceAssignment"
+                            {{isSelected user.preferences.sortField "serviceAssignment" }}>
                             Service Assignment</option>
                     </select>
                 </div>
@@ -84,6 +85,11 @@
                         <option value="-1" {{isSelected user.preferences.pageSize '-1' }}>Infinite
                         </option>
                     </select>
+                </div>
+                <div class="form-control">
+                    <span class="text-sm  rounded-l px-4 py-2 whitespace-no-wrap">Developer Mode?
+                        <input type="checkbox" name="developer" class="checkbox-primary checkbox-sm rounded-xl ml-3" {{#eq user.preferences.developer 'on'}}checked{{/eq}}>
+                    </span>
                 </div>
             </div>
             <div class="form-button-row">
