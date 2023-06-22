@@ -31,8 +31,7 @@
               <td class="hidden lg:table-cell" id="manufacturer">{{manufacturer}}</td>
               <td class="hidden md:table-cell" id="status">{{status}}</td>
               <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment.name}} -
-                {{serviceAssignment.description}}
-              </td>
+                {{serviceAssignment.description}}</td>
               <td class="hidden md:table-cell" id="category">{{category.name}}
               </td>
               <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i class="fa fa-pencil"></i></a></label>
@@ -45,55 +44,55 @@
   </table>
 </div>
 {{#if user.preferences.developer}}
-  <div class="ml-10 pl-18 dropdown dropdown-right">
-    <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
-      <h1>Test Section</h1>
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" class="w-4 h-4 stroke-current">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-          d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
-    </label>
-    <div class="p-5 bg-white shadow w-100 card dropdown-content">
-      <h2>Categories:</h2>
-      <div class="bg-fuchsia-500">
-        <ul class="text-white list-disc">
-          {{#each categories}}
-            <li>{{this.name}} -- {{this.id}}</li>
-          {{/each}}
-        </ul>
-      </div>
-      <hr />
-      <h2>Tools:</h2>
-      <ul class="list-decimal">
-        {{#each tools}}
-          <li>
-            <div class="bg-teal-500">{{this.id}}: </div>
-            <ul class="pl-10 list-disc">
-              <li>SN: {{this.serialNumber}}</li>
-              <li>PN: {{this.modelNumber}}</li>
-              <li>Barcode: {{this.barcode}}</li>
-              <li>Status: {{this.status}}</li>
-              <li>SA: {{this.serviceAssignment.name}}</li>
-              <li>Desc: {{this.description}}</li>
-              <li>Raw: {{this}}</li>
-            </ul>
-          </li>
+<div class="ml-10 pl-18 dropdown dropdown-right">
+  <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
+    <h1>Test Section</h1>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 36 36" class="w-4 h-4 stroke-current">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+    </svg>
+  </label>
+  <div class="p-5 bg-white shadow w-100 card dropdown-content">
+    <h2>Categories:</h2>
+    <div class="bg-fuchsia-500">
+      <ul class="text-white list-disc">
+        {{#each categories}}
+          <li>{{this.name}} -- {{this.id}}</li>
         {{/each}}
       </ul>
-      <hr />
-      <h2>Service Assignments</h2>
-      {{#each serviceAssignments}}
-        <li>{{this.name}} -- {{this.id}}</li>
-      {{/each}}
-      <hr />
-      <h2>Current User</h2>
-      <ul>
-        <li>{{user.displayName}} -- {{user.id}} -- {{JSONstringify user.preferences}}</li>
-      </ul>
-      <hr />
     </div>
+    <hr />
+    <h2>Tools:</h2>
+    <ul class="list-decimal">
+      {{#each tools}}
+        <li>
+          <div class="bg-teal-500">{{this.id}}: </div>
+          <ul class="pl-10 list-disc">
+            <li>SN: {{this.serialNumber}}</li>
+            <li>PN: {{this.modelNumber}}</li>
+            <li>Barcode: {{this.barcode}}</li>
+            <li>Status: {{this.status}}</li>
+            <li>SA: {{this.serviceAssignment.name}}</li>
+            <li>Desc: {{this.description}}</li>
+            <li>Raw: {{this}}</li>
+          </ul>
+        </li>
+      {{/each}}
+    </ul>
+    <hr />
+    <h2>Service Assignments</h2>
+    {{#each serviceAssignments}}
+      <li>{{this.name}} -- {{this.id}}</li>
+    {{/each}}
+    <hr />
+    <h2>Current User</h2>
+    <ul>
+      <li>{{user.displayName}} -- {{user.id}} -- {{JSONstringify user.preferences}}</li>
+    </ul>
+    <hr />
   </div>
-  <br />
+</div>
+<br />
 {{/if}}
 {{#gt pagination.pageCount 1}}
   <ul class="paginate-bar">

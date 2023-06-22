@@ -29,12 +29,12 @@
       </div>
       {{!-- User Menu --}}
       <div class="flex flex-wrap items-center justify-end order-2 mr-0 md:order-3" id="nav-content">
-        <div class="flex items-center w-full md:w-full">
+        <div class="z-10 flex items-center w-full md:w-full">
           <div class="dropdown dropdown-end">
             <label tabindex="0" class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:text-black"
               style="cursor:pointer">{{user.firstName}}
               {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
-            <ul tabindex="0" class="z-10 w-full mt-2 rounded shadow menu dropdown-content rounded-b-box">
+            <ul tabindex="0" class="w-full mt-2 rounded shadow menu dropdown-content rounded-b-box">
               <li class="hover:border-gray-300 bg-base-100"><a href="/user/profile">Profile</a></li>
               {{#eq user.role "Manager"}}
                 <li class="hover:border-gray-300 bg-base-100"><a href="/settings">Settings</a></li>
