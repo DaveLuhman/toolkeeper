@@ -34,13 +34,13 @@
         let selection = event.target.value
         switch (selection) {
             case 'serviceAssignment':
-                searchInput.innerHTML = '<select name="serviceAssignment" class="select select-bordered">\n{{#each serviceAssignments}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select >'
+                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n{{#each serviceAssignments}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select >'
                 break
             case 'status':
-                searchInput.innerHTML = '<select name="status" class="select select-bordered">\n<option>Status</option>\n<option value="Checked In">Checked In</option>\n<option value="Checked Out">Checked Out</option>\n</select>'
+                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n<option>Status</option>\n<option value="Checked In">Checked In</option>\n<option value="Checked Out">Checked Out</option>\n</select>'
                 break
             case 'category':
-                searchInput.innerHTML = '<select name="category" class="select select-bordered">\n{{#each categories}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select>'
+                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n{{#each categories}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select>'
                 break
             case 'manufacturer':
                 searchInput.innerHTML = '<input id="searchTerm" name="searchTerm" type="text" placeholder="Manufacturer" class="input input-bordered" />'
