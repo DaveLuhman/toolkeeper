@@ -43,10 +43,10 @@
                 searchInput.innerHTML = '<select name="category" class="select select-bordered">\n{{#each categories}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select>'
                 break
             case 'manufacturer':
-                searchInput.innerHTML = '<input id="searchValue" name="searchValue" type="text" placeholder="Manufacturer" class="input input-bordered" />'
+                searchInput.innerHTML = '<input id="searchTerm" name="searchTerm" type="text" placeholder="Manufacturer" class="input input-bordered" />'
                 break
             default:
-                searchInput.innerHTML = '<input id="searchValue" name="searchValue" type="text" placeholder="Search Term" class="input input-bordered" />'
+                searchInput.innerHTML = '<input id="searchTerm" name="searchTerm" type="text" placeholder="Search Term" class="input input-bordered" />'
                 break
         }
     })
