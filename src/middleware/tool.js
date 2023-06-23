@@ -269,58 +269,14 @@ async function archiveTool (req, res, next) {
  * @returns
  */
 async function checkTools (req, res, next) {
-  console.info('[MW] checkTools-in'.bgBlue.white)
   if (req.body.searchTerm === '' || req.body.searchTerm === undefined) {
     res.locals.message = 'No Tools Submitted For Status Change'
     console.warn('[MW checkTools-out-1'.bgWhite.blue)
     res.status(400).redirect('back')
     return next()
   }
-  const [searchTerm] = req.body
-  const checkingTools = []
-  for (let i = 0; i < searchTerm.length > 100; i++) {
-    if (searchTerm[i] === '') {
-      continue
-    }
-    const tempTool = lookupTool(searchTerm[i])
-    if (tempTool.status === 'Checked In') {
-      const pendingTool = {
-        _id: tempTool._id,
-        serialNumber: tempTool.serialNumber,
-        modelNumber: tempTool.modelNumber,
-        barcode: tempTool.barcode,
-        description: tempTool.description,
-        serviceAssignment: 'FILL THIS IN',
-        serviceAssignmentChanged: true,
-        category: tempTool.category
-      }
-      checkingTools.push(pendingTool)
-    }
-    if (tempTool.status === 'Checked Out') {
-      const pendingTool = {
-        _id: tempTool._id,
-        serialNumber: tempTool.serialNumber,
-        modelNumber: tempTool.modelNumber,
-        barcode: tempTool.barcode,
-        description: tempTool.description,
-        serviceAssignment: 'Tool Room',
-        serviceAssignmentChanged: false,
-        category: tempTool.category
-      }
-      checkingTools.push(pendingTool)
-    }
-  }
-  if (!checkingTools || checkingTools.length === 0) {
-    res.locals.message = 'Tools not found'
-    res.locals.tools = []
-    console.warn('[MW] Tools Not Found'.yellow)
-    console.info('[MW] checkTools-out-2'.bgWhite.blue)
-    res.status(400).redirect('back')
-    return
-  }
-  res.locals.tools = checkingTools
-  res.status(200)
-  console.info('[MW] checkTools-out-3'.bgWhite.blue)
+  const toolsToBeChanged = await lookupToolWrapper(req.body.searchTerm)
+  res.locals.tools = toolsToBeChanged
   next()
 }
 /**
@@ -329,19 +285,26 @@ async function checkTools (req, res, next) {
  * @param {string} searchField optional, key to search - if not provided, will search all fields
  * @returns {object}
  */
-async function lookupTool (searchTerm, searchField) {
-  let query
-  if (searchField === '' || searchField === undefined) {
-    query = await Tool.findOne({ $text: { $search: searchTerm } })
+async function lookupTool (searchTerm) {
+  let result = await Tool.find({ serialNumber: { $eq: searchTerm } })
+  if (!result) {
+    result = await Tool.find({ barcode: { $eq: searchTerm } })
   }
-  if (searchField) {
-    query = await Tool.findOne({ [searchField]: { $eq: searchTerm } })
+  if (!result) {
+    result = await Tool.find({ toolID: { $eq: searchTerm } })
   }
-  if (!query) {
-    console.warn('[MW] Tool Not Found'.yellow)
-    return
+  if (!result) {
+    result = { searchTerm }
   }
-  return mutateToArray(query)
+  return result
+}
+
+async function lookupToolWrapper (searchTerms) {
+  const results = []
+  for (let i = 0; i < searchTerms.length; i++) {
+    results.push(await lookupTool(searchTerms[i]))
+  }
+  return results
 }
 
 export {
