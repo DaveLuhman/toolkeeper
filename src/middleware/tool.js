@@ -150,6 +150,18 @@ async function createTool (req, res, next) {
     res.status(error.status || 500).redirect('back')
   }
 }
+
+async function updateToolHistory (toolID) {
+  const oldTool = await Tool.findById(toolID)
+  await ToolHistory.findByIdAndUpdate(
+    { _id: toolID },
+    {
+      $push: { history: oldTool },
+      $inc: { __v: 1 }
+    }
+  )
+}
+
 /**
  *
  * @param {*} req.body._id The id of the tool to update
@@ -171,7 +183,7 @@ async function updateTool (req, res, next) {
       length,
       weight
     } = newToolData
-    const oldTool = await Tool.findById({ $eq: id })
+    updateToolHistory(id)
     const updatedTool = await Tool.findByIdAndUpdate(
       { $eq: id },
       {
@@ -190,14 +202,7 @@ async function updateTool (req, res, next) {
       },
       { new: true }
     )
-    await ToolHistory.findByIdAndUpdate(
-      { $eq: id },
-      {
-        $push: { history: oldTool },
-        $inc: { __v: 1 }
-      },
-      { new: true }
-    )
+
     return updatedTool
   }
   const updatedToolArray = []
@@ -316,11 +321,24 @@ async function lookupToolWrapper (searchTerms) {
 }
 
 async function submitCheckInOut (req, res, next) {
-  const { id, newServiceAssignment } = req.body
-  let newTools
-  for(let i = 0, i < id.length, i++) {
-    newTools.push(await Tool.findByIdAndUpdate({}))
+  const id = mutateToArray(req.body.id)
+  const newServiceAssignment = mutateToArray(req.body.newServiceAssignment)
+  const newTools = []
+  for (let i = 0; i < id.length; i++) {
+    updateToolHistory(id[i])
+    newTools.push(
+      await Tool.findByIdAndUpdate(
+        { _id: id[i] },
+        {
+          serviceAssignment: newServiceAssignment[i],
+          $inc: { __v: 1 }
+        },
+        { new: true }
+      )
+    )
   }
+  res.locals.tools = newTools
+  res.locals.message = `${newTools.length} tool(s) have been updated`
   next()
 }
 
