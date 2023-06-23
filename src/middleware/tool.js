@@ -157,7 +157,8 @@ async function updateToolHistory (toolID) {
     { _id: toolID },
     {
       $push: { history: oldTool },
-      $inc: { __v: 1 }
+      $inc: { __v: 1 },
+      $set: { updatedAt: Date.now() }
     }
   )
 }
@@ -198,7 +199,8 @@ async function updateTool (req, res, next) {
           length,
           weight
         },
-        $inc: { __v: 1 }
+        $inc: { __v: 1 },
+        $set: { updatedAt: Date.now() }
       },
       { new: true }
     )
@@ -225,7 +227,9 @@ async function updateTool (req, res, next) {
           height: req.body.size.height[i],
           length: req.body.size.length[i],
           weight: req.body.size.weight[i]
-        }
+        },
+        $inc: { __v: 1 },
+        $set: { updatedAt: Date.now() }
       })
       updatedToolArray.push(updatedTool)
     }
@@ -331,7 +335,8 @@ async function submitCheckInOut (req, res, next) {
         { _id: id[i] },
         {
           serviceAssignment: newServiceAssignment[i],
-          $inc: { __v: 1 }
+          $inc: { __v: 1 },
+          $set: { updatedAt: Date.now() }
         },
         { new: true }
       )
