@@ -12,7 +12,8 @@ const toolSchema = new Schema(
       upperCase: true,
       unique: true,
       maxLength: 32,
-      trim: true
+      trim: true,
+      required: true
     },
     modelNumber: {
       type: String,

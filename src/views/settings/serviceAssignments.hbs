@@ -3,6 +3,11 @@
     {{>_settings}}
   </div>
   <div id="serviceAssignmentTable">
+    <div class="mx-5">
+      <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
+        <label for="newServiceAssignmentModal">New Service Assignment</label>
+      </div>
+    </div>
     <table class="table table-striped">
       <thead>
         <tr>
@@ -31,11 +36,7 @@
         {{/if}}
       </tbody>
     </table>
-    <div class="mx-5">
-      <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
-        <label for="newServiceAssignmentModal">New Service Assignment</label>
-      </div>
-    </div>
+
   </div>
 </div>
 <br>
@@ -75,14 +76,14 @@
         <input placeholder="Description" type="text" name="description" class="input input-bordered">
         <input placeholder="Phone" type="text" name="phone" class="input input-bordered">
         <select name="type" class="select select-bordered">
-          <option value="contractJob">Contract Job</option>
-          <option value="serviceJob">Service Job</option>
-          <option value="vehicle">Vehicle</option>
-          <option value="employee">Employee</option>
-          <option value="stockroom">Stockroom</option>
-          <option value="importedUncategorized">Imported - Uncategorized
+          <option value="Contract Job">Contract Job</option>
+          <option value="Service Job">Service Job</option>
+          <option value="Vehicle">Vehicle</option>
+          <option value="Employee">Employee</option>
+          <option value="Stockroom">Stockroom</option>
+          <option value="Imported - Uncategorized">Imported - Uncategorized
           </option>
-          <option value="errorUncategorized">Error - Uncategorized</option>
+          <option value="Error - Uncategorized">Error - Uncategorized</option>
         </select>
         <input placeholder="Misc Notes" type="textarea" name="notes" class="col-span-2 input input-bordered">
 

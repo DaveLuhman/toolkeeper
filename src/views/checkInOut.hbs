@@ -1,0 +1,41 @@
+<div class="main-view">
+    {{!-- tools to be checked in --}}
+    <form action="/tool/submitCheckInOut" method="post">
+        <table class="table overflow-visible ">
+            <thead>
+                <tr>
+                    <th>Serial number</th>
+                    <th>Barcode</th>
+                    <th>Current SA</th>
+                    <th>Select New SA</th>
+                </tr>
+            </thead>
+            {{#if tools}}
+                <tbody>
+                    {{#each tools}}
+                        <tr>
+                            <input type="hidden" name="id" value="{{id}}">
+                            <td>{{serialNumber}}</td>
+                            <td>{{barcode}}</td>
+
+                            <td name="serviceAssignment">{{serviceAssignment.name}} -
+                                {{serviceAssignment.description}}
+                            </td>
+                            <td name="newServiceAssignmment">
+                                <select name="newServiceAssignment" class="select select-bordered">
+                                    {{#each ../serviceAssignments}}
+                                        <option name="{{ name }}" value="{{  id }}">{{  name }} -
+                                            {{ description}}</option>
+                                    {{/each}}
+                                </select>
+                            </td>
+                        </tr>
+                    {{/each}}
+            {{/if}}
+            </tbody>
+        </table>
+        <div class="form-control">
+            <button type="submit">Confirm And Submit</button>
+        </div>
+    </form>
+</div>

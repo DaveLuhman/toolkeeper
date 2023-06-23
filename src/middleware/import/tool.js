@@ -1,6 +1,6 @@
 import Tool from '../../models/Tool.model.js'
-import ToolHistory from '../../models/ToolHistory.model.js'
 import { importedFileToArrayByRow } from '../util.js'
+import ToolHistory from '../../models/ToolHistory.model.js'
 
 function trimArrayValues (array) {
   for (let i = 0; i < array.length; i++) {
@@ -30,7 +30,9 @@ async function createImportedTool (row) {
     description: row[2],
     modelNumber: row[9],
     toolID: row[10],
-    manufacturer: row[11]
+    manufacturer: row[11],
+    // eslint-disable-next-line no-undef
+    serviceAssignment: '6494d93d5f5507141c3ebf7f'
   }
   try {
     if (await checkForDuplicates(toolDocument.serialNumber)) {
@@ -38,8 +40,7 @@ async function createImportedTool (row) {
     }
     const newTool = await Tool.create(toolDocument)
     await ToolHistory.create({
-      _id: newTool._id,
-      history: [newTool]
+      _id: newTool._id
     })
     return newTool.id
   } catch (err) {
