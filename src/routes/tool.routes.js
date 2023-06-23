@@ -5,7 +5,8 @@ import {
   archiveTool,
   createTool,
   searchTools,
-  updateTool
+  updateTool,
+  submitCheckInOut
 } from '../middleware/tool.js'
 import { sanitizeReqBody } from '../middleware/util.js'
 export const toolRouter = Router()
@@ -21,8 +22,12 @@ toolRouter.post('/search', sanitizeReqBody, searchTools, (_req, res) => {
 })
 
 // determine if tool is checked in or out
-toolRouter.post('/checkTools', checkTools, (_req, res) => {
-  res.render('editTool')
+toolRouter.post('/checkInOut', checkTools, (_req, res) => {
+  res.render('checkInOut')
+})
+// determine if tool is checked in or out
+toolRouter.post('/submitCheckInOut', submitCheckInOut, (_req, res) => {
+  res.render('dashboard')
 })
 
 // create new tool

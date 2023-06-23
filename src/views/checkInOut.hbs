@@ -1,6 +1,6 @@
 <div class="main-view">
     {{!-- tools to be checked in --}}
-    <form action="#">
+    <form action="/tool/submitCheckInOut" method="post">
         <table class="table overflow-visible ">
             <thead>
                 <tr>
@@ -15,27 +15,30 @@
                     {{#each tools}}
                         <tr>
                             <input type="hidden" name="id" value="{{id}}">
-                            <td name="serialNumber">{{serialNumber}}</td>
-                            <td name="barcode">{{barcode}}</td>
+                            <td>{{serialNumber}}</td>
+                            <td>{{barcode}}</td>
 
                             <td name="serviceAssignment">{{serviceAssignment.name}} -
                                 {{serviceAssignment.description}}
                             </td>
                             <td name="newServiceAssignmment">
-                                <select name="searchTerm" class="select select-bordered">
-                                    {{#each serviceAssignments}}
-                                        <option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }} -
-                                            {{this.description}}</option>
+                                <select name="newServiceAssignment" class="select select-bordered">
+                                    {{#each ../serviceAssignments}}
+                                        <option name="{{ name }}" value="{{  id }}">{{  name }} -
+                                            {{ description}}</option>
                                     {{/each}}
                                 </select>
-                            </td>
-                            <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i
-                                            class="fa fa-pencil"></i></a></label>
                             </td>
                         </tr>
                     {{/each}}
             {{/if}}
             </tbody>
         </table>
+        <div class="form-control">
+            <button type="submit">Confirm And Submit</button>
+        </div>
     </form>
+    {{#each serviceAssignments}}
+        {{this.name}}
+        {{/each}}
 </div>

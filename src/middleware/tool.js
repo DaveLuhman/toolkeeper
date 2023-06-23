@@ -260,8 +260,8 @@ async function archiveTool (req, res, next) {
   next()
 }
 /**
- * checkTools - Checks whether tools are checked in/out and returns the inverse.
- * @param {string} req.body.searchTerm The serialNumber/barcode of the tool to archive
+ * checkTools - Looks up tool(s) and returns them in a table to have their SAs updated
+ * @param {string} req.body.searchTerm The serialNumber/barcode/toolID of the tool(s) to check-in/out
  * @param {string} res.locals.message The message to display to the user
  * @param {array} res.locals.tools The tool that was unarchived
  * @param {number} res.status The status code to return
@@ -275,7 +275,9 @@ async function checkTools (req, res, next) {
     res.status(400).redirect('back')
     return next()
   }
-  const toolsToBeChanged = await lookupToolWrapper(req.body.searchTerm)
+  const rawSearchTerms = req.body.searchTerm
+  const validatedSearchTerms = rawSearchTerms.filter((term) => term.length > 0)
+  const toolsToBeChanged = await lookupToolWrapper(validatedSearchTerms)
   res.locals.tools = toolsToBeChanged
   next()
 }
@@ -286,25 +288,40 @@ async function checkTools (req, res, next) {
  * @returns {object}
  */
 async function lookupTool (searchTerm) {
-  let result = await Tool.find({ serialNumber: { $eq: searchTerm } })
+  let result = await Tool.findOne({ serialNumber: { $eq: searchTerm } })
   if (!result) {
-    result = await Tool.find({ barcode: { $eq: searchTerm } })
+    result = await Tool.findOne({ barcode: { $eq: searchTerm } })
   }
   if (!result) {
-    result = await Tool.find({ toolID: { $eq: searchTerm } })
+    result = await Tool.findOne({ toolID: { $eq: searchTerm } })
   }
   if (!result) {
     result = { searchTerm }
   }
+  console.log(result)
   return result
 }
-
+/**
+ * @name lookupToolWrapper
+ * @desc iterator for looking up multiple search terms for checkTools
+ * @param {*} searchTerms
+ * @return {*}
+ */
 async function lookupToolWrapper (searchTerms) {
   const results = []
   for (let i = 0; i < searchTerms.length; i++) {
     results.push(await lookupTool(searchTerms[i]))
   }
   return results
+}
+
+async function submitCheckInOut (req, res, next) {
+  const { id, newServiceAssignment } = req.body
+  let newTools
+  for(let i = 0, i < id.length, i++) {
+    newTools.push(await Tool.findByIdAndUpdate({}))
+  }
+  next()
 }
 
 export {
@@ -314,5 +331,6 @@ export {
   createTool,
   updateTool,
   archiveTool,
-  checkTools
+  checkTools,
+  submitCheckInOut
 }
