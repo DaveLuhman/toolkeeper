@@ -1,5 +1,6 @@
 import Tool from '../../models/Tool.model.js'
 import { importedFileToArrayByRow } from '../util.js'
+import ToolHistory from '../../models/ToolHistory.model.js'
 
 function trimArrayValues (array) {
   for (let i = 0; i < array.length; i++) {
@@ -38,6 +39,9 @@ async function createImportedTool (row) {
       throw new Error('Duplicate serial number')
     }
     const newTool = await Tool.create(toolDocument)
+    await ToolHistory.create({
+      _id: newTool._id
+    })
     return newTool.id
   } catch (err) {
     console.log(err)
