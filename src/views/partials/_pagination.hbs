@@ -1,0 +1,38 @@
+<div class="hidden md:block">
+{{#gt pagination.pageCount 1}}
+  <ul class="paginate-bar">
+    {{#paginate pagination type="first"}}
+      <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">First</button></a></div>
+    {{/paginate}}
+    {{#paginate pagination type="previous"}}
+      <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Previous</button></a></div>
+    {{/paginate}}
+    {{#paginate pagination type="middle" limit="9"}}
+      <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}"><button class="btn-paginate">{{n}}</button></a>
+      </div>
+    {{/paginate}}
+    {{#paginate pagination type="next"}}
+      <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Next</button></a></div>
+    {{/paginate}}
+    {{#paginate pagination type="last"}}
+      <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Last</button></a></div>
+    {{/paginate}}
+  </ul>
+{{/gt}}
+</div>
+<div class="block md:hidden">
+{{#gt pagination.pageCount 1}}
+  <ul class="paginate-bar">
+    {{#paginate pagination type="previous"}}
+      <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Previous</button></a></div>
+    {{/paginate}}
+    {{#paginate pagination type="middle" limit="3"}}
+      <div class="{{#if active}}active{{/if}} col"><a href="?p={{n}}"><button class="btn-paginate">{{n}}</button></a>
+      </div>
+    {{/paginate}}
+    {{#paginate pagination type="next"}}
+      <div class="col-auto"><a href="?p={{n}}"><button class="btn-paginate">Next</button></a></div>
+    {{/paginate}}
+  </ul>
+{{/gt}}
+</div>
