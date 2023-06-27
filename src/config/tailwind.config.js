@@ -1,9 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 const content = ['./src/views/**/*.{hbs,js}']
+const mode = 'jit'
 const daisyui = {
-  themes: [
-    'light', 'dark', 'dracula', 'corporate', 'synthwave', 'retro'
-  ]
+  themes: ['light', 'dark', 'dracula', 'corporate', 'synthwave', 'retro']
 }
 const theme = {
   fontFamily: {
@@ -18,6 +17,7 @@ const theme = {
   extend: {}
 }
 const variants = { display: ['responsive', 'dropdown'] }
+
 const plugins = [require('@tailwindcss/typography'), require('daisyui')]
 
-export default { content, daisyui, theme, plugins, variants }
+export default { content, purge, daisyui, theme, plugins, variants, mode }
