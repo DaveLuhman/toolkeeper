@@ -20,4 +20,4 @@ const variants = { display: ['responsive', 'dropdown'] }
 
 const plugins = [require('@tailwindcss/typography'), require('daisyui')]
 
-export default { content, purge, daisyui, theme, plugins, variants, mode }
+export default { content, daisyui, theme, plugins, variants, mode }
