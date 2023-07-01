@@ -228,7 +228,7 @@ td {
   @apply w-auto;
   @apply mt-10;
 }
-/* ----------------TOOL MODALS------------- */
+/* ----------------MODALS------------- */
 .modal-inner-lg {
   @apply modal-box;
   @apply max-w-5xl;
@@ -239,7 +239,7 @@ td {
 }
 .modal-inner-md {
   @apply modal-box;
-  @apply max-w-3xl;
+  @apply max-w-fit;
   @apply w-3/5;
   @apply bg-gradient-to-t;
   @apply from-gray-900;

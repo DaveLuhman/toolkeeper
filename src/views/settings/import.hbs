@@ -23,17 +23,17 @@
                 <input type="radio" name="importTarget" value="history" id="history">
             </div>
             <div class="form-control">
-                <label for="materials" class="label"><span class="label-text">Materials</span></label>
-                <input type="radio" name="importTarget" value="materials" id="tools" disabled>Not Yet Available
+                <label for="categories" class="label"><span class="label-text">Categories</span></label>
+                <input type="radio" name="importTarget" value="categories" id="tools">
             </div>
             <input type="file" name="importFile" id="importFile">
             <button type="submit" class="modal-button">Import</button>
         </form>
-{{#if message}}
-<h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
-{{/if}}
-{{#if error}}
-{{error}}
-{{/if}}
+        {{#if message}}
+            <h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
+        {{/if}}
+        {{#if error}}
+            {{error}}
+        {{/if}}
     </div>
 </div>
