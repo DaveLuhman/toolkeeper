@@ -17,7 +17,7 @@ async function saveCategoryDocument (doc) {
     return await new Category(doc).save()
   } catch (error) {
     errorCount++
-    errorList.push({key: doc.prefix, reason: error.message})
+    errorList.push({ key: doc.prefix, reason: error.message })
   }
 }
 
@@ -37,4 +37,3 @@ export async function importCategories (file) {
   await createCategories(categories)
   return { successCount, errorCount }
 }
-
