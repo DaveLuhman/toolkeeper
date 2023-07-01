@@ -1,7 +1,7 @@
 import { importServiceAssignments } from './serviceAssignment.js'
 import { importTools } from './tool.js'
 import { importHistory } from './history.js'
-import { importCategories } from 'categories.js'
+import { importCategories } from './categories.js'
 import 'fs/promises'
 
 export async function importByFile (req, res, next) {
