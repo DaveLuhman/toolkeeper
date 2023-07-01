@@ -2,30 +2,40 @@
     <div id="settings-nav">
         {{> _settings}}
     </div>
-    <div id="root-container" class="grid items-center grid-flow-row pl-5">
+    <div id="root-container" class="grid items-center grid-flow-row ml-5 pl-5">
         <div id="title-bar">
             <label class="title-text">CSV Import</label>
             <hr />
-            <label class="font-thin">What Would You Like To Import?</label>
+            <label class="font-thin">For the best results, import items in order:</label>
         </div>
         <form action="/settings/import/submit" method="POST" id="csv-import" encType="multipart/form-data">
-            <div class="form-control">
-                <label for="tools" class="label"><span class="label-text">Tools</span></label>
-                <input type="radio" name="importTarget" value="tools" id="tools">
-            </div>
-            <div class="form-control">
-                <label for="serviceAssignments" class="label"><span class="label-text">Service
-                        Assignments</span></label>
-                <input type="radio" name="importTarget" value="serviceAssignments" id="serviceAssignments">
-            </div>
-            <div class="form-control">
-                <label for="history" class="label"><span class="label-text">Transaction History</span></label>
-                <input type="radio" name="importTarget" value="history" id="history">
-            </div>
-            <div class="form-control">
-                <label for="categories" class="label"><span class="label-text">Categories</span></label>
-                <input type="radio" name="importTarget" value="categories" id="tools">
-            </div>
+            <ol class="list-decimal">
+                <li>
+                    <div class="form-control">
+                        <label for="serviceAssignments" class="label"><span class="label-text">Service
+                                Assignments  -  Total Entries: {{serviceAssignments.length}} </span></label>
+                        <input type="radio" name="importTarget" value="serviceAssignments" id="serviceAssignments">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-control">
+                        <label for="categories" class="label"><span class="label-text">Categories - Total Entries: {{categories.length}}</span></label>
+                        <input type="radio" name="importTarget" value="categories" id="tools">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-control">
+                        <label for="tools" class="label"><span class="label-text">Tools</span></label>
+                        <input type="radio" name="importTarget" value="tools" id="tools">
+                    </div>
+                </li>
+                <li>
+                    <div class="form-control">
+                        <label for="history" class="label"><span class="label-text">Transaction History</span></label>
+                        <input type="radio" name="importTarget" value="history" id="history">
+                    </div>
+                </li>
+            </ol>
             <input type="file" name="importFile" id="importFile">
             <button type="submit" class="modal-button">Import</button>
         </form>
