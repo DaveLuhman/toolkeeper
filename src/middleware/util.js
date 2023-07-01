@@ -9,7 +9,7 @@ sanitize
 *populateDropdownItems (const, not function)
 *rateLimiter
 *createAccountLimiter
-*importedFileToArrayByRow
+*csvFileToEntries
 */
 
 import rateLimit from 'express-rate-limit'
@@ -111,12 +111,11 @@ export const createAccountLimiter = rateLimit({
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
 
-export function importedFileToArrayByRow (file) {
-  const importDataBuffer = Buffer.from(file.data)
-  const importDataString = importDataBuffer
+export function csvFileToEntries (file) {
+  return Buffer.from(file.data)
     .toString('ascii')
+    .replace("'", '')
     .replaceAll('"', '')
-    .replaceAll("'", '')
-  const importDataParentArray = importDataString.split('\n')
-  return importDataParentArray
+    .split(/\r?\n/)
+    .map(row => row.split(','))
 }
