@@ -1,4 +1,5 @@
 import ServiceAssignment from '../../models/ServiceAssignment.model.js'
+import { csvFileToEntries } from '../util.js'
 
 function checkForDuplicates (name, description) {
   const searchResult = ServiceAssignment.find({
@@ -40,21 +41,6 @@ async function saveServiceAssignmentDocument (serviceAssignmentDocument) {
   await ServiceAssignment.create(serviceAssignmentDocument).save()
 }
 
-function importDataToString (file) {
-  const importDataBuffer = Buffer.from(file.data)
-  const importDataString = importDataBuffer
-    .toString('ascii')
-    .replaceAll('"', '')
-    .replaceAll("'", '')
-  return importDataString
-}
-
-function parseImportData (importDataString) {
-  const importDataParentArray = importDataString.split('\n')
-  const members = importDataParentArray.map((row) => row.split(','))
-  return members
-}
-
 function createServiceAssignments (members) {
   const serviceAssignmentsPromises = members.map((row) => {
     const serviceAssignmentDocument = createServiceAssignmentDocument(row)
@@ -64,8 +50,7 @@ function createServiceAssignments (members) {
 }
 
 export function importServiceAssignments (file) {
-  const importDataString = importDataToString(file)
-  const members = parseImportData(importDataString)
+  const members = csvFileToEntries(file)
   const successMsg = `${members.length} successfully processed.`
   return createServiceAssignments(members).then(() => ({ successMsg }))
 }

@@ -1,7 +1,7 @@
 import Tool from '../../models/Tool.model.js'
 import ToolHistory from '../../models/ToolHistory.model.js'
 import ServiceAssignmentModel from '../../models/ServiceAssignment.model.js'
-import { importedFileToArrayByRow } from '../util.js'
+import { csvFileToEntries } from '../util.js'
 
 function dateTimeMixer (date, time) {
   const returnValue = new Date(`${date} ${time}`).toISOString()
@@ -41,11 +41,7 @@ async function updateToolServiceAssignment (row) {
 export async function importHistory (file) {
   let failureCount = 0
   let successCount = 0
-  const importDataParentArray = importedFileToArrayByRow(file)
-  const transactions = []
-  importDataParentArray.forEach((row) => {
-    return transactions.push(row.split(','))
-  })
+  const transactions = csvFileToEntries(file)
   const updatedTools = []
   for (let i = 0; i < transactions.length; i++) {
     const result = await updateToolServiceAssignment(transactions[i])
