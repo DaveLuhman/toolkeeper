@@ -1,13 +1,24 @@
 import { csvFileToEntries } from '../util.js'
 import Category from '../../models/Category.model.js'
+let successCount, errorCount
+const errorList = []
 
 function createCategoryDocument (row) {
   const data = row.map((cell) => cell.trim())
   return { prefix: data[0], name: data[1], description: data[2] }
 }
-
+function categoryDuplicate (prefix) {
+  return Category.exists({ prefix }) !== null
+}
 async function saveCategoryDocument (doc) {
-  return await new Category(doc).save()
+  try {
+    if (categoryDuplicate) throw new Error('Duplicate Prefix')
+    successCount++
+    return await new Category(doc).save()
+  } catch (error) {
+    errorCount++
+    errorList.push({key: doc.prefix, reason: error.message})
+  }
 }
 
 function createCategories (categories) {
@@ -18,8 +29,12 @@ function createCategories (categories) {
   return Promise.allSettled(categoryPromises)
 }
 
-export function importCategories (file) {
+export async function importCategories (file) {
+  successCount = 0
+  errorCount = 0
+  errorList.length = 0
   const categories = csvFileToEntries(file)
-  const successMsg = `${categories.length} Categories Submitted for import.`
-  return createCategories(categories).then(() => ({ successMsg }))
+  await createCategories(categories)
+  return { successCount, errorCount }
 }
+
