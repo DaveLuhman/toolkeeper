@@ -6,6 +6,11 @@ const CategorySchema = new Schema(
       type: Schema.Types.ObjectId,
       auto: true
     },
+    prefix: {
+      type: String,
+      required: false,
+      unique: true
+    },
     name: {
       type: String,
       required: true,
