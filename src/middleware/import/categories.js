@@ -24,15 +24,18 @@ async function saveCategoryDocument (doc) {
   }
 }
 
-async function createCategory (entry) {
-  const doc = createCategoryDocument(entry)
-  await saveCategoryDocument(doc)
+async function createCategories (entries) {
+  const categoryPromises = entries.map((entry) => {
+    const doc = createCategoryDocument(entry)
+    return saveCategoryDocument(doc)
+  })
+  return await Promise.all(categoryPromises)
 }
 
-export function importCategories (file) {
+export async function importCategories (file) {
   successCount = 0
   errorList.length = 0
   const entries = csvFileToEntries(file)
-  entries.map((entry) => createCategory(entry))
+  await createCategories(entries)
   return { successCount, errorList }
 }
