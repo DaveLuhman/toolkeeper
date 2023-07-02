@@ -1,7 +1,7 @@
 import ServiceAssignment from '../../models/ServiceAssignment.model.js'
 import { csvFileToEntries } from '../util.js'
 let successCount = 0
-let errorCount = 0
+let errorList = []
 function checkForDuplicates (name, description) {
   const searchResult = ServiceAssignment.find({
     $or: [{ name }, { description }]
@@ -44,7 +44,7 @@ function saveServiceAssignmentDocument (serviceAssignmentDocument) {
     serviceAssignment.save()
     successCount++
   } catch (error) {
-    errorCount++
+    errorList.push({key: serviceAssignmentDocument.name, reason: error.message })
   }
 }
 
@@ -59,5 +59,5 @@ function createServiceAssignments (members) {
 export async function importServiceAssignments (file) {
   const members = csvFileToEntries(file)
   await createServiceAssignments(members)
-  return ({ successCount, errorCount })
+  return ({ successCount, errorList })
 }
