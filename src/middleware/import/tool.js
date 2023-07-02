@@ -1,6 +1,8 @@
 import Tool from '../../models/Tool.model.js'
 import { csvFileToEntries } from '../util.js'
 import ToolHistory from '../../models/ToolHistory.model.js'
+let successCount
+const errorList = []
 
 function trimArrayValues (array) {
   return array.map(cell => cell.trim())
@@ -31,13 +33,14 @@ async function createImportedTool (row) {
       _id: tool._id
     })
     return tool
-  } catch (err) {
-    console.log(err)
+  } catch (error) {
+    errorList.push({ key: toolDocument.serialNumber, reason: error.message })
+    console.log(error)
   }
 }
 
 export function importTools (file) {
   const entries = csvFileToEntries(file)
   entries.map(entry => createImportedTool(entry))
-  return entries.length + ' Tools Submitted for import.'
+  return { successCount, errorList }
 }
