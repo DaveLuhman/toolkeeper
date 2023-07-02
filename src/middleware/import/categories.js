@@ -12,7 +12,7 @@ function categoryDuplicate (prefix) {
 }
 async function saveCategoryDocument (doc) {
   try {
-    if (categoryDuplicate) throw new Error('Duplicate Prefix')
+    if (categoryDuplicate(doc.prefix)) throw new Error('Duplicate Prefix')
     successCount++
     return await new Category(doc).save()
   } catch (error) {
