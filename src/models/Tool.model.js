@@ -105,7 +105,7 @@ toolSchema.findAll = function (callback) {
 }
 
 toolSchema.virtual('status').get(function () {
-  if (this.serviceAssignment === undefined) return 'Undefined'
+  if (this.serviceAssignment === undefined || null) return 'Undefined'
   switch (this.serviceAssignment.type) {
     case 'Stockroom':
       return 'Checked In'

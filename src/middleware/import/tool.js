@@ -20,9 +20,7 @@ async function createImportedTool (row) {
     description: row[2],
     modelNumber: row[9],
     toolID: row[10],
-    manufacturer: row[11],
-    // eslint-disable-next-line no-undef
-    serviceAssignment: '6494d93d5f5507141c3ebf7f'
+    manufacturer: row[11]
   }
   try {
     if (await checkForDuplicates(toolDocument.serialNumber)) {
@@ -32,17 +30,23 @@ async function createImportedTool (row) {
     await ToolHistory.create({
       _id: tool._id
     })
-    return tool
+    return successCount++
   } catch (error) {
     errorList.push({ key: toolDocument.serialNumber, reason: error.message })
     console.log(error)
   }
 }
+async function createTools(entries) {
+  const toolPromises = entries.map(entry => {
+    return createImportedTool(entry)
+  })
+  return Promise.allSettled(toolPromises)
+}
 
-export function importTools (file) {
+export async function importTools (file) {
   successCount = 0
   errorList.length = 0
   const entries = csvFileToEntries(file)
-  entries.map(entry => createImportedTool(entry))
+  await createTools(entries)
   return { successCount, errorList }
 }
