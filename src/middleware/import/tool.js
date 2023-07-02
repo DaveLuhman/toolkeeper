@@ -5,7 +5,7 @@ let successCount
 const errorList = []
 
 function trimArrayValues (array) {
-  return array.map(cell => cell.trim())
+  return array.map((cell) => cell.trim())
 }
 
 async function checkForDuplicates (serialNumber) {
@@ -36,8 +36,8 @@ async function createImportedTool (row) {
     console.log(error)
   }
 }
-async function createTools(entries) {
-  const toolPromises = entries.map(entry => {
+async function createTools (entries) {
+  const toolPromises = entries.map((entry) => {
     return createImportedTool(entry)
   })
   return Promise.allSettled(toolPromises)

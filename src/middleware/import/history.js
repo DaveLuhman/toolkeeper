@@ -49,7 +49,7 @@ export async function importHistory (file) {
     const result = await updateToolServiceAssignment(transactions[i])
     if (result === 0) {
       successCount = successCount + 1
-    } else errorList.push({key: result})
+    } else errorList.push({ key: result })
   }
   return updatedTools.length
 }
