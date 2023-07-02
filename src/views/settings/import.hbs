@@ -13,13 +13,14 @@
                 <li>
                     <div class="form-control">
                         <label for="serviceAssignments" class="label"><span class="label-text">Service
-                                Assignments  -  Total Entries: {{serviceAssignments.length}} </span></label>
+                                Assignments - Total Entries: {{serviceAssignments.length}} </span></label>
                         <input type="radio" name="importTarget" value="serviceAssignments" id="serviceAssignments">
                     </div>
                 </li>
                 <li>
                     <div class="form-control">
-                        <label for="categories" class="label"><span class="label-text">Categories - Total Entries: {{categories.length}}</span></label>
+                        <label for="categories" class="label"><span class="label-text">Categories - Total Entries:
+                                {{categories.length}}</span></label>
                         <input type="radio" name="importTarget" value="categories" id="tools">
                     </div>
                 </li>
@@ -44,6 +45,20 @@
         {{/if}}
         {{#if error}}
             {{error}}
+        {{/if}}
+        {{#if errorList}}
+            <table>
+                <thead>
+                    <th>Key</th>
+                    <th>Error</th>
+                </thead>
+                {{#each errorList}}
+                <tr>
+                    <td>{{key}}</td>
+                    <td>{{reason}}</td>
+                </tr>
+                {{/each}}
+            </table>
         {{/if}}
     </div>
 </div>

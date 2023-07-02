@@ -1,39 +1,38 @@
 import { csvFileToEntries } from '../util.js'
 import Category from '../../models/Category.model.js'
-let successCount, errorCount
+let successCount
 const errorList = []
 
 function createCategoryDocument (row) {
   const data = row.map((cell) => cell.trim())
-  return { prefix: data[0], name: data[1], description: data[2] }
+  const description = data[2] || ''
+  return { prefix: data[0], name: data[1], description }
 }
-function categoryDuplicate (prefix) {
-  return Category.exists({ prefix }) !== null
+
+async function checkDuplicate (prefix) {
+  const dup = await Category.find({ prefix })
+  return dup.length !== 0
 }
+
 async function saveCategoryDocument (doc) {
   try {
-    if (categoryDuplicate(doc.prefix)) throw new Error('Duplicate Prefix')
+    if (await checkDuplicate(doc.prefix)) throw new Error('Duplicate Prefix')
     successCount++
-    return await new Category(doc).save()
+    return await Category.create(doc)
   } catch (error) {
-    errorCount++
     errorList.push({ key: doc.prefix, reason: error.message })
   }
 }
 
-function createCategories (categories) {
-  const categoryPromises = categories.map((c) => {
-    const categoryDocument = createCategoryDocument(c)
-    return saveCategoryDocument(categoryDocument)
-  })
-  return Promise.allSettled(categoryPromises)
+async function createCategory (entry) {
+  const doc = createCategoryDocument(entry)
+  await saveCategoryDocument(doc)
 }
 
-export async function importCategories (file) {
+export function importCategories (file) {
   successCount = 0
-  errorCount = 0
   errorList.length = 0
-  const categories = csvFileToEntries(file)
-  await createCategories(categories)
-  return { successCount, errorCount }
+  const entries = csvFileToEntries(file)
+  entries.map((entry) => createCategory(entry))
+  return { successCount, errorList }
 }

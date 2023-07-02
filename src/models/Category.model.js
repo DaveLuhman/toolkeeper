@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 const CategorySchema = new Schema(
   {
@@ -28,6 +29,8 @@ const CategorySchema = new Schema(
     timestamps: true
   }
 )
-
+CategorySchema.plugin(mongooseUniqueValidator)
 // eslint-disable-next-line new-cap
-export default model('Category', CategorySchema)
+const category = model('Category', CategorySchema)
+
+export default category

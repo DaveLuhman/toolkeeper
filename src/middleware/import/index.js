@@ -19,22 +19,28 @@ export async function importByFile (req, res, next) {
   switch (importTarget) {
     case 'tools':
       console.log('importing tools')
-      result = importTools(file)
+      result = await importTools(file)
       break
     case 'serviceAssignments':
       console.log('importing service assignments')
       result = await importServiceAssignments(file)
       break
     case 'history':
-      result = importHistory(file)
+      result = await importHistory(file)
       break
     case 'categories':
       console.log('importing categories')
-      result = importCategories(file)
+      result = await importCategories(file)
       break
     default:
       res.locals.message = 'not sure how you managed this response.'
   }
-  res.locals.message = JSON.stringify(result.successCount + ' successfully imported.  ' + result.errorCount + ' failed to import')
+  res.locals.message = JSON.stringify(
+    result.successCount +
+      ' successfully imported.  ' +
+      result.errorCount +
+      ' failed to import'
+  )
+  res.locals.errorList = result.errorList
   next()
 }
