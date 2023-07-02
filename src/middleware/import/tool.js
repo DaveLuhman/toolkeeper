@@ -40,6 +40,8 @@ async function createImportedTool (row) {
 }
 
 export function importTools (file) {
+  successCount = 0
+  errorList.length = 0
   const entries = csvFileToEntries(file)
   entries.map(entry => createImportedTool(entry))
   return { successCount, errorList }
