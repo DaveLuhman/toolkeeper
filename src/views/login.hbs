@@ -6,9 +6,9 @@
       <div class="px-5 py-7">
         <form action="/login" method="POST">
           <label for="email" class="login-label">E-mail</label>
-          <input id="loginEmailInput" type="text" name="email" class="login-input" />
+          <input id="loginEmailInput" type="text" name="email" class="login-input" autocomplete="email" />
           <label class="login-label">Password</label>
-          <input id="loginPasswordInput" type="password" name="password" class="login-input" />
+          <input id="loginPasswordInput" type="password" name="password" class="login-input" autocomplete="password"/>
           <button type="submit" id="login-btn">
             <span class="inline-block mr-2">Login</span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
@@ -18,12 +18,11 @@
           </button>
         </form>
       </div>
-       <div class="items-center shadow w-100 card">
-      <p class="text-red-700">{{messages.error}}</p>
+      <div class="items-center shadow w-100 card">
+        <p class="text-red-700">{{messages.error}}</p>
       </div>
       <div class="login-form-footer">
-        <button
-          class="forgot-password">
+        <button class="forgot-password">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
             class="inline-block w-4 h-4 align-text-top">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -37,8 +36,7 @@
       <div class="grid grid-cols-2 gap-1">
         <div class="text-center sm:text-left whitespace-nowrap">
           <a href="/">
-            <button
-              class="forgot-password">
+            <button class="forgot-password">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                 class="inline-block w-4 h-4 align-text-top">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
