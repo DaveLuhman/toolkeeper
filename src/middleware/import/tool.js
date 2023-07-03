@@ -1,6 +1,7 @@
 import Tool from '../../models/Tool.model.js'
 import { csvFileToEntries } from '../util.js'
 import ToolHistory from '../../models/ToolHistory.model.js'
+import Category from '../../models/Category.model.js'
 let successCount
 const errorList = []
 
@@ -8,11 +9,26 @@ function trimArrayValues (array) {
   return array.map((cell) => cell.trim())
 }
 
-async function checkForDuplicates (serialNumber) {
-  return await Tool.exists({ serialNumber })
+function checkForDuplicates (serialNumber) {
+  const results = Tool.findOne({ serialNumber }).exec()
+  return results.length > 0
 }
 
-async function createImportedTool (row) {
+function getPrefixFromToolID (toolID) {
+  const prefix = toolID.substring(0, toolID.indexOf('-'))
+  return prefix
+}
+
+async function getCategoryByPrefix (prefix) {
+  try {
+    const category = await Category.find({ prefix }, '_id').exec()
+    return category[0]._id
+  } catch (error) {
+    return '64a1c3d8d71e121dfd39b7ab'
+  }
+}
+
+function createToolDocument (row) {
   row = trimArrayValues(row)
   const toolDocument = {
     serialNumber: row[0],
@@ -20,13 +36,22 @@ async function createImportedTool (row) {
     description: row[2],
     modelNumber: row[9],
     toolID: row[10],
-    manufacturer: row[11]
+    manufacturer: row[11],
+    serviceAssignment: '64a19e910e675938ebb67de7',
+    category: '64a1c3d8d71e121dfd39b7ab'
   }
+  return toolDocument
+}
+
+async function createTool (toolDocument) {
   try {
     if (await checkForDuplicates(toolDocument.serialNumber)) {
       throw new Error('Duplicate serial number')
     }
-    const tool = await new Tool(toolDocument).save()
+    const tool = new Tool(toolDocument)
+    tool.category = await getCategoryByPrefix(getPrefixFromToolID(tool.toolID))
+    await tool.save()
+    console.log(tool)
     await ToolHistory.create({
       _id: tool._id
     })
@@ -36,9 +61,10 @@ async function createImportedTool (row) {
     console.log(error)
   }
 }
-async function createTools (entries) {
+function createTools (entries) {
   const toolPromises = entries.map((entry) => {
-    return createImportedTool(entry)
+    const toolDocument = createToolDocument(entry)
+    return createTool(toolDocument)
   })
   return Promise.allSettled(toolPromises)
 }
