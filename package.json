@@ -38,7 +38,7 @@
     "express-handlebars": "^7.0.6",
     "express-rate-limit": "^6.7.0",
     "express-session": "^1.17.3",
-    "fs": "^0.0.1-security",
+    "fs": "^0.0.2",
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
     "helmet": "^7.0.0",
