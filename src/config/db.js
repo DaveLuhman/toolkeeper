@@ -3,7 +3,7 @@ import User from '../models/user'
 import Category from '../models/Category.model'
 import ServiceAssignment from '../models/ServiceAssignment.model'
 
-function checkForUsers () {
+function isUsersCollectionEmpty () {
   const user = User.find()
   return user.length > 0
 }
@@ -71,9 +71,7 @@ const connectDB = async () => {
     console.error('DB INIT' + err)
     process.exit(1)
   }
-  if(!checkForUsers()) {
-    createDefaultDocuments()
-  }
+  if (!isUsersCollectionEmpty()) createDefaultDocuments()
   mongoose.ObjectId.get((v) => v.toString())
 }
 export default connectDB
