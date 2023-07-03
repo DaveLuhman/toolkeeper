@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import User from '../models/user'
-import Category from '../models/Category.model'
-import ServiceAssignment from '../models/ServiceAssignment.model'
+import User from '../models/User.model.js'
+import Category from '../models/Category.model.js'
+import ServiceAssignment from '../models/ServiceAssignment.model.js'
 
 function isUsersCollectionEmpty () {
   const user = User.find()
@@ -9,18 +9,22 @@ function isUsersCollectionEmpty () {
 }
 
 async function createDefaultUser () {
-  return new User({
-    firstName: 'Admin',
-    lastName: 'User',
-    password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
-    role: 'Admin',
-    email: 'admin@toolkeeper'
-  })
+  try {
+    return new User({
+      firstName: 'Admin',
+      lastName: 'User',
+      password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
+      role: 'Admin',
+      email: 'admin@toolkeeper'
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 async function createDefaultCategory () {
- const category = new Category({
-    id: '64a1c3d8d71e121dfd39b7ab',
+  const category = new Category({
+    _id: '64a1c3d8d71e121dfd39b7ab',
     prefix: 'UC',
     name: 'Uncategorized',
     description: 'For Tools that dont have a home'
@@ -31,7 +35,7 @@ async function createDefaultCategory () {
 async function createDefaultServiceAssignments () {
   const serviceAssignments = [
     {
-      id: '64a19e910e675938ebb67de7',
+      _id: '64a19e910e675938ebb67de7',
       name: 'IMPORT',
       description: 'Imported',
       type: 'Imported - Uncategorized',
@@ -53,11 +57,11 @@ async function createDefaultServiceAssignments () {
 }
 
 function createDefaultDocuments () {
-  const defaultPromises = new Promise(
+  const defaultPromises = [
     createDefaultUser(),
     createDefaultCategory(),
     createDefaultServiceAssignments()
-  )
+  ]
   return Promise.allSettled(defaultPromises)
 }
 
