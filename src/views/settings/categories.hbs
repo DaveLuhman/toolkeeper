@@ -3,10 +3,15 @@
     {{> _settings}}
   </div>
   <div id="categoriesTable">
-
-    <table class="table table-striped">
+    <div class="mx-5">
+      <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
+        <label for="newCategoriesModal">New Tool Category</label>
+      </div>
+    </div>
+    <table class="table table-auto">
       <thead>
         <tr>
+          <th>Prefix</th>
           <th>Name</th>
           <th>Description</th>
           <th>Edit</th>
@@ -15,24 +20,18 @@
       </thead>
       <tbody>
         {{#if categories}}
-        {{#each categories}}
-        <tr>
-          <td>{{name}}</td>
-          <td>{{description}}</td>
-          <td><a href="/settings/categories/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
-          <td><a href="/settings/categories/delete/{{id}}"><i
-                class="fa fa-trash"></i></a></td>
-        </tr>
-        {{/each}}
+          {{#each categories}}
+            <tr>
+              <td>{{prefix}}</td>
+              <td>{{name}}</td>
+              <td>{{description}}</td>
+              <td><a href="/settings/categories/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
+              <td><a href="/settings/categories/delete/{{id}}"><i class="fa fa-trash"></i></a></td>
+            </tr>
+          {{/each}}
         {{/if}}
       </tbody>
     </table>
-    <div class="mx-5">
-      <div
-        class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
-        <label for="newCategoriesModal">New Tool Category</label>
-      </div>
-    </div>
   </div>
 </div>
 {{!-- New category Modal --}}
@@ -46,12 +45,13 @@
           <h3 class="title-text">New Tool Category</h3>
         </div>
         <div class="m-3">
-          <input placeholder="Title" type="text" name="name"
-            class="input input-bordered">
+          <input placeholder="Prefix" type="text" name="prefix" class="input input-bordered">
         </div>
-        <div>
-          <input placeholder="Description" type="text" name="description"
-            class="input input-bordered">
+        <div class="m-3">
+          <input placeholder="Name" type="text" name="name" class="input input-bordered">
+        </div>
+        <div class="m-3">
+          <input placeholder="Description" type="text" name="description" class="input input-bordered">
         </div>
         <div class="modal-button-row">
           <label class="btn btn-sm"> <button type="submit">Submit</button></label>
@@ -60,3 +60,4 @@
     </form>
   </div>
 </div>
+{{> _pagination}}

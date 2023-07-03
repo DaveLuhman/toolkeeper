@@ -1,28 +1,34 @@
 import Tool from '../../models/Tool.model.js'
-import { importedFileToArrayByRow } from '../util.js'
+import { csvFileToEntries } from '../util.js'
 import ToolHistory from '../../models/ToolHistory.model.js'
+import Category from '../../models/Category.model.js'
+let successCount
+const errorList = []
 
 function trimArrayValues (array) {
-  for (let i = 0; i < array.length; i++) {
-    array[i] = array[i].trim()
-  }
-  return array
-}
-async function lookupTool (serialNumber) {
-  return Tool.findOne({ serialNumber })
-}
-async function checkForDuplicates (serialNumber) {
-  return await lookupTool(serialNumber)
-    .then((result) => {
-      if (!result) return false // didn't find anything, so lookup is falsey
-      else return true
-    }) // found a duplicate serial number
-    .catch((err) => {
-      return err + 'error occured'
-    })
+  return array.map((cell) => cell.trim())
 }
 
-async function createImportedTool (row) {
+function checkForDuplicates (serialNumber) {
+  const results = Tool.findOne({ serialNumber }).exec()
+  return results.length > 0
+}
+
+function getPrefixFromToolID (toolID) {
+  const prefix = toolID.substring(0, toolID.indexOf('-'))
+  return prefix
+}
+
+async function getCategoryByPrefix (prefix) {
+  try {
+    const category = await Category.find({ prefix }, '_id').exec()
+    return category[0]._id
+  } catch (error) {
+    return '64a1c3d8d71e121dfd39b7ab'
+  }
+}
+
+function createToolDocument (row) {
   row = trimArrayValues(row)
   const toolDocument = {
     serialNumber: row[0],
@@ -31,32 +37,42 @@ async function createImportedTool (row) {
     modelNumber: row[9],
     toolID: row[10],
     manufacturer: row[11],
-    // eslint-disable-next-line no-undef
-    serviceAssignment: '6494d93d5f5507141c3ebf7f'
+    serviceAssignment: '64a19e910e675938ebb67de7',
+    category: '64a1c3d8d71e121dfd39b7ab'
   }
+  return toolDocument
+}
+
+async function createTool (toolDocument) {
   try {
     if (await checkForDuplicates(toolDocument.serialNumber)) {
       throw new Error('Duplicate serial number')
     }
-    const newTool = await Tool.create(toolDocument)
+    const tool = new Tool(toolDocument)
+    tool.category = await getCategoryByPrefix(getPrefixFromToolID(tool.toolID))
+    await tool.save()
+    console.log(tool)
     await ToolHistory.create({
-      _id: newTool._id
+      _id: tool._id
     })
-    return newTool.id
-  } catch (err) {
-    console.log(err)
+    return successCount++
+  } catch (error) {
+    errorList.push({ key: toolDocument.serialNumber, reason: error.message })
+    console.log(error)
   }
 }
-
-export function importTools (file) {
-  const importDataParentArray = importedFileToArrayByRow(file)
-  const tools = []
-  importDataParentArray.forEach((row) => {
-    return tools.push(row.split(','))
+function createTools (entries) {
+  const toolPromises = entries.map((entry) => {
+    const toolDocument = createToolDocument(entry)
+    return createTool(toolDocument)
   })
-  const newTools = []
-  for (let i = 0; i < tools.length; i++) {
-    newTools.push(createImportedTool(tools[i]))
-  }
-  return newTools.length + ' Tools Submitted for import.'
+  return Promise.allSettled(toolPromises)
+}
+
+export async function importTools (file) {
+  successCount = 0
+  errorList.length = 0
+  const entries = csvFileToEntries(file)
+  await createTools(entries)
+  return { successCount, errorList }
 }

@@ -113,3 +113,5 @@ src/public/css/style.css
 
 # tmp files
 .tmp
+
+_pginfo
