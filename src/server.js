@@ -70,7 +70,8 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(
     helmet.contentSecurityPolicy({
       directives: {
-        'script-src': ["'unsafe-inline'", "'self'"] // allow client-side inline scripting
+        'script-src': ["'unsafe-inline'", "'self'"], // allow client-side inline scripting
+        'script-src-attr': ["'unsafe-inline'"]
       }
     })
   ) // Allow inline scripts for development

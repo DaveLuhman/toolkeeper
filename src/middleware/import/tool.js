@@ -9,8 +9,8 @@ function trimArrayValues (array) {
   return array.map((cell) => cell.trim())
 }
 
-function checkForDuplicates (serialNumber) {
-  const results = Tool.findOne({ serialNumber }).exec()
+async function checkForDuplicates (serialNumber) {
+  const results = await Tool.find({ serialNumber })
   return results.length > 0
 }
 
@@ -22,7 +22,7 @@ function getPrefixFromToolID (toolID) {
 async function getCategoryByPrefix (prefix) {
   try {
     const category = await Category.find({ prefix }, '_id').exec()
-    return category[0]._id
+    return category[0]._id || '64a1c3d8d71e121dfd39b7ab'
   } catch (error) {
     return '64a1c3d8d71e121dfd39b7ab'
   }
