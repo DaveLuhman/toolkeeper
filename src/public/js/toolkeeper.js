@@ -1,9 +1,8 @@
 function btnToSpinner () {
-  const submitBtn = document.getElementById('importSubmitBtn')
+  const submitBtn = document.querySelector('#testButton')
 
-  submitBtn.addEventListener(
-    'click',
-    (submitBtn.outerHTML =
-      '<span class="loading loading-infinity loading-lg"></span>')
-  )
+  submitBtn.addEventListener('click', () => {
+    submitBtn.outerHTML =
+      '<span class="loading loading-infinity loading-lg"></span>'
+  })
 }

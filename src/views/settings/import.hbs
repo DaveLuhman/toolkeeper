@@ -38,7 +38,7 @@
                 </li>
             </ol>
             <input type="file" name="importFile" id="importFile">
-            <button type="submit" id="importSubmitBtn" onclick="btnToSpinner" class="modal-button">Import</button>
+            <button type="submit" id="importSubmitBtn" class="modal-button">Import</button>
         </form>
         {{#if message}}
             <h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
@@ -53,12 +53,24 @@
                     <th>Error</th>
                 </thead>
                 {{#each errorList}}
-                <tr>
-                    <td>{{key}}</td>
-                    <td>{{reason}}</td>
-                </tr>
+                    <tr>
+                        <td>{{key}}</td>
+                        <td>{{reason}}</td>
+                    </tr>
                 {{/each}}
             </table>
         {{/if}}
     </div>
 </div>
+
+<script>
+    const fileInput = document.getElementById('#importFile')
+    console.log(fileInput)
+    const submitBtn = document.querySelector('#importSubmitBtn')
+    const spinner = `<span class="loading loading-infinity loading-lg" ></span>`
+    submitBtn.addEventListener('click', submitInputForm)
+    function submitInputForm() {
+        submitBtn.outerHTML = spinner;
+        document.forms['csv-import'].submit()
+    }
+</script>
