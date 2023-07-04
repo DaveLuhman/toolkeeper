@@ -22,7 +22,7 @@ function getPrefixFromToolID (toolID) {
 async function getCategoryByPrefix (prefix) {
   try {
     const category = await Category.find({ prefix }, '_id').exec()
-    return category[0]._id
+    return category[0]._id || '64a1c3d8d71e121dfd39b7ab'
   } catch (error) {
     return '64a1c3d8d71e121dfd39b7ab'
   }

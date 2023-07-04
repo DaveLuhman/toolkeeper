@@ -38,7 +38,7 @@
                 </li>
             </ol>
             <input type="file" name="importFile" id="importFile">
-            <button type="submit" class="modal-button">Import</button>
+            <button type="submit" id="importSubmitBtn" onclick="btnToSpinner" class="modal-button">Import</button>
         </form>
         {{#if message}}
             <h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
