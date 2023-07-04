@@ -68,7 +68,7 @@ function createDefaultDocuments () {
 }
 
 function initializeDatabase () {
-  console.warning('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper\nDefault password is "asdfasdf"')
+  console.warn('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper\nDefault password is "asdfasdf"'.red.underline)
   createDefaultDocuments()
 }
 const connectDB = async () => {
