@@ -120,6 +120,6 @@ export function csvFileToEntries (file) {
     .map(row => row.split(','))
 }
 
-export function getAppVersionForFooter () {
+export function getPackageVersion () {
   return process.env.npm_package_version
 }
