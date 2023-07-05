@@ -4,8 +4,8 @@
         <table class="table overflow-visible ">
             <thead>
                 <tr>
-                    <th>Serial number</th>
                     <th>Barcode</th>
+                    <th>Serial number</th>
                     <th>Current SA</th>
                     <th>Select New SA</th>
                 </tr>
@@ -13,29 +13,47 @@
             {{#if tools}}
                 <tbody>
                     {{#each tools}}
-                        <tr>
-                            <input type="hidden" name="id" value="{{id}}">
-                            <td>{{serialNumber}}</td>
-                            <td>{{barcode}}</td>
+                        {{#if _id}}
+                            <tr>
+                                <input type="hidden" name="id" value="{{id}}">
+                                <td>{{serialNumber}}</td>
+                                <td>{{barcode}}</td>
 
-                            <td name="serviceAssignment">{{serviceAssignment.name}} -
-                                {{serviceAssignment.description}}
-                            </td>
-                            <td name="newServiceAssignmment">
-                                <select name="newServiceAssignment" class="select select-bordered">
-                                    {{#each ../serviceAssignments}}
-                                        <option name="{{ name }}" value="{{  id }}">{{  name }} -
-                                            {{ description}}</option>
-                                    {{/each}}
-                                </select>
-                            </td>
-                        </tr>
+                                <td name="serviceAssignment">{{serviceAssignment.name}} -
+                                    {{serviceAssignment.description}}
+                                </td>
+                                <td name="newServiceAssignmment">
+                                    <select name="newServiceAssignment" class="select select-bordered">
+                                        {{#each ../serviceAssignments}}
+                                            <option name="{{ name }}"
+                                                value="{{  id }}">{{ name }} -
+                                                {{ description}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                </td>
+                            </tr>
+                        {{else}}
+                            <tr class="bg-red-400 text-black">
+                                <td>Tool Not Found</td>
+                                <td>{{serialNumber}}</td>
+
+                                <td name="serviceAssignment">
+                                </td>
+                                <td name="newServiceAssignmment">
+                                    <select name="dummyBlank" class="select select-bordered bg-red-300">
+                                        <option>Tool Not Found</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            {{/if}}
                     {{/each}}
             {{/if}}
             </tbody>
         </table>
-        <div class="form-control">
-            <button type="submit">Confirm And Submit</button>
+        <div class="form-control items-center">
+            <button class="btn btn-neutral w-1/3" type="submit">Confirm And Submit</button>
         </div>
     </form>
+    {{tools}}
 </div>
