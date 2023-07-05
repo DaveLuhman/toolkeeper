@@ -9,7 +9,7 @@ services:
       - tk-db-config:/data/configdb
   toolkeeper:
     image: ghcr.io/daveluhman/toolkeeper
-    env_file: compose.env
+    env_file: .env
     restart: unless-stopped
     depends_on:
     - mongo
