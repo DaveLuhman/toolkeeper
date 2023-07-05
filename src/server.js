@@ -12,6 +12,7 @@ import {
   fileUpload,
   flash,
   getCategoryName,
+  getPackageVersion,
   getServiceAssignmentName,
   handlebarsHelpers,
   helmet,
@@ -83,6 +84,7 @@ const hbs = create({
     getCategoryName,
     getServiceAssignmentName,
     paginate,
+    getPackageVersion,
     ...handlebarsHelpers()
   },
   extname: '.hbs',
