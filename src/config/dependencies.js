@@ -28,7 +28,8 @@ import { getServiceAssignmentName } from '../middleware/serviceAssignment.js'
 import {
   isSelected,
   populateDropdownItems,
-  rateLimiter
+  rateLimiter,
+  getPackageVersion
 } from '../middleware/util.js'
 // routers
 import { dashboardRouter } from '../routes/dashboard.routes.js'
@@ -51,6 +52,7 @@ export {
   fileUpload,
   flash,
   getCategoryName,
+  getPackageVersion,
   getServiceAssignmentName,
   handlebarsHelpers,
   helmet,
