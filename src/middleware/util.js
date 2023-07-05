@@ -119,3 +119,7 @@ export function csvFileToEntries (file) {
     .split(/\r?\n/)
     .map(row => row.split(','))
 }
+
+export function getAppVersionForFooter () {
+  return process.env.npm_package_version
+}
