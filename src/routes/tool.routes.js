@@ -16,16 +16,16 @@ toolRouter.get('/:id', getToolByID, (_req, res) => {
   res.render('editTool')
 })
 
-// search for tools
+// search for tools and render the results with the dashboard view
 toolRouter.post('/search', sanitizeReqBody, searchTools, (_req, res) => {
   res.render('dashboard')
 })
 
-// determine if tool is checked in or out
+// retrieve current service assignment and render checkInOut prompting user to select the new assignment
 toolRouter.post('/checkInOut', checkTools, (_req, res) => {
   res.render('checkInOut')
 })
-// determine if tool is checked in or out
+// save the new service assignement to the database.
 toolRouter.post('/submitCheckInOut', submitCheckInOut, (_req, res) => {
   res.render('dashboard')
 })

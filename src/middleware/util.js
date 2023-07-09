@@ -10,6 +10,7 @@ sanitize
 *rateLimiter
 *createAccountLimiter
 *csvFileToEntries
+*getPackageVersion
 */
 
 import rateLimit from 'express-rate-limit'
