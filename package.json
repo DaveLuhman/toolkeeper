@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/server.js",
-    "dev": "concurrently \"nodemon ./src/server.js\" \"npx tailwindcss -c ./src/config/tailwind.config.js --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w\"",
+    "dev": "nodemon ./src/server.js",
     "build:css": "npx tailwindcss -c ./src/config/tailwind.config.js --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css",
     "watch:css": "npx tailwindcss -c ./src/config/tailwind.config.js --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w"
   },

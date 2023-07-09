@@ -64,23 +64,50 @@ async function getToolByID (req, res, next) {
  * @returns {array}
  */
 async function searchTools (req, res, next) {
-  console.info('[MW] searchTools-in'.bgBlue.white)
+  console.info('[MW] searchTools-in'.bgBlue.white + req.body)
   const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchTerm } = req.body
-  const tools = await Tool.find({
-    [searchBy]: { $regex: searchTerm, $options: 'i' }
-  }).sort({ [sortField]: sortOrder })
+  let result
+  console.table(req.body)
+  switch (searchBy) {
+    case 'serviceAssignment':
+      result = await Tool.where('serviceAssignment')
+        .equals(searchTerm)
+        .sort({ [sortField]: sortOrder })
+        .exec()
+      break
+    case 'category':
+      result = await Tool.where('category')
+        .equals(searchTerm)
+        .sort({ [sortField]: sortOrder })
+        .exec()
+      break
+    case 'status':
+      result = await Tool.where('status')
+        .equals(searchTerm)
+        .sort({ [sortField]: sortOrder })
+        .exec()
+      break
+    default:
+      result = await Tool.where(searchBy)
+        .regex(`${searchTerm}/i`)
+        .sort({ [sortField]: sortOrder })
+        .exec()
+      break
+  }
+  console.log(result)
   const { trimmedData, pageCount, targetPage } = paginate(
-    tools,
+    result,
     req.query.p,
     req.user.preferences.pageSize
   )
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
-  res.locals.message = `Search results for ${searchBy} : ${searchTerm}`
+  res.locals.searchTerm = searchTerm
   console.info('[MW] searchTools-out'.bgWhite.blue)
   return next()
 }
+
 /**
  *
  * @param {object} req.body The tool object to create
