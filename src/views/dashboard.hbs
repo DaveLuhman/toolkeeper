@@ -1,48 +1,6 @@
-<div class="main-view z-0">
-  {{#if message}}
-    <div class="alert">{{message}}</div>
-  {{/if}}
-  {{#if searchTerms}}
-    <h1 id="search-terms">Searched For: <br />{{searchTerms}}</h1>
-  {{/if}}
-  <table class="table overflow-visible ">
-    <thead>
-      <tr>
-        <th>Serial number</th>
-        <th class="hidden md:table-cell">Tool ID</th>
-        <th>Barcode #</th>
-        <th class="hidden lg:table-cell">Description</th>
-        <th class="hidden lg:table-cell">Manufacturer</th>
-        <th class="hidden md:table-cell">Status</th>
-        <th class="hidden md:table-cell">Service Assignment</th>
-        <th class="hidden md:table-cell">Category</th>
-        <th>Edit</th>
-      </tr>
-    </thead>
-    {{#if tools}}
-      <tbody>
-        {{#each tools}}
-          {{#unless archived}}
-            <tr>
-              <td id="serialNumber">{{serialNumber}}</td>
-              <td class="hidden md:table-cell" id="modelNumber">{{toolID}}</td>
-              <td id="barcode">{{barcode}}</td>
-              <td class="hidden lg:table-cell" id="description">{{description}}</td>
-              <td class="hidden lg:table-cell" id="manufacturer">{{manufacturer}}</td>
-              <td class="hidden md:table-cell" id="status">{{status}}</td>
-              <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment.name}} -
-                {{serviceAssignment.description}}</td>
-              <td class="hidden md:table-cell" id="category">{{category.name}}
-              </td>
-              <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i class="fa fa-pencil"></i></a></label>
-              </td>
-            </tr>
-          {{/unless}}
-        {{/each}}
-    {{/if}}
-    </tbody>
-  </table>
-</div>
+
+{{> _toolTable}}
+
 {{#if user.preferences.developer}}
 <div class="ml-10 pl-18 dropdown dropdown-right">
   <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
@@ -94,4 +52,5 @@
 </div>
 <br />
 {{/if}}
+
 {{> _pagination}}

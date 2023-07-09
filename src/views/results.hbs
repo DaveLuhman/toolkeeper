@@ -1,0 +1,11 @@
+<div class="main-view z-0">
+  {{#if message}}
+    <div class="alert">{{message}}</div>
+  {{/if}}
+  {{#if searchTerm}}
+    <h1 class="text-2xl" id="search-terms">Searched For: {{searchTerm}}.  Total Results: {{tools.length}}</h1>
+  {{/if}}
+  {{> _toolTable}}
+</div>
+
+{{> _pagination}}
