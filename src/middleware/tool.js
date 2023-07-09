@@ -64,35 +64,43 @@ async function getToolByID (req, res, next) {
  * @returns {array}
  */
 async function searchTools (req, res, next) {
-  console.info('[MW] searchTools-in'.bgBlue.white + req.body)
+  console.info('[MW] searchTools-in'.bgBlue.white)
   const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchTerm } = req.body
   let result
   console.table(req.body)
   switch (searchBy) {
+    case 'Search By':
+      res.locals.message = 'You must specify search parameters'
+      return next()
     case 'serviceAssignment':
+      res.locals.searchBy = searchBy
+      res.locals.searchTerm = searchTerm
       result = await Tool.where('serviceAssignment')
         .equals(searchTerm)
         .sort({ [sortField]: sortOrder })
         .exec()
       break
     case 'category':
+      res.locals.searchBy = searchBy
+      res.locals.searchTerm = searchTerm
       result = await Tool.where('category')
         .equals(searchTerm)
         .sort({ [sortField]: sortOrder })
         .exec()
       break
     case 'status':
-      result = await Tool.where('status')
-        .equals(searchTerm)
-        .sort({ [sortField]: sortOrder })
-        .exec()
+      res.locals.searchBy = searchBy
+      res.locals.searchTerm = searchTerm
+      result = await Tool.find({ serviceAssignment: { $eq: searchTerm } }).sort(
+        { [sortField]: sortOrder }
+      )
       break
     default:
-      result = await Tool.where(searchBy)
-        .regex(`${searchTerm}/i`)
-        .sort({ [sortField]: sortOrder })
-        .exec()
+      res.locals.searchTerm = searchTerm
+      result = await Tool.find({
+        [searchBy]: { $regex: searchTerm, $options: 'i' }
+      }).sort({ [sortField]: sortOrder })
       break
   }
   console.log(result)
@@ -103,7 +111,6 @@ async function searchTools (req, res, next) {
   )
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
-  res.locals.searchTerm = searchTerm
   console.info('[MW] searchTools-out'.bgWhite.blue)
   return next()
 }
@@ -366,7 +373,7 @@ async function submitCheckInOut (req, res, next) {
   const newServiceAssignment = mutateToArray(req.body.newServiceAssignment)
   const newTools = []
   for (let i = 0; i < id.length; i++) {
-    if ((id[i] === 'toolNotFound')) break
+    if (id[i] === 'toolNotFound') break
     updateToolHistory(id[i])
     newTools.push(
       await Tool.findByIdAndUpdate(
