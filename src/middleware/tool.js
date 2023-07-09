@@ -77,7 +77,7 @@ async function searchTools (req, res, next) {
   )
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
-  res.locals.searchTerm = searchTerm
+  res.locals.message = `Search results for ${searchBy} : ${searchTerm}`
   console.info('[MW] searchTools-out'.bgWhite.blue)
   return next()
 }
