@@ -11,6 +11,7 @@ sanitize
 *createAccountLimiter
 *csvFileToEntries
 *getPackageVersion
+*hoistSearchParamsToBody
 */
 
 import rateLimit from 'express-rate-limit'
@@ -118,9 +119,18 @@ export function csvFileToEntries (file) {
     .replace("'", '')
     .replaceAll('"', '')
     .split(/\r?\n/)
-    .map(row => row.split(','))
+    .map((row) => row.split(','))
 }
 
 export function getPackageVersion () {
   return process.env.npm_package_version
+}
+
+export function hoistSearchParamsToBody (req, _res, next) {
+  if (req.body.searchBy === undefined) {
+    const { searchBy, searchTerm } = req.query
+    req.body.searchBy = searchBy
+    req.body.searchTerm = searchTerm
+  }
+  next()
 }

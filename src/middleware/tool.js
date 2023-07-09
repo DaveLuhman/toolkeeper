@@ -67,20 +67,54 @@ async function searchTools (req, res, next) {
   console.info('[MW] searchTools-in'.bgBlue.white)
   const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchTerm } = req.body
-  const tools = await Tool.find({
-    [searchBy]: { $regex: searchTerm, $options: 'i' }
-  }).sort({ [sortField]: sortOrder })
+  let result
+  console.table(req.body)
+  switch (searchBy) {
+    case 'Search By':
+      res.locals.message = 'You must specify search parameters'
+      return next()
+    case 'serviceAssignment':
+      res.locals.searchBy = searchBy
+      res.locals.searchTerm = searchTerm
+      result = await Tool.where('serviceAssignment')
+        .equals(searchTerm)
+        .sort({ [sortField]: sortOrder })
+        .exec()
+      break
+    case 'category':
+      res.locals.searchBy = searchBy
+      res.locals.searchTerm = searchTerm
+      result = await Tool.where('category')
+        .equals(searchTerm)
+        .sort({ [sortField]: sortOrder })
+        .exec()
+      break
+    case 'status':
+      res.locals.searchBy = searchBy
+      res.locals.searchTerm = searchTerm
+      result = await Tool.find({ serviceAssignment: { $eq: searchTerm } }).sort(
+        { [sortField]: sortOrder }
+      )
+      break
+    default:
+      res.locals.searchTerm = searchTerm
+      result = await Tool.find({
+        [searchBy]: { $regex: searchTerm, $options: 'i' }
+      }).sort({ [sortField]: sortOrder })
+      break
+  }
+  console.log(result)
   const { trimmedData, pageCount, targetPage } = paginate(
-    tools,
+    result,
     req.query.p,
     req.user.preferences.pageSize
   )
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
-  res.locals.message = `Search results for ${searchBy} : ${searchTerm}`
   console.info('[MW] searchTools-out'.bgWhite.blue)
   return next()
 }
+
 /**
  *
  * @param {object} req.body The tool object to create
@@ -339,7 +373,7 @@ async function submitCheckInOut (req, res, next) {
   const newServiceAssignment = mutateToArray(req.body.newServiceAssignment)
   const newTools = []
   for (let i = 0; i < id.length; i++) {
-    if ((id[i] === 'toolNotFound')) break
+    if (id[i] === 'toolNotFound') break
     updateToolHistory(id[i])
     newTools.push(
       await Tool.findByIdAndUpdate(

@@ -8,17 +8,12 @@ import {
   updateTool,
   submitCheckInOut
 } from '../middleware/tool.js'
-import { sanitizeReqBody } from '../middleware/util.js'
+import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
 export const toolRouter = Router()
 
-// get tool by id
-toolRouter.get('/:id', getToolByID, (_req, res) => {
-  res.render('editTool')
-})
-
 // search for tools and render the results with the dashboard view
-toolRouter.post('/search', sanitizeReqBody, searchTools, (_req, res) => {
-  res.render('dashboard')
+toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, searchTools, (_req, res) => {
+  res.render('results')
 })
 
 // retrieve current service assignment and render checkInOut prompting user to select the new assignment
@@ -27,20 +22,25 @@ toolRouter.post('/checkInOut', checkTools, (_req, res) => {
 })
 // save the new service assignement to the database.
 toolRouter.post('/submitCheckInOut', submitCheckInOut, (_req, res) => {
-  res.render('dashboard')
+  res.render('results')
 })
 
 // create new tool
 toolRouter.post('/submit', sanitizeReqBody, createTool, (_req, res) => {
-  res.render('dashboard')
+  res.render('results')
 })
 
 // update tool
 toolRouter.post('/update', sanitizeReqBody, updateTool, (_req, res) => {
-  res.render('dashboard')
+  res.render('results')
 })
 
 // archive tool
 toolRouter.get('/archive/:id', archiveTool, (_req, res) => {
   res.redirect('/dashboard')
+})
+
+// get tool by id
+toolRouter.get('/:id', getToolByID, (_req, res) => {
+  res.render('editTool')
 })
