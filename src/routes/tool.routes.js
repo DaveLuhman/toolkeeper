@@ -8,16 +8,11 @@ import {
   updateTool,
   submitCheckInOut
 } from '../middleware/tool.js'
-import { sanitizeReqBody } from '../middleware/util.js'
+import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
 export const toolRouter = Router()
 
-// get tool by id
-toolRouter.get('/:id', getToolByID, (_req, res) => {
-  res.render('editTool')
-})
-
 // search for tools and render the results with the dashboard view
-toolRouter.post('/search', sanitizeReqBody, searchTools, (_req, res) => {
+toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, searchTools, (_req, res) => {
   res.render('results')
 })
 
@@ -43,4 +38,9 @@ toolRouter.post('/update', sanitizeReqBody, updateTool, (_req, res) => {
 // archive tool
 toolRouter.get('/archive/:id', archiveTool, (_req, res) => {
   res.redirect('/dashboard')
+})
+
+// get tool by id
+toolRouter.get('/:id', getToolByID, (_req, res) => {
+  res.render('editTool')
 })
