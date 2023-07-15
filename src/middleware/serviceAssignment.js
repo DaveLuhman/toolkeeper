@@ -128,7 +128,7 @@ export const getServiceAssignmentName = (serviceAssignments, id) => {
     const serviceAssignment = serviceAssignments.filter((item) => {
       return item.id == id
     })
-    return serviceAssignment[0].name + " - " + serviceAssignment[0].description
+    return serviceAssignment[0].name + ' - ' + serviceAssignment[0].description
   } catch (error) {
     return 'Unassigned'
   }

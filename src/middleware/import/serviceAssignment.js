@@ -1,5 +1,7 @@
 import ServiceAssignment from '../../models/ServiceAssignment.model.js'
-
+import { csvFileToEntries } from '../util.js'
+let successCount = 0
+const errorList = []
 function checkForDuplicates (name, description) {
   const searchResult = ServiceAssignment.find({
     $or: [{ name }, { description }]
@@ -36,23 +38,17 @@ function createServiceAssignmentDocument (row) {
   return serviceAssignmentDocument
 }
 
-async function saveServiceAssignmentDocument (serviceAssignmentDocument) {
-  await ServiceAssignment.create(serviceAssignmentDocument).save()
-}
-
-function importDataToString (file) {
-  const importDataBuffer = Buffer.from(file.data)
-  const importDataString = importDataBuffer
-    .toString('ascii')
-    .replaceAll('"', '')
-    .replaceAll("'", '')
-  return importDataString
-}
-
-function parseImportData (importDataString) {
-  const importDataParentArray = importDataString.split('\n')
-  const members = importDataParentArray.map((row) => row.split(','))
-  return members
+function saveServiceAssignmentDocument (serviceAssignmentDocument) {
+  try {
+    const serviceAssignment = new ServiceAssignment(serviceAssignmentDocument)
+    serviceAssignment.save()
+    successCount++
+  } catch (error) {
+    errorList.push({
+      key: serviceAssignmentDocument.name,
+      reason: error.message
+    })
+  }
 }
 
 function createServiceAssignments (members) {
@@ -60,12 +56,11 @@ function createServiceAssignments (members) {
     const serviceAssignmentDocument = createServiceAssignmentDocument(row)
     return saveServiceAssignmentDocument(serviceAssignmentDocument)
   })
-  return Promise.all(serviceAssignmentsPromises)
+  return Promise.allSettled(serviceAssignmentsPromises)
 }
 
-export function importServiceAssignments (file) {
-  const importDataString = importDataToString(file)
-  const members = parseImportData(importDataString)
-  const successMsg = `${members.length} successfully processed.`
-  return createServiceAssignments(members).then(() => ({ successMsg }))
+export async function importServiceAssignments (file) {
+  const members = csvFileToEntries(file)
+  await createServiceAssignments(members)
+  return { successCount, errorList }
 }

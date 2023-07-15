@@ -12,6 +12,7 @@ import {
   fileUpload,
   flash,
   getCategoryName,
+  getPackageVersion,
   getServiceAssignmentName,
   handlebarsHelpers,
   helmet,
@@ -27,7 +28,7 @@ import {
   session,
   settingsRouter,
   toolRouter,
-  userRouter,
+  userRouter
 } from './config/dependencies.js'
 
 // use the imported dependencies as needed in the server.js file
@@ -41,21 +42,21 @@ connectDB() // Connect to MongoDB and report status to console
 // create mongo store for session persistence
 const mongoStore = new MongoDBStore({
   uri: process.env.MONGO_URI,
-  collection: 'sessions',
+  collection: 'sessions'
 })
 // Configure session options
 const sessionConfig = {
   secret: process.env.SESSION_KEY,
   resave: true,
   saveUninitialized: false,
-  cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 },
+  cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
 }
 // If in production, use secure cookies and mongo store
 if (process.env.NODE_ENV === 'production') {
   sessionConfig.cookie = {
     secure: true,
     httpOnly: false,
-    maxAge: 1000 * 60 * 60 * 24,
+    maxAge: 1000 * 60 * 60 * 24
   }
   sessionConfig.store = mongoStore
   // app.use(helmet()) // Add Helmet for HTTP Header controls
@@ -71,7 +72,8 @@ if (process.env.NODE_ENV !== 'production') {
     helmet.contentSecurityPolicy({
       directives: {
         'script-src': ["'unsafe-inline'", "'self'"], // allow client-side inline scripting
-      },
+        'script-src-attr': ["'unsafe-inline'"]
+      }
     })
   ) // Allow inline scripts for development
 }
@@ -82,15 +84,16 @@ const hbs = create({
     getCategoryName,
     getServiceAssignmentName,
     paginate,
-    ...handlebarsHelpers(),
+    getPackageVersion,
+    ...handlebarsHelpers()
   },
   extname: '.hbs',
   defaultLayout: 'main',
   partialsDir: ['./src/views/partials', './src/views/partials/modals'],
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
-    allowProtoMethodsByDefault: true,
-  },
+    allowProtoMethodsByDefault: true
+  }
 })
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
