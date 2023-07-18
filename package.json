@@ -42,7 +42,7 @@
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
     "helmet": "^7.0.0",
-    "mongoose": "^7.3.2",
+    "mongoose": "^7.3.3",
     "mongoose-autopopulate": "^1.0.1",
     "mongoose-unique-validator": "^4.0.0",
     "morgan": "^1.10.0",
