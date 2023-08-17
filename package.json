@@ -49,7 +49,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
-    "postcss": "^8.4.26",
+    "postcss": "^8.4.27",
     "sort-array": "^4.1.5",
     "tailwindcss-dropdown": "^1.0.0"
   },
