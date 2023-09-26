@@ -1,5 +1,6 @@
 /* eslint-disable eqeqeq */ // for the category name search
 import Category from '../models/Category.model.js'
+import Tool from '../models/Tool.model.js'
 
 const getCategories = async (_req, res, next) => {
   try {
@@ -32,14 +33,28 @@ const createCategory = async (req, res, next) => {
     res.status(500).json({ message: error.message })
   }
 }
-
+function uncategorizeTools(toolsArray) {
+  toolsArray.forEach((tool) => {
+    const updatedTool = Tool.findByIdAndUpdate(tool.id, { category: '64a1c3d8d71e121dfd39b7ab' }, false).exec()
+  })
+}
 const deleteCategory = async (req, res, next) => {
   const { id } = req.params
   try {
-    await Category.findByIdAndRemove({ $eq: id })
-    return next()
+    let tools = await Tool.find({ category: { $eq: id } })
+    console.log('There are this many tools:  ' + tools.length)
+    Promise.resolve(uncategorizeTools(tools))
+    tools = await Tool.find({ category: { $eq: id } })
+    if (tools.length === 0) {
+      console.log('There are no more tools and it is safe to delete this category')
+      await Category.findByIdAndRemove({ $eq: id })
+      return next()
+    }
+    else {
+      throw new Error('There are still tools with this category, so it cannot be deleted.')
+    }
   } catch (error) {
-    res.status(404).json({ message: error.message })
+    res.status(500).json({ message: error.message })
   }
 }
 
@@ -54,7 +69,7 @@ const updateCategory = async (req, res, next) => {
     res.locals.updatedCategory = updatedCategory
     return next()
   } catch (error) {
-    res.status(404).json({ message: error.message })
+    res.status(500).json({ message: error.message })
   }
 }
 // TODO: Use updatedAt value hashed to check for changes
