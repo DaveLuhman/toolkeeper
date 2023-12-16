@@ -38,7 +38,7 @@ export async function importByFile (req, res, next) {
   res.locals.message =
     result.successCount +
     ' successfully imported.  ' +
-    result.errorList.length +
+    result?.errorList?.length +
     ' failed to import'
   res.locals.errorList = result.errorList
   next()
