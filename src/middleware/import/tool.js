@@ -51,7 +51,6 @@ async function createTool (toolDocument) {
     const tool = new Tool(toolDocument)
     tool.category = await getCategoryByPrefix(getPrefixFromToolID(tool.toolID))
     await tool.save()
-    console.log(tool)
     await ToolHistory.create({
       _id: tool._id
     })
