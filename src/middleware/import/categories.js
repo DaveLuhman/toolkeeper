@@ -29,7 +29,7 @@ async function createCategories (entries) {
     const doc = createCategoryDocument(entry)
     return saveCategoryDocument(doc)
   })
-  return await Promise.all(categoryPromises)
+  return Promise.all(categoryPromises)
 }
 
 export async function importCategories (file) {
