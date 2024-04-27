@@ -46,7 +46,7 @@ const mongoStore = new MongoDBStore({
 })
 // Configure session options
 const sessionConfig = {
-  secret: process.env.SESSION_KEY,
+  secret: process.env.SECRET_KEY,
   resave: true,
   saveUninitialized: false,
   cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 }
