@@ -7,41 +7,41 @@
             {{#each tools as |tool|}}
                 <!-- this is the table of inputs -->
                 <div class="grid grid-flow-row-dense grid-cols-3 gap-2">
-                    <input name="id" value="{{id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
+                    <input id="edit-tool_id" name="id" value="{{id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
                     <div class="form-control">
                         <label for="serialNumber" class="label"><span class="label-text">SN:</span></label>
-                        <input name="serialNumber" disabled value="{{serialNumber}}" type="text"
+                        <input id="edit-tool_serialNumber" name="serialNumber" disabled value="{{serialNumber}}" type="text"
                             placeholder="Serial Number" class="input input-bordered" />
                     </div>
                     <div class="form-control">
                         <label for="modelNumber" class="label"><span class="label-text">PN:</span></label>
-                        <input name="modelNumber" value="{{modelNumber}}" type="text" placeholder="Model Number"
+                        <input name="modelNumber" value="{{modelNumber}}" type="text" placeholder="Model Number" id="edit-tool_modelNumber"
                             class="input input-bordered" />
                     </div>
                     <div class="form-control">
                         <label for="barcode" class="label"><span class="label-text">Barcode:</span></label>
-                        <input name="barcode" value="{{barcode}}" type="text" placeholder="Barcode"
+                        <input name="barcode" value="{{barcode}}" type="text" placeholder="Barcode" id="edit-tool_barcode"
                             class="input input-bordered" />
                     </div>
                     <div class="form-control">
                         <label for="toolID" class="label"><span class="label-text">Tool ID:</span></label>
-                        <input name="toolID" value="{{toolID}}" type="text" placeholder="Tool ID"
+                        <input name="toolID" value="{{toolID}}" type="text" placeholder="Tool ID" id="edit-tool_toolID"
                             class="input input-bordered" />
                     </div>
                     <div class="col-span-2 form-control">
                         <label for="description" class="label"><span class="label-text">Description:</span></label>
-                        <input name="description" value="{{description}}" type="text" placeholder="Description"
+                        <input name="description" value="{{description}}" type="text" placeholder="Description" id="edit-tool_description"
                             class="input input-bordered" />
                     </div>
                     <div class="form-control">
                         <label for="manufacturer" class="label"><span class="label-text">Manufacturer:</span></label>
-                        <input name="manufacturer" value="{{manufacturer}}" type="text" placeholder="Manufacturer"
+                        <input name="manufacturer" value="{{manufacturer}}" type="text" placeholder="Manufacturer" id="edit-tool_manufacturer"
                             class="input input-bordered" />
                     </div>
                     <div class="form-control">
                         <label for="serviceAssignment" class="label"><span class="label-text">Service
                                 Assignment</span></label>
-                        <select name="serviceAssignment" class="select select-bordered">
+                        <select name="serviceAssignment" class="select select-bordered" id="edit-tool_serviceAssignment">
                             {{#each ../serviceAssignments}}
                                 <option name='{{name}}' value='{{id}}' {{isSelected id tool.serviceAssignment.id}}>
                                     {{name}} - {{description}}
@@ -56,7 +56,7 @@
                     </div>
                     <div class="form-control">
                         <label for="category" class="label"><span class="label-text">Category</span></label>
-                        <select name="category" class="select select-bordered">
+                        <select name="category" class="select select-bordered" id="edit-tool_category">
                             {{#each ../categories}}
                                 <option name='{{name}}' value='{{id}}' {{isSelected id tool.category.id}}>{{name}}
                                 </option>
@@ -77,19 +77,19 @@
                     <div class="grid grid-flow-row-dense grid-cols-4 gap-2 collapse-content">
                         <div class="form-control">
                             <label for="width" class="label"><span class="label-text">Width:</span></label>
-                            <input name="width" value="{{size.width}}" type="text" class="input input-bordered" />
+                            <input name="width" value="{{size.width}}" type="text" class="input input-bordered" id="edit-tool_width" />
                         </div>
                         <div class="form-control">
                             <label for="length" class="label"><span class="label-text">Length:</span></label>
-                            <input name="length" value="{{size.length}}" type="text" class="input input-bordered" />
+                            <input name="length" value="{{size.length}}" type="text" class="input input-bordered" id="edit-tool_length" />
                         </div>
                         <div class="form-control">
                             <label for="height" class="label"><span class="label-text">Height:</span></label>
-                            <input name="height" value="{{size.height}}" type="text" class="input input-bordered" />
+                            <input name="height" value="{{size.height}}" type="text" class="input input-bordered" id="edit-tool_height" />
                         </div>
                         <div class="form-control">
                             <label for="weight" class="label"><span class="label-text">Weight:</span></label>
-                            <input name="weight" placeholder="Lbs" value="{{size.weight}}" type="number"
+                            <input name="weight" placeholder="Lbs" value="{{size.weight}}" type="number" id="edit-tool_weight"
                                 class="input input-bordered" />
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                 <div class="modal-button-row">
                     <label class="modal-button"><a href="/tool/archive/{{tool.id}}">Archive</a></label>
                     <label class="modal-button"><a href="/dashboard">Cancel</a></label>
-                    <label class="modal-button"><button type="submit">Submit</button></label>
+                    <label class="modal-button"><button id="edit-tool_submit" type="submit">Submit</button></label>
                 </div>
             {{/each}}
             <!-- this is the button row -->

@@ -7,21 +7,21 @@
             <div class="form-row">
                 <div class="form-control">
                     <label class="label"><span class="label-text">Given Name</span></label>
-                    <input id="firstName" name="firstName" type="text" value="{{user.firstName}}"
+                    <input id="profile_firstName" name="firstName" type="text" value="{{user.firstName}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
                     <label class="label"><span class="label-text">Family Name</span></label>
-                    <input id="lastName" name="lastName" type="text" value="{{user.lastName}}"
+                    <input id="profile_lastName" name="lastName" type="text" value="{{user.lastName}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
                     <label class="label"><span class="label-text">Email</span></label>
-                    <input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
+                    <input id="profile_email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Role</span></label>
-                    <select class="select select-bordered" name="userRole" id="userRole" aria-label="userRole" disabled>
+                    <label class="label" for="profile_role"><span class="label-text">Role</span></label>
+                    <select class="select select-bordered" name="profile_role" id="profile_role" aria-label="profile_role" disabled>
                         <option value="User" {{isSelected user.role "User" }}>User</option>
                         <option value="Manager" {{isSelected user.role "Manager" }}>Manager</option>
                         <option value="Admin" {{isSelected user.role "Admin" }}>Admin</option>
@@ -30,8 +30,8 @@
             </div>
             <div class="form-row">
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Visual Theme</span></label>
-                    <select name="theme" id="theme" class="select select-bordered" aria-label="theme-preferences">
+                    <label class="label" for="theme"><span class="label-text">Visual Theme</span></label>
+                    <select name="theme" id="profile_theme" class="select select-bordered" aria-label="theme-preferences">
                         <option value="light" {{isSelected user.preferences.theme "light" }}>Light</option>
                         <option value="cupcake" {{isSelected user.preferences.theme "cupcake" }}>Cupcake
                         </option>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="form-control">
                     <label class="label"><span class="label-text">Sort Field</span></label>
-                    <select name="sortField" id="sortField" class="select select-bordered"
+                    <select name="sortField" id="profile_sortField" class="select select-bordered"
                         aria-label="sort-field-preferences">
                         <option value="serialNumber" {{isSelected user.preferences.sortField "serialNumber" }}>
                             Serial Number
@@ -65,7 +65,7 @@
                 </div>
                 <div class="form-control">
                     <label class="label"><span class="label-text">Sort Direction</span></label>
-                    <select name="sortDirection" id="sortDirection" class="select select-bordered"
+                    <select name="sortDirection" id="profile_sortDirection" class="select select-bordered"
                         aria-label="sort-direction-preferences">
                         <option value="asc" {{isSelected user.preferences.sortDirection "asc" }}>Ascending
                         </option>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="form-control">
                     <label class="label"><span class="label-text">Page Size</span></label>
-                    <select name="pageSize" id="pageSize" class="select select-bordered"
+                    <select name="pageSize" id="profile_pageSize" class="select select-bordered"
                         aria-label="page-size-preferences">
                         <option value="10" {{isSelected user.preferences.pageSize '10' }}>10</option>
                         <option value="25" {{isSelected user.preferences.pageSize '25' }}>25</option>
@@ -88,13 +88,13 @@
                 </div>
                 <div class="form-control">
                     <span class="text-sm  rounded-l px-4 py-2 whitespace-no-wrap">Developer Mode?
-                        <input type="checkbox" name="developer" class="checkbox-primary checkbox-sm rounded-xl ml-3" {{#eq user.preferences.developer 'on'}}checked{{/eq}}>
+                        <input type="checkbox" id="profile_developer" name="developer" class="checkbox-primary checkbox-sm rounded-xl ml-3" {{#eq user.preferences.developer 'on'}}checked{{/eq}}>
                     </span>
                 </div>
             </div>
             <div class="form-button-row">
                 <button type="reset" class="btn btn-accent">Cancel</button>
-                <button type="submit" class="btn">Save</button>
+                <button type="submit" id="profile_submit" class="btn btn-primary">Save</button>
             </div>
         </form>
     </div>
