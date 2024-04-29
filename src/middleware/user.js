@@ -8,14 +8,14 @@ import { mutateToArray } from './util.js'
  * @param {*} next
  * @returns {array}
  */
-async function getUsers (_req, res, next) {
+async function getUsers(_req, res, next) {
   console.info('[MW] getUsers-in'.bgBlue.white)
   const users = await User.find()
   res.locals.users = mutateToArray(users)
   console.info('[MW] getUsers-out-2'.bgWhite.blue)
   return next()
 }
-async function getUserByID (req, res, next) {
+async function getUserByID(req, res, next) {
   console.info('[MW] getUserByID-in'.bgBlue.white)
   const id = req.params.id
   console.info(`[MW] searching id: ${id}`)
@@ -24,7 +24,7 @@ async function getUserByID (req, res, next) {
   console.info('[MW] getUserByID-out'.bgWhite.blue)
   return next()
 }
-async function createUser (req, res, next) {
+async function createUser(req, res, next) {
   console.info('[MW] createUser-in'.bgBlue.white)
   const { firstName, lastName, email, password, confirmPassword, role } =
     req.body
@@ -65,7 +65,7 @@ async function createUser (req, res, next) {
   console.info('[MW] createUser-out-4'.bgWhite.blue)
   return next()
 }
-async function verifySelf (req, res, next) {
+async function verifySelf(req, res, next) {
   console.info('[MW] verifySelf-in'.bgBlue.white)
   const targetID = req.params.id || req.body._id
   const currentUser = req.user._id
@@ -80,43 +80,54 @@ async function verifySelf (req, res, next) {
   console.info('[MW] verifySelf-out-1'.bgWhite.blue)
   return next()
 }
-async function updateUser (req, res, next) {
-  const {
-    firstName,
-    lastName,
-    theme,
-    sortField,
-    sortDirection,
-    pageSize,
-    developer
-  } = req.body
-  console.table(req.body)
+async function updateUser(req, res, next) {
   console.info('[MW] updateUser-in'.bgBlue.white)
-  const user = await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      $set: {
-        firstName,
-        lastName,
-        preferences: {
-          theme,
-          sortField,
-          sortDirection,
-          pageSize,
-          developer
+  try {
+    const {
+      firstName,
+      lastName,
+      email,
+      theme,
+      sortField,
+      sortDirection,
+      pageSize,
+      developer
+    } = req.body
+    console.table(req.body)
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      {
+        $set: {
+          firstName,
+          lastName,
+          email,
+          preferences: {
+            theme,
+            sortField,
+            sortDirection,
+            pageSize,
+            developer
+          }
         }
-      }
-    },
-    { new: true }
-  )
-  res.locals.user = user
-  req.login(user, (error) => {
-    console.log('This is an error' + error)
-  })
-  console.info('[MW] updateUser-out'.bgWhite.blue)
-  return next()
+      },
+      { new: true }
+    )
+    res.locals.user = user
+    // req.login(user, (error) => {
+    //   console.log('This is an error ' + error)
+    // })
+    console.info('[MW] updateUser-out'.bgWhite.blue)
+    return next()
+  } catch (error) {
+    console.error(error)
+    res.status(400)
+    res.locals.error = 'Something went wrong'
+    console.info('[MW] updateUser-out-1'.bgRed.black)
+    return next()
+  }
 }
-async function resetPassword (req, res, next) {
+
+async function resetPassword(req, res, next) {
   console.info('[MW] resetPassword-in'.bgBlue.white)
   // get data from request body
   const { _id, password, confirmPassword } = req.body
@@ -139,7 +150,7 @@ async function resetPassword (req, res, next) {
   console.info('[MW] resetPassword-out-4'.bgWhite.blue)
   return next()
 }
-async function disableUser (req, res, next) {
+async function disableUser(req, res, next) {
   console.info('[MW] disableUser-in'.bgBlue.white)
   await User.findByIdAndUpdate(req.params.id, { $set: { isDisabled: true } })
   console.info('[MW] disableUser-out'.bgBlue.white)
