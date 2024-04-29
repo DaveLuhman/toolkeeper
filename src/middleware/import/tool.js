@@ -5,21 +5,21 @@ import Category from '../../models/Category.model.js'
 let successCount
 const errorList = []
 
-function trimArrayValues (array) {
+function trimArrayValues(array) {
   return array.map((cell) => cell.trim())
 }
 
-async function checkForDuplicates (serialNumber) {
+async function checkForDuplicates(serialNumber) {
   const results = await Tool.find({ serialNumber })
   return results.length > 0
 }
 
-function getPrefixFromToolID (toolID) {
+function getPrefixFromToolID(toolID) {
   const prefix = toolID.substring(0, toolID.indexOf('-'))
   return prefix
 }
 
-async function getCategoryByPrefix (prefix) {
+async function getCategoryByPrefix(prefix) {
   try {
     const category = await Category.find({ prefix }, '_id').exec()
     return category[0]._id || '64a1c3d8d71e121dfd39b7ab'
@@ -28,7 +28,7 @@ async function getCategoryByPrefix (prefix) {
   }
 }
 
-function createToolDocument (row) {
+function createToolDocument(row) {
   row = trimArrayValues(row)
   const toolDocument = {
     serialNumber: row[0],
@@ -43,7 +43,7 @@ function createToolDocument (row) {
   return toolDocument
 }
 
-async function createTool (toolDocument) {
+async function createTool(toolDocument) {
   try {
     if (await checkForDuplicates(toolDocument.serialNumber)) {
       throw new Error('Duplicate serial number')
@@ -51,7 +51,6 @@ async function createTool (toolDocument) {
     const tool = new Tool(toolDocument)
     tool.category = await getCategoryByPrefix(getPrefixFromToolID(tool.toolID))
     await tool.save()
-    console.log(tool)
     await ToolHistory.create({
       _id: tool._id
     })
@@ -61,7 +60,7 @@ async function createTool (toolDocument) {
     console.log(error)
   }
 }
-function createTools (entries) {
+function createTools(entries) {
   const toolPromises = entries.map((entry) => {
     const toolDocument = createToolDocument(entry)
     return createTool(toolDocument)
@@ -69,7 +68,7 @@ function createTools (entries) {
   return Promise.allSettled(toolPromises)
 }
 
-export async function importTools (file) {
+export async function importTools(file) {
   successCount = 0
   errorList.length = 0
   const entries = csvFileToEntries(file)

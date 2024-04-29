@@ -52,10 +52,10 @@
           <h3 class="title-text">New Service Assignment</h3>
         </div>
 
-        <input placeholder="Name" type="text" name="name" class="input input-bordered">
-        <input placeholder="Description" type="text" name="description" class="input input-bordered">
-        <input placeholder="Phone" type="text" name="phone" class="input input-bordered">
-        <select name="type" class="select select-bordered">
+        <input placeholder="Name" type="text" name="name" id="new-service-assignment_name" class="input input-bordered">
+        <input placeholder="Description" type="text" name="description" id="new-service-assignment_description" class="input input-bordered">
+        <input placeholder="Phone" type="text" name="phone" id="new-service-assignment_phone" class="input input-bordered">
+        <select name="type" id="new-service-assignment_type" class="select select-bordered">
           <option value="Contract Job">Contract Job</option>
           <option value="Service Job">Service Job</option>
           <option value="Vehicle">Vehicle</option>
@@ -65,10 +65,10 @@
           </option>
           <option value="Error - Uncategorized">Error - Uncategorized</option>
         </select>
-        <input placeholder="Misc Notes" type="textarea" name="notes" class="col-span-2 input input-bordered">
+        <input placeholder="Misc Notes" type="textarea" name="notes" id="new-service-assignment_notes" class="col-span-2 input input-bordered">
 
         <div class="modal-button-row">
-          <label class="btn btn-sm"> <button type="submit">Submit</button></label>
+          <label class="btn btn-sm"> <button id="new-service-assignment_submit" type="submit">Submit</button></label>
         </div>
       </div>
     </form>

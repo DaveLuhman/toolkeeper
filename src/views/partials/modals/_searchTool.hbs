@@ -1,54 +1,57 @@
 <input type="checkbox" id="searchToolModal" class="modal-toggle" />
 <div class="modal">
-    <div class="modal-inner-lg">
-        <label for="searchToolModal" class="modal-close-btn">✕</label>
-        <form action="/tool/search" method="POST">
-            <div class="modal-table">
-                <div class="title-bar">
-                    <h3 class="title-text">Search for Tool(s)</h3>
-                </div>
-                <select id="searchBy" name="searchBy" class="select select-bordered">
-                    <option>Search By: </option>
-                    <option value="serialNumber" id="serialNumber">Serial Number</option>
-                    <option value="modelNumber" id="modelNumber">Model Number</option>
-                    <option value="toolID" id="toolID">Tool ID</option>
-                    <option value="barcode" id="barcode">Barcode</option>
-                    <option value="serviceAssignment" id="serviceAssignment">Service Assignment</option>
-                    <option value="status" id="status">In/Out Status</option>
-                    <option value="category" id="category">Category</option>
-                    <option value="manufacturer" id="manufacturer">Manufacturer</option>
-                </select>
-                <div id="searchInput"></div>
-                <div class="modal-button-row">
-                    <label class="modal-button" for="searchToolModal">Cancel</label>
-                    <label class="modal-button"><button type="submit">Submit</button></label>
-                </div>
-            </div>
-        </form>
-    </div>
+  <div class="modal-inner-lg">
+    <label for="searchToolModal" class="modal-close-btn">✕</label>
+    <form action="/tool/search" method="POST">
+      <div class="modal-table">
+        <div class="title-bar">
+          <h3 class="title-text">Search for Tool(s)</h3>
+        </div>
+        <select
+          id="search-tool_searchBy"
+          name="searchBy"
+          class="select select-bordered"
+        >
+          <option>Search By: </option>
+          <option value="serialNumber" id="serialNumber">Serial Number</option>
+          <option value="modelNumber" id="modelNumber">Model Number</option>
+          <option value="toolID" id="toolID">Tool ID</option>
+          <option value="barcode" id="barcode">Barcode</option>
+          <option value="serviceAssignment" id="serviceAssignment">Service
+            Assignment</option>
+          <option value="status" id="status">In/Out Status</option>
+          <option value="category" id="category">Category</option>
+          <option value="manufacturer" id="manufacturer">Manufacturer</option>
+        </select>
+        <div id="searchInput"></div>
+        <div class="modal-button-row">
+          <label class="modal-button" for="searchToolModal">Cancel</label>
+          <label class="modal-button"><button
+              id="search-tool_submit"
+              type="submit"
+            >Submit</button></label>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 <script>
-    const searchSelector = document.querySelector('#searchBy')
-    const searchInput = document.querySelector('#searchInput')
-    searchSelector.addEventListener("change", (event) => {
-        let selection = event.target.value
-        switch (selection) {
-            case 'serviceAssignment':
-                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n{{#each serviceAssignments}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select >'
-                break
-            case 'status':
-                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n<option>Status</option>\n<option value="Checked In">Checked In</option>\n<option value="Checked Out">Checked Out</option>\n</select>'
-                break
-            case 'category':
-                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n{{#each categories}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select>'
-                break
-            case 'manufacturer':
-                searchInput.innerHTML = '<input id="searchTerm" name="searchTerm" type="text" placeholder="Manufacturer" class="input input-bordered" />'
-                break
-            default:
-                searchInput.innerHTML = '<input id="searchTerm" name="searchTerm" type="text" placeholder="Search Term" class="input input-bordered" />'
-                break
-        }
-    })
+  const searchSelector = document.querySelector('#searchBy') const searchInput =
+  document.querySelector('#searchInput')
+  searchSelector.addEventListener("change", (event) => { let selection =
+  event.target.value switch (selection) { case 'serviceAssignment':
+  searchInput.innerHTML = '<select name="search-tool_search-term" class="select
+  select-bordered">\n{{#each serviceAssignments}}\n<option name="{{this.name}}"
+    value="{{this.id}}">{{this.name}}\n</option>\n{{/each}}\n</select >' break
+  case 'status': searchInput.innerHTML = '<select name="search-tool_search-term"
+  class="select select-bordered">\n<option>Status</option>\n<option
+  value="Checked In">Checked In</option>\n<option value="Checked Out">Checked
+  Out</option>\n</select>' break case 'category': searchInput.innerHTML =
+  '<select name="search-tool_search-term" class="select select-bordered">\n{{#each
+    categories
+  }}\n<option name="{{this.name}}" value="{{this.id}}">{{this.name}}\n</option>\n{{/each}}\n</select>'
+  break default: searchInput.innerHTML = '<input required
+  id="search-tool_search-term" name="searchTerm" type="text" placeholder="Search
+  Term" class="input input-bordered" />' break }})
 
 </script>
