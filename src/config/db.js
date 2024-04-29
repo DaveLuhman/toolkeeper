@@ -3,19 +3,19 @@ import User from '../models/User.model.js'
 import Category from '../models/Category.model.js'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 
-async function isUsersCollectionEmpty () {
+async function isUsersCollectionEmpty() {
   const user = await User.count()
   return user === 0
 }
 
-async function createDefaultUser () {
+async function createDefaultUser() {
   try {
     const user = await User.create({
       firstName: 'Admin',
       lastName: 'User',
       password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
       role: 'Admin',
-      email: 'admin@toolkeeper'
+      email: 'admin@toolkeeper.site'
     })
     return user
   } catch (error) {
@@ -23,7 +23,7 @@ async function createDefaultUser () {
   }
 }
 
-async function createDefaultCategory () {
+async function createDefaultCategory() {
   return await Category.create({
     _id: '64a1c3d8d71e121dfd39b7ab',
     prefix: 'UC',
@@ -32,7 +32,7 @@ async function createDefaultCategory () {
   })
 }
 
-async function createDefaultServiceAssignments () {
+async function createDefaultServiceAssignments() {
   const serviceAssignments = [
     {
       _id: '64a19e910e675938ebb67de7',
@@ -55,10 +55,10 @@ async function createDefaultServiceAssignments () {
       type: 'Stockroom'
     }
   ]
-  return await ServiceAssignment.create(serviceAssignments)
+  return ServiceAssignment.create(serviceAssignments)
 }
 
-function createDefaultDocuments () {
+function createDefaultDocuments() {
   const defaultPromises = [
     createDefaultUser(),
     createDefaultCategory(),
@@ -67,8 +67,8 @@ function createDefaultDocuments () {
   return Promise.allSettled(defaultPromises)
 }
 
-function initializeDatabase () {
-  console.warn('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper\nDefault password is "asdfasdf"'.red.underline)
+function initializeDatabase() {
+  console.warn('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper.site\nDefault password is "asdfasdf"'.red.underline)
   createDefaultDocuments()
 }
 const connectDB = async () => {
