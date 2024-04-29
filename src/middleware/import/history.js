@@ -5,12 +5,12 @@ import { csvFileToEntries } from '../util.js'
 let successCount
 const errorList = []
 
-function dateTimeMixer (date, time) {
+function dateTimeMixer(date, time) {
   const returnValue = new Date(`${date} ${time}`).toISOString()
   return returnValue
 }
 
-async function updateToolServiceAssignment (row) {
+async function updateToolServiceAssignment(row) {
   if (!row[3] || row[4] === null) return
   const serialNumber = row[4].trim()
   const serviceAssignment = await ServiceAssignmentModel.findOne({
@@ -40,7 +40,7 @@ async function updateToolServiceAssignment (row) {
   return 0
 }
 
-export async function importHistory (file) {
+export async function importHistory(file) {
   errorList.length = 0
   successCount = 0
   const transactions = csvFileToEntries(file)

@@ -66,7 +66,7 @@ if (process.env.NODE_ENV === 'production') {
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
   console.info(
-    '[INIT]>>>>> Morgan enabled for logging in this development environment'
+    '[INIT]>>>>> Morgan enabled for logging in this development environment'.yellow
   )
   app.use(
     helmet.contentSecurityPolicy({
@@ -131,5 +131,5 @@ app.use((_req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.info(`[INIT] Server is running on port ${PORT}`)
+  console.info(`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black)
 })

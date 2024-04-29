@@ -2,14 +2,14 @@ import ServiceAssignment from '../../models/ServiceAssignment.model.js'
 import { csvFileToEntries } from '../util.js'
 let successCount = 0
 const errorList = []
-function checkForDuplicates (name, description) {
+function checkForDuplicates(name, description) {
   const searchResult = ServiceAssignment.find({
     $or: [{ name }, { description }]
   }).exec()
   return searchResult.length > 0
 }
 
-function determineServiceAssignmentType (memberID, mLastName) {
+function determineServiceAssignmentType(memberID, mLastName) {
   const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
   if (!memberID || memberID === '') {
     console.error('Invalid Member ID' + memberID)
@@ -24,26 +24,25 @@ function determineServiceAssignmentType (memberID, mLastName) {
   } else return 'Imported - Uncategorized'
 }
 
-function createServiceAssignmentDocument (row) {
+function createServiceAssignmentDocument(row) {
   try {
-      let name = row[0]
-  let description = row[1] ? row[1].trim() : ''
-  if (checkForDuplicates(name, description)) {
-    name = `Duplicate ${row[0]}`
-    description = `Duplicate ${row[1]}`
+    let name = row[0]
+    let description = row[1] ? row[1].trim() : ''
+    if (checkForDuplicates(name, description)) {
+      name = `Duplicate ${row[0]}`
+      description = `Duplicate ${row[1]}`
+    }
+    const notes = row[4]?.trim() + ' ' + row[5]?.trim() + ' ' + row[10]?.trim()
+    const phone = row[2]?.trim()
+    const type = determineServiceAssignmentType(row[0], row[1])
+    const serviceAssignmentDocument = { name, description, notes, phone, type }
+    return serviceAssignmentDocument
+  } catch (error) {
+    throw new Error('Could not create the document due to invalid input values')
   }
-  const notes = row[4]?.trim() + ' ' + row[5]?.trim() + ' ' + row[10]?.trim()
-  const phone = row[2]?.trim()
-  const type = determineServiceAssignmentType(row[0], row[1])
-  const serviceAssignmentDocument = { name, description, notes, phone, type }
-  return serviceAssignmentDocument
-}
-catch(error) {
-  throw new Error('Could not create the document due to invalid input values')
-}
 }
 
-function saveServiceAssignmentDocument (serviceAssignmentDocument) {
+function saveServiceAssignmentDocument(serviceAssignmentDocument) {
   try {
     const serviceAssignment = new ServiceAssignment(serviceAssignmentDocument)
     serviceAssignment.save()
@@ -56,7 +55,7 @@ function saveServiceAssignmentDocument (serviceAssignmentDocument) {
   }
 }
 
-function createServiceAssignments (members) {
+function createServiceAssignments(members) {
   const serviceAssignmentsPromises = members.map((row) => {
     const serviceAssignmentDocument = createServiceAssignmentDocument(row)
     return saveServiceAssignmentDocument(serviceAssignmentDocument)
@@ -64,7 +63,7 @@ function createServiceAssignments (members) {
   return Promise.allSettled(serviceAssignmentsPromises)
 }
 
-export async function importServiceAssignments (file) {
+export async function importServiceAssignments(file) {
   const members = csvFileToEntries(file)
   await createServiceAssignments(members)
   return { successCount, errorList }

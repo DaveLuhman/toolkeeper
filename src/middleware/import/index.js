@@ -4,7 +4,7 @@ import { importHistory } from './history.js'
 import { importCategories } from './categories.js'
 import 'fs/promises'
 
-export async function importByFile (req, res, next) {
+export async function importByFile(req, res, next) {
   console.log(req.body.importTarget)
   if (!req.files || !req.body.importTarget) {
     res.locals.error = 'No file uploaded or no selection made'

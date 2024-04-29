@@ -11,7 +11,7 @@ import passport from 'passport'
  *  res.render('dashboard')
  * })
  **/
-function checkAuth (req, res, next) {
+function checkAuth(req, res, next) {
   if (req.isAuthenticated()) {
     res.locals.user = req.user
     return next()
@@ -30,7 +30,7 @@ function checkAuth (req, res, next) {
  * res.render('settings/users')
  * })
  **/
-function isManager (req, res, next) {
+function isManager(req, res, next) {
   if (req.user.role === 'User') {
     console.warn('[AUTH] User Is Not A Manager: ' + req.user.role)
     res.locals.error =
@@ -53,7 +53,7 @@ function isManager (req, res, next) {
  * })
  * @todo fix the failure message
  **/
-async function login (req, res, next) {
+async function login(req, res, next) {
   passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true
@@ -71,7 +71,7 @@ async function login (req, res, next) {
  * res.redirect('/')
  * })
  **/
-function logout (req, res, next) {
+function logout(req, res, next) {
   req.logout(function (err) {
     if (err) {
       return next(err)
