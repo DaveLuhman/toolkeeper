@@ -6,18 +6,18 @@
         <form action="/user/profile" method="POST">
             <div class="form-row">
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Given Name</span></label>
-                    <input id="profile_firstName" name="firstName" type="text" value="{{user.firstName}}"
+                    <label class="label"><span class="label-text">First Name</span></label>
+                    <input required id="profile_firstName" name="firstName" type="text" value="{{user.firstName}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Family Name</span></label>
-                    <input id="profile_lastName" name="lastName" type="text" value="{{user.lastName}}"
+                    <label class="label"><span class="label-text">Last Name</span></label>
+                    <input required id="profile_lastName" name="lastName" type="text" value="{{user.lastName}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
                     <label class="label"><span class="label-text">Email</span></label>
-                    <input id="profile_email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
+                    <input required id="profile_email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
                 </div>
                 <div class="form-control">
                     <label class="label" for="profile_role"><span class="label-text">Role</span></label>
