@@ -15,7 +15,7 @@ async function createDefaultUser() {
       lastName: 'User',
       password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
       role: 'Admin',
-      email: 'admin@toolkeeper'
+      email: 'admin@toolkeeper.site'
     })
     return user
   } catch (error) {
@@ -68,7 +68,7 @@ function createDefaultDocuments() {
 }
 
 function initializeDatabase() {
-  console.warn('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper\nDefault password is "asdfasdf"'.red.underline)
+  console.warn('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper.site\nDefault password is "asdfasdf"'.red.underline)
   createDefaultDocuments()
 }
 const connectDB = async () => {
