@@ -3,18 +3,18 @@ import Category from '../../models/Category.model.js'
 let successCount
 const errorList = []
 
-function createCategoryDocument (row) {
+function createCategoryDocument(row) {
   const data = row.map((cell) => cell.trim())
   const description = data[2] || ''
   return { prefix: data[0], name: data[1], description }
 }
 
-async function checkDuplicate (prefix) {
+async function checkDuplicate(prefix) {
   const dup = await Category.find({ prefix })
   return dup.length !== 0
 }
 
-async function saveCategoryDocument (doc) {
+async function saveCategoryDocument(doc) {
   try {
     if (await checkDuplicate(doc.prefix)) throw new Error('Duplicate Prefix')
     successCount++
@@ -24,15 +24,15 @@ async function saveCategoryDocument (doc) {
   }
 }
 
-async function createCategories (entries) {
+async function createCategories(entries) {
   const categoryPromises = entries.map((entry) => {
     const doc = createCategoryDocument(entry)
     return saveCategoryDocument(doc)
   })
-  return await Promise.all(categoryPromises)
+  return Promise.all(categoryPromises)
 }
 
-export async function importCategories (file) {
+export async function importCategories(file) {
   successCount = 0
   errorList.length = 0
   const entries = csvFileToEntries(file)

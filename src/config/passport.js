@@ -3,14 +3,14 @@ import User from '../models/User.model.js'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { compare } from 'bcrypt'
 
-const passportConfig = (app) => {
+const passportConfig = (_app) => {
   passport.use(new LocalStrategy(
     { usernameField: 'email' },
-    async function (email, password, done)  {
+    async function (email, password, done) {
       console.info(`[AUTH] ${email} attempting login`.blue.bold)
       const user = await User.findOne({ email: { $eq: email } })
       if (!user) {
-        return done(null, false, { message: 'That email is not registered'})
+        return done(null, false, { message: 'That email is not registered' })
       }
       if (user.isDisabled === true) {
         return done(null, false, { message: 'That user has been disabled. Contact your manager' })
@@ -20,7 +20,7 @@ const passportConfig = (app) => {
         if (isMatch) {
           return done(null, user)
         } else {
-          return done(null, false, { message: 'Password incorrect'})
+          return done(null, false, { message: 'Password incorrect' })
         }
       })
     })

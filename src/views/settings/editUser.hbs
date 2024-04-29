@@ -8,19 +8,19 @@
       <div class="form-row">
         <div class="form-control">
           <label class="label"><span class="label-text">First Name</span></label>
-          <input id="firstName" name="firstName" type="text" value="{{user.firstName}}" class="input input-bordered" />
+          <input id="edit-user_firstName" name="firstName" type="text" value="{{user.firstName}}" class="input input-bordered" />
         </div>
         <div class="form-control">
           <label class="label"><span class="label-text">Last Name</span></label>
-          <input id="lastName" name="lastName" type="text" value="{{user.lastName}}" class="input input-bordered" />
+          <input id="edit-user_lastName" name="lastName" type="text" value="{{user.lastName}}" class="input input-bordered" />
         </div>
         <div class="form-control">
           <label class="label"><span class="label-text">Email</span></label>
-          <input id="email" name="email" type="text" value="{{user.email}}" class="input input-bordered" disabled/>
+          <input id="edit-user_email" name="email" type="text" value="{{user.email}}" class="input input-bordered" disabled/>
         </div>
         <div class="form-control">
-          <label class="label"><span class="label-text">Role</span></label>
-          <select class="select select-bordered" name="userRole" id="userRole" aria-label="userRole" {{#eq user.role "Admin" }}disabled{{/eq}}>
+          <label class="label" for="edit-user_role"><span class="label-text">Role</span></label>
+          <select class="select select-bordered" name="edit-user_role" id="edit-user_role" aria-label="role" {{#eq user.role "Admin" }}disabled{{/eq}}>
             <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
             <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
             <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
@@ -29,7 +29,7 @@
       </div>
       <div class="form-button-row">
         <a href="/settings/users"><button type="button" class="btn btn-accent">Cancel</button></a>
-        <button type="submit" class="btn">Save</button>
+        <button id="edit-user_submit" type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
     {{/each}}

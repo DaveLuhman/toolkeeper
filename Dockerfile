@@ -1,4 +1,4 @@
-FROM node:19-alpine as base
+FROM node:20-alpine as base
 WORKDIR /src
 COPY . /
 EXPOSE 3000

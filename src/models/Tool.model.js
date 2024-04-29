@@ -29,7 +29,6 @@ const toolSchema = new Schema(
     toolID: {
       type: String,
       upperCase: true,
-      required: false,
       trim: true
     },
     serviceAssignment: {
