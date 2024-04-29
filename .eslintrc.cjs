@@ -11,5 +11,10 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    'space-before-function-paren': ['error', {
+      anonymous: 'always',
+      named: 'ignore',
+      asyncArrow: 'always'
+    }]
   }
 }

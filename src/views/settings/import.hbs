@@ -14,31 +14,31 @@
                     <div class="form-control">
                         <label for="serviceAssignments" class="label"><span class="label-text">Service
                                 Assignments - Total Entries: {{serviceAssignments.length}} </span></label>
-                        <input type="radio" name="importTarget" value="serviceAssignments" id="serviceAssignments">
+                        <input type="radio" name="importTarget" value="serviceAssignments" id="import_serviceAssignments">
                     </div>
                 </li>
                 <li>
                     <div class="form-control">
                         <label for="categories" class="label"><span class="label-text">Categories - Total Entries:
                                 {{categories.length}}</span></label>
-                        <input type="radio" name="importTarget" value="categories" id="tools">
+                        <input type="radio" name="importTarget" value="categories" id="import_categories">
                     </div>
                 </li>
                 <li>
                     <div class="form-control">
                         <label for="tools" class="label"><span class="label-text">Tools</span></label>
-                        <input type="radio" name="importTarget" value="tools" id="tools">
+                        <input type="radio" name="importTarget" value="tools" id="import_tools">
                     </div>
                 </li>
                 <li>
                     <div class="form-control">
                         <label for="history" class="label"><span class="label-text">Transaction History</span></label>
-                        <input type="radio" name="importTarget" value="history" id="history">
+                        <input type="radio" name="importTarget" value="history" id="import_history">
                     </div>
                 </li>
             </ol>
             <input type="file" name="importFile" id="importFile">
-            <button type="submit" id="importSubmitBtn" class="modal-button">Import</button>
+            <button type="submit" id="import_submit" class="modal-button">Import</button>
         </form>
         {{#if message}}
             <h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>

@@ -6,20 +6,20 @@
       </div>
       {{#each materials}}
         <div class="gap-2 columns-1 md:columns-2 form-control justify-items-center">
-          <input name="id" value="{{id}}" type="hidden" />
+          <input id="edit-material_id" name="_id" value="{{id}}" type="hidden" />
           <div class="form-control">
             <label class="label"><span class="label-text">Name</span></label>
-            <input name="name" value="{{name}}" type="text" class="input input-bordered" />
+            <input id="edit-material_name" name="name" value="{{name}}" type="text" class="input input-bordered" />
           </div>
           <div class="form-control">
             <label class="label"><span class="label-text">Description</span></label>
-            <input name="description" value="{{description}}" type="text" class="input input-bordered" />
+            <input id="edit-material_name" name="description" value="{{description}}" type="text" class="input input-bordered" />
           </div>
         </div>
       {{/each}}
       <div class="modal-button-row">
         <label class="modal-button"><a href="/settings/materials">Cancel</a></label>
-        <label class="modal-button"><button type="submit">Submit</button></label>
+        <label class="modal-button"><button id="edit-material_name" type="submit">Submit</button></label>
       </div>
     </form>
   {{/if}}
