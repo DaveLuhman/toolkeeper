@@ -12,7 +12,7 @@ import { mutateToArray, paginate } from './util.js'
 export async function getServiceAssignments (req, res, next) {
   console.info('[MW] getServiceAssignments-in'.bgBlue.white)
   try {
-    const serviceAssignments = await ServiceAssignment.find()
+    const serviceAssignments = await ServiceAssignment.find().sort('name').exec()
     const { trimmedData, targetPage, pageCount } = paginate(
       serviceAssignments,
       req.query.p || 1,
