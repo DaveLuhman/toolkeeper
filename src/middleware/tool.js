@@ -13,7 +13,7 @@ import sortArray from 'sort-array'
  *
  * This function will return all tools in the database along with pagination data
  */
-async function getAllTools (req, res, next) {
+async function getAllTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   console.info('[MW] getAllTools-in'.bgBlue.white)
   const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
@@ -37,7 +37,7 @@ async function getAllTools (req, res, next) {
  * @param {*} next
  * @returns {array}
  */
-async function getToolByID (req, res, next) {
+async function getToolByID(req, res, next) {
   const id = req.params.id
   console.info(`[MW] searching id: ${id}`)
   const tools = await Tool.findById({ $eq: id })
@@ -63,7 +63,7 @@ async function getToolByID (req, res, next) {
  * @param {*} next
  * @returns {array}
  */
-async function searchTools (req, res, next) {
+async function searchTools(req, res, next) {
   console.info('[MW] searchTools-in'.bgBlue.white)
   const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchTerm } = req.body
@@ -122,7 +122,7 @@ async function searchTools (req, res, next) {
  * @param {*} next
  * @returns
  */
-async function createTool (req, res, next) {
+async function createTool(req, res, next) {
   try {
     console.info('[MW] createTool-in'.bgBlue.white)
     const {
@@ -186,7 +186,7 @@ async function createTool (req, res, next) {
   }
 }
 
-async function updateToolHistory (toolID) {
+async function updateToolHistory(toolID) {
   const oldTool = await Tool.findById(toolID)
   await ToolHistory.findByIdAndUpdate(
     { _id: toolID },
@@ -204,7 +204,7 @@ async function updateToolHistory (toolID) {
  * @param {*} res
  * @param {*} next
  */
-async function updateTool (req, res, next) {
+async function updateTool(req, res, next) {
   console.info('[MW] updateTool-in'.bgBlue.white)
   const ut = async (newToolData) => {
     const {
@@ -284,7 +284,7 @@ async function updateTool (req, res, next) {
  * @param {number} res.status The status code to return
  * @param {*} next
  */
-async function archiveTool (req, res, next) {
+async function archiveTool(req, res, next) {
   console.info('[MW] archiveTool-in'.bgBlue.white)
   const { id } = req.params
   const archivedTool = await Tool.findByIdAndUpdate(
@@ -312,14 +312,14 @@ async function archiveTool (req, res, next) {
  * @param {*} next
  * @returns
  */
-async function checkTools (req, res, next) {
+async function checkTools(req, res, next) {
   if (!req.body.searchTerm) {
     res.locals.message = 'No Tools Submitted For Status Change'
     console.warn('[MW checkTools-out-1'.bgWhite.blue)
     res.status(400).redirect('back')
     return next()
   }
-  console.log(req.body.searchTerm);
+  console.log(req.body.searchTerm)
   const rawSearchTerms = req.body.searchTerm
   // const validatedSearchTerms = rawSearchTerms.filter((term) => term.length > 0)
   const toolsToBeChanged = await lookupToolWrapper(req.body.searchTerm)
@@ -335,17 +335,20 @@ async function checkTools (req, res, next) {
  * @param {string} searchField optional, key to search - if not provided, will search all fields
  * @returns {object}
  */
-async function lookupTool (searchTerm) {
+async function lookupTool(searchTerm) {
   searchTerm = searchTerm.toUpperCase()
+  console.log('checking for serial number: ' + searchTerm)
   let result = await Tool.findOne({ serialNumber: { $eq: searchTerm } })
   if (!result) {
-    console.log('checking for barcode ' + searchTerm)
+    console.log('checking for barcode: ' + searchTerm)
     result = await Tool.findOne({ barcode: { $eq: searchTerm } })
   }
   if (!result) {
+    console.log('checking for toolID ' + searchTerm)
     result = await Tool.findOne({ toolID: { $eq: searchTerm } })
   }
   if (!result) {
+    console.log('returning empty object as no tool was found')
     result = {}
   }
   console.log(result)
@@ -357,22 +360,24 @@ async function lookupTool (searchTerm) {
  * @param {*} searchTerms
  * @return {*} array of tools, with dummy objects if nothing is found
  */
-async function lookupToolWrapper (searchTerms) {
+async function lookupToolWrapper(searchTerms) {
   const tools = []
-  if((typeof(searchTerms) == Array)) 
-  for (let i = 0; i < searchTerms.length; i++) {
-    const result = await lookupTool(searchTerms[i])
-    console.log(result);
-    if (result.serialNumber === undefined) {
-      tools.push({
-        serialNumber: searchTerms[i]
-      })
-    } else tools.push(result)
+  if (!Array.isArray(searchTerms)) {
+    searchTerms = [searchTerms]
+    for (let i = 0; i < searchTerms.length; i++) {
+      const result = await lookupTool(searchTerms[i])
+      console.log(result)
+      if (result?.serialNumber === undefined) {
+        tools.push({
+          serialNumber: searchTerms[i]
+        })
+      } else tools.push(result)
+    }
   }
   return tools
 }
 
-async function submitCheckInOut (req, res, next) {
+async function submitCheckInOut(req, res, next) {
   const id = mutateToArray(req.body.id)
   const newServiceAssignment = mutateToArray(req.body.newServiceAssignment)
   const newTools = []
