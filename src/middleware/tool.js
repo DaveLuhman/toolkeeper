@@ -319,9 +319,10 @@ async function checkTools (req, res, next) {
     res.status(400).redirect('back')
     return next()
   }
+  console.log(req.body.searchTerm);
   const rawSearchTerms = req.body.searchTerm
-  const validatedSearchTerms = rawSearchTerms.filter((term) => term.length > 0)
-  const toolsToBeChanged = await lookupToolWrapper(validatedSearchTerms)
+  // const validatedSearchTerms = rawSearchTerms.filter((term) => term.length > 0)
+  const toolsToBeChanged = await lookupToolWrapper(req.body.searchTerm)
   if (toolsToBeChanged.length === 0) {
     res.locals.message = 'No Tools Found Matching '
   }
@@ -338,6 +339,7 @@ async function lookupTool (searchTerm) {
   searchTerm = searchTerm.toUpperCase()
   let result = await Tool.findOne({ serialNumber: { $eq: searchTerm } })
   if (!result) {
+    console.log('checking for barcode ' + searchTerm)
     result = await Tool.findOne({ barcode: { $eq: searchTerm } })
   }
   if (!result) {
@@ -357,8 +359,10 @@ async function lookupTool (searchTerm) {
  */
 async function lookupToolWrapper (searchTerms) {
   const tools = []
+  if((typeof(searchTerms) == Array)) 
   for (let i = 0; i < searchTerms.length; i++) {
     const result = await lookupTool(searchTerms[i])
+    console.log(result);
     if (result.serialNumber === undefined) {
       tools.push({
         serialNumber: searchTerms[i]
