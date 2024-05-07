@@ -1,4 +1,4 @@
-import { importServiceAssignments } from './serviceAssignment.js'
+import { activateServiceAssignments, importServiceAssignments } from './serviceAssignment.js'
 import { importTools } from './tool.js'
 import { importHistory } from './history.js'
 import { importCategories } from './categories.js'
@@ -21,9 +21,13 @@ export async function importByFile(req, res, next) {
       console.log('importing tools')
       result = await importTools(file)
       break
-    case 'serviceAssignments':
-      console.log('importing service assignments')
+    case 'allServiceAssignments':
+      console.log('importing all service assignments')
       result = await importServiceAssignments(file)
+      break
+    case 'activeServiceAssignments':
+      console.log('marking inactive SAs as such')
+      result = await activateServiceAssignments(file)
       break
     case 'history':
       result = await importHistory(file)

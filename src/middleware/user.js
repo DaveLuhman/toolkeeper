@@ -113,9 +113,9 @@ async function updateUser(req, res, next) {
       { new: true }
     )
     res.locals.user = user
-    // req.login(user, (error) => {
-    //   console.log('This is an error ' + error)
-    // })
+    req.login(user, (error) => {
+      console.log('This is an error ' + error)
+    })
     console.info('[MW] updateUser-out'.bgWhite.blue)
     return next()
   } catch (error) {

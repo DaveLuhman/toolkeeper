@@ -42,7 +42,7 @@
         let selection = event.target.value
         switch (selection) {
             case 'serviceAssignment':
-                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n{{#each serviceAssignments}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select >'
+                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n{{#each activeServiceAssignments}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select >'
                 break
             case 'status':
                 searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n<option>Status</option>\n<option value="Checked In">Checked In</option>\n<option value="Checked Out">Checked Out</option>\n</select>'

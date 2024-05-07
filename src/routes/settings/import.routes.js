@@ -1,9 +1,11 @@
 import { Router } from 'express'
 import { importByFile } from '../../middleware/import/index.js'
+import { listAllSAs } from '../../middleware/serviceAssignment.js'
+import { getAllTools } from '../../middleware/tool.js'
 export const importRouter = Router()
 
 // load import index page
-importRouter.get('/', (_req, res) => {
+importRouter.get('/', listAllSAs, getAllTools, (_req, res) => {
   res.render('settings/import')
 })
 

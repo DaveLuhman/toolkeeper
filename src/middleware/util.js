@@ -16,7 +16,7 @@ sanitize
 
 import rateLimit from 'express-rate-limit'
 import { listCategoryNames } from './category.js'
-import { listServiceAssignnmentNames } from './serviceAssignment.js'
+import { listActiveSAs } from './serviceAssignment.js'
 
 /**
  *
@@ -25,7 +25,7 @@ import { listServiceAssignnmentNames } from './serviceAssignment.js'
  * @param {number} perPage
  * @returns {object} trimmedData, targetPage, pageCount
  */
-export function paginate (data, targetPage, perPage) {
+export function paginate(data, targetPage, perPage) {
   perPage = perPage || 10
   targetPage = targetPage || 1
   const pageCount = Math.ceil(data.length / perPage) // number of pages
@@ -40,16 +40,16 @@ export function paginate (data, targetPage, perPage) {
 /**
  * @param {any} data input data, typically before being rendered by handlebars
  * @returns {array}
- * This function will mutate the data to an array
+ * This function will mutate the data to an array if it's not already one, but won't nest an existing array
  */
-export function mutateToArray (data) {
+export function mutateToArray(data) {
   if (!Array.isArray(data)) {
     data = [data]
   }
   return data
 }
 
-export function sortByUserPreference (data, sortField, sortOrder) {
+export function sortByUserPreference(data, sortField, sortOrder) {
   if (sortOrder === 'asc') {
     data.sort((a, b) => a[sortField] - b[sortField])
   } else {
@@ -64,7 +64,7 @@ export function sortByUserPreference (data, sortField, sortOrder) {
  * This function will sanitize user input to prevent XSS attacks
  * It will only allow alphanumeric characters and spaces
  **/
-function sanitize (string) {
+function sanitize(string) {
   return string.replace(/[^a-zA-Z0-9\-@. ]/g, '')
 }
 
@@ -76,7 +76,7 @@ function sanitize (string) {
  * This function will sanitize the request body
  * It will only allow alphanumeric characters and - @ . (required for emails)
  **/
-export function sanitizeReqBody (req, _res, next) {
+export function sanitizeReqBody(req, _res, next) {
   for (const key in req.body) {
     req.body[key] = sanitize(req.body[key])
   }
@@ -88,13 +88,13 @@ export function sanitizeReqBody (req, _res, next) {
  * @param {string} objectProperty property on the object you want checked
  * @returns
  */
-export function isSelected (option, objectProperty) {
+export function isSelected(option, objectProperty) {
   if (option === objectProperty) return 'selected'
 }
 
 export const populateDropdownItems = [
   listCategoryNames,
-  listServiceAssignnmentNames
+  listActiveSAs
 ]
 
 export const rateLimiter = rateLimit({
@@ -113,7 +113,7 @@ export const createAccountLimiter = rateLimit({
   legacyHeaders: false // Disable the `X-RateLimit-*` headers
 })
 
-export function csvFileToEntries (file) {
+export function csvFileToEntries(file) {
   return Buffer.from(file.data)
     .toString('ascii')
     .replace("'", '')
@@ -122,11 +122,11 @@ export function csvFileToEntries (file) {
     .map((row) => row.split(','))
 }
 
-export function getPackageVersion () {
+export function getPackageVersion() {
   return process.env.npm_package_version
 }
 
-export function hoistSearchParamsToBody (req, _res, next) {
+export function hoistSearchParamsToBody(req, _res, next) {
   if (req.body.searchBy === undefined) {
     const { searchBy, searchTerm } = req.query
     req.body.searchBy = searchBy
