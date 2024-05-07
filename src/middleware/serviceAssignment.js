@@ -18,7 +18,8 @@ export async function getServiceAssignments(req, res, next) {
       req.query.p || 1,
       req.user.preferences.pageSize
     )
-    res.locals.serviceAssignments = trimmedData
+    res.locals.allServiceAssignments = trimmedData
+    res.locals.activeServiceAssignments = trimmedData.filter( (item) => {item.active})
     res.locals.pagination = { page: targetPage, pageCount } // pagination
     console.info('[MW] getServiceAssignments-out'.bgWhite.blue)
     return next()
