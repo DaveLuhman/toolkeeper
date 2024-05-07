@@ -2,14 +2,6 @@ import ServiceAssignment from '../../models/ServiceAssignment.model.js'
 import { csvFileToEntries } from '../util.js'
 let successCount = 0
 const errorList = []
-async function checkForDuplicates(name, description) {
-  const searchResult = await ServiceAssignment.find({
-    $or: [{ name }, { description }]
-  }).exec()
-  console.log(searchResult)
-  console.log(searchResult.length > 0)
-  return searchResult.length > 0
-}
 
 function determineServiceAssignmentType(memberID, mLastName) {
   const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
@@ -62,10 +54,10 @@ function createServiceAssignments(members) {
 }
 
 export async function importServiceAssignments(file) {
-    successCount = 0
-    const members = csvFileToEntries(file)
-    await createServiceAssignments(members)
-    return { successCount, errorList }
+  successCount = 0
+  const members = csvFileToEntries(file)
+  await createServiceAssignments(members)
+  return { successCount, errorList }
 }
 
 export async function activateServiceAssignments(file) {
