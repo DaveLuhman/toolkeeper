@@ -38,6 +38,7 @@
         </div>
       {{/each}}
       <div class="modal-button-row">
+        <input type="checkbox" name="active" id="edit-service-assignment_active" {{#if targetServiceAssignment.[0].active}} checked{{/if}}>
         <label class="modal-button"><a href="/settings/serviceAssignments">Cancel</a></label>
         <label class="modal-button"><button id="edit-service-assignment_submit" type="submit">Submit</button></label>
       </div>

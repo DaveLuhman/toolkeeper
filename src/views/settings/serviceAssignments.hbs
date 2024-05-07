@@ -16,19 +16,24 @@
           <th class="hidden lg:table-cell">Type</th>
           <th class="hidden lg:table-cell">Phone</th>
           <th class="hidden lg:table-cell">Notes</th>
+          <th class="hidden md:table-cell">Active?</th>
           <th>Edit</th>
           <th>Delete</th>
         </tr>
       </thead>
       <tbody>
-        {{#if activeServiceAssignments}}
-          {{#each activeServiceAssignments}}
+        {{#if allServiceAssignments}}
+          {{#each allServiceAssignments}}
             <tr>
               <td>{{name}}</td>
               <td class="hidden md:table-cell min-w-fit">{{description}}</td>
               <td class="hidden lg:table-cell">{{type}}</td>
               <td class="hidden lg:table-cell">{{phone}}</td>
               <td class="hidden lg:table-cell min-w-fit">{{notes}}</td>
+              <td>
+                {{#eq false active}}<i class="fa-regular fa-square"></i>{{/eq}}
+                {{#eq true active}}<i class="fa-regular fa-square-check"></i>{{/eq}}
+              </td>
               <td><a href="/settings/serviceAssignments/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
               <td><a href="/settings/serviceAssignments/delete/{{id}}"><i class="fa fa-trash"></i></a></td>
             </tr>
@@ -53,8 +58,10 @@
         </div>
 
         <input placeholder="Name" type="text" name="name" id="new-service-assignment_name" class="input input-bordered">
-        <input placeholder="Description" type="text" name="description" id="new-service-assignment_description" class="input input-bordered">
-        <input placeholder="Phone" type="text" name="phone" id="new-service-assignment_phone" class="input input-bordered">
+        <input placeholder="Description" type="text" name="description" id="new-service-assignment_description"
+          class="input input-bordered">
+        <input placeholder="Phone" type="text" name="phone" id="new-service-assignment_phone"
+          class="input input-bordered">
         <select name="type" id="new-service-assignment_type" class="select select-bordered">
           <option value="Contract Job">Contract Job</option>
           <option value="Service Job">Service Job</option>
@@ -65,8 +72,8 @@
           </option>
           <option value="Error - Uncategorized">Error - Uncategorized</option>
         </select>
-        <input placeholder="Misc Notes" type="textarea" name="notes" id="new-service-assignment_notes" class="col-span-2 input input-bordered">
-
+        <input placeholder="Misc Notes" type="textarea" name="notes" id="new-service-assignment_notes"
+          class="col-span-2 input input-bordered">
         <div class="modal-button-row">
           <label class="btn btn-sm"> <button id="new-service-assignment_submit" type="submit">Submit</button></label>
         </div>
