@@ -1,76 +1,128 @@
 <div class="flex flex-wrap">
-    <div id="settings-nav">
-        {{> _settings}}
+  <div id="settings-nav">
+            {{> _settings}}
+  </div>
+  <div id="root-container" class="grid items-center grid-flow-row ml-5 pl-5">
+    <div id="title-bar">
+      <label class="title-text">CSV Import</label>
+      <hr />
+      <label class="font-thin">For the best results, import items in order:</label>
     </div>
-    <div id="root-container" class="grid items-center grid-flow-row ml-5 pl-5">
-        <div id="title-bar">
-            <label class="title-text">CSV Import</label>
-            <hr />
-            <label class="font-thin">For the best results, import items in order:</label>
-        </div>
-        <form action="/settings/import/submit" method="POST" id="csv-import" encType="multipart/form-data">
-            <ol class="list-decimal">
-                <li>
-                    <div class="form-control">
-                        <label for="serviceAssignments" class="label"><span class="label-text">Service
-                                Assignments - Total Entries: {{serviceAssignments.length}} </span></label>
-                        <input type="radio" name="importTarget" value="serviceAssignments" id="import_serviceAssignments">
-                    </div>
-                </li>
-                <li>
-                    <div class="form-control">
-                        <label for="categories" class="label"><span class="label-text">Categories - Total Entries:
-                                {{categories.length}}</span></label>
-                        <input type="radio" name="importTarget" value="categories" id="import_categories">
-                    </div>
-                </li>
-                <li>
-                    <div class="form-control">
-                        <label for="tools" class="label"><span class="label-text">Tools</span></label>
-                        <input type="radio" name="importTarget" value="tools" id="import_tools">
-                    </div>
-                </li>
-                <li>
-                    <div class="form-control">
-                        <label for="history" class="label"><span class="label-text">Transaction History</span></label>
-                        <input type="radio" name="importTarget" value="history" id="import_history">
-                    </div>
-                </li>
-            </ol>
-            <input type="file" name="importFile" id="importFile">
-            <button type="submit" id="import_submit" class="modal-button">Import</button>
-        </form>
-        {{#if message}}
-            <h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
-        {{/if}}
-        {{#if error}}
-            {{error}}
-        {{/if}}
-        {{#if errorList}}
-            <table>
-                <thead>
-                    <th>Key</th>
-                    <th>Error</th>
-                </thead>
-                {{#each errorList}}
-                    <tr>
-                        <td>{{key}}</td>
-                        <td>{{reason}}</td>
-                    </tr>
-                {{/each}}
-            </table>
-        {{/if}}
-    </div>
+    <form
+      action="/settings/import/submit"
+      method="POST"
+      id="csv-import"
+      encType="multipart/form-data"
+    >
+      <ol class="list-decimal">
+        <li>
+          <div class="form-control">
+            <label for="allServiceAssignments" class="label"><span
+                class="label-text"
+              >Service Assignments - Total Entries:
+                {{length allServiceAssignments}}
+              </span></label>
+            <input
+              type="radio"
+              name="importTarget"
+              value="allServiceAssignments"
+              id="import_allServiceAssignments"
+            />
+          </div>
+        </li>
+        <li>
+          <div class="form-control">
+            <label for="activeServiceAssignments" class="label"><span
+                class="label-text"
+              >Service Assignments - Active Entries:
+                {{length activeServiceAssignments}}
+              </span></label>
+            <input
+              type="radio"
+              name="importTarget"
+              value="activeServiceAssignments"
+              id="import_activeServiceAssignments"
+            />
+          </div>
+        </li>
+        <li>
+          <div class="form-control">
+            <label for="categories" class="label"><span
+                class="label-text"
+              >Categories - Total Entries:
+                {{length categories}}</span></label>
+            <input
+              type="radio"
+              name="importTarget"
+              value="categories"
+              id="import_categories"
+            />
+          </div>
+        </li>
+        <li>
+          <div class="form-control">
+            <label for="tools" class="label"><span class="label-text">Tools -
+                Total Entries:
+                {{length tools}}</span></label>
+            <input
+              type="radio"
+              name="importTarget"
+              value="tools"
+              id="import_tools"
+            />
+          </div>
+        </li>
+        <li>
+          <div class="form-control">
+            <label for="history" class="label"><span
+                class="label-text"
+              >Transaction History \(5-15 min to import\)</span></label>
+            <input
+              type="radio"
+              name="importTarget"
+              value="history"
+              id="import_history"
+            />
+          </div>
+        </li>
+      </ol>
+      <input type="file" name="importFile" id="importFile" />
+      <button
+        type="submit"
+        id="importSubmitBtn"
+        class="modal-button"
+      >Import</button>
+    </form>
+    {{#if message}}
+      <h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
+    {{/if}}
+    {{#if error}}
+      {{error}}
+    {{/if}}
+    {{#if errorList}}
+      <table>
+        <thead>
+          <th>Key</th>
+          <th>Error</th>
+        </thead>
+        {{#each errorList}}
+          <tr>
+            <td>{{key}}</td>
+            <td>{{reason}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/if}}
+  </div>
 </div>
-
 <script>
-    const fileInput = document.getElementById('#importFile')
-    console.log(fileInput)
-    const submitBtn = document.querySelector('#importSubmitBtn')
-    const spinner = `<span class="loading loading-infinity loading-lg" ></span>`
-    submitBtn.addEventListener('click', submitInputForm)
-    function submitInputForm() {
-        submitBtn.outerHTML = spinner;
-        document.forms['csv-import'].submit()
-    }
+  const fileInput = document.getElementById('#importFile')
+  console.log(fileInput)
+  const submitBtn = document.querySelector('#importSubmitBtn') 
+  const spinner = `<span class="loading loading-infinity loading-lg" ></span>`
+  submitBtn.addEventListener('click', submitInputForm)
+  function submitInputForm() { 
+    submitBtn.outerHTML = spinner;
+    document.forms['csv-import'].submit() 
+  }
 </script>

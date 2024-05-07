@@ -35,7 +35,7 @@ function createServiceAssignmentDocument(row) {
     const notes = row[4]?.trim() + ' ' + row[5]?.trim() + ' ' + row[10]?.trim()
     const phone = row[2]?.trim()
     const type = determineServiceAssignmentType(row[0], row[1])
-    const serviceAssignmentDocument = { name, description, notes, phone, type }
+    const serviceAssignmentDocument = { name, description, notes, phone, type, active: false }
     return serviceAssignmentDocument
   } catch (error) {
     throw new Error('Could not create the document due to invalid input values')
@@ -64,7 +64,14 @@ function createServiceAssignments(members) {
 }
 
 export async function importServiceAssignments(file) {
+  successCount = 0
   const members = csvFileToEntries(file)
   await createServiceAssignments(members)
   return { successCount, errorList }
+}
+
+export async function activateServiceAssignments(file) {
+  const activeServiceRows = csvFileToEntries(file)
+  const activatedSAs = activeServiceRows.map(async (entry) => { return await ServiceAssignment.findOneAndUpdate({ name: entry[0] }, { active: true }, { new: true }) })
+  return activatedSAs.length
 }

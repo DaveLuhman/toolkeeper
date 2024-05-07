@@ -26,6 +26,10 @@ const ServiceAssignmentSchema = new Schema(
         'Error - Uncategorized'
       ]
     },
+    active: {
+      type: Boolean,
+      default: true
+    },
     phone: {
       type: String
     },

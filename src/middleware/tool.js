@@ -28,6 +28,31 @@ async function getAllTools(req, res, next) {
   console.info('[MW] getAllTools-out'.bgWhite.blue)
   return next()
 }
+/**
+ *
+ * @param {number} req.query.p page number
+ * @param {object} res.locals.pagination {page: targetPage, pageCount: pageCount}
+ * @param {array} res.locals.tools returns array of tools in response
+ * @param {*} next
+ * @returns {array}
+ *
+ * This function will return all tools in the database along with pagination data
+ */
+async function getActiveTools(req, res, next) {
+  const { sortField, sortOrder } = req.user.preferences
+  console.info('[MW] getAllTools-in'.bgBlue.white)
+  const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
+
+  const { trimmedData, targetPage, pageCount } = paginate(
+    tools,
+    req.query.p || 1,
+    req.user.preferences.pageSize
+  )
+  res.locals.pagination = { page: targetPage, pageCount } // pagination
+  res.locals.tools = trimmedData // array of tools
+  console.info('[MW] getAllTools-out'.bgWhite.blue)
+  return next()
+}
 
 /**
  * getToolByID
@@ -320,8 +345,6 @@ async function checkTools(req, res, next) {
     return next()
   }
   console.log(req.body.searchTerm)
-  const rawSearchTerms = req.body.searchTerm
-  // const validatedSearchTerms = rawSearchTerms.filter((term) => term.length > 0)
   const toolsToBeChanged = await lookupToolWrapper(req.body.searchTerm)
   if (toolsToBeChanged.length === 0) {
     res.locals.message = 'No Tools Found Matching '
@@ -403,6 +426,7 @@ async function submitCheckInOut(req, res, next) {
 
 export {
   getAllTools,
+  getActiveTools,
   getToolByID,
   searchTools,
   createTool,
