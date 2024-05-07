@@ -40,19 +40,22 @@ async function createDefaultServiceAssignments() {
       description: 'Imported',
       type: 'Imported - Uncategorized',
       phone: '',
-      notes: 'Default SA for imported tools'
+      notes: 'Default SA for imported tools',
+      active: true
     },
     {
       _id: '64a34b651288871770df1086',
       name: 'DEPOT',
       description: 'Default stockroom for serialized tools',
-      type: 'Stockroom'
+      type: 'Stockroom',
+      active: true,
     },
     {
       _id: '64a34b651288871770df1087',
       name: 'PARTS',
       description: 'Default stockroom for consumables/parts',
-      type: 'Stockroom'
+      type: 'Stockroom',
+      active: true
     }
   ]
   return ServiceAssignment.create(serviceAssignments)
