@@ -340,3 +340,6 @@ footer.tk-footer {
 svg.fill-current {
   @apply inline-block;
 }
+th {
+  @apply text-white;
+}
