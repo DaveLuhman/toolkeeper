@@ -39,7 +39,7 @@ export async function getServiceAssignmentByID(req, res, next) {
   try {
     const id = req.params.id
     const serviceAssignment = await ServiceAssignment.findById({ $eq: id })
-    res.locals.serviceAssignments = mutateToArray(serviceAssignment)
+    res.locals.targetServiceAssignment = mutateToArray(serviceAssignment)
     return next()
   } catch (error) {
     console.error(error)

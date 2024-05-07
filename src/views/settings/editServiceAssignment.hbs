@@ -1,10 +1,10 @@
 <div class="main-view">
-  {{#if activeServiceAssignments}}
+  {{#if targetServiceAssignment}}
     <form action="/settings/serviceAssignments/edit" method="POST">
       <div class="mb-2 title-bar">
         <h3 class="title-text">Update Service Assignment</h3>
       </div>
-      {{#each activeServiceAssignments}}
+      {{#each targetServiceAssignment}}
         <div class="gap-2 columns-1 md:columns-2 form-control justify-items-center">
           <input id="edit-service-assignment_id" name="id" value="{{id}}" type="hidden" />
           <div class="form-control">
@@ -18,13 +18,13 @@
           <div class="form-control">
             <label for="type" class="label"><span class="label-text">Type</span></label>
             <select name="type" class="select select-bordered">
-             <option value="contractJob" {{isSelected type 'contractJob'}}>Contract Job</option>
-             <option value="serviceJob" {{isSelected type 'serviceJob'}}>Service Job</option>
-             <option value="vehicle" {{isSelected type 'vehicle'}}>Vehicle</option>
-             <option value="employee" {{isSelected type 'employee'}}>Employee</option>
-             <option value="stockroom" {{isSelected type 'stockroom'}}>Stockroom</option>
-             <option value="importedUncategorized" {{isSelected type 'importedUncategorized'}}>Imported - Uncategorized</option>
-             <option value="errorUncategorized" {{isSelected type 'errorUncategorized'}}>Error - Uncategorized</option>
+             <option value="Contract Job" {{isSelected type 'Contract Job'}}>Contract Job</option>
+             <option value="Service Job" {{isSelected type 'Service Job'}}>Service Job</option>
+             <option value="Vehicle" {{isSelected type 'Vehicle'}}>Vehicle</option>
+             <option value="Employee" {{isSelected type 'Employee'}}>Employee</option>
+             <option value="Stockroom" {{isSelected type 'Stockroom'}}>Stockroom</option>
+             <option value="Imported - Uncategorized" {{isSelected type 'Imported - Uncategorized'}}>Imported - Uncategorized</option>
+             <option value="Error - Uncategorized" {{isSelected type 'Error - Uncategorized'}}>Error - Uncategorized</option>
             </select>
           </div>
           <div class="form-control">

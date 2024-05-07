@@ -2,10 +2,12 @@ import ServiceAssignment from '../../models/ServiceAssignment.model.js'
 import { csvFileToEntries } from '../util.js'
 let successCount = 0
 const errorList = []
-function checkForDuplicates(name, description) {
-  const searchResult = ServiceAssignment.find({
-    name
+async function checkForDuplicates(name, description) {
+  const searchResult = await ServiceAssignment.find({
+    $or: [{ name }, { description }]
   }).exec()
+  console.log(searchResult)
+  console.log(searchResult.length > 0)
   return searchResult.length > 0
 }
 
@@ -26,12 +28,8 @@ function determineServiceAssignmentType(memberID, mLastName) {
 
 function createServiceAssignmentDocument(row) {
   try {
-    let name = row[0]
-    let description = row[1] ? row[1].trim() : ''
-    if (checkForDuplicates(name, description)) {
-      name = `Duplicate ${row[0]}`
-      description = `Duplicate ${row[1]}`
-    }
+    const name = row[0] || 'ERROR'
+    const description = row[1] ? row[1].trim() : ''
     const notes = row[4]?.trim() + ' ' + row[5]?.trim() + ' ' + row[10]?.trim()
     const phone = row[2]?.trim()
     const type = determineServiceAssignmentType(row[0], row[1])
@@ -64,18 +62,15 @@ function createServiceAssignments(members) {
 }
 
 export async function importServiceAssignments(file) {
-  try {
     successCount = 0
     const members = csvFileToEntries(file)
     await createServiceAssignments(members)
     return { successCount, errorList }
-  } catch (error) {
-    console.log(error)
-  }
 }
 
 export async function activateServiceAssignments(file) {
+  successCount = 0
   const activeServiceRows = csvFileToEntries(file)
   const activatedSAs = activeServiceRows.map(async (entry) => { return await ServiceAssignment.findOneAndUpdate({ name: entry[0] }, { active: true }, { new: true }) })
-  return activatedSAs.length
+  return { successCount: activatedSAs.length, errorList }
 }
