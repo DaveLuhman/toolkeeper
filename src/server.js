@@ -105,6 +105,7 @@ const hbs = create({
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 app.set('views', './src/views')
+app.set('trust proxy', true)
 
 // Express Middleware
 app.use(cookieParser())
