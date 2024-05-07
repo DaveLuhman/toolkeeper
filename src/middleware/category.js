@@ -3,7 +3,7 @@ import Category from '../models/Category.model.js'
 
 const getCategories = async (_req, res, next) => {
   try {
-    const categories = await Category.find()
+    const categories = await Category.find().sort({prefix: 'asc'})
     res.locals.categories = categories
     return next()
   } catch (error) {
@@ -59,7 +59,7 @@ const updateCategory = async (req, res, next) => {
 }
 // TODO: Use updatedAt value hashed to check for changes
 const listCategoryNames = async (_req, res, next) => {
-  res.locals.categories = await Category.find({}, { name: 1, id: 1 })
+  res.locals.categories = await Category.find({}, { name: 1, id: 1 }).sort({name: 'asc'})
   return next()
 }
 
