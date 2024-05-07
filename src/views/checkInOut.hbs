@@ -23,14 +23,7 @@
                                     {{serviceAssignment.description}}
                                 </td>
                                 <td name="newServiceAssignmment">
-                                    <select name="newServiceAssignment" class="select select-bordered">
-                                        {{#each ../activeServiceAssignments}}
-                                            <option name="{{ name }}"
-                                                value="{{  id }}">{{ name }} -
-                                                {{ description}}
-                                            </option>
-                                        {{/each}}
-                                    </select>
+                                    {{getServiceAssignmentName ../activeServiceAssignments target}}
                                 </td>
                             </tr>
                         {{else}}

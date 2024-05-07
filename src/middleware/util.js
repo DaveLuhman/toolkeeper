@@ -134,3 +134,7 @@ export function hoistSearchParamsToBody(req, _res, next) {
   }
   next()
 }
+
+export function deduplicateArray(arr) {
+  return Array.from(new Set(arr));
+}

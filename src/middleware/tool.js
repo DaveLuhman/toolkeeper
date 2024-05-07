@@ -1,6 +1,6 @@
 import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
-import { mutateToArray, paginate } from './util.js'
+import { deduplicateArray, mutateToArray, paginate } from './util.js'
 import sortArray from 'sort-array'
 
 /**
@@ -328,27 +328,20 @@ async function archiveTool(req, res, next) {
   console.info('[MW] archiveTool-out-1'.bgWhite.blue)
   next()
 }
-/**
- * checkTools - Looks up tool(s) and returns them in a table to have their SAs updated
- * @param {string} req.body.searchTerm The serialNumber/barcode/toolID of the tool(s) to check-in/out
- * @param {string} res.locals.message The message to display to the user
- * @param {array} res.locals.tools The tool that was unarchived
- * @param {number} res.status The status code to return
- * @param {*} next
- * @returns
- */
+
 async function checkTools(req, res, next) {
-  if (!req.body.searchTerm) {
+  if (!req.body.searchTerms) {
     res.locals.message = 'No Tools Submitted For Status Change'
     console.warn('[MW checkTools-out-1'.bgWhite.blue)
     res.status(400).redirect('back')
     return next()
   }
-  console.log(req.body.searchTerm)
-  const toolsToBeChanged = await lookupToolWrapper(req.body.searchTerm)
+  const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/))
+  const toolsToBeChanged = await lookupToolWrapper(search)
   if (toolsToBeChanged.length === 0) {
     res.locals.message = 'No Tools Found Matching '
   }
+  res.locals.target = (req.body.serviceAssignmentInput === '') ? req.body.serviceAssignmentSelector : req.body.serviceAssignmentInput
   res.locals.tools = toolsToBeChanged
   next()
 }
@@ -360,18 +353,14 @@ async function checkTools(req, res, next) {
  */
 async function lookupTool(searchTerm) {
   searchTerm = searchTerm.toUpperCase()
-  console.log('checking for serial number: ' + searchTerm)
   let result = await Tool.findOne({ serialNumber: { $eq: searchTerm } })
   if (!result) {
-    console.log('checking for barcode: ' + searchTerm)
     result = await Tool.findOne({ barcode: { $eq: searchTerm } })
   }
   if (!result) {
-    console.log('checking for toolID ' + searchTerm)
     result = await Tool.findOne({ toolID: { $eq: searchTerm } })
   }
   if (!result) {
-    console.log('returning empty object as no tool was found')
     result = {}
   }
   console.log(result)
@@ -385,17 +374,14 @@ async function lookupTool(searchTerm) {
  */
 async function lookupToolWrapper(searchTerms) {
   const tools = []
-  if (!Array.isArray(searchTerms)) {
-    searchTerms = [searchTerms]
-    for (let i = 0; i < searchTerms.length; i++) {
-      const result = await lookupTool(searchTerms[i])
-      console.log(result)
-      if (result?.serialNumber === undefined) {
-        tools.push({
-          serialNumber: searchTerms[i]
-        })
-      } else tools.push(result)
-    }
+  for (let i = 0; i < searchTerms.length; i++) {
+    const result = await lookupTool(searchTerms[i])
+    console.log(result)
+    if (result?.serialNumber === undefined) {
+      tools.push({
+        serialNumber: searchTerms[i]
+      })
+    } else tools.push(result)
   }
   return tools
 }

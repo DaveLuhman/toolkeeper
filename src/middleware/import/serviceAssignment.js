@@ -4,7 +4,7 @@ let successCount = 0
 const errorList = []
 function checkForDuplicates(name, description) {
   const searchResult = ServiceAssignment.find({
-    $or: [{ name }, { description }]
+    name
   }).exec()
   return searchResult.length > 0
 }
@@ -64,10 +64,14 @@ function createServiceAssignments(members) {
 }
 
 export async function importServiceAssignments(file) {
-  successCount = 0
-  const members = csvFileToEntries(file)
-  await createServiceAssignments(members)
-  return { successCount, errorList }
+  try {
+    successCount = 0
+    const members = csvFileToEntries(file)
+    await createServiceAssignments(members)
+    return { successCount, errorList }
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function activateServiceAssignments(file) {

@@ -12,7 +12,8 @@ import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
 export const toolRouter = Router()
 
 // search for tools and render the results with the dashboard view
-toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, searchTools, (_req, res) => {
+toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, searchTools, (req, res) => {
+  console.log(req.body)
   res.render('results')
 })
 

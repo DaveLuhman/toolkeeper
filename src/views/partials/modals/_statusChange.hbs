@@ -1,19 +1,44 @@
 <input type="checkbox" id="checkInOutModal" class="modal-toggle" />
-    <div class="modal">
-        <div class="modal-inner-lg">
-            <label for="checkInOutModal" class="modal-close-btn">✕</label>
-            <form action="/tool/checkInOut" method="POST">
-                <div class="modal-table">
-                    <div class="title-bar">
-                        <h3 class="title-text">Check Tools In or Out</h3>
-                    </div>
-                    <textarea required id="searchTerms" name="searchTerms" type="text" placeholder="Search Value"
-                        class="textarea textarea-bordered textarea-lg w-full col-span-3" ></textarea>
-                    <div class="modal-button-row">
-                        <label class="modal-button" for="checkInOutModal">Cancel</label>
-                        <label class="modal-button"><button id="status-change_submit" type="submit">Submit</button></label>
-                    </div>
-                </div>
-            </form>
+<div class="modal">
+  <div class="modal-inner-lg">
+    <label for="checkInOutModal" class="modal-close-btn">✕</label>
+    <form action="/tool/checkInOut" method="POST">
+      <div class="modal-table">
+        <div class="title-bar">
+          <h3 class="title-text">Check Tools In or Out</h3>
         </div>
-    </div>
+        <input
+          class="input input-bordered col-span-1"
+          type="text"
+          name="serviceAssignmentInput"
+          id="checkInOut_serviceAssignmentInput"
+            placeholder="Scan or Enter the target SA"
+                onsubmit="#"
+        />
+        <select name="serviceAssignmentSelector" class="select select-bordered col-span-2">
+          {{#each activeServiceAssignments}}
+            <option
+              name="{{this.name}}"
+              value="{{this.id}}"
+            >{{this.name}} - {{this.description}}</option>
+          {{/each}}
+        </select>
+        <textarea
+          required
+          id="searchTerms"
+          name="searchTerms"
+          type="text"
+          placeholder="Search Value"
+          class="textarea textarea-bordered textarea-lg w-full col-span-3"
+        ></textarea>
+        <div class="modal-button-row">
+          <label class="modal-button" for="checkInOutModal">Cancel</label>
+          <label class="modal-button"><button
+              id="status-change_submit"
+              type="submit"
+            >Submit</button></label>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
