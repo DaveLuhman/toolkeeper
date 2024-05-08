@@ -8,6 +8,10 @@
         <div class="gap-2 columns-1 md:columns-2 form-control justify-items-center">
           <input id="edit-category_id" name="_id" value="{{id}}" type="hidden" />
           <div>
+            <label class="label"><span class="label-text">Prefix</span></label>
+            <input id="edit-category_prefix" value="{{prefix}}" type="text" disabled class="input input-bordered" />
+          </div>
+          <div>
             <label class="label"><span class="label-text">Name</span></label>
             <input id="edit-category_name" name="name" value="{{name}}" type="text" class="input input-bordered" />
           </div>
