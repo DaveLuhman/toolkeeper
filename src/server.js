@@ -13,7 +13,6 @@ import express from 'express'
 import fileUpload from 'express-fileupload'
 import flash from 'express-flash'
 import session from 'express-session'
-import helmet from 'helmet'
 // handlebars depenancies
 import { create } from 'express-handlebars' // templating engine
 import handlebarsHelpers from 'handlebars-helpers'
@@ -68,7 +67,7 @@ if (process.env.NODE_ENV === 'production') {
     sameSite: true
   }
   sessionConfig.store = mongoStore
-  // app.use(helmet()) // Add Helmet for HTTP Header controls
+
 }
 
 // Morgan Logging in development
@@ -76,16 +75,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
   console.info(
     '[INIT]>>>>> Morgan enabled for logging in this development environment'.yellow
-  )
-  app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        'script-src': ["'unsafe-inline'", "'self'"], // allow client-side inline scripting
-        'script-src-attr': ["'unsafe-inline'"]
-      }
-    })
-  ) // Allow inline scripts for development
-}
+  )}
 // Handlebars Setup
 const hbs = create({
   helpers: {
