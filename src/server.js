@@ -67,7 +67,6 @@ if (process.env.NODE_ENV === 'production') {
     sameSite: true
   }
   sessionConfig.store = mongoStore
-
 }
 
 // Morgan Logging in development
@@ -75,7 +74,8 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('dev'))
   console.info(
     '[INIT]>>>>> Morgan enabled for logging in this development environment'.yellow
-  )}
+  )
+}
 // Handlebars Setup
 const hbs = create({
   helpers: {
