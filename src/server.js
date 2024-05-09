@@ -64,7 +64,8 @@ if (process.env.NODE_ENV === 'production') {
   sessionConfig.cookie = {
     secure: true,
     httpOnly: false,
-    maxAge: 1000 * 60 * 60 * 24
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: true
   }
   sessionConfig.store = mongoStore
   // app.use(helmet()) // Add Helmet for HTTP Header controls
