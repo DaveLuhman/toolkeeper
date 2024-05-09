@@ -57,10 +57,12 @@ export async function getServiceAssignmentByID(req, res, next) {
  */
 export async function updateServiceAssignment(req, res, next) {
   try {
+    let active = false;
     const { id, name, description, type, phone, notes } = req.body
+    if(req.body.active === 'on') { active = true}
     const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(
       id,
-      { name, description, type, phone, notes },
+      { name, description, type, phone, notes, active },
       { new: true }
     )
     res.locals.serviceAssignments = mutateToArray(updatedServiceAssignment)
@@ -86,7 +88,8 @@ export async function createServiceAssignment(req, res, next) {
       description,
       type,
       phone,
-      notes
+      notes,
+      active: true
     })
     res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
     return next()

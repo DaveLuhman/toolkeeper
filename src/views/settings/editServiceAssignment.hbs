@@ -9,38 +9,50 @@
           <input id="edit-service-assignment_id" name="id" value="{{id}}" type="hidden" />
           <div class="form-control">
             <label class="label"><span class="label-text">Name</span></label>
-            <input id="edit-service-assignment_name" name="name" value="{{name}}" type="text" class="input input-bordered" />
+            <input id="edit-service-assignment_name" name="name" value="{{name}}" type="text"
+              class="input input-bordered" />
           </div>
           <div class="form-control">
             <label class="label"><span class="label-text">Description</span></label>
-            <input id="edit-service-assignment_description" name="description" value="{{description}}" type="text" class="input input-bordered" />
+            <input id="edit-service-assignment_description" name="description" value="{{description}}" type="text"
+              class="input input-bordered" />
           </div>
           <div class="form-control">
             <label for="type" class="label"><span class="label-text">Type</span></label>
             <select name="type" class="select select-bordered">
-             <option value="Contract Job" {{isSelected type 'Contract Job'}}>Contract Job</option>
-             <option value="Service Job" {{isSelected type 'Service Job'}}>Service Job</option>
-             <option value="Vehicle" {{isSelected type 'Vehicle'}}>Vehicle</option>
-             <option value="Employee" {{isSelected type 'Employee'}}>Employee</option>
-             <option value="Stockroom" {{isSelected type 'Stockroom'}}>Stockroom</option>
-             <option value="Imported - Uncategorized" {{isSelected type 'Imported - Uncategorized'}}>Imported - Uncategorized</option>
-             <option value="Error - Uncategorized" {{isSelected type 'Error - Uncategorized'}}>Error - Uncategorized</option>
+              <option value="Contract Job" {{isSelected type 'Contract Job'}}>Contract Job</option>
+              <option value="Service Job" {{isSelected type 'Service Job'}}>Service Job</option>
+              <option value="Vehicle" {{isSelected type 'Vehicle'}}>Vehicle</option>
+              <option value="Employee" {{isSelected type 'Employee'}}>Employee</option>
+              <option value="Stockroom" {{isSelected type 'Stockroom'}}>Stockroom</option>
+              <option value="Imported - Uncategorized" {{isSelected type 'Imported - Uncategorized'}}>Imported -
+                Uncategorized</option>
+              <option value="Error - Uncategorized" {{isSelected type 'Error - Uncategorized'}}>Error - Uncategorized
+              </option>
             </select>
           </div>
           <div class="form-control">
             <label class="label"><span class="label-text">Phone Number</span></label>
-            <input id="edit-service-assignment_phone" name="phone" value="{{phone}}" type="text" class="input input-bordered" />
+            <input id="edit-service-assignment_phone" name="phone" value="{{phone}}" type="text"
+              class="input input-bordered" />
           </div>
           <div class="form-control">
             <label class="label"><span class="label-text">Notes</span></label>
-            <input id="edit-service-assignment_notes" name="notes" value="{{notes}}" type="textarea" class="input input-bordered" />
+            <input id="edit-service-assignment_notes" name="notes" value="{{notes}}" type="textarea"
+              class="input input-bordered" />
           </div>
+
         </div>
       {{/each}}
       <div class="modal-button-row">
-        <input type="checkbox" name="active" id="edit-service-assignment_active" {{#if targetServiceAssignment.[0].active}} checked{{/if}}>
-        <label class="modal-button"><a href="/settings/serviceAssignments">Cancel</a></label>
-        <label class="modal-button"><button id="edit-service-assignment_submit" type="submit">Submit</button></label>
+        <div class="form-control">
+          <input class="toggle" type="checkbox" name="active" id="edit-service-assignment_active"
+            {{#if targetServiceAssignment.[0].active}} checked{{/if}}>
+          <label class="label"><span class="label-text">Active?</span></label>
+
+        </div>
+        <div class="modal-button"><a href="/settings/serviceAssignments">Cancel</a></div>
+        <div class="modal-button"><button id="edit-service-assignment_submit" type="submit">Submit</button></div>
       </div>
     </form>
   {{/if}}

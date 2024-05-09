@@ -18,8 +18,8 @@ const ServiceAssignmentSchema = new Schema(
     type: {
       type: String,
       enum: [
-        'Contract Jobsite',
-        'Service Jobsite',
+        'Contract Job',
+        'Service Job',
         'Stockroom',
         'Vehicle',
         'Employee',
