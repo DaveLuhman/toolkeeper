@@ -2,10 +2,14 @@
   {{#if message}}
     <div class="alert">{{message}}</div>
   {{/if}}
-  {{#if searchTerm}}
-    <h1 class="text-2xl" id="search-terms">Searched For: {{searchTerm}}.  Total Results: {{tools.length}}</h1>
+  {{#eq 'serviceAssignment' searchBy}}
+    <h1 class="text-2xl" id="search-terms">Searched For: {{getServiceAssignmentName allServiceAssignments searchTerm}}.  Total Results: {{totalFound}}</h1>
+  {{/eq}}
+    {{#eq 'category' searchBy}}
+    <h1 class="text-2xl" id="search-terms">Searched For: {{getCategoryName categories searchTerm}}.  Total Results: {{totalFound}}</h1>
+  {{/eq}}
+  {{#if (searchingForOneTool searchBy)}}
+    <h1 class="text-2xl" id="search-terms">Searched For:  {{searchTerm}}.  Total Results: {{totalFound}}</h1>
   {{/if}}
-  {{> _toolTable}}
-
-
+{{> _toolTable}}
 {{> _pagination}}

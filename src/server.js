@@ -29,7 +29,8 @@ import {
   isSelected,
   populateDropdownItems,
   rateLimiter,
-  getPackageVersion
+  getPackageVersion,
+  searchingForOneTool
 } from './middleware/util.js'
 // routers
 import { dashboardRouter } from './routes/dashboard.routes.js'
@@ -92,6 +93,7 @@ const hbs = create({
     getServiceAssignmentName,
     paginate,
     getPackageVersion,
+    searchingForOneTool,
     ...handlebarsHelpers()
   },
   extname: '.hbs',

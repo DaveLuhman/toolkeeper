@@ -136,5 +136,9 @@ export function hoistSearchParamsToBody(req, _res, next) {
 }
 
 export function deduplicateArray(arr) {
-  return Array.from(new Set(arr));
+  return Array.from(new Set(arr))
+}
+export function searchingForOneTool(searchBy) {
+  const searchesReturningOneTool = ['serialNumber', 'barcode', 'status', 'modelNumber', 'toolID']
+  return searchesReturningOneTool.includes(searchBy)
 }

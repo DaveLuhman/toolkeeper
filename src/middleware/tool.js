@@ -117,15 +117,17 @@ async function searchTools(req, res, next) {
     case 'status':
       res.locals.searchBy = searchBy
       res.locals.searchTerm = searchTerm
-      result = await Tool.find({ serviceAssignment: { $eq: searchTerm } }).sort(
+      result = await Tool.find({ status: { $eq: searchTerm } }).sort(
         { [sortField]: sortOrder }
       )
       break
     default:
       res.locals.searchTerm = searchTerm
+      res.locals.searchBy = searchBy
       result = await Tool.find({
-        [searchBy]: { $regex: searchTerm, $options: 'i' }
+        [searchBy]: { $eq: searchTerm }
       }).sort({ [sortField]: sortOrder })
+      result = mutateToArray(result)
       break
   }
   console.log(result)
@@ -136,6 +138,7 @@ async function searchTools(req, res, next) {
   )
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
+  res.locals.totalFound = result.length
   console.info('[MW] searchTools-out'.bgWhite.blue)
   return next()
 }

@@ -117,7 +117,7 @@ toolSchema.virtual('status').get(function () {
     case 'Vehicle':
       return 'Checked Out'
     default:
-      return 'Unavailable '
+      return 'Unavailable'
   }
 })
 
