@@ -1,4 +1,5 @@
 /* eslint-disable eqeqeq */
+import User from '../models/User.model.js'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import { mutateToArray, paginate } from './util.js'
 /**
@@ -59,7 +60,7 @@ export async function updateServiceAssignment(req, res, next) {
   try {
     let active = false;
     const { id, name, description, type, phone, notes } = req.body
-    if(req.body.active === 'on') { active = true}
+    if (req.body.active === 'on') { active = true }
     const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(
       id,
       { name, description, type, phone, notes, active },
