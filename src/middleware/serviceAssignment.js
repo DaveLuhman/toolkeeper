@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
-import { mutateToArray, paginate } from './util.js'
+import { mutateToArray } from './util.js'
 /**
  * @function getServiceAssignments
  * @param {*} req
@@ -13,14 +13,9 @@ export async function getServiceAssignments(req, res, next) {
   console.info('[MW] getServiceAssignments-in'.bgBlue.white)
   try {
     const serviceAssignments = await ServiceAssignment.find().sort('name').exec()
-    const { trimmedData, targetPage, pageCount } = paginate(
-      serviceAssignments,
-      req.query.p || 1,
-      req.user.preferences.pageSize
-    )
-    res.locals.allServiceAssignments = trimmedData
-    res.locals.activeServiceAssignments = trimmedData.filter((item) => { return item.active })
-    res.locals.pagination = { page: targetPage, pageCount } // pagination
+
+    res.locals.inactiveServiceAssignments = serviceAssignments.filter((item) => { return item.active === false })
+    res.locals.activeServiceAssignments = serviceAssignments.filter((item) => { return item.active === true })
     console.info('[MW] getServiceAssignments-out'.bgWhite.blue)
     return next()
   } catch (error) {
@@ -57,9 +52,9 @@ export async function getServiceAssignmentByID(req, res, next) {
  */
 export async function updateServiceAssignment(req, res, next) {
   try {
-    let active = false;
+    let active = false
     const { id, name, description, type, phone, notes } = req.body
-    if(req.body.active === 'on') { active = true}
+    if (req.body.active === 'on') { active = true }
     const updatedServiceAssignment = await ServiceAssignment.findByIdAndUpdate(
       id,
       { name, description, type, phone, notes, active },
@@ -111,7 +106,27 @@ export async function createServiceAssignment(req, res, next) {
 export async function deleteServiceAssignment(req, res, next) {
   try {
     const id = req.params.id
+    await ServiceAssignment.findByIdAndDelete(id)
+    return next()
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Server Error')
+  }
+}
+export async function deactivateServiceAssignment(req, res, next) {
+  try {
+    const id = req.params.id
     await ServiceAssignment.findByIdAndUpdate(id, { active: false }, { new: true })
+    return next()
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Server Error')
+  }
+}
+export async function activateServiceAssignment(req, res, next) {
+  try {
+    const id = req.params.id
+    await ServiceAssignment.findByIdAndUpdate(id, { active: true }, { new: true })
     return next()
   } catch (error) {
     console.error(error)

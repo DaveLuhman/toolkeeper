@@ -199,7 +199,8 @@ table.table {
   @apply mb-4;
   @apply m-5;
 }
-th {
+th {  
+  @apply text-white;
   @apply text-base-content;
   @apply font-bold;
   @apply uppercase;
@@ -341,5 +342,5 @@ svg.fill-current {
   @apply inline-block;
 }
 th {
-  @apply text-white;
+
 }
