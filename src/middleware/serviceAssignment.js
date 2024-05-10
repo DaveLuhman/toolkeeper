@@ -19,8 +19,8 @@ export async function getServiceAssignments(req, res, next) {
       req.query.p || 1,
       req.user.preferences.pageSize
     )
-    res.locals.allServiceAssignments = trimmedData
-    res.locals.activeServiceAssignments = trimmedData.filter((item) => { return item.active })
+    res.locals.inactiveServiceAssignments = serviceAssignments.filter((item) => { return item.active === false })
+    res.locals.activeServiceAssignments = serviceAssignments.filter((item) => { return item.active === true })
     res.locals.pagination = { page: targetPage, pageCount } // pagination
     console.info('[MW] getServiceAssignments-out'.bgWhite.blue)
     return next()
@@ -112,7 +112,27 @@ export async function createServiceAssignment(req, res, next) {
 export async function deleteServiceAssignment(req, res, next) {
   try {
     const id = req.params.id
+    await ServiceAssignment.findByIdAndDelete(id)
+    return next()
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Server Error')
+  }
+}
+export async function deactivateServiceAssignment(req, res, next) {
+  try {
+    const id = req.params.id
     await ServiceAssignment.findByIdAndUpdate(id, { active: false }, { new: true })
+    return next()
+  } catch (error) {
+    console.error(error)
+    res.status(500).send('Server Error')
+  }
+}
+export async function activateServiceAssignment(req, res, next) {
+  try {
+    const id = req.params.id
+    await ServiceAssignment.findByIdAndUpdate(id, { active: true }, { new: true })
     return next()
   } catch (error) {
     console.error(error)

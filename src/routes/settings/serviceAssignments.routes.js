@@ -4,7 +4,9 @@ import {
   getServiceAssignmentByID,
   updateServiceAssignment,
   createServiceAssignment,
-  deleteServiceAssignment
+  deleteServiceAssignment,
+  deactivateServiceAssignment,
+  activateServiceAssignment
 } from '../../middleware/serviceAssignment.js'
 import { sanitizeReqBody } from '../../middleware/util.js'
 
@@ -49,6 +51,24 @@ serviceAssignmentRouter.post(
 serviceAssignmentRouter.get(
   '/delete/:id/',
   deleteServiceAssignment,
+  (_req, res) => {
+    res.redirect('/settings/serviceAssignments')
+  }
+)
+// @desc deactivate service assignment and redirect to service assignements page
+// @endpoint GET /settings/serviceAssignments/deactivate/:id
+serviceAssignmentRouter.get(
+  '/deactivate/:id/',
+  deactivateServiceAssignment,
+  (_req, res) => {
+    res.redirect('/settings/serviceAssignments')
+  }
+)
+// @desc activate service assignment and redirect to service assignements page
+// @endpoint GET /settings/serviceAssignments/activate/:id
+serviceAssignmentRouter.get(
+  '/activate/:id/',
+  activateServiceAssignment,
   (_req, res) => {
     res.redirect('/settings/serviceAssignments')
   }
