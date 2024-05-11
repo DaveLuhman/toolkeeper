@@ -219,6 +219,7 @@ tr {
 }
 td {
   @apply text-sm;
+  @apply font-bold;
   @apply p-2;
   @apply border-b;
   @apply border-base-300;
