@@ -418,6 +418,36 @@ async function submitCheckInOut(req, res, next) {
   next()
 }
 
+const generatePrinterFriendlyToolList = async (req, res, next) => {
+  try {
+    if (!res.locals.tools) return next()
+    const { tools } = res.locals
+    const printerFriendlyToolArray = await tools.map((tool) => {
+      const {
+        serialNumber,
+        modelNumber,
+        toolID,
+        barcode,
+        description
+      } = tool
+      return {
+        serialNumber,
+        modelNumber,
+        toolID,
+        barcode,
+        description
+      }
+    })
+    if (printerFriendlyToolArray?.length === 0) throw new Error({ message: 'There was a problem creating the printer friendly data' })
+    res.locals.printerFriendlyTools = printerFriendlyToolArray || []
+    return next()
+  } catch (err) {
+    res.locals.message = err.message
+    res.locals.printerFriendlyTools = []
+    return next()
+  }
+}
+
 export {
   getAllTools,
   getActiveTools,
@@ -427,5 +457,6 @@ export {
   updateTool,
   archiveTool,
   checkTools,
-  submitCheckInOut
+  submitCheckInOut,
+  generatePrinterFriendlyToolList
 }
