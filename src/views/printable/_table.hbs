@@ -1,44 +1,56 @@
-<style>
-  td .barcode { font-family: 'Libre Barcode 39';font-size: 12pt; }
-</style>
-<section>
-  <table class="table table-zebra grid grid-cols-5">
-    <thead>
-      <th>Serial Number</th>
-      <th>Model Number</th>
-      <th>Tool ID</th>
-      <th class="col-span-2">Description</th>
-      <th>Barcode</th>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="col-span-6">
-          {{#eq "serviceAssignment" searchBy}}
-            <h1 class="text-2xl" id="search-terms">Searched For:
-              {{getServiceAssignmentName allServiceAssignments searchTerm}}.
-              Total Results:
-              {{totalFound}}</h1>
-          {{/eq}}
-          {{#eq "category" searchBy}}
-            <h1 class="text-2xl" id="search-terms">Searched For:
-              {{getCategoryName categories searchTerm}}. Total Results:
-              {{totalFound}}</h1>
-          {{/eq}}
-          {{#if (searchingForOneTool searchBy)}}
-            <h1 class="text-2xl" id="search-terms">Searched For:
-              {{searchTerm}}. Total Results:
-              {{totalFound}}</h1>
-          {{/if}}</td>
-      </tr>
-      {{#each tools}}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=816, initial-scale=1.0" />
+  <title>Report from ToolKeeper</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="http:/localhost:3000/css/printable.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Libre Barcode 39" rel="stylesheet" />
+</head>
+
+<body>
+  <style>
+    
+  </style>
+  <section>
+    <table class="tool-table table table-zebra grid grid-cols-5">
+      <thead>
+        <th>Serial Number</th>
+        <th>Model Number</th>
+        <th>Tool ID</th>
+        <th class="col-span-2">Description</th>
+        <th>Barcode</th>
+      </thead>
+      <tbody>
         <tr>
+          <td class="col-span-6">{{#eq "serviceAssignment" searchBy}}<h1 class="text-2xl" id="search-terms">Searched
+              For:{{getServiceAssignmentName
+              allServiceAssignments
+              searchTerm
+              }}.Total Results:{{totalFound}}</h1>{{/eq}}{{#eq
+            "category" searchBy
+            }}<h1 class="text-2xl" id="search-terms">Searched For:{{getCategoryName
+              categories
+              searchTerm
+              }}. Total Results:{{totalFound}}</h1>{{/eq}}{{#if
+            (searchingForOneTool searchBy)
+            }}<h1 class="text-2xl" id="search-terms">Searched For:{{searchTerm}}.
+              Total Results:{{totalFound}}</h1>{{/if}}</td>
+        </tr>{{#each
+        tools
+        }}<tr>
           <td>{{serialNumber}}</td>
           <td>{{modelNumber}}</td>
           <td>{{toolID}}</td>
           <td class="col-span-2">{{description}}</td>
           <td class="barcode">{{barcode}}</td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
-</section>
+        </tr>{{/each}}
+      </tbody>
+    </table>
+  </section>
+</body>
+
+</html>
