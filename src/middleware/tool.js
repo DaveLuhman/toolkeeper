@@ -444,7 +444,7 @@ const generatePrinterFriendlyToolList = async (req, res, next) => {
   } catch (err) {
     res.locals.message = err.message
     res.locals.printerFriendlyTools = []
-    next()
+    return next()
   }
 }
 

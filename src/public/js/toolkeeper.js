@@ -7,16 +7,6 @@ function btnToSpinner() {
       '<span class="loading loading-infinity loading-lg"></span>'
   })
 }
-if (document.getElementById('printButton')) {
-  console.log('I see the print button')
-  document.getElementById('printButton').addEventListener('onclick', (e) => {
-    console.log('Ive seen you click the button')
-    const uriComponent = document.getElementById('printerFriendlyTools').innerHTML
-    const encodedHtml = encodeURIComponent(uriComponent)
-    const dataUri = 'data:text/html;charset=utf-8,' + encodedHtml
-    window.open(dataUri)
-  })
-}
 
 // eslint-disable-next-line no-unused-vars
 const openInNewTab = () => {
@@ -29,6 +19,6 @@ const openInNewTab = () => {
   iframe.height = '100%'
   iframe.frameBorder = 0
   iframe.style = 'border: 0'
-  iframe.src = 'data:text/html;charset=utf-8,' + encodedHtml
+  iframe.src = `data:text/html;charset=utf-8, ${encodedHtml}`
   x.document.body.appendChild(iframe)
 }
