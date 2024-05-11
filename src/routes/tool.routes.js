@@ -6,15 +6,15 @@ import {
   createTool,
   searchTools,
   updateTool,
-  submitCheckInOut
+  submitCheckInOut,
+  generatePrinterFriendlyToolList
 } from '../middleware/tool.js'
 import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
 import { listAllSAs } from '../middleware/serviceAssignment.js'
 export const toolRouter = Router()
 
 // search for tools and render the results with the dashboard view
-toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, listAllSAs, searchTools, (req, res) => {
-  console.log(req.body)
+toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, listAllSAs, searchTools, generatePrinterFriendlyToolList, (req, res) => {
   res.render('results')
 })
 
