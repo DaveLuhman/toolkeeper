@@ -41,15 +41,7 @@ async function getAllTools(req, res, next) {
 async function getActiveTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   console.info('[MW] getAllTools-in'.bgBlue.white)
-  const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
-
-  const { trimmedData, targetPage, pageCount } = paginate(
-    tools,
-    req.query.p || 1,
-    req.user.preferences.pageSize
-  )
-  res.locals.pagination = { page: targetPage, pageCount } // pagination
-  res.locals.tools = trimmedData // array of tools
+  res.locals.tools = await Tool.find().where('archived').equals(false).sort({ [sortField]: sortOrder })
   console.info('[MW] getAllTools-out'.bgWhite.blue)
   return next()
 }
@@ -92,8 +84,6 @@ async function searchTools(req, res, next) {
   console.info('[MW] searchTools-in'.bgBlue.white)
   const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchTerm } = req.body
-  let result
-  console.table(req.body)
   switch (searchBy) {
     case 'Search By':
       res.locals.message = 'You must specify search parameters'
@@ -101,7 +91,7 @@ async function searchTools(req, res, next) {
     case 'serviceAssignment':
       res.locals.searchBy = searchBy
       res.locals.searchTerm = searchTerm
-      result = await Tool.where('serviceAssignment')
+      res.locals.tools = await Tool.where('serviceAssignment')
         .equals(searchTerm)
         .sort({ [sortField]: sortOrder })
         .exec()
@@ -109,7 +99,7 @@ async function searchTools(req, res, next) {
     case 'category':
       res.locals.searchBy = searchBy
       res.locals.searchTerm = searchTerm
-      result = await Tool.where('category')
+      res.locals.tools = await Tool.where('category')
         .equals(searchTerm)
         .sort({ [sortField]: sortOrder })
         .exec()
@@ -117,28 +107,19 @@ async function searchTools(req, res, next) {
     case 'status':
       res.locals.searchBy = searchBy
       res.locals.searchTerm = searchTerm
-      result = await Tool.find({ status: { $eq: searchTerm } }).sort(
+      res.locals.tools = await Tool.find().where('serviceAssignment.type').equals(searchBy === 'Checked Out' ? !'Stockroom' : 'Stockroom').sort(
         { [sortField]: sortOrder }
       )
       break
     default:
       res.locals.searchTerm = searchTerm
       res.locals.searchBy = searchBy
-      result = await Tool.find({
+      res.locals.tools = await Tool.find({
         [searchBy]: { $eq: searchTerm }
       }).sort({ [sortField]: sortOrder })
-      result = mutateToArray(result)
       break
   }
-  console.log(result)
-  const { trimmedData, pageCount, targetPage } = paginate(
-    result,
-    req.query.p,
-    req.user.preferences.pageSize
-  )
-  res.locals.pagination = { page: targetPage, pageCount } // pagination
-  res.locals.tools = trimmedData // array of tools
-  res.locals.totalFound = result.length
+  res.locals.totalFound = res.locals.tools.length
   console.info('[MW] searchTools-out'.bgWhite.blue)
   return next()
 }
@@ -438,7 +419,7 @@ const generatePrinterFriendlyToolList = async (req, res, next) => {
         description
       }
     })
-    if (printerFriendlyToolArray?.length === 0) throw new Error({ message: 'There was a problem creating the printer friendly data' })
+    if (printerFriendlyToolArray?.length === 0) throw new Error('There was a problem creating the printer friendly data')
     res.locals.printerFriendlyTools = printerFriendlyToolArray || []
     return next()
   } catch (err) {

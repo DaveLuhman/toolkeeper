@@ -24,15 +24,15 @@
     <ul class="list-decimal">
       {{#each tools}}
         <li>
-          <div class="bg-teal-500">{{this.id}}: </div>
+          <div class="bg-teal-500 ">{{this.id}}: </div>
           <ul class="pl-10 list-disc">
-            <li>SN: {{this.serialNumber}}</li>
-            <li>PN: {{this.modelNumber}}</li>
-            <li>Barcode: {{this.barcode}}</li>
-            <li>Status: {{this.status}}</li>
-            <li>SA: {{this.serviceAssignment.name}}</li>
-            <li>Desc: {{this.description}}</li>
-            <li>Raw: {{this}}</li>
+            <li class="text-black">SN: {{this.serialNumber}}</li>
+            <li class="text-black">PN: {{this.modelNumber}}</li>
+            <li class="text-black">Barcode: {{this.barcode}}</li>
+            <li class="text-black">Status: {{this.status}}</li>
+            <li class="text-black">SA: {{this.serviceAssignment.name}}</li>
+            <li class="text-black">Desc: {{this.description}}</li>
+            <li class="text-black">Raw: {{this}}</li>
           </ul>
         </li>
       {{/each}}
