@@ -41,15 +41,7 @@ async function getAllTools(req, res, next) {
 async function getActiveTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   console.info('[MW] getAllTools-in'.bgBlue.white)
-  const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
-
-  const { trimmedData, targetPage, pageCount } = paginate(
-    tools,
-    req.query.p || 1,
-    req.user.preferences.pageSize
-  )
-  res.locals.pagination = { page: targetPage, pageCount } // pagination
-  res.locals.tools = trimmedData // array of tools
+  res.locals.tools = await Tool.find().where('archived').equals(false).sort({ [sortField]: sortOrder })
   console.info('[MW] getAllTools-out'.bgWhite.blue)
   return next()
 }
