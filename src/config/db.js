@@ -48,7 +48,7 @@ async function createDefaultServiceAssignments() {
       name: 'DEPOT',
       description: 'Default stockroom for serialized tools',
       type: 'Stockroom',
-      active: true,
+      active: true
     },
     {
       _id: '64a34b651288871770df1087',
