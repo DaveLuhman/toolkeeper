@@ -1,66 +1,92 @@
 body {
-  margin: auto;
+  margin: 1em;
   background: #cacaca;
+  break-inside: auto;
 }
-table {
+section.table {
   border-style: solid;
   border-collapse: collapse;
   border-spacing: 0;
-  color: #4a4a4d;
-}
+  color: black;
+  break-after: always;
 
-th,
-td {
-  padding: 10px 15px;
+  margin-bottom: 10%;
+}
+.text-center {
+  text-align: center;
+}
+.grid {
+  display: grid;
+}
+.inline-grid {
+  display: inline-grid;
+}
+.grid-cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+div.header-cell {
+  text-align: center;
+  border-style: solid;
+  font-weight: bold;
+  font-size: 15pt;
+  padding: 5px 8px;
   vertical-align: middle;
 }
 
-thead {
-  border-style: solid;
-  font-weight: bold;
-  font-size: 20px;
-  text-transform: uppercase;
-}
-
-th:first-child {
+div.header-row:first-child {
   border-top-left-radius: 5px;
   text-align: left;
 }
 
-th:last-child {
+div.header-row:last-child {
   border-top-right-radius: 5px;
 }
 
-tbody tr:nth-child(even) {
+div.row:nth-child(even) {
   background: #f0f0f2;
 }
 
-td {
-  border-bottom: 1px solid #cecfd5;
-  border-right: 1px solid #cecfd5;
+div.data-cell {
+  border-bottom: 1px solid #808080;
+  border-right: 1px solid #808080;
+  padding: 10px 15px;
+  vertical-align: middle;
 }
 
-td:first-child {
-  border-left: 1px solid #cecfd5;
+div.data-cell:first-child {
+  border-left: 1px solid #808080;
 }
 
-tfoot {
-  text-align: right;
-}
-
-tfoot tr:last-child {
-  background: #f0f0f2;
-  color: #395870;
-  font-weight: bold;
-}
-
-tfoot tr:last-child td:first-child {
-  border-bottom-left-radius: 5px;
-}
-tfoot tr:last-child td:last-child {
-  border-bottom-right-radius: 5px;
-}
-td .barcode {
+div .barcode {
   font-family: "Libre Barcode 39";
-  font-size: 12pt;
+  font-size: 16pt;
+}
+
+@media print {
+  @page {
+    margin: 1em;
+  }
+  body {
+    height: 100%;
+    width: 100%;
+  }
+  div.row > div {
+    display: inline-block;
+    border: solid 1px #black;
+    margin: 0.1cm;
+    font-size: 1rem;
+  }
+  div.row {
+    display: block;
+    margin: solid 2px black;
+    margin: 0.2cm 1cm;
+    font-size: 0;
+    white-space: nowrap;
+  }
+  div.data-cell {
+    border-bottom: 1px solid #808080;
+    border-right: 1px solid #808080;
+    padding: 10px 15px;
+    vertical-align: middle;
+  }
 }
