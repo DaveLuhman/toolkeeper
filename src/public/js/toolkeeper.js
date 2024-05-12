@@ -10,9 +10,6 @@ function btnToSpinner() {
 
 // eslint-disable-next-line no-unused-vars
 const openInNewTab = () => {
-  console.log('Ive seen you click the button via the function, not the event listener')
-  const uriComponent = document.getElementById('printerFriendlyTools').innerHTML
-  const encodedHtml = encodeURIComponent(uriComponent)
   const x = window.open()
   const newPage = x.document.createElement('div')
   newPage.width = '100%'
