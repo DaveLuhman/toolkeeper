@@ -53,7 +53,7 @@
 
 ## Introduction
 
-This is a full-stack web application built with NodeJS and Express that allows an contractor to manage their tool crib. Currntly at v1.0.9
+This is a full-stack web application built with NodeJS and Express that allows an contractor to manage their tool crib. Currently at v1.1.6
 
 ## Features
 
