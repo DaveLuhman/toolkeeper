@@ -34,12 +34,14 @@ const toolSchema = new Schema(
     serviceAssignment: {
       type: Schema.Types.ObjectId,
       ref: 'ServiceAssignment',
-      autopopulate: true
+      autopopulate: true,
+      default: '64a34b651288871770df1086'
     },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
-      autopopulate: true
+      autopopulate: true,
+      default: '64a1c3d8d71e121dfd39b7ab'
     },
     description: {
       type: String,
