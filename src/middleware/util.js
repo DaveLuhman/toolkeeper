@@ -159,9 +159,17 @@ export class AppError extends Error {
 export const errorHandler = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
-
-  res.status(err.statusCode).json({
-    status: err.status,
-    message: err.message,
-  });
-}
+  
+if(err.statusCode === 404) {
+  res.status(err.statusCode).render('error/404', {
+    errorCode: err.statusCode,
+    errorMessage: err.message,
+    errorStack: err.stack,
+  })}
+  else {
+    res.status(err.statusCode).render('error/error', {
+      errorCode: err.statusCode,
+      errorMessage: err.message,
+      errorStack: err.stack,
+    })}
+};

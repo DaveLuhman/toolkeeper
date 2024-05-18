@@ -131,8 +131,8 @@ app.use('/tool', toolRouter)
 app.use(isManager)
 app.use('/settings', settingsRouter)
 // catch 404 and forward to error handler
-app.use((_req, res) => {
-  res.status(404).render('error/404', { layout: 'public', title: '404' })
+app.use((_req, res, next) => {
+  next(new AppError('Not Found', 404));
 })
 
 app.listen(PORT, () => {

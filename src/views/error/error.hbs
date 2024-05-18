@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error {{errorCode}}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .error-container {
+      border: 1px solid #f44336;
+      padding: 20px;
+      border-radius: 5px;
+      background-color: #ffdddd;
+    }
+    .error-header {
+      color: #f44336;
+      font-size: 24px;
+    }
+    .error-details {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <div class="error-header">Error {{errorCode}}</div>
+    <div class="error-message">{{errorMessage}}</div>
+    <div class="error-details">
+      <pre>{{errorStack}}</pre>
+    </div>
+  </div>
+</body>
+</html>
