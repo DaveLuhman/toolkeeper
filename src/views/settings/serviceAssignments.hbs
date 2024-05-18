@@ -14,6 +14,7 @@
                 <table class="table table-auto">
                     <thead>
                         <tr>
+                            <th>Tool Count</th>
                             <th>Display Name</th>
                             <th class="hidden md:table-cell">Description</th>
                             <th>Edit</th>
@@ -24,6 +25,7 @@
                         {{#if activeServiceAssignments}}
                         {{#each activeServiceAssignments}}
                         <tr>
+                            <td>{{toolCount}}</td>
                             <td>{{name}}</td>
                             <td class="hidden md:table-cell min-w-fit">{{description}}</td>
                             <td><a href="/settings/serviceAssignments/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
@@ -49,6 +51,7 @@
                             <th>Activate</th>
                             <th>Display Name</th>
                             <th class="hidden md:table-cell">Description</th>
+                            <th class="hidden md:table-cell">Tool Count</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -61,6 +64,7 @@
                                         class="fas fa-arrow-left"></i></a></td>
                             <td>{{name}}</td>
                             <td class="hidden md:table-cell min-w-fit">{{description}}</td>
+                            <td {{#gt toolCount 0 }}class="text-red-400 font-semibold"{{/gt}}>{{toolCount}}</td>
                             <td><a href="/settings/serviceAssignments/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
                             <td><a href="/settings/serviceAssignments/delete/{{id}}"
                                     onclick="return confirm('Are you sure you want to delete {{name}}')"><i

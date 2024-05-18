@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import mongoose, { Schema, model } from 'mongoose'
 
 const ServiceAssignmentSchema = new Schema(
   {
@@ -18,8 +18,8 @@ const ServiceAssignmentSchema = new Schema(
     type: {
       type: String,
       enum: [
-        'Contract Job',
-        'Service Job',
+        'Contract Jobsite',
+        'Service Jobsite',
         'Stockroom',
         'Vehicle',
         'Employee',
@@ -33,6 +33,11 @@ const ServiceAssignmentSchema = new Schema(
     },
     phone: {
       type: String
+    },
+    toolCount: {
+      type: Number,
+      default: 0,
+      min: 0
     },
     notes: {
       type: String
