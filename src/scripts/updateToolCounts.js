@@ -3,7 +3,7 @@ import Tool from '../models/Tool.model.js';
 import ServiceAssignment from '../models/ServiceAssignment.model.js';
 
 // Connect to your MongoDB database
-mongoose.connect('mongodb://mongo.ado.lan:27017/toolkeeper?authSource=admin', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
