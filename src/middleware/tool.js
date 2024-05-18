@@ -4,6 +4,7 @@ import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
 import { deduplicateArray, mutateToArray, paginate } from './util.js'
 import sortArray from 'sort-array'
+import logger from '../config/logger.js'
 
 /**
  *
@@ -17,7 +18,7 @@ import sortArray from 'sort-array'
  */
 async function getAllTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
-  console.info('[MW] getAllTools-in'.bgBlue.white)
+  logger.info('[MW] getAllTools-in'.bgBlue.white)
   const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
 
   const { trimmedData, targetPage, pageCount } = paginate(
@@ -27,7 +28,7 @@ async function getAllTools(req, res, next) {
   )
   res.locals.pagination = { page: targetPage, pageCount } // pagination
   res.locals.tools = trimmedData // array of tools
-  console.info('[MW] getAllTools-out'.bgWhite.blue)
+  logger.info('[MW] getAllTools-out'.bgWhite.blue)
   return next()
 }
 /**
@@ -42,9 +43,9 @@ async function getAllTools(req, res, next) {
  */
 async function getActiveTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
-  console.info('[MW] getAllTools-in'.bgBlue.white)
+  logger.info('[MW] getAllTools-in'.bgBlue.white)
   res.locals.tools = await Tool.find().where('archived').equals(false).sort({ [sortField]: sortOrder })
-  console.info('[MW] getAllTools-out'.bgWhite.blue)
+  logger.info('[MW] getAllTools-out'.bgWhite.blue)
   return next()
 }
 
@@ -58,7 +59,7 @@ async function getActiveTools(req, res, next) {
  */
 async function getToolByID(req, res, next) {
   const id = req.params.id
-  console.info(`[MW] searching id: ${id}`)
+  logger.info(`[MW] searching id: ${id}`)
   const tools = await Tool.findById({ $eq: id })
   const toolHistory = await ToolHistory.findById({ $eq: id }).sort({
     updatedAt: 1
@@ -112,7 +113,7 @@ async function getCheckedOutTools() {
  * @returns {array}
  */
 async function searchTools(req, res, next) {
-  console.info('[MW] searchTools-in'.bgBlue.white)
+  logger.info('[MW] searchTools-in'.bgBlue.white)
   const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchTerm } = req.body
   let tools
@@ -151,7 +152,7 @@ async function searchTools(req, res, next) {
       break
   }
   res.locals.totalFound = res.locals.tools.length
-  console.info('[MW] searchTools-out'.bgWhite.blue)
+  logger.info('[MW] searchTools-out'.bgWhite.blue)
   return next()
 }
 
@@ -164,7 +165,7 @@ async function searchTools(req, res, next) {
  */
 async function createTool(req, res, next) {
   try {
-    console.info('[MW] createTool-in'.bgBlue.white)
+    logger.info('[MW] createTool-in'.bgBlue.white)
     const {
       serialNumber,
       modelNumber,
@@ -219,8 +220,8 @@ async function createTool(req, res, next) {
     res.locals.tools = [newTool]
     res.locals.pagination = { pageCount: 1 }
     res.status(201)
-    console.info(`[MW] Tool Successfully Created ${newTool._id}`.green)
-    console.info('[MW] createTool-out-3'.bgWhite.blue)
+    logger.info(`[MW] Tool Successfully Created ${newTool._id}`.green)
+    logger.info('[MW] createTool-out-3'.bgWhite.blue)
     next()
   } catch (error) {
     res.locals.message = error.message
@@ -247,7 +248,7 @@ async function updateToolHistory(toolID) {
  * @param {*} next
  */
 async function updateTool(req, res, next) {
-  console.info('[MW] updateTool-in'.bgBlue.white)
+  logger.info('[MW] updateTool-in'.bgBlue.white)
   
   if(!req.body.serviceAssignment || req.body.serviceAssignment == 'null' || req.body.serviceAssignment == undefined) {
     req.body.serviceAssignment = '64a34b651288871770df1086'
@@ -292,7 +293,7 @@ async function updateTool(req, res, next) {
 
   const updatedToolArray = []
   // if (typeof req.body.id === 'string') {
-    console.table(req.body)
+    logger.table(req.body)
     updateToolHistory(id) // Update the tools history
     updatedToolArray.push(updatedTool)
   // }
@@ -320,8 +321,8 @@ async function updateTool(req, res, next) {
   // }
   res.locals.tools = updatedToolArray
   res.status(200)
-  console.info('[MW] Successfully Updated Tools: '.green + updatedToolArray)
-  console.info('[MW] updateTool-out-1'.bgWhite.blue)
+  logger.info('[MW] Successfully Updated Tools: '.green + updatedToolArray)
+  logger.info('[MW] updateTool-out-1'.bgWhite.blue)
   next()
 }
 /**
@@ -333,7 +334,7 @@ async function updateTool(req, res, next) {
  * @param {*} next
  */
 async function archiveTool(req, res, next) {
-  console.info('[MW] archiveTool-in'.bgBlue.white)
+  logger.info('[MW] archiveTool-in'.bgBlue.white)
   const { id } = req.params
   const archivedTool = await Tool.findByIdAndUpdate(
     { _id: id },
@@ -348,14 +349,14 @@ async function archiveTool(req, res, next) {
   res.locals.message = 'Successfully Marked Tool Archived'
   res.locals.tools = [archivedTool]
   res.status(201)
-  console.info('[MW] archiveTool-out-1'.bgWhite.blue)
+  logger.info('[MW] archiveTool-out-1'.bgWhite.blue)
   next()
 }
 
 async function checkTools(req, res, next) {
   if (!req.body.searchTerms) {
     res.locals.message = 'No Tools Submitted For Status Change'
-    console.warn('[MW checkTools-out-1'.bgWhite.blue)
+    logger.warn('[MW checkTools-out-1'.bgWhite.blue)
     res.status(400).redirect('back')
     return next()
   }
@@ -386,7 +387,7 @@ async function lookupTool(searchTerm) {
   if (!result) {
     result = {}
   }
-  console.log(result)
+  logger.log(result)
   return result
 }
 /**
@@ -399,7 +400,7 @@ async function lookupToolWrapper(searchTerms) {
   const tools = []
   for (let i = 0; i < searchTerms.length; i++) {
     const result = await lookupTool(searchTerms[i])
-    console.log(result)
+    logger.log(result)
     if (result?.serialNumber === undefined) {
       tools.push({
         serialNumber: searchTerms[i]

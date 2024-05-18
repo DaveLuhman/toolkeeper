@@ -1,3 +1,4 @@
+import logger from '../../config/logger.js'
 import ServiceAssignment from '../../models/ServiceAssignment.model.js'
 import { csvFileToEntries } from '../util.js'
 let successCount = 0
@@ -6,7 +7,7 @@ const errorList = []
 function determineServiceAssignmentType(memberID, mLastName) {
   const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
   if (!memberID || memberID === '') {
-    console.error('Invalid Member ID' + memberID)
+    logger.error('Invalid Member ID' + memberID)
     return 'Imported - Uncategorized'
   }
   if (memberID[0] === 'C') return 'Contract Jobsite'

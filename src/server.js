@@ -3,6 +3,7 @@
 import colors from 'colors'
 import dotenv from 'dotenv'
 import morgan from 'morgan'
+import logger from './config/logger.js'
 // db depenancies
 import connectMongoDBSession from 'connect-mongodb-session'
 import connectDB from './config/db.js'
@@ -29,7 +30,8 @@ import {
   populateDropdownItems,
   rateLimiter,
   getPackageVersion,
-  searchingForOneTool
+  searchingForOneTool,
+  errorHandler
 } from './middleware/util.js'
 // routers
 import { dashboardRouter } from './routes/dashboard.routes.js'
@@ -44,7 +46,7 @@ dotenv.config({ path: './src/config/.env', debug: true }) // Load environment va
 const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
 const app = express() // Create Express App
-
+app.use(errorHandler)
 connectDB() // Connect to MongoDB and report status to console
 // create mongo store for session persistence
 const mongoStore = new MongoDBStore({
@@ -71,10 +73,11 @@ if (process.env.NODE_ENV === 'production') {
 
 // Morgan Logging in development
 if (process.env.NODE_ENV !== 'production') {
-  app.use(morgan('dev'))
-  console.info(
-    '[INIT]>>>>> Morgan enabled for logging in this development environment'.yellow
-  )
+  app.use(morgan('combined', {
+    stream: {
+      write: (message) => logger.info(message.trim())
+    }
+  }))
 }
 // Handlebars Setup
 const hbs = create({
@@ -132,5 +135,5 @@ app.use((_req, res) => {
 })
 
 app.listen(PORT, () => {
-  console.info(`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black)
+  logger.info(`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black)
 })
