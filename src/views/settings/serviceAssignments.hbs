@@ -28,8 +28,8 @@
                             <td>{{toolCount}}</td>
                             <td>{{name}}</td>
                             <td class="hidden md:table-cell min-w-fit">{{description}}</td>
-                            <td><a href="/settings/serviceAssignments/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
-                            <td><a href="/settings/serviceAssignments/deactivate/{{id}}"><i
+                            <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i class="fa fa-pencil"></i></a></td>
+                            <td><a href="/settings/serviceAssignments/deactivate/{{_id}}"><i
                                         class="fas fa-arrow-right"></i></a></td>
                             </td>
                         </tr>
@@ -60,13 +60,13 @@
                         {{#if inactiveServiceAssignments}}
                         {{#each inactiveServiceAssignments}}
                         <tr>
-                            <td><a href="/settings/serviceAssignments/activate/{{id}}"><i
+                            <td><a href="/settings/serviceAssignments/activate/{{_id}}"><i
                                         class="fas fa-arrow-left"></i></a></td>
                             <td>{{name}}</td>
                             <td class="hidden md:table-cell min-w-fit">{{description}}</td>
                             <td {{#gt toolCount 0 }}class="text-red-400 font-semibold"{{/gt}}>{{toolCount}}</td>
-                            <td><a href="/settings/serviceAssignments/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
-                            <td><a href="/settings/serviceAssignments/delete/{{id}}"
+                            <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i class="fa fa-pencil"></i></a></td>
+                            <td><a href="/settings/serviceAssignments/delete/{{_id}}"
                                     onclick="return confirm('Are you sure you want to delete {{name}}')"><i
                                         class="fa fa-trash"></i></a>
                             </td>
