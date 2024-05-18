@@ -13,7 +13,7 @@ import { mutateToArray } from './util.js'
 export async function getServiceAssignments(req, res, next) {
   logger.info('[MW] getServiceAssignments-in'.bgBlue.white)
   try {
-    const serviceAssignments = await ServiceAssignment.find().sort('name').exec()
+    const serviceAssignments = await ServiceAssignment.find().sort('name').lean()
 
     res.locals.inactiveServiceAssignments = serviceAssignments.filter((item) => { return item.active === false })
     res.locals.activeServiceAssignments = serviceAssignments.filter((item) => { return item.active === true })
