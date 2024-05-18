@@ -31,7 +31,8 @@ import {
   rateLimiter,
   getPackageVersion,
   searchingForOneTool,
-  errorHandler
+  errorHandler,
+  AppError
 } from './middleware/util.js'
 // routers
 import { dashboardRouter } from './routes/dashboard.routes.js'
