@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import User from '../models/User.model.js'
 import Category from '../models/Category.model.js'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
+import logger from './logger.js'
 
 async function isUsersCollectionEmpty() {
   const user = await User.count()
@@ -19,7 +20,7 @@ async function createDefaultUser() {
     })
     return user
   } catch (error) {
-    console.log(error)
+    logger.log(error)
   }
 }
 
@@ -71,17 +72,17 @@ function createDefaultDocuments() {
 }
 
 function initializeDatabase() {
-  console.warn('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper.site\nDefault password is "asdfasdf"'.red.underline)
+  logger.warn('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper.site\nDefault password is "asdfasdf"'.red.underline)
   createDefaultDocuments()
 }
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI)
-    console.info(
+    logger.info(
       `[DB INIT] MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold
     )
   } catch (err) {
-    console.error('DB INIT' + err)
+    logger.error('DB INIT' + err)
     process.exit(1)
   }
   if (await isUsersCollectionEmpty()) initializeDatabase()

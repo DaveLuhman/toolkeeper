@@ -2,12 +2,13 @@ import passport from 'passport'
 import User from '../models/User.model.js'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { compare } from 'bcrypt'
+import logger from './logger.js'
 
 const passportConfig = (_app) => {
   passport.use(new LocalStrategy(
     { usernameField: 'email' },
     async function (email, password, done) {
-      console.info(`[AUTH] ${email} attempting login`.blue.bold)
+      logger.info(`[AUTH] ${email} attempting login`.blue.bold)
       const user = await User.findOne({ email: { $eq: email } })
       if (!user) {
         return done(null, false, { message: 'That email is not registered' })

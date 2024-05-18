@@ -1,4 +1,5 @@
 /* eslint-disable eqeqeq */
+import logger from '../config/logger.js'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import { mutateToArray } from './util.js'
 /**
@@ -10,16 +11,16 @@ import { mutateToArray } from './util.js'
  * @description Gets all service assignments and adds them to res.locals.serviceAssignments as an array
  */
 export async function getServiceAssignments(req, res, next) {
-  console.info('[MW] getServiceAssignments-in'.bgBlue.white)
+  logger.info('[MW] getServiceAssignments-in'.bgBlue.white)
   try {
     const serviceAssignments = await ServiceAssignment.find().sort('name').exec()
 
     res.locals.inactiveServiceAssignments = serviceAssignments.filter((item) => { return item.active === false })
     res.locals.activeServiceAssignments = serviceAssignments.filter((item) => { return item.active === true })
-    console.info('[MW] getServiceAssignments-out'.bgWhite.blue)
+    logger.info('[MW] getServiceAssignments-out'.bgWhite.blue)
     return next()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     res.status(500).send('Server Error')
   }
 }
@@ -38,7 +39,7 @@ export async function getServiceAssignmentByID(req, res, next) {
     res.locals.targetServiceAssignment = mutateToArray(serviceAssignment)
     return next()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     res.status(500).send('Server Error')
   }
 }
@@ -63,7 +64,7 @@ export async function updateServiceAssignment(req, res, next) {
     res.locals.serviceAssignments = mutateToArray(updatedServiceAssignment)
     return next()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     res.status(500).send('Server Error')
   }
 }
@@ -89,7 +90,7 @@ export async function createServiceAssignment(req, res, next) {
     res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
     return next()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     res.status(500).send('Server Error')
   }
 }
@@ -109,7 +110,7 @@ export async function deleteServiceAssignment(req, res, next) {
     await ServiceAssignment.findByIdAndDelete(id)
     return next()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     res.status(500).send('Server Error')
   }
 }
@@ -119,7 +120,7 @@ export async function deactivateServiceAssignment(req, res, next) {
     await ServiceAssignment.findByIdAndUpdate(id, { active: false }, { new: true })
     return next()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     res.status(500).send('Server Error')
   }
 }
@@ -129,7 +130,7 @@ export async function activateServiceAssignment(req, res, next) {
     await ServiceAssignment.findByIdAndUpdate(id, { active: true }, { new: true })
     return next()
   } catch (error) {
-    console.error(error)
+    logger.error(error)
     res.status(500).send('Server Error')
   }
 }

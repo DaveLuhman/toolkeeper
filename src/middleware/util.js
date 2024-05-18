@@ -142,3 +142,34 @@ export function searchingForOneTool(searchBy) {
   const searchesReturningOneTool = ['serialNumber', 'barcode', 'status', 'modelNumber', 'toolID']
   return searchesReturningOneTool.includes(searchBy)
 }
+
+// Custom error class
+export class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
+    this.isOperational = true;
+
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+
+// Centralized error handling middleware
+export const errorHandler = (err, req, res, next) => {
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || 'error';
+  
+if(err.statusCode === 404) {
+  res.status(err.statusCode).render('error/404', {
+    errorCode: err.statusCode,
+    errorMessage: err.message,
+    errorStack: err.stack,
+  })}
+  else {
+    res.status(err.statusCode).render('error/error', {
+      errorCode: err.statusCode,
+      errorMessage: err.message,
+      errorStack: err.stack,
+    })}
+};

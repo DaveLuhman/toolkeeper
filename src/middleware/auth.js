@@ -1,4 +1,5 @@
 import passport from 'passport'
+import logger from '../config/logger.js'
 
 /**
  * @param req Express Request object
@@ -32,13 +33,13 @@ function checkAuth(req, res, next) {
  **/
 function isManager(req, res, next) {
   if (req.user.role === 'User') {
-    console.warn('[AUTH] User Is Not A Manager: ' + req.user.role)
+    logger.warn('[AUTH] User Is Not A Manager: ' + req.user.role)
     res.locals.error =
       'You are not a manager, and have been redirected to the dashboard'
     res.redirect('/dashboard')
     return
   }
-  console.info('[AUTH] User Is A Manager: ' + req.user.role)
+  logger.info('[AUTH] User Is A Manager: ' + req.user.role)
   return next()
 }
 /**

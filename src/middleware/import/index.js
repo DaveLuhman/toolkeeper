@@ -3,9 +3,10 @@ import { importTools } from './tool.js'
 import { importHistory } from './history.js'
 import { importCategories } from './categories.js'
 import 'fs/promises'
+import logger from '../../config/logger.js'
 
 export async function importByFile(req, res, next) {
-  console.log(req.body.importTarget)
+  logger.log(req.body.importTarget)
   if (!req.files || !req.body.importTarget) {
     res.locals.error = 'No file uploaded or no selection made'
     res.render('settings/import', {
@@ -18,22 +19,22 @@ export async function importByFile(req, res, next) {
   let result
   switch (importTarget) {
     case 'tools':
-      console.log('importing tools')
+      logger.log('importing tools')
       result = await importTools(file)
       break
     case 'allServiceAssignments':
-      console.log('importing all service assignments')
+      logger.log('importing all service assignments')
       result = await importServiceAssignments(file)
       break
     case 'activeServiceAssignments':
-      console.log('marking inactive SAs as such')
+      logger.log('marking inactive SAs as such')
       result = await activateServiceAssignments(file)
       break
     case 'history':
       result = await importHistory(file)
       break
     case 'categories':
-      console.log('importing categories')
+      logger.log('importing categories')
       result = await importCategories(file)
       break
     default:
