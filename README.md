@@ -3,7 +3,6 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://toolkeeper.dev.ado.software">
     <img src="src\public\img\toolKeeperLogo-light-full.png">
   </a>
 
@@ -39,7 +38,6 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
 
@@ -47,7 +45,10 @@
 
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]][product-url]
+<div align="center">
+
+    <img src="src\public\img\dashboardScreenshot.png" width="65%">
+  </div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -61,7 +62,7 @@ This is a full-stack web application built with NodeJS and Express that allows a
 - Search for tools by a variety of fields
 - Add and delete service assignments (employees, vehicles, or jobsites)
 - Checkout and check-in tools to/from service assignments (employees, vehicles, jobsites, and stockrooms)
-    - Status Assignments are set via service assignment type.
+    - Status is derived via service assignment type.
 - Users can set personal theme and sorting preferences
 - Generate reports on tool usage and inventory levels (coming soon...)
 
@@ -80,6 +81,7 @@ This is a full-stack web application built with NodeJS and Express that allows a
 - MongoDB Target
 
 ### Docker-Compose
+
 1. In the repo, there is a docker-compose folder. Either download, or copy the contents of both the docker-compose.yml and compose.env to the same folder on your local machine.
 2. Edit the contents of the .env file to your environment
 3. In a terminal, run `docker compose up -d` to start the containers.
@@ -87,58 +89,65 @@ This is a full-stack web application built with NodeJS and Express that allows a
 Note: This is configured with /data/db and /data/configdb persistent storage volumes. No secrets are left unencrypted at rest, other than in your .env file.
 
 ### Node.js Native
+
 #### Note: this assumes you have your own MongoDB to point TK at.
+
 1. Clone the `master` branch either from the GH repo [Link](https://github.com/DaveLuhman/toolkeeper) or via terminal
-	`git clone https://github.com/DaveLuhman/toolkeeper.git`
+   `git clone https://github.com/DaveLuhman/toolkeeper.git`
 
 2. Duplicate the .env.sample file and fill in the details to match your environment
-	a. note the .env file in the monorepo is in ./src/config/.env
+   a. note the .env file in the monorepo is in ./src/config/.env
 
-3. In a terminal, run `npm ci` to perform a clean install of the node dependancies
-4. Next, we'll run `npm run build:css` to build the tailwind CSS files
-5. Finally, we'll run `npm start` to start the services
-
-## For Developers
-
-### Logging Conventions:
-
-`console.log()` - Only used during development, replaced with `console.info()`, `console.warn()`, or `console.error()` if being left into production versions of the site. This allows devs to use `console.log()` as needed during development without worrying about these conventions. Once a feature branch is ready to be submitted for PR, devs can search their local branch for `console.log()` and add prefixes/colors/etc and replace `.log()` with the appropriate alternative.
-
-### Console Prefixes
-`[AUTH]` - Part of the auth chain
-`[MW]` - Part of a middleware function
-
-### MW Entries
-
-'middlewareName-in/out-index' is the convention, e.g. `[MW] createUser-in` would indicate the stack is entering the createUser middleware, and `[MW] getTools-out-3` would indicate the stack is exiting the getTools middleware at the third `next()` call
-
-### Route URL Naming Convention
-
-`/model/verb/[id]` is the convention, e.g. `/tools/create` would indicate the route is for creating a new tool, and `/tools/update/123456789` would indicate the route is for updating a tool with the id of 123456789
-
-### Route Prefixes
-
-`[GET]` - GET request
-`[POST]` - POST request
-
-
-### Colorful Logs:
-
-<ul>
-<li><font color="red">.red</font> - Error messages</li>
-<li><font color="green">.green</font> - Success messages</li>
-<li><font color="yellow">.yellow</font> - warnings like no parameters submitted or no search results found</li>
-<li><span style="color: blue; background-color: white;">.bgBlue.white</span> - entering middleware</li>
-<li><span style="color: white; background-color: blue;">.bgWhite.blue</span> - exiting middleware</li>
-</ul>
-
-## Contributing
-
-We welcome contributions to this project. If you are interested in contributing, please fork the repository and submit a pull request.
+3. In a terminal, run `bun install` to perform a clean install of the node dependancies
+4. Next, we'll run `bun run build:css` to build the tailwind CSS files
+5. Finally, we'll run `bun start` to start the services
 
 ## License
 
-This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
+ToolKeeper is released under the MIT License. However, the exclusive rights to host it for SAAS resale are retained by the author. Others can self-host and use it or run it locally, but not resell hosting without meaningfully changing it first.
+
+## Contributing
+
+Contributions are welcome! Please submit issues or pull requests on [GitHub](https://github.com/daveluhman/toolkeeper). Here's a template for submitting issues or pull requests:
+
+### Issue Template
+
+Description
+A clear and concise description of what the issue is.
+
+Steps to Reproduce
+Steps to reproduce the behavior:
+
+Go to '...'
+Click on '...'
+Scroll down to '...'
+See error
+Expected behavior
+A clear and concise description of what you expected to happen.
+
+Screenshots
+If applicable, add screenshots to help explain your problem.
+
+Additional context
+Add any other context about the problem here.
+
+### Pull Request Template:
+
+#### Description
+- A clear and concise description of what the pull request is.
+#### Related Issue
+- Link to the related issue if applicable.
+#### Changes
+- List of changes made:
+#### Screenshots
+- If applicable, add screenshots to help explain your changes.
+#### Additional context
+- Add any other context about the pull request here.
+## Contact
+
+For any questions or feedback, you can reach out via email at [dave@ado.software](mailto:dave@ado.software) or on GitHub [@DaveLuhman](https://github.com/DaveLuhman).
+
+---
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
