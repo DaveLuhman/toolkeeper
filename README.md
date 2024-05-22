@@ -46,7 +46,6 @@
 ## About The Project
 
 <div align="center">
-
     <img src="src\public\img\dashboardScreenshot.png" width="65%">
   </div>
 
