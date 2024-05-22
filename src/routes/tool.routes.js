@@ -11,22 +11,17 @@ import {
 } from '../middleware/tool.js'
 import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
 import { listAllSAs } from '../middleware/serviceAssignment.js'
+import { renderResults, renderStatusChangeConfirmationPage } from '../controllers/tool.js'
 export const toolRouter = Router()
 
 // search for tools and render the results with the dashboard view
-toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, listAllSAs, searchTools, generatePrinterFriendlyToolList, (req, res) => {
-  res.render('results')
-})
+toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, listAllSAs, searchTools, generatePrinterFriendlyToolList, renderResults)
 // TODO figure out where search paramaters require hoisting and either make it a global convention or fix it so it's not required.
 
 // retrieve current service assignment and render checkInOut prompting user to select the new assignment
-toolRouter.post('/checkInOut', checkTools, (_req, res) => {
-  res.render('checkInOut')
-})
+toolRouter.post('/checkInOut', checkTools, renderStatusChangeConfirmationPage)
 // save the new service assignement to the database.
-toolRouter.post('/submitCheckInOut', submitCheckInOut, (_req, res) => {
-  res.render('results')
-})
+toolRouter.post('/submitCheckInOut', submitCheckInOut, renderResults)
 
 // create new tool
 toolRouter.post('/submit', sanitizeReqBody, createTool, (_req, res) => {
