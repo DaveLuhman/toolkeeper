@@ -76,9 +76,9 @@ if (process.env.NODE_ENV === 'production') {
 if (process.env.NODE_ENV !== 'production') {
   app.use(morgan('combined', {
     stream: {
-      write: (message) => logger.info(message.trim())
+      write: (message) => logger.http(message.trim())
     }
-  }))
+  }));
 }
 // Handlebars Setup
 const hbs = create({
