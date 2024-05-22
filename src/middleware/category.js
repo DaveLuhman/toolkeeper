@@ -21,7 +21,20 @@ const getCategoryByID = async (req, res, next) => {
     next()
   }
 }
-
+const updateCategory = async (req, res, next) => {
+    const { _id, name, description } = req.body
+    try {
+      const updatedCategory = await Category.findByIdAndUpdate(
+        { $eq: _id },
+        { name, description },
+        { new: true }
+      )
+      res.locals.updatedCategory = updatedCategory
+      return next()
+    } catch (error) {
+      res.status(404).json({ message: error.message })
+    }
+  }
 const createCategory = async (req, res, next) => {
   const category = req.body
   const newCategory = new Category(category)
@@ -43,20 +56,7 @@ const deleteCategory = async (req, res, next) => {
   }
 }
 
-const updateCategory = async (req, res, next) => {
-  const { _id, name, description } = req.body
-  try {
-    const updatedCategory = await Category.findByIdAndUpdate(
-      { $eq: _id },
-      { name, description },
-      { new: true }
-    )
-    res.locals.updatedCategory = updatedCategory
-    return next()
-  } catch (error) {
-    res.status(404).json({ message: error.message })
-  }
-}
+
 // TODO: Use updatedAt value hashed to check for changes
 const listCategoryNames = async (_req, res, next) => {
   res.locals.categories = await Category.find({}, { name: 1, id: 1 }).sort({ name: 'asc' })
