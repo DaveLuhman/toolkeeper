@@ -7,7 +7,7 @@ import {
   deleteCategory
 } from '../../middleware/category.js'
 import { sanitizeReqBody } from '../../middleware/util.js'
-import { renderSettingsCategories, renderSettingsEditCategory } from '../../controllers/category.js'
+import { renderSettingsCategories, renderSettingsEditCategory } from '../../controllers/settings/category.js'
 
 export const categoryRouter = Router()
 
