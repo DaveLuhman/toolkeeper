@@ -90,7 +90,7 @@ export async function createServiceAssignment(req, res, next) {
     res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
     return next()
   } catch (error) {
-    logger.error(error)
+    logger.error(error.message)
     res.status(500).send('Server Error')
   }
 }
