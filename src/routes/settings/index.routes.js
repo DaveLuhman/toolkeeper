@@ -5,14 +5,13 @@ import { serviceAssignmentRouter } from './serviceAssignments.routes.js'
 import { categoryRouter } from './category.routes.js'
 import { materialRouter } from './material.routes.js'
 import { importRouter } from './import.routes.js'
+import { renderSettingsUsers } from '../../controllers/settings/user.js'
 
 export const settingsRouter = expressRouter()
 
 // show settings index page
 // @route  GET /settings
-settingsRouter.get('/', getUsers, (_req, res) => {
-  res.render('settings/users')
-})
+settingsRouter.get('/', getUsers, renderSettingsUsers)
 // all userSettings routes go to userSettingsRouter
 // @route  * /settings/users
 settingsRouter.use('/users', userSettingsRouter)
