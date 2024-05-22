@@ -17,6 +17,7 @@ export const toolRouter = Router()
 toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, listAllSAs, searchTools, generatePrinterFriendlyToolList, (req, res) => {
   res.render('results')
 })
+// TODO figure out where search paramaters require hoisting and either make it a global convention or fix it so it's not required.
 
 // retrieve current service assignment and render checkInOut prompting user to select the new assignment
 toolRouter.post('/checkInOut', checkTools, (_req, res) => {

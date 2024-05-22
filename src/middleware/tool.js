@@ -249,53 +249,52 @@ async function updateToolHistory(toolID) {
  */
 async function updateTool(req, res, next) {
   logger.info('[MW] updateTool-in'.bgBlue.white)
-  
-  if(!req.body.serviceAssignment || req.body.serviceAssignment == 'null' || req.body.serviceAssignment == undefined) {
+
+  if (!req.body.serviceAssignment || req.body.serviceAssignment == 'null' || req.body.serviceAssignment == undefined) {
     req.body.serviceAssignment = '64a34b651288871770df1086'
   }
-  if(!req.body.category || req.body.category == 'null' || req.body.category == undefined) {
+  if (!req.body.category || req.body.category == 'null' || req.body.category == undefined) {
     req.body.category = '64a1c3d8d71e121dfd39b7ab'
   }
   // block level function to update a single tool
-    const {
-      id,
+  const {
+    id,
+    modelNumber,
+    description,
+    toolID,
+    serviceAssignment,
+    category,
+    manufacturer,
+    width,
+    height,
+    length,
+    weight
+  } = req.body
+  const updatedTool = await Tool.findByIdAndUpdate(
+    { $eq: id },
+    {
       modelNumber,
       description,
       toolID,
-      serviceAssignment,
-      category,
+      serviceAssignment: serviceAssignment,
+      category: category,
       manufacturer,
-      width,
-      height,
-      length,
-      weight
-    } = req.body
-    const updatedTool = await Tool.findByIdAndUpdate(
-      { $eq: id },
-      {
-        modelNumber,
-        description,
-        toolID,
-        serviceAssignment: serviceAssignment,
-        category: category,
-        manufacturer,
-        size: {
-          width,
-          height,
-          length,
-          weight
-        },
-        $inc: { __v: 1 },
-        $set: { updatedAt: Date.now() }
+      size: {
+        width,
+        height,
+        length,
+        weight
       },
-      { new: true }
-    )
+      $inc: { __v: 1 },
+      $set: { updatedAt: Date.now() }
+    },
+    { new: true }
+  )
 
   const updatedToolArray = []
   // if (typeof req.body.id === 'string') {
-    logger.table(req.body)
-    updateToolHistory(id) // Update the tools history
-    updatedToolArray.push(updatedTool)
+  updateToolHistory(id) // Update the tools history
+  updatedToolArray.push(updatedTool)
   // }
   // if (Array.isArray(req.body._id) && req.body._id.length > 0) {
   //   for (let i = 0; i < req.body.id.length > 100; i++) {
@@ -349,7 +348,6 @@ async function archiveTool(req, res, next) {
   res.locals.message = 'Successfully Marked Tool Archived'
   res.locals.tools = [archivedTool]
   res.status(201)
-  logger.info('[MW] archiveTool-out-1'.bgWhite.blue)
   next()
 }
 
