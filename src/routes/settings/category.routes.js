@@ -7,34 +7,33 @@ import {
   deleteCategory
 } from '../../middleware/category.js'
 import { sanitizeReqBody } from '../../middleware/util.js'
+import { renderSettingsCategories, renderSettingsEditCategory } from '../../controllers/category.js'
 
 export const categoryRouter = Router()
 
-categoryRouter.get('/', getCategories, (_req, res) => {
-  res.render('settings/categories')
-})
+categoryRouter.get('/', getCategories, renderSettingsCategories)
 // get service assignment by ID and render edit page
 categoryRouter.get(
   '/edit/:id', // target
   getCategoryByID,
-  (_req, res) => {
-    res.render('settings/editCategory') // render
-  }
+  renderSettingsEditCategory
 )
 // update service assignment
 categoryRouter.post(
   '/edit', // target
   sanitizeReqBody,
   updateCategory,
-  (_req, res) => {
-    res.redirect('/settings/categories') // redirect
-  }
+  renderSettingsCategories
 )
 // add new service assignment
-categoryRouter.post('/create', sanitizeReqBody, createCategory, (_req, res) => {
-  res.redirect('/settings/categories')
-})
+categoryRouter.post('/create',
+  sanitizeReqBody,
+  createCategory,
+  getCategories,
+  renderSettingsCategories
+)
 // delete service assignment
-categoryRouter.get('/delete/:id', deleteCategory, (_req, res) => {
-  res.redirect('/settings/categories')
-})
+categoryRouter.get('/delete/:id',
+  deleteCategory,
+  getCategories,
+  renderSettingsCategories)
