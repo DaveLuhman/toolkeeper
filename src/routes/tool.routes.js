@@ -7,16 +7,27 @@ import {
   searchTools,
   updateTool,
   submitCheckInOut,
-  generatePrinterFriendlyToolList
+  generatePrinterFriendlyToolList,
 } from '../middleware/tool.js'
 import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
 import { listAllSAs } from '../middleware/serviceAssignment.js'
-import { renderResults, renderStatusChangeConfirmationPage } from '../controllers/tool.js'
+import {
+  renderEditTool,
+  renderResults,
+  renderStatusChangeConfirmationPage,
+} from '../controllers/tool.js'
 export const toolRouter = Router()
 
 // search for tools and render the results with the dashboard view
-toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, listAllSAs, searchTools, generatePrinterFriendlyToolList, renderResults)
-// TODO figure out where search paramaters require hoisting and either make it a global convention or fix it so it's not required.
+toolRouter.use(
+  '/search',
+  sanitizeReqBody,
+  hoistSearchParamsToBody,
+  listAllSAs,
+  searchTools,
+  generatePrinterFriendlyToolList,
+  renderResults
+)
 
 // retrieve current service assignment and render checkInOut prompting user to select the new assignment
 toolRouter.post('/checkInOut', checkTools, renderStatusChangeConfirmationPage)
@@ -24,14 +35,10 @@ toolRouter.post('/checkInOut', checkTools, renderStatusChangeConfirmationPage)
 toolRouter.post('/submitCheckInOut', submitCheckInOut, renderResults)
 
 // create new tool
-toolRouter.post('/submit', sanitizeReqBody, createTool, (_req, res) => {
-  res.render('results')
-})
+toolRouter.post('/submit', sanitizeReqBody, createTool, renderResults)
 
 // update tool
-toolRouter.post('/update', sanitizeReqBody, updateTool, (_req, res) => {
-  res.render('results')
-})
+toolRouter.post('/update', sanitizeReqBody, updateTool, renderResults)
 
 // archive tool
 toolRouter.get('/archive/:id', archiveTool, (_req, res) => {
@@ -39,6 +46,4 @@ toolRouter.get('/archive/:id', archiveTool, (_req, res) => {
 })
 
 // get tool by id
-toolRouter.get('/:id', getToolByID, (_req, res) => {
-  res.render('editTool')
-})
+toolRouter.get('/:id', getToolByID, renderEditTool)
