@@ -8,6 +8,7 @@ import {
   updateTool,
   submitCheckInOut,
   generatePrinterFriendlyToolList,
+  getAllTools,
 } from '../middleware/tool.js'
 import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
 import { listAllSAs } from '../middleware/serviceAssignment.js'
@@ -41,9 +42,7 @@ toolRouter.post('/submit', sanitizeReqBody, createTool, renderResults)
 toolRouter.post('/update', sanitizeReqBody, updateTool, renderResults)
 
 // archive tool
-toolRouter.get('/archive/:id', archiveTool, (_req, res) => {
-  res.redirect('/dashboard')
-})
+toolRouter.get('/archive/:id', archiveTool, getAllTools, renderResults)
 
 // get tool by id
 toolRouter.get('/:id', getToolByID, renderEditTool)
