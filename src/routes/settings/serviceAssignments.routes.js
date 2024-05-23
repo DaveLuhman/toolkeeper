@@ -37,7 +37,7 @@ serviceAssignmentRouter.post(
   sanitizeReqBody,
   updateServiceAssignment,
   getServiceAssignments,
-  renderSettingsEditServiceAssignment
+  renderSettingsServiceAssignments
 )
 // @desc add new service assignment and redirect to settings page
 // @endpoint POST /settings/serviceAssignments/create
