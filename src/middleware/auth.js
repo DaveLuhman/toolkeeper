@@ -55,7 +55,8 @@ function isManager(req, res, next) {
 async function login(req, res, next) {
   passport.authenticate('local', {
     failureRedirect: '/login',
-    failureFlash: true
+    failureFlash: true,
+    successRedirect: '/dashboard'
   })(req, res, next)
 }
 
