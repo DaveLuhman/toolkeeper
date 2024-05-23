@@ -15,7 +15,7 @@ indexRouter.get('/', renderLandingPage)
 // Render Login Page
 indexRouter.get('/login', renderLoginPage)
 // Login User
-indexRouter.post('/login', login, redirectToDashboard)
+indexRouter.post('/login', login)
 // Render register Page
 indexRouter.get('/register', renderRegisterPage)
 // Register User

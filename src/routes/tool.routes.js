@@ -9,6 +9,7 @@ import {
   submitCheckInOut,
   generatePrinterFriendlyToolList,
   getAllTools,
+  unarchiveTool,
 } from '../middleware/tool.js'
 import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
 import { listAllSAs } from '../middleware/serviceAssignment.js'
@@ -43,6 +44,8 @@ toolRouter.post('/update', sanitizeReqBody, updateTool, renderResults)
 
 // archive tool
 toolRouter.get('/archive/:id', archiveTool, getAllTools, renderResults)
+// archive tool
+toolRouter.get('/unarchive/:id', unarchiveTool, getAllTools, renderResults)
 
 // get tool by id
 toolRouter.get('/:id', getToolByID, renderEditTool)

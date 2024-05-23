@@ -95,7 +95,8 @@
                     </div>
                 </div>
                 <div class="modal-button-row">
-                    <label class="modal-button"><a href="/tool/archive/{{tool.id}}">Archive</a></label>
+                    {{#eq archived true}}<label class="modal-button"><a href="/tool/unarchive/{{tool.id}}">Un-Archive</a></label>{{/eq}}
+                    {{#eq archived false}}<label class="modal-button"><a href="/tool/archive/{{tool.id}}">Archive</a></label>{{/eq}}
                     <label class="modal-button"><a href="/dashboard">Cancel</a></label>
                     <label class="modal-button"><button id="edit-tool_submit" type="submit">Submit</button></label>
                 </div>
