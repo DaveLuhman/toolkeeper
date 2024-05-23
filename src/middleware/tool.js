@@ -2,14 +2,12 @@ import e from 'express'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
-import { deduplicateArray, mutateToArray, paginate } from './util.js'
+import { deduplicateArray, mutateToArray, paginate, returnUniqueIdentifier } from './util.js'
 import sortArray from 'sort-array'
 import logger from '../config/logger.js'
 
 /**
  *
- * @param {number} req.query.p page number
- * @param {object} res.locals.pagination {page: targetPage, pageCount: pageCount}
  * @param {array} res.locals.tools returns array of tools in response
  * @param {*} next
  * @returns {array}
@@ -20,21 +18,13 @@ async function getAllTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   logger.info('[MW] getAllTools-in'.bgBlue.white)
   const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
-
-  const { trimmedData, targetPage, pageCount } = paginate(
-    tools,
-    req.query.p || 1,
-    req.user.preferences.pageSize
-  )
-  res.locals.pagination = { page: targetPage, pageCount } // pagination
-  res.locals.tools = trimmedData // array of tools
+  res.locals.tools = tools // array of tools
   logger.info('[MW] getAllTools-out'.bgWhite.blue)
   return next()
 }
 /**
  *
- * @param {number} req.query.p page number
- * @param {object} res.locals.pagination {page: targetPage, pageCount: pageCount}
+
  * @param {array} res.locals.tools returns array of tools in response
  * @param {*} next
  * @returns {array}
@@ -375,6 +365,24 @@ async function archiveTool(req, res, next) {
   next()
 }
 
+async function unarchiveTool(req, res, next) {
+  logger.info('[MW] archiveTool-in'.bgBlue.white)
+  const { id } = req.params
+  const unarchivedTool = await Tool.findByIdAndUpdate(
+    { _id: id },
+    { archived: false },
+    { new: true }
+  )
+  await ToolHistory.findByIdAndUpdate(
+    { _id: id },
+    { $push: { history: [unarchivedTool] } },
+    { new: true }
+  )
+  res.locals.message = 'Successfully Restored Tool ' + returnUniqueIdentifier(unarchivedTool)
+  res.locals.tools = mutateToArray(unarchivedTool)
+  res.status(201)
+  next()
+}
 async function checkTools(req, res, next) {
   if (!req.body.searchTerms) {
     res.locals.message = 'No Tools Submitted For Status Change'
@@ -492,6 +500,7 @@ export {
   createTool,
   updateTool,
   archiveTool,
+  unarchiveTool,
   checkTools,
   submitCheckInOut,
   generatePrinterFriendlyToolList,
