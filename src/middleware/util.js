@@ -133,7 +133,7 @@ export function hoistSearchParamsToBody(req, _res, next) {
 }
 
 export function deduplicateArray(arr) {
-  return Array.from(new Set(arr))
+  return Array.from(new Set(arr)).filter((item) => item !== '') 
 }
 export function searchingForOneTool(searchBy) {
   const searchesReturningOneTool = [

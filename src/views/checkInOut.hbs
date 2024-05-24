@@ -12,6 +12,17 @@
             </thead>
             {{#if tools}}
                 <tbody>
+                    {{#if displaySelector}}
+                    <select name="destinationServiceAssignment" class="select select-bordered">
+                        {{#each allServiceAssignments}}
+                        <option value="{{id}}" {{isSelected id ../destinationServiceAssignment}}>
+                            {{name}} - {{description}}
+                        </option>
+                        {{/each}}
+                        {{#else}}
+                    <input type="hidden" name="newServiceAssignment" value="{{destinationServiceAssignment}}">
+                    {{/else}}
+                        {{/if}}
                     {{#each tools}}
                         {{#if _id}}
                             <tr>
@@ -24,7 +35,7 @@
                                 </td>
                                 <td name="newServiceAssignmment">
                                     {{getServiceAssignmentName ../allServiceAssignments ../destinationServiceAssignment}}
-                                    <input type="hidden" name="newServiceAssignment" value="{{../destinationServiceAssignment}}">
+                                    
                                 </td>
                             </tr>
                         {{else}}

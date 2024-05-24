@@ -391,15 +391,19 @@ async function checkTools(req, res, next) {
     res.status(400).redirect('back')
     return next()
   }
+  const destinationServiceAssignment =
+    req.body.serviceAssignmentInput === ''
+      ? req.body.serviceAssignmentSelector
+      : await findServiceAssignmentByName(req.body.serviceAssignmentInput)
+  if (!destinationServiceAssignment) {
+    res.locals.message = 'No Service Assignment Found. Please select one'
+    res.locals.displaySelector = true
+  }
   const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/))
   const toolsToBeChanged = await lookupToolWrapper(search)
   if (toolsToBeChanged.length === 0) {
     res.locals.message = 'No Tools Found Matching '
   }
-  res.locals.destinationServiceAssignment =
-    req.body.serviceAssignmentInput === ''
-      ? req.body.serviceAssignmentSelector
-      : await findServiceAssignmentByName(req.body.serviceAssignmentInput)
   res.locals.tools = toolsToBeChanged
   next()
 }
