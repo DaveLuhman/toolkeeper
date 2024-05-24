@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.authors="Dave Luhman, <<dave@ado.software>>"
 LABEL org.opencontainers.image.url="https://ghcr.io/daveluhman/toolkeeper"
 LABEL org.opencontainers.image.source="https://github.com/daveluhman/toolkeeper"
 LABEL org.opencontainers.image.version="v1.1.6"
-RUN npm install --omit dev
-RUN npm run build:css
+RUN npm install --omit dev && \
+    npm run build:css
 COPY . /
 CMD ["npm", "start"]

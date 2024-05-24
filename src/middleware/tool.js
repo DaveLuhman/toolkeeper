@@ -2,14 +2,13 @@ import e from 'express'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
-import { deduplicateArray, mutateToArray, paginate } from './util.js'
+import { deduplicateArray, mutateToArray, returnUniqueIdentifier } from './util.js'
 import sortArray from 'sort-array'
 import logger from '../config/logger.js'
+import { findServiceAssignmentByName } from './serviceAssignment.js'
 
 /**
  *
- * @param {number} req.query.p page number
- * @param {object} res.locals.pagination {page: targetPage, pageCount: pageCount}
  * @param {array} res.locals.tools returns array of tools in response
  * @param {*} next
  * @returns {array}
@@ -20,21 +19,13 @@ async function getAllTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   logger.info('[MW] getAllTools-in'.bgBlue.white)
   const tools = await Tool.find({}).sort({ [sortField]: sortOrder })
-
-  const { trimmedData, targetPage, pageCount } = paginate(
-    tools,
-    req.query.p || 1,
-    req.user.preferences.pageSize
-  )
-  res.locals.pagination = { page: targetPage, pageCount } // pagination
-  res.locals.tools = trimmedData // array of tools
+  res.locals.tools = tools // array of tools
   logger.info('[MW] getAllTools-out'.bgWhite.blue)
   return next()
 }
 /**
  *
- * @param {number} req.query.p page number
- * @param {object} res.locals.pagination {page: targetPage, pageCount: pageCount}
+
  * @param {array} res.locals.tools returns array of tools in response
  * @param {*} next
  * @returns {array}
@@ -44,7 +35,10 @@ async function getAllTools(req, res, next) {
 async function getActiveTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   logger.info('[MW] getAllTools-in'.bgBlue.white)
-  res.locals.tools = await Tool.find().where('archived').equals(false).sort({ [sortField]: sortOrder })
+  res.locals.tools = await Tool.find()
+    .where('archived')
+    .equals(false)
+    .sort({ [sortField]: sortOrder })
   logger.info('[MW] getAllTools-out'.bgWhite.blue)
   return next()
 }
@@ -62,13 +56,13 @@ async function getToolByID(req, res, next) {
   logger.info(`[MW] searching id: ${id}`)
   const tools = await Tool.findById({ $eq: id })
   const toolHistory = await ToolHistory.findById({ $eq: id }).sort({
-    updatedAt: 1
+    updatedAt: 1,
   })
   res.locals.tools = [tools]
   if (toolHistory) {
     res.locals.toolHistory = sortArray(toolHistory.history, {
       by: 'updatedAt',
-      order: 'desc'
+      order: 'desc',
     })
   }
   return next()
@@ -76,8 +70,14 @@ async function getToolByID(req, res, next) {
 
 async function getCheckedInTools() {
   const tools = await Tool.find().where('archived').equals(false)
-  const activeServiceAssignmentsDocs = await ServiceAssignment.find().where('type').equals('Stockroom')
-  const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(item => { return item._id.valueOf() })
+  const activeServiceAssignmentsDocs = await ServiceAssignment.find()
+    .where('type')
+    .equals('Stockroom')
+  const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(
+    (item) => {
+      return item._id.valueOf()
+    }
+  )
   const checkedInTools = []
   for (let i = 0; i < tools.length; i++) {
     for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
@@ -90,8 +90,14 @@ async function getCheckedInTools() {
 }
 async function getCheckedOutTools() {
   const tools = await Tool.find().where('archived').equals(false)
-  const activeServiceAssignmentsDocs = await ServiceAssignment.find().where('type').ne('Stockroom')
-  const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(item => { return item._id.valueOf() })
+  const activeServiceAssignmentsDocs = await ServiceAssignment.find()
+    .where('type')
+    .ne('Stockroom')
+  const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(
+    (item) => {
+      return item._id.valueOf()
+    }
+  )
   const checkedInTools = []
   for (let i = 0; i < tools.length; i++) {
     for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
@@ -140,14 +146,15 @@ async function searchTools(req, res, next) {
     case 'status':
       res.locals.searchBy = searchBy
       res.locals.searchTerm = searchTerm
-      if (searchTerm === 'Checked In') res.locals.tools = await getCheckedInTools()
+      if (searchTerm === 'Checked In')
+        res.locals.tools = await getCheckedInTools()
       else res.locals.tools = await getCheckedOutTools()
       break
     default:
       res.locals.searchTerm = searchTerm
       res.locals.searchBy = searchBy
       res.locals.tools = await Tool.find({
-        [searchBy]: { $eq: searchTerm }
+        [searchBy]: { $eq: searchTerm },
       }).sort({ [sortField]: sortOrder })
       break
   }
@@ -178,13 +185,13 @@ async function createTool(req, res, next) {
       width,
       height,
       length,
-      weight
+      weight,
     } = req.body
     if (!(serialNumber || modelNumber) || !barcode) {
       throw new Error({ message: 'Missing required fields', status: 400 })
     }
     const existing = await Tool.findOne({
-      $or: [{ serialNumber }, { barcode }]
+      $or: [{ serialNumber }, { barcode }],
     })
     if (existing) {
       res.locals.tools = mutateToArray(existing)
@@ -204,17 +211,17 @@ async function createTool(req, res, next) {
         height,
         width,
         length,
-        weight
+        weight,
       },
       updatedBy: req.user._id,
-      createdBy: req.user._id
+      createdBy: req.user._id,
     })
     if (!newTool) {
       throw new Error({ message: 'Could not create tool', status: 500 })
     }
     await ToolHistory.create({
       _id: newTool._id,
-      history: [newTool]
+      history: [newTool],
     })
     res.locals.message = 'Successfully Made A New Tool'
     res.locals.tools = [newTool]
@@ -236,7 +243,7 @@ async function updateToolHistory(toolID) {
     {
       $push: { history: oldTool },
       $inc: { __v: 1 },
-      $set: { updatedAt: Date.now() }
+      $set: { updatedAt: Date.now() },
     }
   )
 }
@@ -250,10 +257,18 @@ async function updateToolHistory(toolID) {
 async function updateTool(req, res, next) {
   logger.info('[MW] updateTool-in'.bgBlue.white)
 
-  if (!req.body.serviceAssignment || req.body.serviceAssignment == 'null' || req.body.serviceAssignment == undefined) {
+  if (
+    !req.body.serviceAssignment ||
+    req.body.serviceAssignment == 'null' ||
+    req.body.serviceAssignment == undefined
+  ) {
     req.body.serviceAssignment = '64a34b651288871770df1086'
   }
-  if (!req.body.category || req.body.category == 'null' || req.body.category == undefined) {
+  if (
+    !req.body.category ||
+    req.body.category == 'null' ||
+    req.body.category == undefined
+  ) {
     req.body.category = '64a1c3d8d71e121dfd39b7ab'
   }
   // block level function to update a single tool
@@ -268,7 +283,7 @@ async function updateTool(req, res, next) {
     width,
     height,
     length,
-    weight
+    weight,
   } = req.body
   const updatedTool = await Tool.findByIdAndUpdate(
     { $eq: id },
@@ -283,10 +298,10 @@ async function updateTool(req, res, next) {
         width,
         height,
         length,
-        weight
+        weight,
       },
       $inc: { __v: 1 },
-      $set: { updatedAt: Date.now() }
+      $set: { updatedAt: Date.now() },
     },
     { new: true }
   )
@@ -345,12 +360,30 @@ async function archiveTool(req, res, next) {
     { $push: { history: [archivedTool] } },
     { new: true }
   )
-  res.locals.message = 'Successfully Marked Tool Archived'
-  res.locals.tools = [archivedTool]
+  res.locals.message = 'Successfully Archived Tool ' + archivedTool.toolID
+  res.locals.tools = mutateToArray(archivedTool)
   res.status(201)
   next()
 }
 
+async function unarchiveTool(req, res, next) {
+  logger.info('[MW] archiveTool-in'.bgBlue.white)
+  const { id } = req.params
+  const unarchivedTool = await Tool.findByIdAndUpdate(
+    { _id: id },
+    { archived: false },
+    { new: true }
+  )
+  await ToolHistory.findByIdAndUpdate(
+    { _id: id },
+    { $push: { history: [unarchivedTool] } },
+    { new: true }
+  )
+  res.locals.message = 'Successfully Restored Tool ' + returnUniqueIdentifier(unarchivedTool)
+  res.locals.tools = mutateToArray(unarchivedTool)
+  res.status(201)
+  next()
+}
 async function checkTools(req, res, next) {
   if (!req.body.searchTerms) {
     res.locals.message = 'No Tools Submitted For Status Change'
@@ -358,12 +391,19 @@ async function checkTools(req, res, next) {
     res.status(400).redirect('back')
     return next()
   }
+  const destinationServiceAssignment =
+    req.body.serviceAssignmentInput === ''
+      ? req.body.serviceAssignmentSelector
+      : await findServiceAssignmentByName(req.body.serviceAssignmentInput)
+  if (!destinationServiceAssignment) {
+    res.locals.message = 'No Service Assignment Found. Please select one from the dropdown'
+    res.locals.displaySelector = true
+  }
   const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/))
   const toolsToBeChanged = await lookupToolWrapper(search)
   if (toolsToBeChanged.length === 0) {
     res.locals.message = 'No Tools Found Matching '
   }
-  res.locals.target = (req.body.serviceAssignmentInput === '') ? req.body.serviceAssignmentSelector : req.body.serviceAssignmentInput
   res.locals.tools = toolsToBeChanged
   next()
 }
@@ -401,7 +441,7 @@ async function lookupToolWrapper(searchTerms) {
     logger.log(result)
     if (result?.serialNumber === undefined) {
       tools.push({
-        serialNumber: searchTerms[i]
+        serialNumber: searchTerms[i],
       })
     } else tools.push(result)
   }
@@ -409,27 +449,31 @@ async function lookupToolWrapper(searchTerms) {
 }
 
 async function submitCheckInOut(req, res, next) {
-  const id = mutateToArray(req.body.id)
-  const newServiceAssignment = mutateToArray(req.body.newServiceAssignment)
-  const newTools = []
-  for (let i = 0; i < id.length; i++) {
-    if (id[i] === 'toolNotFound') break
-    updateToolHistory(id[i])
-    newTools.push(
-      await Tool.findByIdAndUpdate(
-        { _id: id[i] },
-        {
-          serviceAssignment: newServiceAssignment[i],
-          $inc: { __v: 1 },
-          $set: { updatedAt: Date.now() }
-        },
-        { new: true }
+  try {
+    const id = mutateToArray(req.body.id)
+    const { newServiceAssignment } = req.body
+    const newTools = []
+    for (let i = 0; i < id.length; i++) {
+      if (id[i] === 'toolNotFound') break
+      updateToolHistory(id[i])
+      newTools.push(
+        await Tool.findByIdAndUpdate(
+          { _id: {$eq: id[i]} },
+          {
+            serviceAssignment: {$eq: newServiceAssignment},
+            $inc: { __v: 1 },
+            $set: { updatedAt: Date.now() }
+          },
+          { new: true }
+        )
       )
-    )
+    }
+    res.locals.tools = newTools
+    res.locals.message = `${newTools.length} tool(s) have been updated`
+    next()
+  } catch (error) {
+    logger.error(error.message)
   }
-  res.locals.tools = newTools
-  res.locals.message = `${newTools.length} tool(s) have been updated`
-  next()
 }
 
 const generatePrinterFriendlyToolList = async (req, res, next) => {
@@ -437,22 +481,17 @@ const generatePrinterFriendlyToolList = async (req, res, next) => {
     if (!res.locals.tools) return next()
     const { tools } = res.locals
     const printerFriendlyToolArray = await tools.map((tool) => {
-      const {
-        serialNumber,
-        modelNumber,
-        toolID,
-        barcode,
-        description
-      } = tool
+      const { serialNumber, modelNumber, toolID, barcode, description } = tool
       return {
         serialNumber,
         modelNumber,
         toolID,
         barcode,
-        description
+        description,
       }
     })
-    if (printerFriendlyToolArray?.length === 0) throw new Error('There was a problem creating the printer friendly data')
+    if (printerFriendlyToolArray?.length === 0)
+      throw new Error('There was a problem creating the printer friendly data')
     res.locals.printerFriendlyTools = printerFriendlyToolArray || []
     return next()
   } catch (err) {
@@ -470,7 +509,8 @@ export {
   createTool,
   updateTool,
   archiveTool,
+  unarchiveTool,
   checkTools,
   submitCheckInOut,
-  generatePrinterFriendlyToolList
+  generatePrinterFriendlyToolList,
 }

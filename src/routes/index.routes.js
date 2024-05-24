@@ -1,36 +1,24 @@
 import { Router } from 'express'
 import { login, logout } from '../middleware/auth.js'
 import { createUser } from '../middleware/user.js'
+import {
+  redirectToDashboard,
+  renderLandingPage,
+  renderLoginPage,
+  renderRegisterPage,
+} from '../controllers/index.js'
 
 export const indexRouter = Router()
 
 // Render Public Landing Page
-indexRouter.get('/', (_req, res) => {
-  res.render('index', { layout: 'public.hbs' })
-})
+indexRouter.get('/', renderLandingPage)
 // Render Login Page
-indexRouter.get('/login', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.redirect('/dashboard')
-  } else {
-    res.render('login', { layout: 'auth.hbs' })
-  }
-})
+indexRouter.get('/login', renderLoginPage)
 // Login User
-indexRouter.post('/login', login, (_req, res) => {
-  res.redirect('/dashboard')
-})
+indexRouter.post('/login', login)
 // Render register Page
-indexRouter.get('/register', (req, res) => {
-  if (req.isAuthenticated()) {
-    res.redirect('/dashboard')
-  } else {
-    res.render('register', { layout: 'auth.hbs' })
-  }
-})
+indexRouter.get('/register', renderRegisterPage)
 // Register User
-indexRouter.post('/register', createUser, (_req, res) => {
-  res.redirect('/login')
-})
+indexRouter.post('/register', createUser, renderLoginPage)
 // Logout User
 indexRouter.get('/logout', logout)

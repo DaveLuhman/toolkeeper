@@ -3,10 +3,6 @@ import mongooseAutoPopulate from 'mongoose-autopopulate'
 
 const toolSchema = new Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-      auto: true
-    },
     serialNumber: {
       type: String,
       upperCase: true,
@@ -84,14 +80,6 @@ const toolSchema = new Schema(
     },
     image: {
       type: String
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
     }
   },
   {

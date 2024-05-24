@@ -24,8 +24,8 @@ async function createDefaultUser() {
   }
 }
 
-async function createDefaultCategory() {
-  return await Category.create({
+function createDefaultCategory() {
+  return Category.create({
     _id: '64a1c3d8d71e121dfd39b7ab',
     prefix: 'UC',
     name: 'Uncategorized',

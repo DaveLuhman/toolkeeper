@@ -1,5 +1,5 @@
 /*
-List of Functions in order (* at beginning means exported)
+List of Functions in order (* means exported)
 *paginate
 *mutateToArray
 *sortByUserPreference
@@ -17,6 +17,7 @@ sanitize
 import rateLimit from 'express-rate-limit'
 import { listCategoryNames } from './category.js'
 import { listActiveSAs } from './serviceAssignment.js'
+import xss from 'xss'
 
 /**
  *
@@ -65,7 +66,7 @@ export function sortByUserPreference(data, sortField, sortOrder) {
  * It will only allow alphanumeric characters and spaces
  **/
 function sanitize(string) {
-  return string.replace(/[^a-zA-Z0-9\-@. ]/g, '')
+  return xss(string)
 }
 
 /**
@@ -92,16 +93,13 @@ export function isSelected(option, objectProperty) {
   if (option === objectProperty) return 'selected'
 }
 
-export const populateDropdownItems = [
-  listCategoryNames,
-  listActiveSAs
-]
+export const populateDropdownItems = [listCategoryNames, listActiveSAs]
 
 export const rateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false // Disable the `X-RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
 export const createAccountLimiter = rateLimit({
@@ -110,7 +108,7 @@ export const createAccountLimiter = rateLimit({
   message:
     'Too many accounts created from this IP, please try again after an hour',
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false // Disable the `X-RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
 export function csvFileToEntries(file) {
@@ -136,40 +134,62 @@ export function hoistSearchParamsToBody(req, _res, next) {
 }
 
 export function deduplicateArray(arr) {
-  return Array.from(new Set(arr))
+  return Array.from(new Set(arr)).filter((item) => item !== '') 
 }
 export function searchingForOneTool(searchBy) {
-  const searchesReturningOneTool = ['serialNumber', 'barcode', 'status', 'modelNumber', 'toolID']
+  const searchesReturningOneTool = [
+    'serialNumber',
+    'barcode',
+    'status',
+    'modelNumber',
+    'toolID',
+  ]
   return searchesReturningOneTool.includes(searchBy)
 }
 
 // Custom error class
 export class AppError extends Error {
   constructor(message, statusCode) {
-    super(message);
-    this.statusCode = statusCode;
-    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
-    this.isOperational = true;
+    super(message)
+    this.statusCode = statusCode
+    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error'
+    this.isOperational = true
 
-    Error.captureStackTrace(this, this.constructor);
+    Error.captureStackTrace(this, this.constructor)
   }
 }
 
 // Centralized error handling middleware
 export const errorHandler = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
-  
-if(err.statusCode === 404) {
-  res.status(err.statusCode).render('error/404', {
-    errorCode: err.statusCode,
-    errorMessage: err.message,
-    errorStack: err.stack,
-  })}
-  else {
+  err.statusCode = err.statusCode || 500
+  err.status = err.status || 'error'
+
+  if (err.statusCode === 404) {
+    res.status(err.statusCode).render('error/404', {
+      errorCode: err.statusCode,
+      errorMessage: err.message,
+      errorStack: err.stack,
+    })
+  } else {
     res.status(err.statusCode).render('error/error', {
       errorCode: err.statusCode,
       errorMessage: err.message,
       errorStack: err.stack,
-    })}
-};
+    })
+  }
+}
+
+export const returnUniqueIdentifier = (toolDocument) => {
+  try {
+    const { toolID, barcode, serialNumber } = toolDocument
+    if (toolID) {
+      return `Tool ID ${toolID}`
+    } else if (barcode) {
+      return `Barcode: ${barcode}`
+    } else if (serialNumber) {
+      return `SN: ${serialNumber}`
+    }
+  } catch (error) {
+    return 'Unable to uniquely identify this tool'
+  }
+}
