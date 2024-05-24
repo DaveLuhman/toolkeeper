@@ -459,7 +459,6 @@ async function submitCheckInOut(req, res, next) {
       newTools.push(
         await Tool.findByIdAndUpdate(
           { _id: {$eq: id[i]} },
-          { _id: {$eq: id[i]} },
           {
             serviceAssignment: {$eq: newServiceAssignment},
             $inc: { __v: 1 },
