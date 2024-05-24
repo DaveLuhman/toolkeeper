@@ -22,8 +22,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#if activeServiceAssignments}}
-                        {{#each activeServiceAssignments}}
+                        {{#if settings_activeServiceAssignments}}
+                        {{#each settings_activeServiceAssignments}}
                         <tr>
                             <td>{{toolCount}}</td>
                             <td>{{name}}</td>
@@ -57,8 +57,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {{#if inactiveServiceAssignments}}
-                        {{#each inactiveServiceAssignments}}
+                        {{#if settings_inactiveServiceAssignments}}
+                        {{#each settings_inactiveServiceAssignments}}
                         <tr>
                             <td><a href="/settings/serviceAssignments/activate/{{_id}}"><i
                                         class="fas fa-arrow-left"></i></a></td>
@@ -79,6 +79,7 @@
         </div>
     </div>
 </div>
+{{activeServiceAssignments}}
 {{!-- New SA Modal --}}
 <input type="checkbox" id="newServiceAssignmentModal" class="modal-toggle" />
 <div class="modal">

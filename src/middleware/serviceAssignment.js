@@ -15,8 +15,8 @@ export async function getServiceAssignments(req, res, next) {
   try {
     const serviceAssignments = await ServiceAssignment.find().sort('name').lean()
 
-    res.locals.inactiveServiceAssignments = serviceAssignments.filter((item) => { return item.active === false })
-    res.locals.activeServiceAssignments = serviceAssignments.filter((item) => { return item.active === true })
+    res.locals.settings_inactiveServiceAssignments = serviceAssignments.filter((item) => { return item.active === false })
+    res.locals.settings_activeServiceAssignments = serviceAssignments.filter((item) => { return item.active === true })
     logger.info('[MW] getServiceAssignments-out'.bgWhite.blue)
     return next()
   } catch (error) {
