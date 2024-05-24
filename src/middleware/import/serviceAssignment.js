@@ -64,6 +64,6 @@ export async function importServiceAssignments(file) {
 export async function activateServiceAssignments(file) {
   successCount = 0
   const activeServiceRows = csvFileToEntries(file)
-  const activatedSAs = activeServiceRows.map(async (entry) => { return await ServiceAssignment.findOneAndUpdate({ name: entry[0] }, { active: true }, { new: true }) })
+  const activatedSAs = activeServiceRows.map(async (entry) => { return ServiceAssignment.findOneAndUpdate({ name: entry[0] }, { active: true }, { new: true }) })
   return { successCount: activatedSAs.length, errorList }
 }
