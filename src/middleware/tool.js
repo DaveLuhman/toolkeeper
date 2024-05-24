@@ -396,7 +396,7 @@ async function checkTools(req, res, next) {
       ? req.body.serviceAssignmentSelector
       : await findServiceAssignmentByName(req.body.serviceAssignmentInput)
   if (!destinationServiceAssignment) {
-    res.locals.message = 'No Service Assignment Found. Please select one'
+    res.locals.message = 'No Service Assignment Found. Please select one from the dropdown'
     res.locals.displaySelector = true
   }
   const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/))
