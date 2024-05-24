@@ -52,7 +52,7 @@ function isManager(req, res, next) {
  * })
  * @todo fix the failure message
  **/
-async function login(req, res, next) {
+function login(req, res, next) {
   passport.authenticate('local', {
     failureRedirect: '/login',
     failureFlash: true,

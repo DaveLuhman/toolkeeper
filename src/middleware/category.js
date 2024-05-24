@@ -26,7 +26,7 @@ const updateCategory = async (req, res, next) => {
     try {
       const updatedCategory = await Category.findByIdAndUpdate(
         { $eq: _id },
-        { name, description },
+        { name: {$eq: name}, description: {$eq: description} },
         { new: true }
       )
       res.locals.updatedCategory = updatedCategory

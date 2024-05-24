@@ -4,7 +4,6 @@ import {
   getServiceAssignmentByID,
   updateServiceAssignment,
   createServiceAssignment,
-  deleteServiceAssignment,
   deactivateServiceAssignment,
   activateServiceAssignment,
 } from '../../middleware/serviceAssignment.js'

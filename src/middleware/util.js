@@ -1,5 +1,5 @@
 /*
-List of Functions in order (* at beginning means exported)
+List of Functions in order (* means exported)
 *paginate
 *mutateToArray
 *sortByUserPreference
@@ -17,6 +17,7 @@ sanitize
 import rateLimit from 'express-rate-limit'
 import { listCategoryNames } from './category.js'
 import { listActiveSAs } from './serviceAssignment.js'
+import xss from 'xss'
 
 /**
  *
@@ -65,7 +66,7 @@ export function sortByUserPreference(data, sortField, sortOrder) {
  * It will only allow alphanumeric characters and spaces
  **/
 function sanitize(string) {
-  return string.replace(/[^a-zA-Z0-9\-@. ]/g, '')
+  return xss(string)
 }
 
 /**

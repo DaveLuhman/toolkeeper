@@ -2,7 +2,7 @@ import e from 'express'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
-import { deduplicateArray, mutateToArray, paginate, returnUniqueIdentifier } from './util.js'
+import { deduplicateArray, mutateToArray, returnUniqueIdentifier } from './util.js'
 import sortArray from 'sort-array'
 import logger from '../config/logger.js'
 import { findServiceAssignmentByName } from './serviceAssignment.js'
@@ -458,11 +458,12 @@ async function submitCheckInOut(req, res, next) {
       updateToolHistory(id[i])
       newTools.push(
         await Tool.findByIdAndUpdate(
-          { _id: id[i] },
+          { _id: {$eq: id[i]} },
+          { _id: {$eq: id[i]} },
           {
-            serviceAssignment: newServiceAssignment,
+            serviceAssignment: {$eq: newServiceAssignment},
             $inc: { __v: 1 },
-            $set: { updatedAt: Date.now() },
+            $set: { updatedAt: Date.now() }
           },
           { new: true }
         )
