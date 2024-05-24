@@ -19,7 +19,7 @@
     <hr />
     <h2>Tools:</h2>
     <ul class="list-decimal">
-      {{#each tools}}
+      {{#first tools 10}}
         <li>
           <div class="bg-teal-500 ">{{this.id}}: </div>
           <ul class="pl-10 list-disc">
@@ -32,12 +32,12 @@
             <li class="text-black">Raw: {{this}}</li>
           </ul>
         </li>
-      {{/each}}
+      {{/first}}
     </ul>
     <hr />
     <h2>Service Assignments</h2>
     {{#each activeServiceAssignments}}
-      <li>{{this.name}} -- {{this.id}}</li>
+      <li class="text-black">{{this.name}} -- {{this.id}}</li>
     {{/each}}
     <hr />
     <h2>Current User</h2>
