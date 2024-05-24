@@ -32,7 +32,7 @@ toolRouter.use(
 )
 
 // retrieve current service assignment and render checkInOut prompting user to select the new assignment
-toolRouter.post('/checkInOut', checkTools, renderStatusChangeConfirmationPage)
+toolRouter.post('/checkInOut', listAllSAs, checkTools, renderStatusChangeConfirmationPage)
 // save the new service assignement to the database.
 toolRouter.post('/submitCheckInOut', submitCheckInOut, renderResults)
 

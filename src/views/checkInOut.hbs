@@ -7,7 +7,7 @@
                     <th>Barcode</th>
                     <th>Serial number</th>
                     <th>Current SA</th>
-                    <th>Select New SA</th>
+                    <th>New SA</th>
                 </tr>
             </thead>
             {{#if tools}}
@@ -23,7 +23,7 @@
                                     {{serviceAssignment.description}}
                                 </td>
                                 <td name="newServiceAssignmment">
-                                    {{getServiceAssignmentName ../activeServiceAssignments target}}
+                                    {{getServiceAssignmentName ../allServiceAssignments destinationServiceAssignment}}
                                 </td>
                             </tr>
                         {{else}}

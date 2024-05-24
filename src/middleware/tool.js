@@ -5,6 +5,7 @@ import ToolHistory from '../models/ToolHistory.model.js'
 import { deduplicateArray, mutateToArray, paginate, returnUniqueIdentifier } from './util.js'
 import sortArray from 'sort-array'
 import logger from '../config/logger.js'
+import { findServiceAssignmentByName } from './serviceAssignment.js'
 
 /**
  *
@@ -395,10 +396,10 @@ async function checkTools(req, res, next) {
   if (toolsToBeChanged.length === 0) {
     res.locals.message = 'No Tools Found Matching '
   }
-  res.locals.target =
+  res.locals.destinationServiceAssignment =
     req.body.serviceAssignmentInput === ''
       ? req.body.serviceAssignmentSelector
-      : req.body.serviceAssignmentInput
+      : findServiceAssignmentByName(req.body.serviceAssignmentInput).id
   res.locals.tools = toolsToBeChanged
   next()
 }
