@@ -399,6 +399,7 @@ async function checkTools(req, res, next) {
     res.locals.message = 'No Service Assignment Found. Please select one from the dropdown'
     res.locals.displaySelector = true
   }
+  res.locals.destinationServiceAssignment = destinationServiceAssignment
   const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/))
   const toolsToBeChanged = await lookupToolWrapper(search)
   if (toolsToBeChanged.length === 0) {
