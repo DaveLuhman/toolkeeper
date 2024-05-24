@@ -23,7 +23,8 @@
                                     {{serviceAssignment.description}}
                                 </td>
                                 <td name="newServiceAssignmment">
-                                    {{getServiceAssignmentName ../allServiceAssignments destinationServiceAssignment}}
+                                    {{getServiceAssignmentName ../allServiceAssignments ../destinationServiceAssignment}}
+                                    <input type="hidden" name="newServiceAssignment" value="{{../destinationServiceAssignment}}">
                                 </td>
                             </tr>
                         {{else}}
@@ -49,6 +50,6 @@
         </div>
     </form>
     {{#if user.preferences.developer}}
-    {{tools}}
+    {{destinationServiceAssignment}}
     {{/if}}
 </div>

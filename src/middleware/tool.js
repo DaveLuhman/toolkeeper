@@ -399,7 +399,7 @@ async function checkTools(req, res, next) {
   res.locals.destinationServiceAssignment =
     req.body.serviceAssignmentInput === ''
       ? req.body.serviceAssignmentSelector
-      : findServiceAssignmentByName(req.body.serviceAssignmentInput).id
+      : await findServiceAssignmentByName(req.body.serviceAssignmentInput)
   res.locals.tools = toolsToBeChanged
   next()
 }
@@ -445,27 +445,31 @@ async function lookupToolWrapper(searchTerms) {
 }
 
 async function submitCheckInOut(req, res, next) {
-  const id = mutateToArray(req.body.id)
-  const newServiceAssignment = mutateToArray(req.body.newServiceAssignment)
-  const newTools = []
-  for (let i = 0; i < id.length; i++) {
-    if (id[i] === 'toolNotFound') break
-    updateToolHistory(id[i])
-    newTools.push(
-      await Tool.findByIdAndUpdate(
-        { _id: id[i] },
-        {
-          serviceAssignment: newServiceAssignment[i],
-          $inc: { __v: 1 },
-          $set: { updatedAt: Date.now() },
-        },
-        { new: true }
+  try {
+    const id = mutateToArray(req.body.id)
+    const { newServiceAssignment } = req.body
+    const newTools = []
+    for (let i = 0; i < id.length; i++) {
+      if (id[i] === 'toolNotFound') break
+      updateToolHistory(id[i])
+      newTools.push(
+        await Tool.findByIdAndUpdate(
+          { _id: id[i] },
+          {
+            serviceAssignment: newServiceAssignment,
+            $inc: { __v: 1 },
+            $set: { updatedAt: Date.now() },
+          },
+          { new: true }
+        )
       )
-    )
+    }
+    res.locals.tools = newTools
+    res.locals.message = `${newTools.length} tool(s) have been updated`
+    next()
+  } catch (error) {
+    logger.error(error.message)
   }
-  res.locals.tools = newTools
-  res.locals.message = `${newTools.length} tool(s) have been updated`
-  next()
 }
 
 const generatePrinterFriendlyToolList = async (req, res, next) => {

@@ -162,5 +162,6 @@ export const getServiceAssignmentName = (serviceAssignments, id) => {
 }
 
 export const findServiceAssignmentByName = async (name) => {
-  return await ServiceAssignment.findOne({ name }).lean()
+  const sa = await ServiceAssignment.findOne({ name }).exec()
+  return sa.id
 }
