@@ -22,19 +22,19 @@ const getCategoryByID = async (req, res, next) => {
   }
 }
 const updateCategory = async (req, res, next) => {
-    const { _id, name, description } = req.body
-    try {
-      const updatedCategory = await Category.findByIdAndUpdate(
-        { $eq: _id },
-        { name: {$eq: name}, description: {$eq: description} },
-        { new: true }
-      )
-      res.locals.updatedCategory = updatedCategory
-      return next()
-    } catch (error) {
-      res.status(404).json({ message: error.message })
-    }
+  const { _id, name, description } = req.body
+  try {
+    const updatedCategory = await Category.findByIdAndUpdate(
+      { id: { $eq: _id } },
+      { name: { $eq: name }, description: { $eq: description } },
+      { new: true }
+    )
+    res.locals.updatedCategory = updatedCategory
+    return next()
+  } catch (error) {
+    res.status(404).json({ message: error.message })
   }
+}
 const createCategory = async (req, res, next) => {
   const category = req.body
   const newCategory = new Category(category)
