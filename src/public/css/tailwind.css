@@ -291,11 +291,6 @@ td {
   @apply gap-4;
   @apply mb-2;
 }
-.form-button-row {
-  @apply col-span-2;
-  @apply lg:col-span-4;
-  @apply float-right;
-}
 /* ------------PAGINATION BAR------------------------ */
 .paginate-bar {
   @apply flex;

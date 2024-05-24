@@ -1,17 +1,19 @@
 <input type="checkbox" id="resetPasswordModal" class="modal-toggle" />
 <div class="modal">
-    <div class="modal-inner-md">
+    <div class="modal-inner-sm">
         <label for="resetPasswordModal" class="modal-close-btn">✕</label>
         <form action="/user/resetPW/{{id}}" method="POST">
-            <div class="modal-table">
+            <div class="flex flex-col">
                 <div class="title-bar">
-                    <h3 class="title-text">Reset A Password</h3>
+                    <h3 class="title-text">Reset Your Password</h3>
                 </div>
+                <div>
                 <input placeholder="Password" type="password" name="password" id="reset-pw_password"
                     class="input input-bordered" required />
                 <input placeholder="Confirm Password" type="confirm-password" name="reset-pw_confirm-password"
                     id="confirm-password" class="input input-bordered" required />
-                <div class="modal-button-row">
+                    </div>
+                <div>
                     <label class="modal-button"> <button id="reset-pw_submit" type="submit">Submit</button></label>
                 </div>
             </div>
