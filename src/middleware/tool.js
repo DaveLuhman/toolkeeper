@@ -459,9 +459,9 @@ async function submitCheckInOut(req, res, next) {
       updateToolHistory(id[i])
       newTools.push(
         await Tool.findByIdAndUpdate(
-          { _id: {$eq: id[i]} },
+          { _id: id[i]},
           {
-            serviceAssignment: {$eq: newServiceAssignment},
+            serviceAssignment:newServiceAssignment,
             $inc: { __v: 1 },
             $set: { updatedAt: Date.now() }
           },

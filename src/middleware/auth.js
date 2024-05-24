@@ -1,5 +1,4 @@
 import passport from 'passport'
-import logger from '../config/logger.js'
 
 /**
  * @param req Express Request object

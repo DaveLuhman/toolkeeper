@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */ // for the category name search
 import Category from '../models/Category.model.js'
 
-const getCategories = async (_req, res, next) => {
+const getCategories = async function (_req, res, next)  {
   try {
     const categories = await Category.find().sort({ prefix: 'asc' })
     res.locals.categories = categories
@@ -10,7 +10,7 @@ const getCategories = async (_req, res, next) => {
     res.status(500).json({ message: error.message })
   }
 }
-const getCategoryByID = async (req, res, next) => {
+const getCategoryByID = async function (req, res, next) {
   const { id } = req.params
   try {
     const category = await Category.findById({ $eq: id })
@@ -21,7 +21,7 @@ const getCategoryByID = async (req, res, next) => {
     next()
   }
 }
-const updateCategory = async (req, res, next) => {
+const updateCategory = async function (req, res, next) {
   const { _id, name, description } = req.body
   try {
     const updatedCategory = await Category.findByIdAndUpdate(
@@ -35,7 +35,7 @@ const updateCategory = async (req, res, next) => {
     res.status(404).json({ message: error.message })
   }
 }
-const createCategory = async (req, res, next) => {
+const createCategory = async function (req, res, next) {
   const category = req.body
   const newCategory = new Category(category)
   try {
@@ -46,7 +46,7 @@ const createCategory = async (req, res, next) => {
   }
 }
 
-const deleteCategory = async (req, res, next) => {
+const deleteCategory = async function (req, res, next) {
   const { id } = req.params
   try {
     await Category.findByIdAndRemove({ $eq: id })
