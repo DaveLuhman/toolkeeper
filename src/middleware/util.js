@@ -50,6 +50,13 @@ export function mutateToArray(data) {
   return data
 }
 
+/**
+ * Sorts an array of objects based on a user-defined preference.
+ * @param {Array} data - The array of objects to sort.
+ * @param {string} sortField - The field within the objects to sort by.
+ * @param {string} sortOrder - The order to sort by ('asc' for ascending, 'desc' for descending).
+ * @returns {Array} The sorted array.
+ */
 export function sortByUserPreference(data, sortField, sortOrder) {
   if (sortOrder === 'asc') {
     data.sort((a, b) => a[sortField] - b[sortField])
@@ -79,10 +86,13 @@ function sanitize(string) {
  **/
 export function sanitizeReqBody(req, _res, next) {
   for (const key in req.body) {
-    req.body[key] = sanitize(req.body[key])
+    if (Object.prototype.hasOwnProperty.call(req.body, key)) {
+      req.body[key] = sanitize(req.body[key])
+    }
   }
   return next()
 }
+
 /**
  *
  * @param {string} option option in the list
@@ -111,6 +121,12 @@ export const createAccountLimiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
+/**
+ * Converts a CSV file to an array of entries.
+ *
+ * @param {Object} file - The CSV file object.
+ * @returns {Array<Array<string>>} - The array of entries.
+ */
 export function csvFileToEntries(file) {
   return Buffer.from(file.data)
     .toString('ascii')
@@ -120,10 +136,20 @@ export function csvFileToEntries(file) {
     .map((row) => row.split(','))
 }
 
+/**
+ * Retrieves the current package version from the environment variables.
+ * @returns {string} The current package version.
+ */
 export function getPackageVersion() {
   return process.env.npm_package_version
 }
 
+/**
+ * Transfers search parameters from the query string to the request body.
+ * @param req The request object, containing the incoming request data and parameters.
+ * @param _res The response object. Unused in this function, but required for middleware signature.
+ * @param next The next middleware function in the stack.
+ */
 export function hoistSearchParamsToBody(req, _res, next) {
   if (req.body.searchBy === undefined) {
     const { searchBy, searchTerm } = req.query
@@ -133,9 +159,21 @@ export function hoistSearchParamsToBody(req, _res, next) {
   next()
 }
 
+/**
+ * Deduplicates an array by removing duplicate elements.
+ *
+ * @param {Array} arr - The array to deduplicate.
+ * @returns {Array} - The deduplicated array.
+ */
 export function deduplicateArray(arr) {
   return Array.from(new Set(arr)).filter((item) => item !== '') 
 }
+/**
+ * Checks if the search parameter is expected to return only one tool.
+ *
+ * @param {string} searchBy - The search parameter.
+ * @returns {boolean} - True if the search parameter is expected to return only one tool, false otherwise.
+ */
 export function searchingForOneTool(searchBy) {
   const searchesReturningOneTool = [
     'serialNumber',
@@ -179,6 +217,11 @@ export const errorHandler = (err, req, res, next) => {
   }
 }
 
+/**
+ * Generates a unique identifier for a given tool document
+ * @param {object} toolDocument - The document containing tool information
+ * @returns An unique identifier based on the tool's ID, barcode, or serial number
+ */
 export const returnUniqueIdentifier = (toolDocument) => {
   try {
     const { toolID, barcode, serialNumber } = toolDocument
