@@ -66,6 +66,12 @@ async function createUser(req, res, next) {
   logger.info('[MW] createUser-out-4'.bgWhite.blue)
   return next()
 }
+/**
+ * Verifies if the current user is the same as the target user.
+ * @param {object} req The request object.
+ * @param {object} res The response object.
+ * @param {function} next Callback function to pass control to the next middleware.
+ */
 async function verifySelf(req, res, next) {
   logger.info('[MW] verifySelf-in'.bgBlue.white)
   const targetID = req.params.id || req.body._id
@@ -76,11 +82,17 @@ async function verifySelf(req, res, next) {
     logger.warn('Unauthorized'.yellow)
     logger.info('[MW] verifySelf-out-0'.bgWhite.blue)
     res.redirect('back')
-    return
   }
   logger.info('[MW] verifySelf-out-1'.bgWhite.blue)
   return next()
 }
+/**
+ * Asynchronously updates user details based on the input provided in the request body.
+ * @param {object} req The request object, containing user input data.
+ * @param {object} res The response object, used to send back the updated user data.
+ * @param {function} next Callback function to pass control to the next middleware.
+ * @returns Calls the next middleware with updated user data or an error.
+ */
 async function updateUser(req, res, next) {
   logger.info('[MW] updateUser-in'.bgBlue.white)
   try {
@@ -128,6 +140,14 @@ async function updateUser(req, res, next) {
   }
 }
 
+/**
+ * Resets a user's password.
+ * This function validates the new password and confirm password fields, hashes the new password, and updates it in the database.
+ * @param {object} req - The request object containing the body with user ID, new password, and confirm password.
+ * @param {object} res - The response object used to send responses to the client.
+ * @param {function} next - The next middleware function in the stack.
+ * @returns {Promise<void>} Executes the next middleware function.
+ */
 async function resetPassword(req, res, next) {
   logger.info('[MW] resetPassword-in'.bgBlue.white)
   // get data from request body
@@ -151,6 +171,13 @@ async function resetPassword(req, res, next) {
   logger.info('[MW] resetPassword-out-4'.bgWhite.blue)
   return next()
 }
+/**
+ * Disables a user by setting the isDisabled flag to true in the database.
+ * @param {object} req - The request object containing the user ID.
+ * @param {object} res - The response object used to send responses to the client.
+ * @param {function} next - The next middleware function in the stack.
+ * @returns {Promise<void>} Executes the next middleware function.
+ */
 async function disableUser(req, res, next) {
   logger.info('[MW] disableUser-in'.bgBlue.white)
   await User.findByIdAndUpdate(req.params.id, { $set: { isDisabled: true } })
