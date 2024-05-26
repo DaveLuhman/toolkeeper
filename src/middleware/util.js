@@ -198,7 +198,7 @@ export class AppError extends Error {
 }
 
 // Centralized error handling middleware
-export const errorHandler = (err, req, res, next) => {
+export const errorHandler = (err, _req, res, _next) => {
   err.statusCode = err.statusCode || 500
   err.status = err.status || 'error'
 

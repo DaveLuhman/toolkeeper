@@ -64,7 +64,7 @@ async function createUser(req, res, next) {
   logger.log(newUser)
   logger.info(`Created User ${newUser._id}`.green)
   logger.info('[MW] createUser-out-4'.bgWhite.blue)
-  return next()
+  next()
 }
 /**
  * Verifies if the current user is the same as the target user.
@@ -72,7 +72,7 @@ async function createUser(req, res, next) {
  * @param {object} res The response object.
  * @param {function} next Callback function to pass control to the next middleware.
  */
-async function verifySelf(req, res, next) {
+function verifySelf(req, res, next) {
   logger.info('[MW] verifySelf-in'.bgBlue.white)
   const targetID = req.params.id || req.body._id
   const currentUser = req.user._id
@@ -84,7 +84,7 @@ async function verifySelf(req, res, next) {
     res.redirect('back')
   }
   logger.info('[MW] verifySelf-out-1'.bgWhite.blue)
-  return next()
+  next()
 }
 /**
  * Asynchronously updates user details based on the input provided in the request body.
@@ -127,16 +127,16 @@ async function updateUser(req, res, next) {
     )
     res.locals.user = user
     req.login(user, (error) => {
-      logger.log('This is an error ' + error)
+      logger.log(`This is an error ${error}`)
     })
     logger.info('[MW] updateUser-out'.bgWhite.blue)
     return next()
   } catch (error) {
     logger.error(error)
-    res.status(400)
+    res.status(500)
     res.locals.error = 'Something went wrong'
     logger.info('[MW] updateUser-out-1'.bgRed.black)
-    return next()
+    next()
   }
 }
 
@@ -169,7 +169,7 @@ async function resetPassword(req, res, next) {
   const hash = bcrypt.hashSync(password, 10)
   await User.findByIdAndUpdate(_id, { $set: { password: hash } })
   logger.info('[MW] resetPassword-out-4'.bgWhite.blue)
-  return next()
+  next()
 }
 /**
  * Disables a user by setting the isDisabled flag to true in the database.
@@ -182,7 +182,7 @@ async function disableUser(req, res, next) {
   logger.info('[MW] disableUser-in'.bgBlue.white)
   await User.findByIdAndUpdate(req.params.id, { $set: { isDisabled: true } })
   logger.info('[MW] disableUser-out'.bgBlue.white)
-  return next()
+  next()
 }
 export {
   resetPassword,
