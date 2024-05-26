@@ -5,18 +5,31 @@
     <div class="login-form-wrapper">
       <div class="px-5 py-7">
         <form action="/login" method="POST">
-          <label for="email" class="login-label">E-mail</label>
+          <label for="email" class="login-label">
+            E-mail
+          </label>
           <input
             type="text"
             name="email"
             id="login_email"
             class="login-input"
             autocomplete="email"
+            required
           />
-          <label class="login-label">Password</label>
-          <input type="password" name="password" id="login_password" class="login-input" />
+          <label class="login-label">
+            Password
+          </label>
+          <input
+            type="password"
+            name="password"
+            id="login_password"
+            class="login-input"
+            required
+          />
           <button type="submit" id="login_submit">
-            <span class="inline-block mr-2">Login</span>
+            <span class="inline-block mr-2">
+              Login
+            </span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -29,13 +42,15 @@
                 stroke-linejoin="round"
                 stroke-width="2"
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
+              ></path>
             </svg>
           </button>
         </form>
       </div>
       <div class="items-center shadow w-100 card">
-        <p class="text-red-700">{{messages.error}}</p>
+        <p class="text-red-700">
+          {{messages.error}}
+        </p>
       </div>
       <div class="login-form-footer">
         <button class="forgot-password">
@@ -51,9 +66,11 @@
               stroke-linejoin="round"
               stroke-width="2"
               d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-            />
+            ></path>
           </svg>
-          <span class="inline-block ml-1">Forgot Password</span>
+          <label for="forgotPasswordModal" class="inline-block ml-1">
+            Forgot Password
+          </>
         </button>
       </div>
     </div>
@@ -74,12 +91,16 @@
                   stroke-linejoin="round"
                   stroke-width="2"
                   d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
+                ></path>
               </svg>
-              <span class="inline-block ml-1">Back to ToolKeeper Home</span>
-            </button></a>
+              <span class="inline-block ml-1">
+                Back to ToolKeeper Home
+              </span>
+            </button>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </div>
+{{> _forgotPassword}}

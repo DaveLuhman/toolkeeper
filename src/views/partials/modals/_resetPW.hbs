@@ -1,20 +1,46 @@
 <input type="checkbox" id="resetPasswordModal" class="modal-toggle" />
 <div class="modal">
-    <div class="modal-inner-md">
-        <label for="resetPasswordModal" class="modal-close-btn">✕</label>
-        <form action="/user/resetPW/{{id}}" method="POST">
-            <div class="modal-table">
-                <div class="title-bar">
-                    <h3 class="title-text">Reset A Password</h3>
-                </div>
-                <input placeholder="Password" type="password" name="password" id="reset-pw_password"
-                    class="input input-bordered" required />
-                <input placeholder="Confirm Password" type="confirm-password" name="reset-pw_confirm-password"
-                    id="confirm-password" class="input input-bordered" required />
-                <div class="modal-button-row">
-                    <label class="modal-button"> <button id="reset-pw_submit" type="submit">Submit</button></label>
-                </div>
-            </div>
-        </form>
-    </div>
+  <div class="modal-inner-sm">
+    <label for="resetPasswordModal" class="modal-close-btn">
+      ✕
+    </label>
+    <form action="/user/resetPassword" method="POST">
+    <input type="hidden" name="_id" id="reset-pw_email" value="{{user._id}}" />
+      <div class="flex flex-col">
+        <div class="title-bar">
+          <h3 class="title-text">
+            Reset Your Password
+          </h3>
+        </div>
+        <div class="w-full flex justify-evenly">
+          <input
+            placeholder="Password"
+            type="password"
+            name="password"
+            id="reset-pw_password"
+            class="input input-bordered"
+            required
+          />
+          <input
+            placeholder="Confirm Password"
+            type="password"
+            name="confirmPassword"
+            id="reset-pw_confirm-password"
+            class="input input-bordered"
+            required
+          />
+        </div>
+        <div class="flex flex-row-reverse gap-2 mt-2">
+          <label class="modal-button" for="resetPasswordModal">
+            Cancel
+          </label>
+          <label class="modal-button">
+            <button id="reset-pw_submit" type="submit">
+              Submit
+            </button>
+          </label>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>

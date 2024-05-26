@@ -18,7 +18,6 @@ body {
   @apply justify-evenly;
 }
 .title-bar {
-  @apply w-11/12;
   @apply col-span-2;
   @apply md:col-span-3;
   @apply rounded-lg;
@@ -27,7 +26,7 @@ body {
 .title-text {
   @apply font-bold;
   @apply text-lg;
-  @apply text-center;
+  @apply text-center pb-2;
 }
 .user-table {
   @apply grid;
@@ -290,11 +289,6 @@ td {
   @apply lg:grid-cols-4;
   @apply gap-4;
   @apply mb-2;
-}
-.form-button-row {
-  @apply col-span-2;
-  @apply lg:col-span-4;
-  @apply float-right;
 }
 /* ------------PAGINATION BAR------------------------ */
 .paginate-bar {

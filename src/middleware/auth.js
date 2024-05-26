@@ -34,8 +34,8 @@ function isManager(req, res, next) {
   if (req.user.role === 'User') {
     res.locals.error =
       'You are not a manager, and have been redirected to the dashboard'
-    res.redirect('/dashboard')
-    return
+    return res.redirect('/dashboard')
+    
   }
   return next()
 }
@@ -78,7 +78,5 @@ function logout(req, res, next) {
     res.redirect('/')
   })
 }
-
-// TODO add a function to make sure the request is coming from the front end and not an external source via url or token
 
 export { checkAuth, isManager, login, logout }
