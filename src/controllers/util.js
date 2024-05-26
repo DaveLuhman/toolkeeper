@@ -17,10 +17,10 @@ export async function sendResetPwEmail(email, token) {
     const resetEmail = {
         to: email,
         from: 'no-reply@ado.software',
-        subject: 'Timekeeper Password Reset',
+        subject: 'Toolkeeper Password Reset',
         text: `
                         Please click on the following link, or paste this into your browser to complete the password reset:
-                        http://timekeeper.site/auth/forgotPassword/${token}
+                        http://${process.env.PRIMARY_URL}/auth/forgotPassword/${token}
                         If you did not request this, please ignore this email and your password will remain unchanged.
                         This link is valid for 24 hours and will expire after that.
                 `,

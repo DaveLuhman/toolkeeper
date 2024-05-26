@@ -1,7 +1,7 @@
 // dev depenancies
 // eslint-disable-next-line no-unused-vars
 import colors from 'colors'
-import dotenv from 'dotenv'
+import { config } from 'dotenv'
 import morgan from 'morgan'
 import logger from './config/logger.js'
 // db depenancies
@@ -43,7 +43,7 @@ import { userRouter } from './routes/user.routes.js'
 
 // use the imported dependencies as needed in the server.js file
 
-dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
+config({ path: './src/config/.env', debug: true }) // Load environment variables
 const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
 const app = express() // Create Express App
