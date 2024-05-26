@@ -134,7 +134,7 @@ async function resetPassword(req, res, next) {
   const { _id, password, confirmPassword } = req.body
   // if new password and confirm password are not set
   if (!password || !confirmPassword) {
-    res.locals.error = 'New password and confirm password are required'
+    res.locals.message = 'New password and confirm password are required'
     logger.info('[MW] resetPassword-out-1'.bgWhite.blue)
     res.status(400).redirect('back')
     return
