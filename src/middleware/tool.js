@@ -1,4 +1,3 @@
-import e from 'express'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
@@ -35,11 +34,12 @@ async function getAllTools(req, res, next) {
 async function getActiveTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   logger.info('[MW] getAllTools-in'.bgBlue.white)
-  res.locals.tools = await Tool.find()
+  const tools = await Tool.find()
     .where('archived')
     .equals(false)
     .sort({ [sortField]: sortOrder })
-  logger.info('[MW] getAllTools-out'.bgWhite.blue)
+    res.locals.tools = tools.filter((tool) => { return tool.serviceAssignment?.active})
+  logger.info('[MW] getActiveTools-out'.bgWhite.blue)
   return next()
 }
 
