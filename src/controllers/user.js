@@ -43,7 +43,7 @@ export async function verifyResetPasswordRequest(req, res) {
         res.redirect('/login')
     } else {
         res.locals.token = token
-        res.render('auth/forgotPassword')
+        res.render('auth/forgotPassword', { layout: 'auth.hbs' })
     }
 }
 /**

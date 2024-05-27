@@ -122,7 +122,6 @@ async function updateUser(req, res, next) {
       pageSize,
       developer
     } = req.body
-    logger.table(req.body)
     const user = await User.findByIdAndUpdate(
       req.user._id,
       {

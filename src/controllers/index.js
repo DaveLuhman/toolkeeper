@@ -12,7 +12,7 @@ export const renderLandingPage = (_req, res) => {
  * @param {Object} res - The response object.
  */
 export const renderLoginPage = (_req, res) => {
-    res.render('login', { layout: 'auth.hbs' });
+    res.render('auth/login', { layout: 'auth.hbs' });
 }
 
 /**
@@ -30,5 +30,5 @@ export const redirectToDashboard = (_req, res) => {
  * @param {Object} res - The response object.
  */
 export const renderRegisterPage = (_req, res) => {
-    res.render('register', { layout: 'auth.hbs' })
+    res.render('auth/register', { layout: 'auth.hbs' })
 }
