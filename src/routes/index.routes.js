@@ -2,11 +2,11 @@ import { Router } from 'express'
 import { login, logout } from '../middleware/auth.js'
 import { createUser } from '../middleware/user.js'
 import {
-  redirectToDashboard,
   renderLandingPage,
   renderLoginPage,
   renderRegisterPage,
 } from '../controllers/index.js'
+import { executeResetPasswordRequest, submitResetPasswordRequest, verifyResetPasswordRequest } from '../controllers/user.js'
 
 export const indexRouter = Router()
 
@@ -22,3 +22,9 @@ indexRouter.get('/register', renderRegisterPage)
 indexRouter.post('/register', createUser, renderLoginPage)
 // Logout User
 indexRouter.get('/logout', logout)
+// Submit Forgot Password Modal
+indexRouter.post('/forgotPassword', submitResetPasswordRequest)
+// Render Reset Password Page
+indexRouter.get('/forgotPassword/:token', verifyResetPasswordRequest)
+// Execute Reset Password
+indexRouter.post('/forgotPassword/:token', executeResetPasswordRequest)
