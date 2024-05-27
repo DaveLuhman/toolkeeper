@@ -101,6 +101,7 @@ export function sanitizeReqBody(req, _res, next) {
  */
 export function isSelected(option, objectProperty) {
   if (option === objectProperty) return 'selected'
+  return null
 }
 
 export const populateDropdownItems = [listCategoryNames, listActiveSAs]
@@ -232,6 +233,7 @@ export const returnUniqueIdentifier = (toolDocument) => {
     } else if (serialNumber) {
       return `SN: ${serialNumber}`
     }
+    return 'Unable to uniquely identify this tool' // Added return statement
   } catch (error) {
     return 'Unable to uniquely identify this tool'
   }

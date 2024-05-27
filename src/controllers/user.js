@@ -1,4 +1,4 @@
-import User from '../models/user.js'
+import User from '../models.user.js'
 import { createToken, sendResetPwEmail } from '../middleware/util.js'
 import { hash } from 'bcrypt'
 
@@ -12,19 +12,16 @@ export async function submitResetPasswordRequest(req, res) {
     const { email } = req.body
     const user = await User.findByEmail(email)
     if (!user) {
-        req.flash('error', 'No user is registered with that email')
-        res.redirect('/auth/login')
+        res.locals.message = 'No user is registered with that email'
+        res.redirect('/login')
         res.end()
     } else {
         user.token = createToken()
         user.tokenExpiry = Date.now() + 3600000
         user.save()
         await sendResetPwEmail(user.email, user.token)
-        req.flash(
-            'info',
-            `An e-mail has been sent to ${user.email} with further instructions.`
-        )
-        res.redirect('/auth/login')
+        res.locals.message = `An e-mail has been sent to ${user.email} with further instructions.`
+        res.redirect('/login')
     }
 }
 
@@ -39,11 +36,11 @@ export async function verifyResetPasswordRequest(req, res) {
     const token = req.params.token
     const user = await User.findByToken(token)
     if (!user) {
-        req.flash('error', 'Password reset token is invalid')
-        res.redirect('/auth/login')
+        res.locals.message = 'Password reset token is invalid'
+        res.redirect('/login')
     } else if (user.tokenExpiry < Date.now()) {
-        req.flash('error', 'Password reset token is expired')
-        res.redirect('/auth/login')
+        res.locals.message = 'Password reset token is expired'
+        res.redirect('/login')
     } else {
         res.locals.token = token
         res.render('auth/forgotPassword')
@@ -58,21 +55,18 @@ export async function executeResetPasswordRequest(req, res) {
     const token = req.params.token
     const user = await User.findByToken(token)
     if (!user || user.tokenExpiry < Date.now()) {
-        req.flash('error', 'Password reset token is invalid or has expired.')
-        res.redirect('/auth/login')
+        res.locals.message = 'Password reset token is invalid or has expired.'
+        res.redirect('/login')
     }
     const { password, confirmPassword } = req.body
     if (password !== confirmPassword) {
-        req.flash('error', 'Passwords do not match')
-        res.redirect(`/auth/forgotPassword/${token}`)
+        res.locals.message = 'Passwords do not match'
+        res.redirect(`/forgotPassword/${token}`)
     }
     user.password = await hash(password, 10)
     user.token = undefined
     user.tokenExpiry = undefined
     user.save()
-    req.flash(
-        'success',
-        'Your password has been successfully reset. Please log in with your new password.'
-    )
-    res.redirect('/auth/login')
+    res.locals.message = 'Your password has been successfully reset. Please log in with your new password.'
+    res.redirect('/login')
 }

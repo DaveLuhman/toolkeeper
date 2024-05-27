@@ -1,6 +1,12 @@
 /* eslint-disable eqeqeq */ // for the material name search
 import Material from '../models/Material.model.js'
 
+/**
+ * Retrieves all materials.
+ * @param {Object} _req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 const getMaterials = async (_req, res, next) => {
   try {
     const materials = await Material.find()
@@ -10,6 +16,12 @@ const getMaterials = async (_req, res, next) => {
     res.status(500).json({ message: error.message })
   }
 }
+/**
+ * Retrieves a material by ID.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 const getMaterialByID = async (req, res, next) => {
   const { id } = req.params
   try {
@@ -22,6 +34,12 @@ const getMaterialByID = async (req, res, next) => {
   }
 }
 
+/**
+ * Creates a new material.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 const createMaterial = async (req, res, next) => {
   const material = req.body
   const newMaterial = new Material(material)
@@ -33,6 +51,12 @@ const createMaterial = async (req, res, next) => {
   }
 }
 
+/**
+ * Deletes a material.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 const deleteMaterial = async (req, res, next) => {
   const { id } = req.params
   try {
@@ -43,6 +67,12 @@ const deleteMaterial = async (req, res, next) => {
   }
 }
 
+/**
+ * Updates a material.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 const updateMaterial = async (req, res, next) => {
   const { id, name, description } = req.body
   try {
@@ -57,7 +87,12 @@ const updateMaterial = async (req, res, next) => {
     res.status(404).json({ message: error.message })
   }
 }
-// TODO: Use updatedAt value hashed to check for changes
+/**
+ * Retrieves a list of material names.
+ * @param {Object} _req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 const listMaterialNames = async (_req, res, next) => {
   res.locals.materials = await Material.find({}, { name: 1, id: 1 })
   return next()

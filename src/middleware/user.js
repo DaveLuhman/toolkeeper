@@ -16,6 +16,14 @@ async function getUsers(_req, res, next) {
   logger.info('[MW] getUsers-out-2'.bgWhite.blue)
   return next()
 }
+/**
+ * Retrieves a user by their ID.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Promise<void>} - A promise that resolves when the user is retrieved.
+ */
 async function getUserByID(req, res, next) {
   logger.info('[MW] getUserByID-in'.bgBlue.white)
   const id = req.params.id
@@ -25,6 +33,14 @@ async function getUserByID(req, res, next) {
   logger.info('[MW] getUserByID-out'.bgWhite.blue)
   return next()
 }
+/**
+ * Creates a new user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Promise<void>} - A promise that resolves when the user is created.
+ */
 async function createUser(req, res, next) {
   logger.info('[MW] createUser-in'.bgBlue.white)
   const { firstName, lastName, email, password, confirmPassword, role } =
@@ -64,7 +80,7 @@ async function createUser(req, res, next) {
   logger.log(newUser)
   logger.info(`Created User ${newUser._id}`.green)
   logger.info('[MW] createUser-out-4'.bgWhite.blue)
-  next()
+  return next()
 }
 /**
  * Verifies if the current user is the same as the target user.
@@ -136,7 +152,7 @@ async function updateUser(req, res, next) {
     res.status(500)
     res.locals.error = 'Something went wrong'
     logger.info('[MW] updateUser-out-1'.bgRed.black)
-    next()
+    return next()
   }
 }
 
