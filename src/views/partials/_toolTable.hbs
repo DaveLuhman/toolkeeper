@@ -21,7 +21,6 @@
   {{#if tools}}
     <tbody>
       {{#each tools}}
-        {{#unless archived}}
           <tr>
             <td></td>
             <td id="serialNumber">{{serialNumber}}</td>
@@ -45,7 +44,6 @@
                   ></i></a></label>
             </td>
           </tr>
-        {{/unless}}
       {{/each}}
     </tbody>
   {{/if}}

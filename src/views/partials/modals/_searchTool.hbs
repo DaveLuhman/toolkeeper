@@ -1,6 +1,6 @@
 <input type="checkbox" id="searchToolModal" class="modal-toggle" />
 <div class="modal">
-  <div class="modal-inner-lg">
+  <div class="modal-inner-sm">
     <label for="searchToolModal" class="modal-close-btn">✕</label>
     <form action="/tool/search" method="POST">
       <div class="modal-table">
@@ -44,7 +44,7 @@
                 searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n{{#each activeServiceAssignments}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }} - {{this.description}}\n</option>\n{{/each}}\n</select >'
                 break
             case 'status':
-                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n<option>Status</option>\n<option value="Checked In">Checked In</option>\n<option value="Checked Out">Checked Out</option>\n</select>'
+                searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered"><option value="Checked In">Checked In</option>\n<option value="Checked Out">Checked Out</option>\n</select>'
                 break
             case 'category':
                 searchInput.innerHTML = '<select name="searchTerm" class="select select-bordered">\n{{#each categories}}\n<option name="{{ this.name }}" value="{{ this.id }}">{{ this.name }}\n</option>\n{{/each}}\n</select>'

@@ -8,6 +8,9 @@ mongoose.connect(process.env.MONGO_URI, {
   useUnifiedTopology: true,
 });
 
+/**
+ * Updates the tool counts for service assignments.
+ */
 async function updateToolCounts() {
   try {
     // Get all service assignments

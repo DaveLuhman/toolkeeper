@@ -1,4 +1,3 @@
-import e from 'express'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
@@ -35,11 +34,12 @@ async function getAllTools(req, res, next) {
 async function getActiveTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences
   logger.info('[MW] getAllTools-in'.bgBlue.white)
-  res.locals.tools = await Tool.find()
+  const tools = await Tool.find()
     .where('archived')
     .equals(false)
     .sort({ [sortField]: sortOrder })
-  logger.info('[MW] getAllTools-out'.bgWhite.blue)
+    res.locals.tools = tools.filter((tool) => { return tool.serviceAssignment?.active})
+  logger.info('[MW] getActiveTools-out'.bgWhite.blue)
   return next()
 }
 
@@ -68,6 +68,11 @@ async function getToolByID(req, res, next) {
   return next()
 }
 
+/**
+ * getCheckedInTools
+ * Retrieves a list of checked in tools.
+ * @returns {array} An array of checked in tools.
+ */
 async function getCheckedInTools() {
   const tools = await Tool.find().where('archived').equals(false)
   const activeServiceAssignmentsDocs = await ServiceAssignment.find()
@@ -88,6 +93,11 @@ async function getCheckedInTools() {
   }
   return checkedInTools
 }
+/**
+ * getCheckedOutTools
+ * Retrieves a list of checked out tools.
+ * @returns {array} An array of checked out tools.
+ */
 async function getCheckedOutTools() {
   const tools = await Tool.find().where('archived').equals(false)
   const activeServiceAssignmentsDocs = await ServiceAssignment.find()
@@ -122,7 +132,6 @@ async function searchTools(req, res, next) {
   logger.info('[MW] searchTools-in'.bgBlue.white)
   const { sortField, sortOrder } = req.user.preferences
   const { searchBy, searchTerm } = req.body
-  let tools
   switch (searchBy) {
     case 'Search By':
       res.locals.message = 'You must specify search parameters'
@@ -197,7 +206,6 @@ async function createTool(req, res, next) {
       res.locals.tools = mutateToArray(existing)
       throw new Error({ message: 'Tool already exists', status: 400 })
     }
-    // TODO: verify input data is sanitized
     const newTool = await Tool.create({
       serialNumber,
       modelNumber,
@@ -236,6 +244,10 @@ async function createTool(req, res, next) {
   }
 }
 
+/**
+ * Update the tool history.
+ * @param {string} toolID The ID of the tool to update.
+ */
 async function updateToolHistory(toolID) {
   const oldTool = await Tool.findById(toolID)
   await ToolHistory.findByIdAndUpdate(
@@ -360,12 +372,20 @@ async function archiveTool(req, res, next) {
     { $push: { history: [archivedTool] } },
     { new: true }
   )
-  res.locals.message = 'Successfully Archived Tool ' + archivedTool.toolID
+  res.locals.message = `Successfully Archived Tool ${archivedTool.toolID}`
   res.locals.tools = mutateToArray(archivedTool)
   res.status(201)
   next()
 }
 
+/**
+ * unarchiveTool - Unarchives a tool
+ * @param {string} req.params.id The id of the tool to unarchive
+ * @param {string} res.locals.message The message to display to the user
+ * @param {array} res.locals.tools The tool that was unarchived
+ * @param {number} res.status The status code to return
+ * @param {*} next
+ */
 async function unarchiveTool(req, res, next) {
   logger.info('[MW] archiveTool-in'.bgBlue.white)
   const { id } = req.params
@@ -379,11 +399,17 @@ async function unarchiveTool(req, res, next) {
     { $push: { history: [unarchivedTool] } },
     { new: true }
   )
-  res.locals.message = 'Successfully Restored Tool ' + returnUniqueIdentifier(unarchivedTool)
+  res.locals.message = `Successfully Restored Tool ${returnUniqueIdentifier(unarchivedTool)}`
   res.locals.tools = mutateToArray(unarchivedTool)
   res.status(201)
   next()
 }
+/**
+ * checkTools - Checks the tools
+ * @param {*} req The request object
+ * @param {*} res The response object
+ * @param {*} next The next middleware function
+ */
 async function checkTools(req, res, next) {
   if (!req.body.searchTerms) {
     res.locals.message = 'No Tools Submitted For Status Change'
@@ -449,6 +475,12 @@ async function lookupToolWrapper(searchTerms) {
   return tools
 }
 
+/**
+ * submitCheckInOut - Submits the check-in/out request
+ * @param {*} req The request object
+ * @param {*} res The response object
+ * @param {*} next The next middleware function
+ */
 async function submitCheckInOut(req, res, next) {
   try {
     const id = mutateToArray(req.body.id)
@@ -477,6 +509,14 @@ async function submitCheckInOut(req, res, next) {
   }
 }
 
+/**
+ * Generates a printer-friendly tool list based on the provided tools.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Promise<void>} - A promise that resolves when the operation is complete.
+ */
 const generatePrinterFriendlyToolList = async (req, res, next) => {
   try {
     if (!res.locals.tools) return next()

@@ -4,6 +4,10 @@ import { Strategy as LocalStrategy } from 'passport-local'
 import { compare } from 'bcrypt'
 import logger from './logger.js'
 
+/**
+ * Configures passport for authentication handling.
+ * @param {object} _app - The Express application instance for configuring middlewares and routes.
+ */
 const passportConfig = (_app) => {
   passport.use(new LocalStrategy(
     { usernameField: 'email' },

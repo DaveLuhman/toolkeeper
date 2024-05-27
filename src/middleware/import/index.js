@@ -5,6 +5,12 @@ import { importCategories } from './categories.js'
 import 'fs/promises'
 import logger from '../../config/logger.js'
 
+/**
+ * Imports data from a file.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ */
 export async function importByFile(req, res, next) {
   logger.log(req.body.importTarget)
   if (!req.files || !req.body.importTarget) {
@@ -16,7 +22,7 @@ export async function importByFile(req, res, next) {
   }
   const file = req.files.importFile
   const importTarget = req.body.importTarget
-  let result
+  let result = null;
   switch (importTarget) {
     case 'tools':
       logger.log('importing tools')
@@ -40,11 +46,7 @@ export async function importByFile(req, res, next) {
     default:
       res.locals.message = 'not sure how you managed this response.'
   }
-  res.locals.message =
-    result.successCount +
-    ' successfully imported.  ' +
-    result?.errorList?.length +
-    ' failed to import'
-  res.locals.errorList = result.errorList
+  res.locals.message = `${result.successCount} successfully imported. ${result?.errorList?.length} failed to import`;
+  res.locals.errorList = result.errorList;
   next()
 }

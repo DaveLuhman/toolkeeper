@@ -61,9 +61,14 @@ export async function importServiceAssignments(file) {
   return { successCount, errorList }
 }
 
+/**
+ * Activates service assignments based on the provided file.
+ * @param {string} file - The file containing the service assignments to activate.
+ * @returns {Object} - An object containing the success count and error list.
+ */
 export async function activateServiceAssignments(file) {
   successCount = 0
   const activeServiceRows = csvFileToEntries(file)
-  const activatedSAs = activeServiceRows.map((entry) => { return ServiceAssignment.findOneAndUpdate({ name: entry[0] }, { active: true }, { new: true }) })
+  const activatedSAs = await Promise.all(activeServiceRows.map((entry) => { return ServiceAssignment.findOneAndUpdate({ name: entry[0] }, { active: true }, { new: true }) }))
   return { successCount: activatedSAs.length, errorList }
 }
