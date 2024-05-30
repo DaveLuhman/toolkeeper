@@ -167,7 +167,7 @@ export function hoistSearchParamsToBody(req, _res, next) {
  * @returns {Array} - The deduplicated array.
  */
 export function deduplicateArray(arr) {
-  return Array.from(new Set(arr)).filter((item) => item !== '') 
+  return Array.from(new Set(arr)).filter((item) => item !== '')
 }
 /**
  * Checks if the search parameter is expected to return only one tool.

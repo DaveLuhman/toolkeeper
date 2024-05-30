@@ -1,7 +1,12 @@
+import moment from 'moment'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
 import Tool from '../models/Tool.model.js'
 import ToolHistory from '../models/ToolHistory.model.js'
-import { deduplicateArray, mutateToArray, returnUniqueIdentifier } from './util.js'
+import {
+  deduplicateArray,
+  mutateToArray,
+  returnUniqueIdentifier,
+} from './util.js'
 import sortArray from 'sort-array'
 import logger from '../config/logger.js'
 import { findServiceAssignmentByName } from './serviceAssignment.js'
@@ -38,7 +43,9 @@ async function getActiveTools(req, res, next) {
     .where('archived')
     .equals(false)
     .sort({ [sortField]: sortOrder })
-    res.locals.tools = tools.filter((tool) => { return tool.serviceAssignment?.active})
+  res.locals.tools = tools.filter((tool) => {
+    return tool.serviceAssignment?.active
+  })
   logger.info('[MW] getActiveTools-out'.bgWhite.blue)
   return next()
 }
@@ -399,7 +406,9 @@ async function unarchiveTool(req, res, next) {
     { $push: { history: [unarchivedTool] } },
     { new: true }
   )
-  res.locals.message = `Successfully Restored Tool ${returnUniqueIdentifier(unarchivedTool)}`
+  res.locals.message = `Successfully Restored Tool ${returnUniqueIdentifier(
+    unarchivedTool
+  )}`
   res.locals.tools = mutateToArray(unarchivedTool)
   res.status(201)
   next()
@@ -422,7 +431,8 @@ async function checkTools(req, res, next) {
       ? req.body.serviceAssignmentSelector
       : await findServiceAssignmentByName(req.body.serviceAssignmentInput)
   if (!destinationServiceAssignment) {
-    res.locals.message = 'No Service Assignment Found. Please select one from the dropdown'
+    res.locals.message =
+      'No Service Assignment Found. Please select one from the dropdown'
     res.locals.displaySelector = true
   }
   res.locals.destinationServiceAssignment = destinationServiceAssignment
@@ -491,11 +501,11 @@ async function submitCheckInOut(req, res, next) {
       updateToolHistory(id[i])
       newTools.push(
         await Tool.findByIdAndUpdate(
-          { _id: id[i]},
+          { _id: id[i] },
           {
-            serviceAssignment:newServiceAssignment,
+            serviceAssignment: newServiceAssignment,
             $inc: { __v: 1 },
-            $set: { updatedAt: Date.now() }
+            $set: { updatedAt: Date.now() },
           },
           { new: true }
         )
@@ -542,6 +552,33 @@ const generatePrinterFriendlyToolList = async (req, res, next) => {
   }
 }
 
+async function getDashboardStats() {
+  const startOfDay = moment().startOf('day').toDate()
+  const endOfDay = moment().endOf('day').toDate()
+  const startOfWeek = moment().startOf('week').toDate()
+  const endOfWeek = moment().endOf('week').toDate()
+  try {
+    const todaysTools = await Tool.countDocuments({
+      updatedAt: { $gte: startOfDay, $lte: endOfDay },
+    })
+    const thisWeeksTools = await Tool.countDocuments({
+      updatedAt: { $gte: startOfWeek, $lte: endOfWeek },
+    })
+    const totalIn = await Tool.countDocuments()
+      .where('serviceAssignment.type')
+      .equals('Stockroom')
+    const totalOut = await Tool.countDocuments()
+      .where('serviceAssignment.type')
+      .ne('Stockroom')
+      return {todaysTools, thisWeeksTools, totalIn, totalOut}
+  } catch (error) {}
+}
+async function getRecentlyUpdatedTools() {
+  const tools = await Tool.find()
+    .sort({ updatedAt: -1 })
+    .limit(50)
+  return tools
+}
 export {
   getAllTools,
   getActiveTools,
