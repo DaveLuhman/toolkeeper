@@ -552,6 +552,11 @@ const generatePrinterFriendlyToolList = async (req, res, next) => {
   }
 }
 
+/**
+ * Retrieves the dashboard statistics.
+ *
+ * @returns {Object} - An object containing the dashboard statistics.
+ */
 async function getDashboardStats() {
   const startOfDay = moment().startOf('day').toDate()
   const endOfDay = moment().endOf('day').toDate()
@@ -570,9 +575,17 @@ async function getDashboardStats() {
     const totalOut = await Tool.countDocuments()
       .where('serviceAssignment.type')
       .ne('Stockroom')
-      return {todaysTools, thisWeeksTools, totalIn, totalOut}
-  } catch (error) {}
+    const totalTools = totalIn + totalOut
+      return {todaysTools, thisWeeksTools, totalIn, totalOut, totalTools}
+  } catch (error) {
+    return {todaysTools: 0, thisWeeksTools: 0, totalIn: 0, totalOut: 0}
+  }
 }
+
+/**
+ * Retrieves the recently updated tools.
+ * @returns {Promise<Array>} A promise that resolves to an array of recently updated tools.
+ */
 async function getRecentlyUpdatedTools() {
   const tools = await Tool.find()
     .sort({ updatedAt: -1 })
@@ -591,4 +604,6 @@ export {
   checkTools,
   submitCheckInOut,
   generatePrinterFriendlyToolList,
+  getDashboardStats,
+  getRecentlyUpdatedTools,
 }
