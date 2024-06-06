@@ -83,6 +83,7 @@ const toolSchema = new Schema(
     }
   },
   {
+    timestamps: true,
     toObject: { virtuals: true },
     toJSON: { virtuals: true },
     strict: false
