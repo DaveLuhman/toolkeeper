@@ -259,7 +259,7 @@ async function updateToolHistory(toolID) {
     {
       $push: { history: oldTool },
       $inc: { __v: 1 },
-      $set: { updatedAt: Date.now() },
+      $set: { updatedAt: moment().toDate() },
     }
   );
 }
