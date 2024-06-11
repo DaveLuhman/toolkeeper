@@ -37,7 +37,7 @@ async function getActiveTools(req, res, next) {
   const tools = await Tool.find()
     .where('archived')
     .equals(false)
-    .sort({ [sortField]: sortOrder })
+    .sort({ [sortField]: sortOrder || -1 });
     res.locals.tools = tools.filter((tool) => { return tool.serviceAssignment?.active})
   logger.info('[MW] getActiveTools-out'.bgWhite.blue)
   return next()
