@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import mongoose, { Schema, model } from 'mongoose'
 
 const ServiceAssignmentSchema = new Schema(
   {
@@ -8,7 +8,8 @@ const ServiceAssignmentSchema = new Schema(
     },
     name: {
       type: String,
-      required: true
+      required: true,
+      unique: true
     },
     description: {
       type: String,
@@ -26,8 +27,17 @@ const ServiceAssignmentSchema = new Schema(
         'Error - Uncategorized'
       ]
     },
+    active: {
+      type: Boolean,
+      default: true
+    },
     phone: {
       type: String
+    },
+    toolCount: {
+      type: Number,
+      default: 0,
+      min: 0
     },
     notes: {
       type: String

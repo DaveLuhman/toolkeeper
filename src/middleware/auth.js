@@ -32,13 +32,11 @@ function checkAuth(req, res, next) {
  **/
 function isManager(req, res, next) {
   if (req.user.role === 'User') {
-    console.warn('[AUTH] User Is Not A Manager: ' + req.user.role)
     res.locals.error =
       'You are not a manager, and have been redirected to the dashboard'
-    res.redirect('/dashboard')
-    return
+    return res.redirect('/dashboard')
+    
   }
-  console.info('[AUTH] User Is A Manager: ' + req.user.role)
   return next()
 }
 /**
@@ -53,10 +51,11 @@ function isManager(req, res, next) {
  * })
  * @todo fix the failure message
  **/
-async function login(req, res, next) {
+function login(req, res, next) {
   passport.authenticate('local', {
     failureRedirect: '/login',
-    failureFlash: true
+    failureFlash: true,
+    successRedirect: '/dashboard'
   })(req, res, next)
 }
 
@@ -79,7 +78,5 @@ function logout(req, res, next) {
     res.redirect('/')
   })
 }
-
-// TODO add a function to make sure the request is coming from the front end and not an external source via url or token
 
 export { checkAuth, isManager, login, logout }

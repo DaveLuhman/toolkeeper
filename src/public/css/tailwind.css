@@ -14,12 +14,10 @@ body {
 /* custom css classes */
 .main-view {
   @apply flex;
-  @apply flex-wrap;
   @apply items-center;
   @apply justify-evenly;
 }
 .title-bar {
-  @apply w-11/12;
   @apply col-span-2;
   @apply md:col-span-3;
   @apply rounded-lg;
@@ -28,17 +26,7 @@ body {
 .title-text {
   @apply font-bold;
   @apply text-lg;
-  @apply text-center;
-}
-.tool-table {
-  @apply grid;
-  @apply flex;
-  @apply p-5;
-  @apply grid-cols-2;
-  @apply md:max-lg:grid-cols-3;
-  @apply gap-4;
-  @apply w-full;
-  @apply items-center;
+  @apply text-center pb-2;
 }
 .user-table {
   @apply grid;
@@ -189,17 +177,14 @@ h1#search-terms {
 }
 /* -----------------TABLE------------------ */
 table.table {
-  @apply flex-auto;
-  @apply table-auto;
-  @apply lg:w-5/6;
   @apply text-gray-100;
-  @apply rounded-box;
+
   @apply shadow;
-  @apply overflow-hidden;
   @apply mb-4;
-  @apply m-5;
-}
+  @apply pr-5
+  }
 th {
+  @apply text-white;
   @apply text-base-content;
   @apply font-bold;
   @apply uppercase;
@@ -218,6 +203,7 @@ tr {
 }
 td {
   @apply text-sm;
+  @apply font-bold;
   @apply p-2;
   @apply border-b;
   @apply border-base-300;
@@ -304,11 +290,6 @@ td {
   @apply gap-4;
   @apply mb-2;
 }
-.form-button-row {
-  @apply col-span-2;
-  @apply lg:col-span-4;
-  @apply float-right;
-}
 /* ------------PAGINATION BAR------------------------ */
 .paginate-bar {
   @apply flex;
@@ -339,4 +320,25 @@ footer.tk-footer {
 /* This is for the Twitter - Youtube - Facebook Icons in the footer */
 svg.fill-current {
   @apply inline-block;
+}
+/* ------- SCROLLBAR SETTINGS --------*/
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

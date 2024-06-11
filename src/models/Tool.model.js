@@ -3,10 +3,6 @@ import mongooseAutoPopulate from 'mongoose-autopopulate'
 
 const toolSchema = new Schema(
   {
-    _id: {
-      type: Schema.Types.ObjectId,
-      auto: true
-    },
     serialNumber: {
       type: String,
       upperCase: true,
@@ -34,12 +30,14 @@ const toolSchema = new Schema(
     serviceAssignment: {
       type: Schema.Types.ObjectId,
       ref: 'ServiceAssignment',
-      autopopulate: true
+      autopopulate: true,
+      default: '64a34b651288871770df1086'
     },
     category: {
       type: Schema.Types.ObjectId,
       ref: 'Category',
-      autopopulate: true
+      autopopulate: true,
+      default: '64a1c3d8d71e121dfd39b7ab'
     },
     description: {
       type: String,
@@ -82,14 +80,6 @@ const toolSchema = new Schema(
     },
     image: {
       type: String
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now
     }
   },
   {
@@ -104,8 +94,8 @@ toolSchema.findAll = function (callback) {
 }
 
 toolSchema.virtual('status').get(function () {
-  if (this.serviceAssignment === undefined || null) return 'Undefined'
-  switch (this.serviceAssignment.type) {
+  if (this?.serviceAssignment === undefined) return 'Undefined'
+  switch (this.serviceAssignment?.type) {
     case 'Stockroom':
       return 'Checked In'
     case 'Contract Jobsite':
@@ -117,7 +107,7 @@ toolSchema.virtual('status').get(function () {
     case 'Vehicle':
       return 'Checked Out'
     default:
-      return 'Unavailable '
+      return 'Unavailable'
   }
 })
 

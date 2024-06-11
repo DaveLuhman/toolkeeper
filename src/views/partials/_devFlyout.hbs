@@ -1,6 +1,3 @@
-
-{{> _toolTable}}
-
 {{#if user.preferences.developer}}
 <div class="ml-10 pl-18 dropdown dropdown-right">
   <label tabindex="0" class="btn btn-circle btn-ghost btn-xs text-info">
@@ -22,25 +19,25 @@
     <hr />
     <h2>Tools:</h2>
     <ul class="list-decimal">
-      {{#each tools}}
+      {{#first tools 10}}
         <li>
-          <div class="bg-teal-500">{{this.id}}: </div>
+          <div class="bg-slate-900 ">{{this.id}}: </div>
           <ul class="pl-10 list-disc">
-            <li>SN: {{this.serialNumber}}</li>
-            <li>PN: {{this.modelNumber}}</li>
-            <li>Barcode: {{this.barcode}}</li>
-            <li>Status: {{this.status}}</li>
-            <li>SA: {{this.serviceAssignment.name}}</li>
-            <li>Desc: {{this.description}}</li>
-            <li>Raw: {{this}}</li>
+            <li class="text-black">SN: {{this.serialNumber}}</li>
+            <li class="text-black">PN: {{this.modelNumber}}</li>
+            <li class="text-black">Barcode: {{this.barcode}}</li>
+            <li class="text-black">Status: {{this.status}}</li>
+            <li class="text-black">SA: {{this.serviceAssignment.name}}</li>
+            <li class="text-black">Desc: {{this.description}}</li>
+            <li class="text-black">Raw: {{this}}</li>
           </ul>
         </li>
-      {{/each}}
+      {{/first}}
     </ul>
     <hr />
     <h2>Service Assignments</h2>
-    {{#each serviceAssignments}}
-      <li>{{this.name}} -- {{this.id}}</li>
+    {{#each activeServiceAssignments}}
+      <li class="text-black">{{this.name}} -- {{this.id}}</li>
     {{/each}}
     <hr />
     <h2>Current User</h2>
@@ -52,5 +49,3 @@
 </div>
 <br />
 {{/if}}
-
-{{> _pagination}}

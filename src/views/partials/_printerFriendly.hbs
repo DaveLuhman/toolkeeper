@@ -1,0 +1,62 @@
+<script type="text/x-handlebars-template" id="printerFriendlyTools"> <!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8" />
+			<meta
+  name="viewport" content="widdiv=816, initial-scale=1.0" />
+			<title>Report from
+  ToolKeeper</title>
+			<link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+  integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+  crossorigin="anonymous" referrerpolicy="no-referrer" />
+			<link
+  href="/css/printable.css" rel="stylesheet" />
+			<link
+  href="https://fonts.googleapis.com/css?family=Libre Barcode 39"
+  rel="stylesheet" />
+		</head>
+		<body class="break-inside-auto overflow-visible">
+  {{#withGroup tools 13}}
+			<div class="text-center">
+        {{#if ../searchBy}}
+    {{#eq "serviceAssignment" ../searchBy}}
+				<div class="center col-span-6">
+					<h3>Searched For: {{getServiceAssignmentName ../allServiceAssignments ../searchTerm }} - Total Results: {{../totalFound}}</h3>
+				</div>
+    {{/eq}}
+    {{#eq "category" ../searchBy}}
+				<div>
+					<h3 class="text-xl" id="search-terms">Searched For: {{getCategoryName ../categories ../searchTerm}} - Total Results: {{../totalFound}}</h3>
+				</div>
+    {{/eq}}
+    {{#if (searchingForOneTool ../searchBy)}}
+				<div>
+					<h3> Searched For: {{../searchTerm}} - Total Results: {{../totalFound}}</h3>
+				</div>
+    {{/if}}
+    {{else}}
+    	  <div>
+					<h3> Total Tools: {{../tools.length}}</h3>
+				</div>
+        {{/if}}
+			</div>
+      {{../this.index}}
+			<section class="table grid grid-cols-5">
+					<div class="header-cell">Serial Number</div>
+					<div class="header-cell">Model Number</div>
+					<div class="header-cell">Tool ID</div>
+					<div class="header-cell col-span-2">Description</div>
+					<div class="header-cell">Barcode</div>
+    {{#each this}}
+					<div class="data-cell">{{serialNumber}}</div>
+					<div class="data-cell">{{modelNumber}}</div>
+					<div class="data-cell">{{toolID}}</div>
+					<div class="col-span-2 data-cell">{{description}}</div>
+					<div class="data-cell"><div class="barcode">{{barcode}}</div>{{barcode}}</div>
+    {{/each}} 
+	</section>
+  {{/withGroup}}
+		</body>
+	</html>
+</script>

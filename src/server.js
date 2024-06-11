@@ -1,43 +1,52 @@
-// server.js
+// dev depenancies
+// eslint-disable-next-line no-unused-vars
+import colors from 'colors'
+import 'dotenv/config'
+import morgan from 'morgan'
+import logger from './config/logger.js'
+// db depenancies
+import connectMongoDBSession from 'connect-mongodb-session'
+import connectDB from './config/db.js'
+// express depenancies
+import cookieParser from 'cookie-parser'
+import csurf from 'csurf'
+import express from 'express'
+import fileUpload from 'express-fileupload'
+import flash from 'express-flash'
+import session from 'express-session'
+// handlebars depenancies
+import { create } from 'express-handlebars' // templating engine
+import handlebarsHelpers from 'handlebars-helpers'
+import paginate from 'handlebars-paginate'
+// auth depenancies
+import passport from 'passport'
+import { checkAuth, isManager } from './middleware/auth.js'
+import passportConfig from './config/passport.js'
+// utility depenancies
+import { getCategoryName } from './middleware/category.js'
+import { getServiceAssignmentName } from './middleware/serviceAssignment.js'
 import {
-  checkAuth,
-  connectDB,
-  connectMongoDBSession,
-  cookieParser,
-  create,
-  csurf,
-  dashboardRouter,
-  dotenv,
-  express,
-  fileUpload,
-  flash,
-  getCategoryName,
-  getPackageVersion,
-  getServiceAssignmentName,
-  handlebarsHelpers,
-  helmet,
-  indexRouter,
-  isManager,
   isSelected,
   populateDropdownItems,
-  morgan,
-  paginate,
-  passport,
-  passportConfig,
   rateLimiter,
-  session,
-  settingsRouter,
-  toolRouter,
-  userRouter
-} from './config/dependencies.js'
+  getPackageVersion,
+  searchingForOneTool,
+  errorHandler,
+  AppError
+} from './middleware/util.js'
+// routers
+import { dashboardRouter } from './routes/dashboard.routes.js'
+import { indexRouter } from './routes/index.routes.js'
+import { settingsRouter } from './routes/settings/index.routes.js'
+import { toolRouter } from './routes/tool.routes.js'
+import { userRouter } from './routes/user.routes.js'
 
 // use the imported dependencies as needed in the server.js file
 
-dotenv.config({ path: './src/config/.env', debug: true }) // Load environment variables
 const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
 const app = express() // Create Express App
-
+app.use(errorHandler)
 connectDB() // Connect to MongoDB and report status to console
 // create mongo store for session persistence
 const mongoStore = new MongoDBStore({
@@ -56,26 +65,19 @@ if (process.env.NODE_ENV === 'production') {
   sessionConfig.cookie = {
     secure: true,
     httpOnly: false,
-    maxAge: 1000 * 60 * 60 * 24
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: true
   }
   sessionConfig.store = mongoStore
-  // app.use(helmet()) // Add Helmet for HTTP Header controls
 }
 
 // Morgan Logging in development
 if (process.env.NODE_ENV !== 'production') {
-  app.use(morgan('dev'))
-  console.info(
-    '[INIT]>>>>> Morgan enabled for logging in this development environment'.yellow
-  )
-  app.use(
-    helmet.contentSecurityPolicy({
-      directives: {
-        'script-src': ["'unsafe-inline'", "'self'"], // allow client-side inline scripting
-        'script-src-attr': ["'unsafe-inline'"]
-      }
-    })
-  ) // Allow inline scripts for development
+  app.use(morgan('combined', {
+    stream: {
+      write: (message) => logger.http(message.trim())
+    }
+  }));
 }
 // Handlebars Setup
 const hbs = create({
@@ -85,6 +87,7 @@ const hbs = create({
     getServiceAssignmentName,
     paginate,
     getPackageVersion,
+    searchingForOneTool,
     ...handlebarsHelpers()
   },
   extname: '.hbs',
@@ -98,6 +101,7 @@ const hbs = create({
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 app.set('views', './src/views')
+ app.set('trust proxy', 1)
 
 // Express Middleware
 app.use(cookieParser())
@@ -126,10 +130,10 @@ app.use('/tool', toolRouter)
 app.use(isManager)
 app.use('/settings', settingsRouter)
 // catch 404 and forward to error handler
-app.use((_req, res) => {
-  res.status(404).render('error/404', { layout: 'public', title: '404' })
+app.use((_req, res, next) => {
+  next(new AppError('Not Found', 404));
 })
 
 app.listen(PORT, () => {
-  console.info(`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black)
+  logger.info(`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black)
 })

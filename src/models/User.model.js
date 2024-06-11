@@ -24,7 +24,8 @@ const UserSchema = new Schema(
       required: true
     },
     password: {
-      type: String
+      type: String,
+      required: true
     },
     role: {
       type: String,
@@ -47,7 +48,9 @@ const UserSchema = new Schema(
         pageSize: 10,
         developer: false
       }
-    }
+    },
+    token: String,
+    tokenExpiry: Number,
   },
   {
     toObject: { virtuals: true },
@@ -67,5 +70,12 @@ UserSchema.virtual('displayName')
     const lastName = v.substring(v.indexOf(' ') + 1)
     this.set({ firstName, lastName })
   })
+
+UserSchema.statics.findByEmail = async function (email) {
+  return (await model('User').findOne({ email: { $eq: email } })) || false
+}
+UserSchema.statics.findByToken = async function (token) {
+  return (await model('User').findOne({ token: { $eq: token } })) || false
+}
 
 export default model('User', UserSchema)

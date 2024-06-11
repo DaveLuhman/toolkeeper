@@ -1,4 +1,4 @@
-<div class="flex flex-wrap items-center justify-evenly">
+<div class="flex flex-col flex-wrap items-center justify-evenly">
     {{#if tools}}
         <div class="title-bar">
             <h3 class="title-text">Edit Tool</h3>
@@ -42,7 +42,7 @@
                         <label for="serviceAssignment" class="label"><span class="label-text">Service
                                 Assignment</span></label>
                         <select name="serviceAssignment" class="select select-bordered" id="edit-tool_serviceAssignment">
-                            {{#each ../serviceAssignments}}
+                            {{#each ../activeServiceAssignments}}
                                 <option name='{{name}}' value='{{id}}' {{isSelected id tool.serviceAssignment.id}}>
                                     {{name}} - {{description}}
                                 </option>
@@ -95,7 +95,8 @@
                     </div>
                 </div>
                 <div class="modal-button-row">
-                    <label class="modal-button"><a href="/tool/archive/{{tool.id}}">Archive</a></label>
+                    {{#eq archived true}}<label class="modal-button"><a href="/tool/unarchive/{{tool.id}}">Un-Archive</a></label>{{/eq}}
+                    {{#eq archived false}}<label id="archive-button" class="modal-button"><a href="/tool/archive/{{tool.id}}">Archive</a></label>{{/eq}}
                     <label class="modal-button"><a href="/dashboard">Cancel</a></label>
                     <label class="modal-button"><button id="edit-tool_submit" type="submit">Submit</button></label>
                 </div>
@@ -126,7 +127,7 @@
                     <td>{{entry.modelNumber}}</td>
                     <td>{{entry.description}}</td>
                     <td>{{entry.status}}</td>
-                    <td>{{getServiceAssignmentName ../serviceAssignments entry.serviceAssignment}}</td>
+                    <td>{{getServiceAssignmentName ../activeServiceAssignments entry.serviceAssignment}}</td>
                     <td>{{getCategoryName ../categories entry.category}}</td>
                     <td>{{moment entry.updatedAt format="MM/DD/YYYY hh:mm A"}}</td>
                     <td>{{entry.__v}}</td>
@@ -137,3 +138,12 @@
         <p>We don't have any history for this tool.</p>
     {{/if}}
 </div>
+<script>
+    document.getElementById('archive-button').addEventListener('onclick', function(e)
+    {
+        e.preventDefault()
+        (window.confirm('Would you like to archive this tool?')) {
+            window.location.href = '/tool/archive/{{id}}'
+        }
+    })
+</script>

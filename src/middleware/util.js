@@ -1,5 +1,5 @@
 /*
-List of Functions in order (* at beginning means exported)
+List of Functions in order (* means exported)
 *paginate
 *mutateToArray
 *sortByUserPreference
@@ -16,7 +16,8 @@ sanitize
 
 import rateLimit from 'express-rate-limit'
 import { listCategoryNames } from './category.js'
-import { listServiceAssignnmentNames } from './serviceAssignment.js'
+import { listActiveSAs } from './serviceAssignment.js'
+import xss from 'xss'
 
 /**
  *
@@ -25,7 +26,7 @@ import { listServiceAssignnmentNames } from './serviceAssignment.js'
  * @param {number} perPage
  * @returns {object} trimmedData, targetPage, pageCount
  */
-export function paginate (data, targetPage, perPage) {
+export function paginate(data, targetPage, perPage) {
   perPage = perPage || 10
   targetPage = targetPage || 1
   const pageCount = Math.ceil(data.length / perPage) // number of pages
@@ -40,16 +41,23 @@ export function paginate (data, targetPage, perPage) {
 /**
  * @param {any} data input data, typically before being rendered by handlebars
  * @returns {array}
- * This function will mutate the data to an array
+ * This function will mutate the data to an array if it's not already one, but won't nest an existing array
  */
-export function mutateToArray (data) {
+export function mutateToArray(data) {
   if (!Array.isArray(data)) {
     data = [data]
   }
   return data
 }
 
-export function sortByUserPreference (data, sortField, sortOrder) {
+/**
+ * Sorts an array of objects based on a user-defined preference.
+ * @param {Array} data - The array of objects to sort.
+ * @param {string} sortField - The field within the objects to sort by.
+ * @param {string} sortOrder - The order to sort by ('asc' for ascending, 'desc' for descending).
+ * @returns {Array} The sorted array.
+ */
+export function sortByUserPreference(data, sortField, sortOrder) {
   if (sortOrder === 'asc') {
     data.sort((a, b) => a[sortField] - b[sortField])
   } else {
@@ -64,8 +72,8 @@ export function sortByUserPreference (data, sortField, sortOrder) {
  * This function will sanitize user input to prevent XSS attacks
  * It will only allow alphanumeric characters and spaces
  **/
-function sanitize (string) {
-  return string.replace(/[^a-zA-Z0-9\-@. ]/g, '')
+function sanitize(string) {
+  return xss(string)
 }
 
 /**
@@ -76,32 +84,33 @@ function sanitize (string) {
  * This function will sanitize the request body
  * It will only allow alphanumeric characters and - @ . (required for emails)
  **/
-export function sanitizeReqBody (req, _res, next) {
+export function sanitizeReqBody(req, _res, next) {
   for (const key in req.body) {
-    req.body[key] = sanitize(req.body[key])
+    if (Object.prototype.hasOwnProperty.call(req.body, key)) {
+      req.body[key] = sanitize(req.body[key])
+    }
   }
   return next()
 }
+
 /**
  *
  * @param {string} option option in the list
  * @param {string} objectProperty property on the object you want checked
  * @returns
  */
-export function isSelected (option, objectProperty) {
+export function isSelected(option, objectProperty) {
   if (option === objectProperty) return 'selected'
+  return null
 }
 
-export const populateDropdownItems = [
-  listCategoryNames,
-  listServiceAssignnmentNames
-]
+export const populateDropdownItems = [listCategoryNames, listActiveSAs]
 
 export const rateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false // Disable the `X-RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
 export const createAccountLimiter = rateLimit({
@@ -110,10 +119,16 @@ export const createAccountLimiter = rateLimit({
   message:
     'Too many accounts created from this IP, please try again after an hour',
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false // Disable the `X-RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 })
 
-export function csvFileToEntries (file) {
+/**
+ * Converts a CSV file to an array of entries.
+ *
+ * @param {Object} file - The CSV file object.
+ * @returns {Array<Array<string>>} - The array of entries.
+ */
+export function csvFileToEntries(file) {
   return Buffer.from(file.data)
     .toString('ascii')
     .replace("'", '')
@@ -122,15 +137,104 @@ export function csvFileToEntries (file) {
     .map((row) => row.split(','))
 }
 
-export function getPackageVersion () {
+/**
+ * Retrieves the current package version from the environment variables.
+ * @returns {string} The current package version.
+ */
+export function getPackageVersion() {
   return process.env.npm_package_version
 }
 
-export function hoistSearchParamsToBody (req, _res, next) {
+/**
+ * Transfers search parameters from the query string to the request body.
+ * @param req The request object, containing the incoming request data and parameters.
+ * @param _res The response object. Unused in this function, but required for middleware signature.
+ * @param next The next middleware function in the stack.
+ */
+export function hoistSearchParamsToBody(req, _res, next) {
   if (req.body.searchBy === undefined) {
     const { searchBy, searchTerm } = req.query
     req.body.searchBy = searchBy
     req.body.searchTerm = searchTerm
   }
   next()
+}
+
+/**
+ * Deduplicates an array by removing duplicate elements.
+ *
+ * @param {Array} arr - The array to deduplicate.
+ * @returns {Array} - The deduplicated array.
+ */
+export function deduplicateArray(arr) {
+  return Array.from(new Set(arr)).filter((item) => item !== '') 
+}
+/**
+ * Checks if the search parameter is expected to return only one tool.
+ *
+ * @param {string} searchBy - The search parameter.
+ * @returns {boolean} - True if the search parameter is expected to return only one tool, false otherwise.
+ */
+export function searchingForOneTool(searchBy) {
+  const searchesReturningOneTool = [
+    'serialNumber',
+    'barcode',
+    'status',
+    'modelNumber',
+    'toolID',
+  ]
+  return searchesReturningOneTool.includes(searchBy)
+}
+
+// Custom error class
+export class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message)
+    this.statusCode = statusCode
+    this.status = `${statusCode}`.startsWith('4') ? 'fail' : 'error'
+    this.isOperational = true
+
+    Error.captureStackTrace(this, this.constructor)
+  }
+}
+
+// Centralized error handling middleware
+export const errorHandler = (err, _req, res, _next) => {
+  err.statusCode = err.statusCode || 500
+  err.status = err.status || 'error'
+
+  if (err.statusCode === 404) {
+    res.status(err.statusCode).render('error/404', {
+      errorCode: err.statusCode,
+      errorMessage: err.message,
+      errorStack: err.stack,
+    })
+  } else {
+    res.status(err.statusCode).render('error/error', {
+      errorCode: err.statusCode,
+      errorMessage: err.message,
+      errorStack: err.stack,
+    })
+  }
+}
+
+/**
+ * Generates a unique identifier for a given tool document
+ * @param {object} toolDocument - The document containing tool information
+ * @returns An unique identifier based on the tool's ID, barcode, or serial number
+ */
+export const returnUniqueIdentifier = (toolDocument) => {
+  try {
+    const { toolID, barcode, serialNumber } = toolDocument
+    if (toolID) {
+      return `Tool ID ${toolID}`
+    } else if (barcode) {
+      return `Barcode: ${barcode}`
+    } else if (serialNumber) {
+      return `SN: ${serialNumber}`
+    }
+    return 'Unable to uniquely identify this tool' // Added return statement
+  } catch (error) {
+    return 'Unable to uniquely identify this tool'
+  }
 }

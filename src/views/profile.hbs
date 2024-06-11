@@ -1,7 +1,10 @@
-<div class="main-view">
+<div class="main-view flex-col">
     <div class="title-bar">
         <h3 class="title-text">User Profile</h3>
     </div>
+    {{#if message}}
+    <div class="alert alert-{{message.type}}">{{message.text}}</div>
+    {{/if}}
     <div class="form-wrapper">
         <form action="/user/profile" method="POST">
             <div class="form-row">
@@ -92,9 +95,12 @@
                     </span>
                 </div>
             </div>
-            <div class="form-button-row">
-                <button type="reset" class="btn btn-accent">Cancel</button>
-                <button type="submit" id="profile_submit" class="btn btn-primary">Save</button>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                {{!-- reset password button --}}
+                <a class="btn btn-neutral col-span-2 md:col-span-1 md:w-3/4 col-start-1"><label for="resetPasswordModal" style="cursor:pointer">Reset Password</label></a>
+                {{!-- cancel and save buttons --}}
+                <button type="reset" class="btn btn-accent md:col-start-3">Cancel</button>
+                <button type="submit" id="profile_submit" class="btn btn-primary  md:col-start-4">Save</button>
             </div>
         </form>
     </div>

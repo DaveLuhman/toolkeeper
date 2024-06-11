@@ -1,0 +1,92 @@
+body {
+  margin: 1em;
+  background: #cacaca;
+  break-inside: auto;
+}
+section.table {
+  border-style: solid;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  break-after: always;
+
+  margin-bottom: 10%;
+}
+.text-center {
+  text-align: center;
+}
+.grid {
+  display: grid;
+}
+.inline-grid {
+  display: inline-grid;
+}
+.grid-cols-5 {
+  grid-template-columns: repeat(5, 1fr);
+}
+div.header-cell {
+  text-align: center;
+  border-style: solid;
+  font-weight: bold;
+  font-size: 15pt;
+  padding: 5px 8px;
+  vertical-align: middle;
+}
+
+div.header-row:first-child {
+  border-top-left-radius: 5px;
+  text-align: left;
+}
+
+div.header-row:last-child {
+  border-top-right-radius: 5px;
+}
+
+div.row:nth-child(even) {
+  background: #f0f0f2;
+}
+
+div.data-cell {
+  border-bottom: 1px solid #808080;
+  border-right: 1px solid #808080;
+  padding: 10px 15px;
+  vertical-align: middle;
+}
+
+div.data-cell:first-child {
+  border-left: 1px solid #808080;
+}
+
+div .barcode {
+  font-family: "Libre Barcode 39";
+  font-size: 16pt;
+}
+
+@media print {
+  @page {
+    margin: 1em;
+  }
+  body {
+    height: 100%;
+    width: 100%;
+  }
+  div.row > div {
+    display: inline-block;
+    border: solid 1px #black;
+    margin: 0.1cm;
+    font-size: 1rem;
+  }
+  div.row {
+    display: block;
+    margin: solid 2px black;
+    margin: 0.2cm 1cm;
+    font-size: 0;
+    white-space: nowrap;
+  }
+  div.data-cell {
+    border-bottom: 1px solid #808080;
+    border-right: 1px solid #808080;
+    padding: 10px 15px;
+    vertical-align: middle;
+  }
+}

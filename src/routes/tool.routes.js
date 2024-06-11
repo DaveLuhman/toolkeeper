@@ -6,41 +6,46 @@ import {
   createTool,
   searchTools,
   updateTool,
-  submitCheckInOut
+  submitCheckInOut,
+  generatePrinterFriendlyToolList,
+  getAllTools,
+  unarchiveTool,
 } from '../middleware/tool.js'
 import { sanitizeReqBody, hoistSearchParamsToBody } from '../middleware/util.js'
+import { listAllSAs } from '../middleware/serviceAssignment.js'
+import {
+  renderEditTool,
+  renderResults,
+  renderStatusChangeConfirmationPage,
+} from '../controllers/tool.js'
 export const toolRouter = Router()
 
 // search for tools and render the results with the dashboard view
-toolRouter.use('/search', sanitizeReqBody, hoistSearchParamsToBody, searchTools, (_req, res) => {
-  res.render('results')
-})
+toolRouter.use(
+  '/search',
+  sanitizeReqBody,
+  hoistSearchParamsToBody,
+  listAllSAs,
+  searchTools,
+  generatePrinterFriendlyToolList,
+  renderResults
+)
 
 // retrieve current service assignment and render checkInOut prompting user to select the new assignment
-toolRouter.post('/checkInOut', checkTools, (_req, res) => {
-  res.render('checkInOut')
-})
+toolRouter.post('/checkInOut', listAllSAs, checkTools, renderStatusChangeConfirmationPage)
 // save the new service assignement to the database.
-toolRouter.post('/submitCheckInOut', submitCheckInOut, (_req, res) => {
-  res.render('results')
-})
+toolRouter.post('/submitCheckInOut', submitCheckInOut, renderResults)
 
 // create new tool
-toolRouter.post('/submit', sanitizeReqBody, createTool, (_req, res) => {
-  res.render('results')
-})
+toolRouter.post('/submit', sanitizeReqBody, createTool, renderResults)
 
 // update tool
-toolRouter.post('/update', sanitizeReqBody, updateTool, (_req, res) => {
-  res.render('results')
-})
+toolRouter.post('/update', sanitizeReqBody, updateTool, renderResults)
 
 // archive tool
-toolRouter.get('/archive/:id', archiveTool, (_req, res) => {
-  res.redirect('/dashboard')
-})
+toolRouter.get('/archive/:id', archiveTool, getAllTools, renderResults)
+// archive tool
+toolRouter.get('/unarchive/:id', unarchiveTool, getAllTools, renderResults)
 
 // get tool by id
-toolRouter.get('/:id', getToolByID, (_req, res) => {
-  res.render('editTool')
-})
+toolRouter.get('/:id', getToolByID, renderEditTool)

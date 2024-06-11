@@ -1,63 +1,76 @@
-<div class="flex flex-wrap">
+<div class="flex w-screen h-screen">
   <div id="settings-nav">
     {{> _settings}}
-  </div>
-  <div id="categoriesTable">
-    <div class="mx-5">
-      <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
+    <div class="ml-6 mt-2">
+      <div
+        class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
         <label for="newCategoriesModal">New Tool Category</label>
       </div>
     </div>
-    <table class="table table-auto">
-      <thead>
-        <tr>
-          <th>Prefix</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Edit</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#if categories}}
-          {{#each categories}}
+  </div>
+  <div class="flex p-10 overflow-auto">
+    <div class="flex flex-col flex-shrink-0">
+      <div class="flex items-center justify-center flex-shrink-0 h-10 px-2 relative">
+        <span class="text-center text-white block text-md font-extrabold">Categories</span>
+      </div>
+      <div class="flex flex-col px-2 pb-2 overflow-y-scroll">
+        <table class="table table-auto">
+          <thead>
+            <tr>
+              <th>Prefix</th>
+              <th>Name</th>
+              <th>Description</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#if categories}}
+            {{#each categories}}
             <tr>
               <td>{{prefix}}</td>
               <td>{{name}}</td>
               <td>{{description}}</td>
-              <td><a href="/settings/categories/edit/{{id}}"><i class="fa fa-pencil"></i></a></td>
-              <td><a href="/settings/categories/delete/{{id}}"><i class="fa fa-trash"></i></a></td>
+              <td><a href="/settings/categories/edit/{{id}}"><i
+                    class="fa fa-pencil"></i></a></td>
+              <td><a href="/settings/categories/delete/{{id}}"><i
+                    class="fa fa-trash"></i></a></td>
             </tr>
-          {{/each}}
-        {{/if}}
-      </tbody>
-    </table>
-  </div>
-</div>
-{{!-- New category Modal --}}
-<input type="checkbox" id="newCategoriesModal" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-inner-md">
-    <label for="newCategoriesModal" class="modal-close-btn">✕</label>
-    <form action="/settings/categories/create" method="POST">
-      <div class="grid items-center w-full grid-rows-2">
-        <div class="title-bar">
-          <h3 class="title-text">New Tool Category</h3>
-        </div>
-        <div class="m-3">
-          <input placeholder="Prefix" type="text" name="prefix" class="input input-bordered">
-        </div>
-        <div class="m-3">
-          <input placeholder="Name" type="text" name="name" class="input input-bordered">
-        </div>
-        <div class="m-3">
-          <input placeholder="Description" type="text" name="description" class="input input-bordered">
-        </div>
-        <div class="modal-button-row">
-          <label class="btn btn-sm"> <button type="submit">Submit</button></label>
-        </div>
+            {{/each}}
+            {{/if}}
+          </tbody>
+        </table>
       </div>
-    </form>
+    </div>
   </div>
 </div>
-{{> _pagination}}
+  {{!-- New category Modal --}}
+  <input type="checkbox" id="newCategoriesModal" class="modal-toggle" />
+  <div class="modal">
+    <div class="modal-inner-md">
+      <label for="newCategoriesModal" class="modal-close-btn">✕</label>
+      <form action="/settings/categories/create" method="POST">
+        <div class="grid items-center w-full grid-rows-2">
+          <div class="title-bar">
+            <h3 class="title-text">New Tool Category</h3>
+          </div>
+          <div class="m-3">
+            <input placeholder="Prefix" type="text" name="prefix"
+              class="input input-bordered">
+          </div>
+          <div class="m-3">
+            <input placeholder="Name" type="text" name="name"
+              class="input input-bordered">
+          </div>
+          <div class="m-3">
+            <input placeholder="Description" type="text" name="description"
+              class="input input-bordered">
+          </div>
+          <div class="modal-button-row">
+            <label class="btn btn-sm"> <button
+                type="submit">Submit</button></label>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
