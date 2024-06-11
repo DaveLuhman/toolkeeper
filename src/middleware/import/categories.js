@@ -23,8 +23,13 @@ async function saveCategoryDocument(doc) {
     errorList.push({ key: doc.prefix, reason: error.message })
   }
 }
-
-async function createCategories(entries) {
+/**
+ *
+ *
+ * @param {*} entries
+ * @return {*} 
+ */
+function createCategories(entries) {
   const categoryPromises = entries.map((entry) => {
     const doc = createCategoryDocument(entry)
     return saveCategoryDocument(doc)

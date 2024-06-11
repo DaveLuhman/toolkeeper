@@ -9,7 +9,7 @@ import logger from './logger.js'
  * @returns {Promise<boolean>} A promise that resolves with true if the collection is empty, otherwise false.
  */
 async function isUsersCollectionEmpty() {
-  const user = await User.count()
+  const user = await User.countDocuments()
   return user === 0
 }
 
