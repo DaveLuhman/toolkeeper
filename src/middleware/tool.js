@@ -1,3 +1,4 @@
+// skipcq: JS-0257
 import moment from "moment";
 import ServiceAssignment from "../models/ServiceAssignment.model.js";
 import Tool from "../models/Tool.model.js";

@@ -42,6 +42,7 @@
     "fs": "^0.0.2",
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
+    "moment": "^2.30.1",
     "mongoose": "^7.5.0",
     "mongoose-autopopulate": "^1.0.1",
     "mongoose-unique-validator": "^4.0.0",
