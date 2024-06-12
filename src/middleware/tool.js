@@ -19,7 +19,7 @@ import { findServiceAssignmentByName } from "./serviceAssignment.js";
 async function getAllTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences;
   logger.info("[MW] getAllTools-in".bgBlue.white);
-  const tools = await Tool.find({}).sort({ [sortField]: sortOrder });
+  const tools = await Tool.find({}).sort({ [sortField]: sortOrder || 1 });
   res.locals.tools = tools; // array of tools
   logger.info("[MW] getAllTools-out".bgWhite.blue);
   return next();
@@ -39,7 +39,7 @@ async function getActiveTools(req, res, next) {
   const tools = await Tool.find()
     .where("archived")
     .equals(false)
-    .sort({ [sortField]: sortOrder || -1 });
+    .sort({ [sortField]: sortOrder || 1 });
     res.locals.tools = tools.filter((tool) => {
     return tool.serviceAssignment?.active;
   });
@@ -145,7 +145,7 @@ async function searchTools(req, res, next) {
       res.locals.searchTerm = searchTerm;
       res.locals.tools = await Tool.where("serviceAssignment")
         .equals(searchTerm)
-        .sort({ [sortField]: sortOrder })
+        .sort({ [sortField]: sortOrder || 1 })
         .exec();
       break;
     case "category":
@@ -153,7 +153,7 @@ async function searchTools(req, res, next) {
       res.locals.searchTerm = searchTerm;
       res.locals.tools = await Tool.where("category")
         .equals(searchTerm)
-        .sort({ [sortField]: sortOrder })
+        .sort({ [sortField]: sortOrder || 1 })
         .exec();
       break;
     case "status":
@@ -168,7 +168,7 @@ async function searchTools(req, res, next) {
       res.locals.searchBy = searchBy;
       res.locals.tools = await Tool.find({
         [searchBy]: { $eq: searchTerm },
-      }).sort({ [sortField]: sortOrder });
+      }).sort({ [sortField]: sortOrder || 1 });
       break;
   }
   res.locals.totalFound = res.locals.tools.length;
