@@ -1,4 +1,4 @@
-
+import { getDashboardStats, getRecentlyUpdatedTools } from '../middleware/tool.js'
 /**
  * Renders the results page.
  * @param {object} req The request object.
@@ -23,4 +23,20 @@ export const renderStatusChangeConfirmationPage = (_req, res) => {
  */
 export const renderEditTool = (_req, res) => {
     res.render('editTool')
+}
+/**
+ * Renders the edit tool page.
+ * @param _req The request object (not used in this function).
+ * @param res The response object used to render the page.
+ */
+export const renderDashboard = async (_req, res) => {
+    try{
+        res.locals.dashboardStats = await getDashboardStats()
+        res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools()
+        res.render('dashboard')
+    }
+    catch(err){
+        console.error(err)
+        res.render('error/error')
+    }
 }

@@ -9,40 +9,22 @@
             ></i></label>
         </div></td>
       <th>Serial number</th>
-      <th class="hidden md:table-cell">Tool ID</th>
       <th>Barcode #</th>
-      <th class="hidden lg:table-cell">Description</th>
       <th class="hidden md:table-cell">Status</th>
       <th class="hidden md:table-cell">Service Assignment</th>
-      <th class="hidden md:table-cell">Category</th>
-      <th>Edit</th>
+      <th>Updated</th>
     </tr>
   </thead>
-  {{#if tools}}
+  {{#if recentlyUpdatedTools}}
     <tbody>
-      {{#each tools}}
+      {{#each recentlyUpdatedTools}}
           <tr>
             <td></td>
-            <td id="serialNumber">{{serialNumber}}</td>
-            <td class="hidden md:table-cell" id="toolID">{{toolID}}</td>
+            <td id="serialNumber"><a href="/tool/{{id}}">{{serialNumber}}</a></td>
             <td id="barcode">{{barcode}}</td>
-            <td
-              class="hidden lg:table-cell"
-              id="description"
-            >{{description}}</td>
             <td class="hidden md:table-cell" id="status">{{status}}</td>
-            <td
-              class="hidden md:table-cell"
-              id="serviceAssignment"
-            >{{serviceAssignment.name}}
-              -
-              {{serviceAssignment.description}}</td>
-            <td class="hidden md:table-cell" id="category">{{category.name}}
-            </td>
-            <td><label class="rounded-badge btn-xs"><a href="/tool/{{id}}"><i
-                    class="fa fa-pencil"
-                  ></i></a></label>
-            </td>
+            <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment.name}}</td>
+            <td>{{hbsDate_distanceFromToday updatedAt}}</td>
           </tr>
       {{/each}}
     </tbody>

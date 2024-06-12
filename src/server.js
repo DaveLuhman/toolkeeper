@@ -16,21 +16,15 @@ import flash from 'express-flash'
 import session from 'express-session'
 // handlebars depenancies
 import { create } from 'express-handlebars' // templating engine
-import handlebarsHelpers from 'handlebars-helpers'
-import paginate from 'handlebars-paginate'
 // auth depenancies
 import passport from 'passport'
 import { checkAuth, isManager } from './middleware/auth.js'
 import passportConfig from './config/passport.js'
 // utility depenancies
-import { getCategoryName } from './middleware/category.js'
-import { getServiceAssignmentName } from './middleware/serviceAssignment.js'
+
 import {
-  isSelected,
   populateDropdownItems,
   rateLimiter,
-  getPackageVersion,
-  searchingForOneTool,
   errorHandler,
   AppError
 } from './middleware/util.js'
@@ -40,6 +34,7 @@ import { indexRouter } from './routes/index.routes.js'
 import { settingsRouter } from './routes/settings/index.routes.js'
 import { toolRouter } from './routes/tool.routes.js'
 import { userRouter } from './routes/user.routes.js'
+import customHelpers from './helpers/index.js'
 
 // use the imported dependencies as needed in the server.js file
 
@@ -81,15 +76,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 // Handlebars Setup
 const hbs = create({
-  helpers: {
-    isSelected,
-    getCategoryName,
-    getServiceAssignmentName,
-    paginate,
-    getPackageVersion,
-    searchingForOneTool,
-    ...handlebarsHelpers()
-  },
+  helpers: customHelpers,
   extname: '.hbs',
   defaultLayout: 'main',
   partialsDir: ['./src/views/partials', './src/views/partials/modals'],

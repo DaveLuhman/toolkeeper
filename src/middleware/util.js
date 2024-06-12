@@ -1,41 +1,10 @@
-/*
-List of Functions in order (* means exported)
-*paginate
-*mutateToArray
-*sortByUserPreference
-sanitize
-*sanitizeReqBody
-*isSelected
-*populateDropdownItems (const, not function)
-*rateLimiter
-*createAccountLimiter
-*csvFileToEntries
-*getPackageVersion
-*hoistSearchParamsToBody
-*/
 
 import rateLimit from 'express-rate-limit'
 import { listCategoryNames } from './category.js'
 import { listActiveSAs } from './serviceAssignment.js'
 import xss from 'xss'
 
-/**
- *
- * @param {array} data
- * @param {number} targetPage
- * @param {number} perPage
- * @returns {object} trimmedData, targetPage, pageCount
- */
-export function paginate(data, targetPage, perPage) {
-  perPage = perPage || 10
-  targetPage = targetPage || 1
-  const pageCount = Math.ceil(data.length / perPage) // number of pages
-  const trimmedData = data.slice(
-    perPage * targetPage - perPage,
-    perPage * targetPage + 1
-  )
-  return { trimmedData, targetPage, pageCount }
-}
+
 
 // mutate to array
 /**
@@ -93,16 +62,6 @@ export function sanitizeReqBody(req, _res, next) {
   return next()
 }
 
-/**
- *
- * @param {string} option option in the list
- * @param {string} objectProperty property on the object you want checked
- * @returns
- */
-export function isSelected(option, objectProperty) {
-  if (option === objectProperty) return 'selected'
-  return null
-}
 
 export const populateDropdownItems = [listCategoryNames, listActiveSAs]
 
@@ -137,13 +96,7 @@ export function csvFileToEntries(file) {
     .map((row) => row.split(','))
 }
 
-/**
- * Retrieves the current package version from the environment variables.
- * @returns {string} The current package version.
- */
-export function getPackageVersion() {
-  return process.env.npm_package_version
-}
+
 
 /**
  * Transfers search parameters from the query string to the request body.
@@ -167,24 +120,9 @@ export function hoistSearchParamsToBody(req, _res, next) {
  * @returns {Array} - The deduplicated array.
  */
 export function deduplicateArray(arr) {
-  return Array.from(new Set(arr)).filter((item) => item !== '') 
+  return Array.from(new Set(arr)).filter((item) => item !== '')
 }
-/**
- * Checks if the search parameter is expected to return only one tool.
- *
- * @param {string} searchBy - The search parameter.
- * @returns {boolean} - True if the search parameter is expected to return only one tool, false otherwise.
- */
-export function searchingForOneTool(searchBy) {
-  const searchesReturningOneTool = [
-    'serialNumber',
-    'barcode',
-    'status',
-    'modelNumber',
-    'toolID',
-  ]
-  return searchesReturningOneTool.includes(searchBy)
-}
+
 
 // Custom error class
 export class AppError extends Error {
@@ -215,26 +153,5 @@ export const errorHandler = (err, _req, res, _next) => {
       errorMessage: err.message,
       errorStack: err.stack,
     })
-  }
-}
-
-/**
- * Generates a unique identifier for a given tool document
- * @param {object} toolDocument - The document containing tool information
- * @returns An unique identifier based on the tool's ID, barcode, or serial number
- */
-export const returnUniqueIdentifier = (toolDocument) => {
-  try {
-    const { toolID, barcode, serialNumber } = toolDocument
-    if (toolID) {
-      return `Tool ID ${toolID}`
-    } else if (barcode) {
-      return `Barcode: ${barcode}`
-    } else if (serialNumber) {
-      return `SN: ${serialNumber}`
-    }
-    return 'Unable to uniquely identify this tool' // Added return statement
-  } catch (error) {
-    return 'Unable to uniquely identify this tool'
   }
 }

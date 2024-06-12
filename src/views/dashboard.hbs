@@ -1,0 +1,21 @@
+<div class="mb-2 text-center">
+    {{> dashboard/_statsBox}}
+</div>
+<div class="flex flex-row">
+    <div class="flex-1" id="recentlyChanged">
+        {{#if recentlyUpdatedTools}}
+        {{> dashboard/_recentlyUpdated}}
+        {{/if}}
+    </div>
+    <div class="flex flex-1 flex-col">
+        <div class="text-center text-2xl font-semibold">Quick Search Links</div>
+        <div class="flex flex-row justify-evenly">
+            {{#if activeServiceAssignments}}
+            {{> dashboard/_serviceAssignmentBox}}
+            {{/if}}
+            {{#if categories}}
+            {{> dashboard/_categoryBox}}
+            {{/if}}
+            </div>
+    </div>
+</div>
