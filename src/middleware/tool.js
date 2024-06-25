@@ -492,7 +492,7 @@ async function lookupToolWrapper(searchTerms) {
 async function submitCheckInOut(req, res, next) {
   try {
     const id = mutateToArray(req.body.id);
-    const { newServiceAssignment } = req.body;
+    const { destinationServiceAssignment } = req.body;
     const newTools = [];
     for (let i = 0; i < id.length; i++) {
       if (id[i] === "toolNotFound") break;
@@ -501,7 +501,7 @@ async function submitCheckInOut(req, res, next) {
         await Tool.findByIdAndUpdate(
           { _id: id[i] },
           {
-            serviceAssignment: newServiceAssignment,
+            serviceAssignment: destinationServiceAssignment,
             $inc: { __v: 1 },
             $set: { updatedAt: Date.now() },
           },
