@@ -1,9 +1,10 @@
 import mongoose from 'mongoose'
 import Tool from '../models/Tool.model.js'
 import ServiceAssignment from '../models/ServiceAssignment.model.js'
-
+import { config } from 'dotenv'
+config()
 // Connect to your MongoDB database
-mongoose.connect('mongodb://localhost:27017/toolkeeper', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
