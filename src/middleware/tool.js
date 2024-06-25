@@ -41,7 +41,7 @@ async function getActiveTools(req, res, next) {
     .where("archived")
     .equals(false)
     .sort({ [sortField]: sortOrder || 1 });
-    res.locals.tools = tools.filter((tool) => {
+  res.locals.tools = tools.filter((tool) => {
     return tool.serviceAssignment?.active;
   });
   logger.info("[MW] getActiveTools-out".bgWhite.blue);
@@ -91,7 +91,7 @@ async function getCheckedInTools() {
   const checkedInTools = [];
   for (let i = 0; i < tools.length; i++) {
     for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
-      if (activeServiceAssignmentArray[ii] == tools[i].serviceAssignment?._id) {
+      if (activeServiceAssignmentArray[ii] === tools[i].serviceAssignment?._id) {
         checkedInTools.push(tools[i]);
       }
     }
@@ -116,7 +116,7 @@ async function getCheckedOutTools() {
   const checkedInTools = [];
   for (let i = 0; i < tools.length; i++) {
     for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
-      if (activeServiceAssignmentArray[ii] == tools[i].serviceAssignment?._id) {
+      if (activeServiceAssignmentArray[ii] === tools[i].serviceAssignment?._id) {
         checkedInTools.push(tools[i]);
       }
     }
@@ -274,18 +274,10 @@ async function updateToolHistory(toolID) {
 async function updateTool(req, res, next) {
   logger.info("[MW] updateTool-in".bgBlue.white);
 
-  if (
-    !req.body.serviceAssignment ||
-    req.body.serviceAssignment == "null" ||
-    req.body.serviceAssignment == undefined
-  ) {
+  if (!req.body.serviceAssignment) {
     req.body.serviceAssignment = "64a34b651288871770df1086";
   }
-  if (
-    !req.body.category ||
-    req.body.category == "null" ||
-    req.body.category == undefined
-  ) {
+  if (!req.body.category) {
     req.body.category = "64a1c3d8d71e121dfd39b7ab";
   }
   // block level function to update a single tool
@@ -308,8 +300,8 @@ async function updateTool(req, res, next) {
       modelNumber,
       description,
       toolID,
-      serviceAssignment: serviceAssignment,
-      category: category,
+      serviceAssignment,
+      category,
       manufacturer,
       size: {
         width,
@@ -576,7 +568,6 @@ async function getDashboardStats() {
     return { todaysTools: 0, thisWeeksTools: 0, totalIn: 0, totalOut: 0 };
   }
 }
-
 
 /**
  * Retrieves the recently updated tools.
