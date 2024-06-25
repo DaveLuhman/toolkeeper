@@ -4,67 +4,76 @@
         <table class="table overflow-visible ">
             <thead>
                 <tr>
-                    <th>Barcode</th>
-                    <th>Serial number</th>
+                    <th>Target Tool</th>
                     <th>Current SA</th>
                     <th>New SA</th>
                 </tr>
             </thead>
+            <input type="hidden" id="destinationServiceAssignment" name="destinationServiceAssignment" value="{{destinationServiceAssignment}}">
             {{#if tools}}
-                <tbody>
+            <tbody>
 
-                    {{#each tools}}
-                        {{#if _id}}
-                            <tr>
-                                <input type="hidden" name="id" value="{{id}}">
-                                <td>{{serialNumber}}</td>
-                                <td>{{barcode}}</td>
+                {{#each tools}}
+                {{#if _id}}
+                <tr>
+                    <input type="hidden" name="id" value="{{id}}">
+                    <td>{{toolID}} - {{description}}</td>
+                    <td name="serviceAssignment">{{serviceAssignment.name}} -
+                        {{serviceAssignment.description}}
+                    </td>
+                    <td name="destinationServiceAssignmment">
+                        {{getServiceAssignmentName ../allServiceAssignments
+                        ../destinationServiceAssignment}}
 
-                                <td name="serviceAssignment">{{serviceAssignment.name}} -
-                                    {{serviceAssignment.description}}
-                                </td>
-                                <td name="newServiceAssignmment">
-                                    {{getServiceAssignmentName ../allServiceAssignments ../destinationServiceAssignment}}
-                                    
-                                </td>
-                            </tr>
-                        {{else}}
-                            <tr class="bg-red-400 text-black">
-                                <td>Tool Not Found</td>
-                                <td>{{serialNumber}}</td>
+                    </td>
+                </tr>
+                {{else}}
+                <tr class="bg-red-400 text-black">
+                    <td>Tool Not Found</td>
 
-                                <td name="serviceAssignment">
-                                </td>
-                                <td name="newServiceAssignmment">
-                                    <select name="dummyBlank" class="select select-bordered bg-red-300">
-                                        <option>Tool Not Found</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            {{/if}}
-                    {{/each}}
-            {{/if}}
+                    <td>{{serialNumber}}</td>
+                    <td name="newServiceAssignmment">
+                        <select name="dummyBlank" class="select select-bordered bg-red-300">
+                            <option>Tool Not Found</option>
+                        </select>
+                    </td>
+                </tr>
+                {{/if}}
+                {{/each}}
+                {{/if}}
             </tbody>
         </table>
         <div class="form-control items-center">
-                    {{#if displaySelector}}
-                    <div class="border-red-700 border-2 rounded-xl flex justify-between items-center mb-2">
-                    <p class="font-bold">{{message}}</p>
-                    <select name="newServiceAssignment" class="ml-4 start select select-bordered">
-                        {{#each activeServiceAssignments}}
-                        <option value="{{id}}" {{isSelected id ../destinationServiceAssignment}}>
-                            {{name}} - {{description}}
-                        </option>
-                        {{/each}}
-                        </select>
-                        </div>
-                        {{#else}}
-                    <input type="hidden" name="newServiceAssignment" value="{{destinationServiceAssignment}}">
-                    {{/else}}
-                        {{/if}}
-            <button id="check-in-out_submit" class="btn btn-neutral w-1/3" type="submit">Confirm And Submit</button>
+            {{#if displaySelector}}
+            <div class="border-red-700 border-2 rounded-xl flex justify-between items-center mb-2">
+                <p class="font-bold">{{message}}</p>
+                <select name="newServiceAssignment" class="ml-4 start select select-bordered">
+                    {{#each activeServiceAssignments}}
+                    <option value="{{id}}" {{isSelected id ../destinationServiceAssignment}}>
+                        {{name}} - {{description}}
+                    </option>
+                    {{/each}}
+                </select>
+            </div>
+            {{#else}}
+            <input type="hidden" name="destinationServiceAssignment" value="{{destinationServiceAssignment}}">
+            {{/else}}
+            {{/if}}
+            <button id="check-in-out_submit" class="btn btn-neutral w-1/3" onclick="submitWithoutWarning()">Confirm And Submit</button>
         </div>
     </form>
+    <script>
+        const beforeUnloadHandler = (event) => {
+            // Recommended
+            event.preventDefault();
+            return "The tools you have selected have not been changed yet. Are you sure you want to leave?"
+        };
+        function submitWithoutWarning() {
+    window.removeEventListener("beforeunload", beforeUnloadHandler);
+    document.forms[0].submit();
+}
+        window.addEventListener("beforeunload", beforeUnloadHandler);
+    </script>
     {{#if user.preferences.developer}}
     {{destinationServiceAssignment}}
     {{/if}}
