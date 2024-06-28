@@ -139,11 +139,23 @@
     {{/if}}
 </div>
 <script>
-    document.getElementById('archive-button').addEventListener('onclick', function(e)
-    {
-        e.preventDefault()
-        (window.confirm('Would you like to archive this tool?')) {
-            window.location.href = '/tool/archive/{{id}}'
-        }
+
+  const form = document.querySelector('form')
+  const inputs = form.querySelectorAll('input, select, textarea')
+
+  inputs.forEach((input) => {
+    input.addEventListener('change', () => {
+      input.classList.add('changed')
     })
+  })
+    const archiveButton = document.getElementById('archive-button')
+    if(archiveButton){
+        archiveButton.addEventListener('click', function(e)
+        {
+            e.preventDefault()
+            if(window.confirm('Would you like to archive this tool?')) {
+                window.location.href = '/tool/archive/{{id}}'
+            }
+        })
+    }
 </script>
