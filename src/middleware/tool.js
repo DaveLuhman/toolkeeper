@@ -284,6 +284,7 @@ async function updateTool(req, res, next) {
   const {
     id,
     modelNumber,
+    barcode,
     description,
     toolID,
     serviceAssignment,
@@ -297,6 +298,7 @@ async function updateTool(req, res, next) {
   const updatedTool = await Tool.findByIdAndUpdate(
     { $eq: id },
     {
+      barcode,
       modelNumber,
       description,
       toolID,

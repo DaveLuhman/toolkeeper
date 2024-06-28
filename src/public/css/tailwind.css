@@ -342,3 +342,8 @@ svg.fill-current {
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+/* js invoked classes */
+.changed {
+  @apply bg-red-500;
+  @apply text-white;
+}
