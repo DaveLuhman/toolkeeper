@@ -15,7 +15,7 @@
                 <input id="new-tool_manufacturer" name="manufacturer" type="text" placeholder="Manufacturer" class="input input-bordered" />
                 <select id="new-tool_serviceAssignment" name="serviceAssignment" class="select select-bordered">
                     {{#each activeServiceAssignments}}
-                        <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }} - {{ this.description}}
+                        <option name='{{ this.jobNumber }}' value='{{ this.id }}'>{{ this.jobNumber }} - {{ this.jobName}}
                         </option>
                     {{/each}}
                 </select>

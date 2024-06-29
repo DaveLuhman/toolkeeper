@@ -15,8 +15,8 @@
                     <thead>
                         <tr>
                             <th>Tool Count</th>
-                            <th>Display Name</th>
-                            <th class="hidden md:table-cell">Description</th>
+                            <th>Job Number</th>
+                            <th class="hidden md:table-cell">Job Name</th>
                             <th>Edit</th>
                             <th>Deactivate</th>
                         </tr>
@@ -26,8 +26,8 @@
                         {{#each settings_activeServiceAssignments}}
                         <tr>
                             <td>{{toolCount}}</td>
-                            <td>{{name}}</td>
-                            <td class="hidden md:table-cell min-w-fit">{{description}}</td>
+                            <td>{{jobNumber}}</td>
+                            <td class="hidden md:table-cell min-w-fit">{{jobName}}</td>
                             <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i class="fa fa-pencil"></i></a></td>
                             <td><a href="/settings/serviceAssignments/deactivate/{{_id}}"><i
                                         class="fas fa-arrow-right"></i></a></td>
@@ -49,8 +49,8 @@
                     <thead>
                         <tr>
                             <th>Activate</th>
-                            <th>Display Name</th>
-                            <th class="hidden md:table-cell">Description</th>
+                            <th>Job Number</th>
+                            <th class="hidden md:table-cell">Job Name</th>
                             <th class="hidden md:table-cell">Tool Count</th>
                             <th>Edit</th>
                             <th>Delete</th>
@@ -62,8 +62,8 @@
                         <tr>
                             <td><a href="/settings/serviceAssignments/activate/{{_id}}"><i
                                         class="fas fa-arrow-left"></i></a></td>
-                            <td>{{name}}</td>
-                            <td class="hidden md:table-cell min-w-fit">{{description}}</td>
+                            <td>{{jobNumber}}</td>
+                            <td class="hidden md:table-cell min-w-fit">{{jobName}}</td>
                             <td {{#gt toolCount 0 }}class="text-red-400 font-semibold"{{/gt}}>{{toolCount}}</td>
                             <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i class="fa fa-pencil"></i></a></td>
                             <td><a href="/settings/serviceAssignments/delete/{{_id}}"
@@ -90,9 +90,9 @@
                     <h3 class="title-text">New Service Assignment</h3>
                 </div>
 
-                <input placeholder="Name" type="text" name="name" id="new-service-assignment_name"
+                <input placeholder="Job Number" type="text" name="jobNumber" id="new-service-assignment_jobNumber"
                     class="input input-bordered">
-                <input placeholder="Description" type="text" name="description" id="new-service-assignment_description"
+                <input placeholder="Job Name" type="text" name="jobName" id="new-service-assignment_jobName"
                     class="input input-bordered">
                 <input placeholder="Phone" type="text" name="phone" id="new-service-assignment_phone"
                     class="input input-bordered">

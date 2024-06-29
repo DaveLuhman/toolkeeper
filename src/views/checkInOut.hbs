@@ -13,34 +13,37 @@
             {{#if tools}}
             <tbody>
 
-                {{#each tools}}
-                {{#if _id}}
-                <tr>
-                    <input type="hidden" name="id" value="{{id}}">
-                    <td>{{toolID}} - {{description}}</td>
-                    <td name="serviceAssignment">{{serviceAssignment.name}} -
-                        {{serviceAssignment.description}}
-                    </td>
-                    <td name="destinationServiceAssignmment">
-                        {{getServiceAssignmentName ../allServiceAssignments
-                        ../destinationServiceAssignment}}
+                    {{#each tools}}
+                        {{#if _id}}
+                            <tr>
+                                <input type="hidden" name="id" value="{{id}}">
+                                <td>{{serialNumber}}</td>
+                                <td>{{barcode}}</td>
 
-                    </td>
-                </tr>
-                {{else}}
-                <tr class="bg-red-400 text-black">
-                    <td>Tool Not Found</td>
+                                <td name="serviceAssignment">{{serviceAssignment.jobNumber}} -
+                                    {{serviceAssignment.jobName}}
+                                </td>
+                                <td name="newServiceAssignmment">
+                                    {{getServiceAssignmentName ../allServiceAssignments ../destinationServiceAssignment}}
+                                    
+                                </td>
+                            </tr>
+                        {{else}}
+                            <tr class="bg-red-400 text-black">
+                                <td>Tool Not Found</td>
+                                <td>{{serialNumber}}</td>
 
-                    <td>{{serialNumber}}</td>
-                    <td name="newServiceAssignmment">
-                        <select name="dummyBlank" class="select select-bordered bg-red-300">
-                            <option>Tool Not Found</option>
-                        </select>
-                    </td>
-                </tr>
-                {{/if}}
-                {{/each}}
-                {{/if}}
+                                <td name="serviceAssignment">
+                                </td>
+                                <td name="newServiceAssignmment">
+                                    <select name="dummyBlank" class="select select-bordered bg-red-300">
+                                        <option>Tool Not Found</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            {{/if}}
+                    {{/each}}
+            {{/if}}
             </tbody>
         </table>
         <div class="form-control items-center">

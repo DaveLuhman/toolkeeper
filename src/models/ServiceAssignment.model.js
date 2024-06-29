@@ -6,12 +6,12 @@ const ServiceAssignmentSchema = new Schema(
       type: Schema.Types.ObjectId,
       auto: true
     },
-    name: {
+    jobNumber: {
       type: String,
       required: true,
       unique: true
     },
-    description: {
+    jobName: {
       type: String,
       required: false
     },

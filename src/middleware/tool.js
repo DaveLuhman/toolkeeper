@@ -7,7 +7,7 @@ import { deduplicateArray, mutateToArray } from "./util.js";
 import { returnUniqueIdentifier } from "../helpers/index.js";
 import sortArray from "sort-array";
 import logger from "../config/logger.js";
-import { findServiceAssignmentByName } from "./serviceAssignment.js";
+import { findServiceAssignmentByJobNumber } from "./serviceAssignment.js";
 
 /**
  *
@@ -419,7 +419,7 @@ async function checkTools(req, res, next) {
   const destinationServiceAssignment =
     req.body.serviceAssignmentInput === ""
       ? req.body.serviceAssignmentSelector
-      : await findServiceAssignmentByName(req.body.serviceAssignmentInput);
+      : await findServiceAssignmentByJobNumber(req.body.serviceAssignmentInput);
   if (!destinationServiceAssignment) {
     res.locals.message =
       "No Service Assignment Found. Please select one from the dropdown";

@@ -2,7 +2,7 @@
 import moment from 'moment'
 import handlebarsHelpers from 'handlebars-helpers'
 import { getCategoryName } from '../middleware/category.js'
-import { getServiceAssignmentName } from '../middleware/serviceAssignment.js'
+import { getServiceAssignmentJobNumber } from '../middleware/serviceAssignment.js'
 /**
  *
  * @param {array} data
@@ -85,7 +85,7 @@ const hbsDate_distanceFromToday = (date) => {
   }
   const customHelpers = {isSelected,
     getCategoryName,
-    getServiceAssignmentName,
+    getServiceAssignmentJobNumber,
     paginate,
     returnUniqueIdentifier,
     getPackageVersion,
