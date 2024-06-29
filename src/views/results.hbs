@@ -3,7 +3,7 @@
     <div class="alert">{{message}}</div>
   {{/if}}
   {{#eq 'serviceAssignment' searchBy}}
-    <h1 class="text-2xl" id="search-terms">Searched For: {{getServiceAssignmentName allServiceAssignments searchTerm}}.  Total Results: {{totalFound}}</h1>
+    <h1 class="text-2xl" id="search-terms">Searched For: {{getServiceAssignmentJobNumber allServiceAssignments searchTerm}}.  Total Results: {{totalFound}}</h1>
   {{/eq}}
     {{#eq 'category' searchBy}}
     <h1 class="text-2xl" id="search-terms">Searched For: {{getCategoryName categories searchTerm}}.  Total Results: {{totalFound}}</h1>

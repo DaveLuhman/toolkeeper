@@ -18,9 +18,9 @@
         <select name="serviceAssignmentSelector" class="select select-bordered col-span-2">
           {{#each activeServiceAssignments}}
             <option
-              name="{{this.name}}"
+              name="{{this.jobNumber}}"
               value="{{this.id}}"
-            >{{this.name}} - {{this.description}}</option>
+            >{{this.jobNumber}} - {{this.jobName}}</option>
           {{/each}}
         </select>
         <textarea
