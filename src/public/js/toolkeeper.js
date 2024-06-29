@@ -8,6 +8,9 @@ function btnToSpinner() {
   })
 }
 
+/*
+* Function to open the printer friendly tools in a new tab
+*/
 // eslint-disable-next-line no-unused-vars
 const openInNewTab = () => {
   const x = window.open()
@@ -17,3 +20,4 @@ const openInNewTab = () => {
   newPage.innerHTML = document.getElementById('printerFriendlyTools').innerHTML
   x.document.body.appendChild(newPage)
 }
+

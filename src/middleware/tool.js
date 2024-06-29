@@ -41,7 +41,7 @@ async function getActiveTools(req, res, next) {
     .where("archived")
     .equals(false)
     .sort({ [sortField]: sortOrder || 1 });
-    res.locals.tools = tools.filter((tool) => {
+  res.locals.tools = tools.filter((tool) => {
     return tool.serviceAssignment?.active;
   });
   logger.info("[MW] getActiveTools-out".bgWhite.blue);
@@ -79,19 +79,17 @@ async function getToolByID(req, res, next) {
  * @returns {array} An array of checked in tools.
  */
 async function getCheckedInTools() {
-  const tools = await Tool.find().where("archived").equals(false);
-  const activeServiceAssignmentsDocs = await ServiceAssignment.find()
+  const tools = await Tool.find().where("archived").equals(false); //get all unarchived tools
+  const stockroomDocs = await ServiceAssignment.find()
     .where("type")
-    .equals("Stockroom");
-  const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(
-    (item) => {
-      return item._id.valueOf();
-    }
-  );
+    .equals("Stockroom"); //get all stockroom documents (sa that count as checked in)
+  //initialize an array to hold the checked in tools
   const checkedInTools = [];
+  // iterate through the tools and compare the service assignment id to the active service assignment ids
+  // adding only the checked in tools to the array if they're in active service assignmetns
   for (let i = 0; i < tools.length; i++) {
-    for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
-      if (activeServiceAssignmentArray[ii] == tools[i].serviceAssignment?._id) {
+    for (let ii = 0; ii < stockroomDocs.length; ii++) {
+      if (stockroomDocs[ii]?.id === tools[i].serviceAssignment?.id) {
         checkedInTools.push(tools[i]);
       }
     }
@@ -116,7 +114,7 @@ async function getCheckedOutTools() {
   const checkedInTools = [];
   for (let i = 0; i < tools.length; i++) {
     for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
-      if (activeServiceAssignmentArray[ii] == tools[i].serviceAssignment?._id) {
+      if (activeServiceAssignmentArray[ii] === tools[i].serviceAssignment?._id) {
         checkedInTools.push(tools[i]);
       }
     }
@@ -274,24 +272,17 @@ async function updateToolHistory(toolID) {
 async function updateTool(req, res, next) {
   logger.info("[MW] updateTool-in".bgBlue.white);
 
-  if (
-    !req.body.serviceAssignment ||
-    req.body.serviceAssignment == "null" ||
-    req.body.serviceAssignment == undefined
-  ) {
+  if (!req.body.serviceAssignment) {
     req.body.serviceAssignment = "64a34b651288871770df1086";
   }
-  if (
-    !req.body.category ||
-    req.body.category == "null" ||
-    req.body.category == undefined
-  ) {
+  if (!req.body.category) {
     req.body.category = "64a1c3d8d71e121dfd39b7ab";
   }
   // block level function to update a single tool
   const {
     id,
     modelNumber,
+    barcode,
     description,
     toolID,
     serviceAssignment,
@@ -305,11 +296,12 @@ async function updateTool(req, res, next) {
   const updatedTool = await Tool.findByIdAndUpdate(
     { $eq: id },
     {
+      barcode,
       modelNumber,
       description,
       toolID,
-      serviceAssignment: serviceAssignment,
-      category: category,
+      serviceAssignment,
+      category,
       manufacturer,
       size: {
         width,
@@ -492,7 +484,7 @@ async function lookupToolWrapper(searchTerms) {
 async function submitCheckInOut(req, res, next) {
   try {
     const id = mutateToArray(req.body.id);
-    const { newServiceAssignment } = req.body;
+    const { destinationServiceAssignment } = req.body;
     const newTools = [];
     for (let i = 0; i < id.length; i++) {
       if (id[i] === "toolNotFound") break;
@@ -501,7 +493,7 @@ async function submitCheckInOut(req, res, next) {
         await Tool.findByIdAndUpdate(
           { _id: id[i] },
           {
-            serviceAssignment: newServiceAssignment,
+            serviceAssignment: destinationServiceAssignment,
             $inc: { __v: 1 },
             $set: { updatedAt: Date.now() },
           },
@@ -576,7 +568,6 @@ async function getDashboardStats() {
     return { todaysTools: 0, thisWeeksTools: 0, totalIn: 0, totalOut: 0 };
   }
 }
-
 
 /**
  * Retrieves the recently updated tools.

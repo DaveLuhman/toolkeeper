@@ -1,36 +1,33 @@
 <div class="overflow-y-scroll max-h-[75vh]  z-0 relative">
-<table class="table table-xs mt-2 max-h-min table-pin-rows table-pin-cols">
-  <thead>
-    <tr>
-      <td>
-        <div id="printButton" class="md:mr-3 md:items-start">
-          <label onclick="openInNewTab()"><i
-              class="fa-solid fa-print"
-            ></i></label>
-        </div></td>
-      <th>Serial number</th>
-      <th>Barcode #</th>
-      <th class="hidden md:table-cell">Status</th>
-      <th class="hidden md:table-cell">Service Assignment</th>
-      <th>Updated</th>
-    </tr>
-  </thead>
-  {{#if recentlyUpdatedTools}}
-    <tbody>
-      {{#each recentlyUpdatedTools}}
+  <table class="table table-xs mt-2 max-h-min table-pin-rows table-pin-cols">
+    <thead>
+      <tr>
+        <td>
+          <div id="printButton" class="md:mr-3 md:items-start">
+            <label onclick="openInNewTab()"><i class="fa-solid fa-print"></i></label>
+          </div>
+        </td>
+        <th>Barcode (Link To Tool)</th>
+        <th>Status</th>
+        <th class="hidden md:table-cell">Job Code / Name</th>
+        <th>Updated</th>
+      </tr>
+    </thead>
+    {{#if recentlyUpdatedTools}}
+      <tbody>
+        {{#each recentlyUpdatedTools}}
           <tr>
             <td></td>
-            <td id="serialNumber"><a href="/tool/{{id}}">{{serialNumber}}</a></td>
-            <td id="barcode">{{barcode}}</td>
+            <td id="barcode"><a href="/tool/{{id}}">{{barcode}}</a></td>
             <td class="hidden md:table-cell" id="status">{{status}}</td>
             <td class="hidden md:table-cell" id="serviceAssignment">{{serviceAssignment.jobNumber}}</td>
             <td>{{hbsDate_distanceFromToday updatedAt}}</td>
           </tr>
-      {{/each}}
-    </tbody>
-  {{/if}}
-</table>
+        {{/each}}
+      </tbody>
+    {{/if}}
+  </table>
   {{!-- THIS IS THE PRINTER FRIENDLY PAGES HTML. THIS IS JUST A CONVENIENT PLACE FOR HANDLEBARS TO RENDER IT --}}
   {{> _printerFriendly}}
   {{!-- END OF CONVENIENT SSR LOCATION --}}
-  </div>
+</div>
