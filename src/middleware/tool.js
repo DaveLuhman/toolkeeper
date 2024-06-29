@@ -79,19 +79,17 @@ async function getToolByID(req, res, next) {
  * @returns {array} An array of checked in tools.
  */
 async function getCheckedInTools() {
-  const tools = await Tool.find().where("archived").equals(false);
-  const activeServiceAssignmentsDocs = await ServiceAssignment.find()
+  const tools = await Tool.find().where("archived").equals(false); //get all unarchived tools
+  const stockroomDocs = await ServiceAssignment.find()
     .where("type")
-    .equals("Stockroom");
-  const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(
-    (item) => {
-      return item._id.valueOf();
-    }
-  );
+    .equals("Stockroom"); //get all stockroom documents (sa that count as checked in)
+  //initialize an array to hold the checked in tools
   const checkedInTools = [];
+  // iterate through the tools and compare the service assignment id to the active service assignment ids
+  // adding only the checked in tools to the array if they're in active service assignmetns
   for (let i = 0; i < tools.length; i++) {
-    for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
-      if (activeServiceAssignmentArray[ii] === tools[i].serviceAssignment?._id) {
+    for (let ii = 0; ii < stockroomDocs.length; ii++) {
+      if (stockroomDocs[ii]?.id === tools[i].serviceAssignment?.id) {
         checkedInTools.push(tools[i]);
       }
     }
