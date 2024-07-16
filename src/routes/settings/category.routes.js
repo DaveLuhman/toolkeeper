@@ -23,6 +23,7 @@ categoryRouter.post(
   '/edit', // target
   sanitizeReqBody,
   updateCategory,
+  getCategories,
   renderSettingsCategories
 )
 // add new service assignment
