@@ -154,7 +154,7 @@
         {
             e.preventDefault()
             if(window.confirm('Would you like to archive this tool?')) {
-                window.location.href = '/tool/archive/{{id}}'
+                window.location.href = '/tool/archive/{{tools.0.id}}'
             }
         })
     }
