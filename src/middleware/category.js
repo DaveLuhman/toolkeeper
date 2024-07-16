@@ -45,8 +45,8 @@ const updateCategory = async function (req, res, next) {
   const { _id, name, description } = req.body
   try {
     const updatedCategory = await Category.findByIdAndUpdate(
-      { id: { $eq: _id } },
-      { name: { $eq: name }, description: { $eq: description } },
+      { _id },
+      { name, description},
       { new: true }
     )
     res.locals.updatedCategory = updatedCategory
