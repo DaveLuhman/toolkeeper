@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
   "dependencies": {
+    "@propelauth/express": "^2.1.19",
+    "@propelauth/javascript": "^2.0.17",
     "@sendgrid/mail": "^8.1.3",
     "@tailwindcss/typography": "^0.5.9",
     "autoprefixer": "^10.4.19",

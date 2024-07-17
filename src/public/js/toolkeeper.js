@@ -21,3 +21,8 @@ const openInNewTab = () => {
   x.document.body.appendChild(newPage)
 }
 
+const authClient = PropelAuth.createClient({authUrl: "https://6362972312.propelauthtest.com", enableBackgroundTokenRefresh: true});
+    // Hook up buttons to redirect to signup, login, etc
+document.getElementById("register-button").onclick = authClient.redirectToSignupPage;
+document.getElementById("login-button").onclick = authClient.redirectToLoginPage;
+// document.getElementById("logout-button").onclick = authClient.logout;

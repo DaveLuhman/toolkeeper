@@ -17,8 +17,9 @@ import session from 'express-session'
 // handlebars depenancies
 import { create } from 'express-handlebars' // templating engine
 // auth depenancies
+
 import passport from 'passport'
-import { checkAuth, isManager } from './middleware/auth.js'
+// import { checkAuth, isManager } from './middleware/auth.js'
 import passportConfig from './config/passport.js'
 // utility depenancies
 
@@ -100,21 +101,20 @@ app.use(express.urlencoded({ extended: false })) // Parse URL-encoded values
 app.use(session(sessionConfig))
 app.use(flash())
 // Passport
-passportConfig(app)
-app.use(passport.initialize())
-app.use(passport.session())
+// passportConfig(app)
+// app.use(passport.initialize())
+// app.use(passport.session())
 
 app.use(rateLimiter)
 
 // Routes (No User Context)
 app.use('/', indexRouter)
 // Routes (User Context)
-app.use(checkAuth)
 app.use(populateDropdownItems)
 app.use('/user', userRouter)
 app.use('/dashboard', dashboardRouter)
 app.use('/tool', toolRouter)
-app.use(isManager)
+// app.use(isManager)
 app.use('/settings', settingsRouter)
 // catch 404 and forward to error handler
 app.use((_req, res, next) => {

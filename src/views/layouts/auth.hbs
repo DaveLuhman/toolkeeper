@@ -1,30 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="corporate">
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="ToolKeeper In Design">
-  <meta name="author" content="Dave Luhman">
-  <link rel="icon" href="../img/favicon.ico">
-  <link rel="canonical" href="https://toolkeeper.dev.ado.software">
-  <meta name="namespace" content="public">
-  <title>Login</title>
-  <!-- Custom styles for this template -->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="ToolKeeper In Design">
+    <meta name="author" content="Dave Luhman">
+    <link rel="icon" href="../img/favicon.ico">
+    <link rel="canonical" href="https://toolkeeper.dev.ado.software">
+    <meta name="namespace" content="public">
+    <title>Login</title>
+    <!-- Custom styles for this template -->
+        <script
+      src="https://www.unpkg.com/@propelauth/javascript@2.0.11/dist/javascript.min.js"
+      integrity="sha384-FENNH2f7QuQvkZJBL7jebLr0OtYKgTA2iq+C5g3VXXX7SBwWmeMMoc+pBBtcn76G"
+      crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+      integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+      crossorigin="anonymous">
+    <link href="/css/style.css" rel="stylesheet">
+  </head>
 
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-  <link href="/css/style.css" rel="stylesheet">
-</head>
-
-<body class="min-h-screen">
-  {{#if error}}
+  <body class="min-h-screen">
+    {{#if error}}
     {{> _error}}
-  {{/if}}
-  {{{body}}}
-  {{> _footer}}
-</body>
-
+    {{/if}}
+    {{{body}}}
+    {{> _footer}}
+  </body>
 </html>

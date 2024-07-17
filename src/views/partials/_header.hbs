@@ -42,7 +42,7 @@
               {{#eq user.role "Admin"}}
                 <li class="hover:border-gray-300 bg-base-100"><a href="/settings">Settings</a></li>
               {{/eq}}
-              <li class="hover:border-gray-300 bg-base-100"><a href="/logout">Logout</a></li>
+              <li class="hover:border-gray-300 bg-base-100"><button type="button" id="logout-button">Logout</button></li>
             </ul>
           </div>
         </div>
@@ -82,10 +82,8 @@
       <!-- Login Button -->
       <div class="flex flex-wrap items-center justify-end order-3 mr-0 columns-2 md:mr-4" id="authButtons">
         <div class="flex items-center order-2 w-full md:w-full">
-          <a href="/login"><button
-              class="p-2 mr-4 bg-transparent border border-gray-300 rounded text-white-50 hover:bg-gray-100 hover:text-gray-700">Login</button></a>
-          <a href="/register"><button
-              class="p-2 mr-4 bg-transparent border border-gray-300 rounded text-white-50 hover:bg-gray-100 hover:text-gray-700">Register</button></a>
+          <button class="p-2 mr-4 bg-transparent border border-gray-300 rounded text-white-50 hover:bg-gray-100 hover:text-gray-700" id="login-button">Login</button>
+          <button class="p-2 mr-4 bg-transparent border border-gray-300 rounded text-white-50 hover:bg-gray-100 hover:text-gray-700" id="register-button">Register</button>
         </div>
       </div>
 
