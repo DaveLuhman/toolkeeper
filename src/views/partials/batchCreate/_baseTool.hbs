@@ -1,0 +1,63 @@
+<form action="/tool/submit" method="POST">
+                <div class="container">
+                <div class="title-bar">
+                    <h3 class="title-text">Batch Default Values</h3>
+                </div>
+                <div>These values will apply to all tools created in this batch unless overridden below</div>
+                {{!-- Row 1 - includes both dropdown inputs  so they don't overlap --}}
+                <select id="new-tool_serviceAssignment" name="serviceAssignment" class="select select-bordered">
+                    {{#each activeServiceAssignments}}
+                        <option name='{{ this.jobNumber }}' value='{{ this.id }}'>{{ this.jobNumber }} - {{ this.jobName}}
+                        </option>
+                    {{/each}}
+                </select>
+                <select id="new-tool_category" name="category" class="select select-bordered">
+                    {{#each categories}}
+                        <option name='{{ this.name }}' value='{{ this.id }}'>{{ this.name }}
+                        </option>
+                    {{/each}}
+                </select>
+                <input id="new-tool_description" name="description" type="text" placeholder="Description" class="input input-bordered" />
+                <input id="new-tool_manufacturer" name="manufacturer" type="text" placeholder="Manufacturer" class="input input-bordered" />
+                <input id="new-tool_modelNumber" name="modelNumber" type="text" placeholder="Model Number" class="input input-bordered" />
+                {{!-- Size Inputs --}}
+                <div class="grid grid-flow-row-dense grid-cols-2 md:grid-cols-4 gap-2">
+                    <div class="form-control">
+                        <input id="new-tool_width" name="width" placeholder="W" value="{{size.width}}" type="text"
+                            class="input input-bordered" />
+                    </div>
+                    <div class="form-control">
+                        <input id="new-tool_length" name="length" placeholder="L" value="{{size.length}}" type="text"
+                            class="input input-bordered" />
+                    </div>
+                    <div class="form-control">
+                        <input id="new-tool_height" name="height" placeholder="H" value="{{size.height}}" type="text"
+                            class="input input-bordered" />
+                    </div>
+                    <div class="form-control">
+                        <input id="new-tool_weight" name="weight" placeholder="Lbs" value="{{size.weight}}" type="number"
+                            class="input input-bordered" />
+                    </div>
+                </div>
+                {{!-- End Size Inputs --}}
+                </div>
+                {{!-- end default values --}}
+                {{!-- base unique values --}}
+                <div class="container">
+                    <div class="title-bar">
+                    <h3 class="title-text">Base Unique Values</h3>
+                </div>
+                <div>These values will apply to all tools created in this batch unless overridden below</div>
+                <input type="checkbox" name="autoincrement-barcode" id="autoincrement-barcode-toggle" checked>
+                <input id="new-tool_barcode" name="barcode" type="text" placeholder="Barcode" class="input input-bordered" required/>
+                <input type="checkbox" name="autoincrement-serialNumber" id="autoincrement-serialNumber-toggle" checked>
+                <input id="new-tool_serialNumber" name="serialNumber" type="text" placeholder="Serial Number" class="input input-bordered" minlength="5" required/>
+                <input type="checkbox" name="autoincrement-toolID" id="autoincrement-toolID-toggle" checked>
+                <input id="new-tool_toolID" name="toolID" type="text" placeholder="Tool ID" class="input input-bordered" />
+                </div>
+                <div class="modal-button-row">
+                    <label class="modal-button" for="newToolModal">Cancel</label>
+                    <label class="modal-button"><button id="new-tool_submit" type="submit">Submit</button></label>
+                </div>
+            </div>
+        </form>
