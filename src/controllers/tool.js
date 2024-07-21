@@ -40,3 +40,7 @@ export const renderDashboard = async (_req, res) => {
         res.render('error/error')
     }
 }
+
+export const renderBatchCreationPage = (_req, res) => {
+    res.render('batchCreate')
+}

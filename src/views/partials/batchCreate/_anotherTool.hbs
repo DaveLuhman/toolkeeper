@@ -1,0 +1,77 @@
+{{! base unique values }}
+<div class='w-4/6'>
+    <div class='title-bar'>
+        <h3 class='title-text'>
+            Batch Unique Values
+            <div
+                class='tooltip tooltip-bottom'
+                data-tip='These unique values will be applied to the first tool created in this batch. &#013; They can be auto-incremented for subsequent tools if the value is numeric and sequential.'
+            >
+                <i class='fas fa-info-circle'></i>
+            </div>
+        </h3>
+    </div>
+    <div class='grid grid-rows-1 grid-cols-3'>
+        <div class='text-center'>
+            <input
+                type='checkbox'
+                name='autoincrement-barcode'
+                id='autoincrement-barcode-toggle'
+                checked
+            />
+            <label for='autoincrement-barcode-toggle'>
+                Auto-increment
+            </label>
+        </div>
+        <div class='text-center'>
+            <input
+                type='checkbox'
+                name='autoincrement-serialNumber'
+                id='autoincrement-serialNumber-toggle'
+                checked
+            />
+            <label for='autoincrement-serialNumber-toggle'>
+                Auto-increment
+            </label>
+        </div>
+        <div class='text-center'>
+            <input
+                type='checkbox'
+                name='autoincrement-toolID'
+                id='autoincrement-toolID-toggle'
+                checked
+            />
+            <label for='autoincrement-toolID-toggle'>
+                Auto-increment
+            </label>
+        </div>
+    </div>
+    <div class='grid grid-rows-1 grid-cols-3'>
+        <input
+            id='new-tool_barcode'
+            name='barcode'
+            type='text'
+            placeholder='Barcode'
+            class='input input-bordered'
+            required
+        />
+
+        <input
+            id='new-tool_serialNumber'
+            name='serialNumber'
+            type='text'
+            placeholder='Serial Number'
+            class='input input-bordered'
+            minlength='5'
+            required
+        />
+
+        <input
+            id='new-tool_toolID'
+            name='toolID'
+            type='text'
+            placeholder='Tool ID'
+            class='input input-bordered'
+        />
+    </div>
+</div>
