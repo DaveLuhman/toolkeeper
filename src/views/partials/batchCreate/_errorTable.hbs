@@ -1,0 +1,16 @@
+<div>
+<table class="self-center">
+  <thead>
+    <th>Duplicate Field</th>
+    <th>Duplicate Value</div>
+    <th>View Existing Tool</div>
+  </thead>
+  {{#each errorList as |error|}}
+    <tr>
+      <td>{{error.cause}}</td>
+      <td>{{error.duplicateValue}}</td>
+      <td><a class="underline font-semibold" href="/tool/{{error.existingTool}}">View</a></td>
+    </tr>
+  {{/each}}
+  </table>
+</div>

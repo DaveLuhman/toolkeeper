@@ -50,6 +50,6 @@ export const batchCreateTools = async (req, res) => {
   console.log(newTools)
   res.locals.tools = newTools
   res.locals.errorList = errorList
-  res.locals.message = `${newTools.length} tools successfully imported. ${errorList.length} failed to import.`
+  res.locals.message = `${errorList.length} failed to import.`
   res.render('results')
 }
