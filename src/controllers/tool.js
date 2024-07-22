@@ -44,3 +44,7 @@ export const renderDashboard = async (_req, res) => {
 export const renderBatchCreationPage = (_req, res) => {
     res.render('batchCreate')
 }
+
+export const batchCreateTools = (req, res) => {
+    res.json(JSON.stringify(req.body))
+}

@@ -1,96 +1,92 @@
-<div class='w-4/6'>
-    <div class='title-bar'>
-        <h3 class='title-text'>
-            Batch Default Values
-            <div
-                class='tooltip tooltip-bottom'
-                data-tip='These values will apply to all tools created in this batch'
-            >
-                <i class='fas fa-info-circle'></i>
-            </div>
-        </h3>
+<div class="w-4/6">
+  <div class="title-bar">
+    <h3 class="title-text">
+      <div
+        class="tooltip tooltip-bottom"
+        data-tip="These values will apply to all tools created in this batch"
+      >
+        <i class="fas fa-info-circle"></i>
+        Batch Default Values
+      </div>
+    </h3>
+  </div>
+  <div class="grid grid-rows-2 grid-cols-3 gap-2">
+    {{! service assignment }}
+    <select
+      id="batch_serviceAssignment"
+      name="serviceAssignment"
+      class="select select-bordered"
+    >
+      {{#each activeServiceAssignments}}
+      <option name="{{ this.jobNumber }}" value="{{ this.id }}">
+        {{ this.jobNumber }} - {{ this.jobName }}
+      </option>
+      {{/each}}
+    </select>
+    {{! category }}
+    <select id="batch_category" name="category" class="select select-bordered">
+      {{#each categories}}
+      <option name="{{ this.name }}" value="{{ this.id }}">
+        {{ this.name }}
+      </option>
+      {{/each}}
+    </select>
+    {{! description }}
+    <input
+      id="batch_description"
+      name="description"
+      type="text"
+      placeholder="Description"
+      class="input input-bordered"
+    />
+    {{! manufacturer }}
+    <input
+      id="batch_manufacturer"
+      name="manufacturer"
+      type="text"
+      placeholder="Manufacturer"
+      class="input input-bordered"
+    />
+    {{! model number }}
+    <input
+      id="batch_modelNumber"
+      name="modelNumber"
+      type="text"
+      placeholder="Model Number"
+      class="input input-bordered"
+    />
+    {{! Size Inputs }}
+    <div class="grid grid-flow-row-dense grid-rows-1 grid-cols-4 gap-1">
+      <input
+        id="batch_width"
+        name="width"
+        placeholder="W"
+        type="text"
+        class="input input-bordered"
+      />
+      <input
+        id="batch_length"
+        name="length"
+        placeholder="L"
+        type="text"
+        class="input input-bordered"
+      />
+      <input
+        id="batch_height"
+        name="height"
+        placeholder="H"
+        type="text"
+        class="input input-bordered"
+      />
+      <input
+        id="batch_weight"
+        name="weight"
+        placeholder="Lbs"
+        type="number"
+        class="input input-bordered"
+      />
     </div>
-    <div class='grid grid-rows-2 grid-cols-3 gap-2'>
-        {{! service assignment }}
-        <select
-            id='default_serviceAssignment'
-            name='default_serviceAssignment'
-            class='select select-bordered'
-        >
-            {{#each activeServiceAssignments}}
-                <option name='{{this.jobNumber}}' value='{{this.id}}'>
-                    {{this.jobNumber}} - {{this.jobName}}
-                </option>
-            {{/each}}
-        </select>
-        {{! category }}
-        <select
-            id='default_category'
-            name='default_category'
-            class='select select-bordered'
-        >
-            {{#each categories}}
-                <option name='{{this.name}}' value='{{this.id}}'>
-                    {{this.name}}
-                </option>
-            {{/each}}
-        </select>
-        {{! description }}
-        <input
-            id='default__description'
-            name='default_description'
-            type='text'
-            placeholder='Description'
-            class='input input-bordered'
-        />
-        {{! manufacturer }}
-        <input
-            id='default__manufacturer'
-            name='default_manufacturer'
-            type='text'
-            placeholder='Manufacturer'
-            class='input input-bordered'
-        />
-        {{! model number }}
-        <input
-            id='default__modelNumber'
-            name='default_modelNumber'
-            type='text'
-            placeholder='Model Number'
-            class='input input-bordered'
-        />
-        {{! Size Inputs }}
-        <div class='grid grid-flow-row-dense grid-rows-1 grid-cols-4 gap-1'>
-            <input
-                id='default__width'
-                name='default_width'
-                placeholder='W'
-                type='text'
-                class='input input-bordered'
-            />
-            <input
-                id='default__length'
-                name='default_length'
-                placeholder='L'
-                type='text'
-                class='input input-bordered '
-            />
-            <input
-                id='default__height'
-                name='default_height'
-                placeholder='H'
-                type='text'
-                class='input input-bordered'
-            />
-            <input
-                id='default__weight'
-                name='default_weight'
-                placeholder='Lbs'
-                type='number'
-                class='input input-bordered'
-            />
-        </div>
-        {{! End Size Inputs }}
-    </div>
+    {{! End Size Inputs }}
+  </div>
 </div>
 {{! end default values }}
