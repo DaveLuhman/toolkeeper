@@ -36,7 +36,7 @@
   <div id="row-0" class="grid grid-rows-1 grid-cols-3 gap-2">
     <input
       id="barcode_0"
-      name="barcode_0"
+      name="barcode"
       type="text"
       placeholder="Barcode"
       class="input input-bordered"
@@ -45,7 +45,7 @@
     />
     <input
       id="serialNumber_0"
-      name="serialNumber_0"
+      name="serialNumber"
       type="text"
       placeholder="Serial Number"
       class="input input-bordered"
@@ -54,11 +54,12 @@
     <div class="w-full">
       <input
         id="toolID_0"
-        name="toolID_0"
+        name="toolID"
         type="text"
         placeholder="Tool ID"
         class="input input-bordered -z-0 relative w-[90%] mr-2"
       />
+      <input type="hidden" name="entriesCount" value=`${entriesCount}`>
       <label id="plusButton" class="btn btn-accent w-4 float-right absolute">+</label>
     </div>
   </div>

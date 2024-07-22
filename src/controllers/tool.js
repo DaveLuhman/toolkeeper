@@ -1,11 +1,12 @@
 import { getDashboardStats, getRecentlyUpdatedTools } from '../middleware/tool.js'
+import { batchImportTools } from '../middleware/import/tool.js'
 /**
  * Renders the results page.
  * @param {object} req The request object.
  * @param {object} res The response object. Used to render the 'results' page.
  */
 export const renderResults = (req, res) => {
-    res.render('results')
+  res.render('results')
 }
 /**
  * Renders the status change confirmation page.
@@ -13,7 +14,7 @@ export const renderResults = (req, res) => {
  * @param {object} res The response object. Used to render the status change confirmation page.
  */
 export const renderStatusChangeConfirmationPage = (_req, res) => {
-    res.render('checkInOut')
+  res.render('checkInOut')
 }
 
 /**
@@ -22,7 +23,7 @@ export const renderStatusChangeConfirmationPage = (_req, res) => {
  * @param res The response object used to render the page.
  */
 export const renderEditTool = (_req, res) => {
-    res.render('editTool')
+  res.render('editTool')
 }
 /**
  * Renders the edit tool page.
@@ -30,21 +31,28 @@ export const renderEditTool = (_req, res) => {
  * @param res The response object used to render the page.
  */
 export const renderDashboard = async (_req, res) => {
-    try{
-        res.locals.dashboardStats = await getDashboardStats()
-        res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools()
-        res.render('dashboard')
-    }
-    catch(err){
-        console.error(err)
-        res.render('error/error')
-    }
+  try {
+    res.locals.dashboardStats = await getDashboardStats()
+    res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools()
+    res.render('dashboard')
+  } catch (err) {
+    console.error(err)
+    res.render('error/error')
+  }
 }
 
 export const renderBatchCreationPage = (_req, res) => {
-    res.render('batchCreate')
+  res.render('batchCreate')
 }
 
-export const batchCreateTools = (req, res) => {
-    res.json(JSON.stringify(req.body))
+export const batchCreateTools = async (req, res) => {
+  const preparedToolDocuments = batchImportTools(req.body)
+  preparedToolDocuments.forEach(async (toolDocument) => {
+    try {
+      await createTool(toolDocument)
+    } catch (error) {
+      console.error(error)
+    }
+  })
+  res.render('results')
 }

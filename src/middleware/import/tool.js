@@ -38,11 +38,12 @@ function createToolDocument(row) {
     toolID: row[10],
     manufacturer: row[11],
     serviceAssignment: '64a19e910e675938ebb67de7',
-    category: '64a1c3d8d71e121dfd39b7ab'
+    category: '64a1c3d8d71e121dfd39b7ab',
   }
   return toolDocument
 }
-
+//* @param {Array} entries An array of tool entries to be created.
+//* @returns {Promise} A promise that resolves when all tools have been created.
 async function createTool(toolDocument) {
   try {
     if (await checkForDuplicates(toolDocument.serialNumber)) {
@@ -52,7 +53,7 @@ async function createTool(toolDocument) {
     tool.category = await getCategoryByPrefix(getPrefixFromToolID(tool.toolID))
     await tool.save()
     await ToolHistory.create({
-      _id: tool._id
+      _id: tool._id,
     })
     return successCount++
   } catch (error) {
@@ -60,7 +61,7 @@ async function createTool(toolDocument) {
     console.log(error)
   }
 }
-function createTools(entries) {
+export function createTools(entries) {
   const toolPromises = entries.map((entry) => {
     const toolDocument = createToolDocument(entry)
     return createTool(toolDocument)
@@ -74,4 +75,75 @@ export async function importTools(file) {
   const entries = csvFileToEntries(file)
   await createTools(entries)
   return { successCount, errorList }
+}
+function prepareBatchData(jsonData) {
+  try {
+    const preparedToolObjects = []
+    const {
+      category,
+      serviceAssignment,
+      modelNumber,
+      manufacturer,
+      width,
+      length,
+      height,
+      weight,
+      barcode,
+      serialNumber,
+      description,
+      toolID,
+    } = requestBody
+    const barcodes = barcode.split(',')
+    const serialNumbers = serialNumber.split(',')
+    const toolIDs = toolID.split(',')
+    serialNumbers.forEach((serialNumber, index) => {
+      const toolObject = {
+        serialNumber,
+        barcode: barcodes[index],
+        description,
+        modelNumber,
+        toolID: toolIDs[index],
+        manufacturer,
+        serviceAssignment,
+        category,
+        size: { width, length, height, weight },
+      }
+      preparedToolObjects.push(toolObject)
+    })
+    return preparedToolObjects
+  } catch (error) {
+    console.log(error)
+  }
+}
+async function createBatchTool(toolDocument) {
+  try {
+    if (await checkForDuplicates(toolDocument.serialNumber)) {
+      throw new Error('Duplicate serial number')
+    }
+    const tool = new Tool(toolDocument)
+    await tool.save()
+    await ToolHistory.create({
+      _id: tool._id,
+    })
+    return tool
+  } catch (error) {
+    errorList.push({ key: toolDocument.serialNumber, reason: error.message })
+    console.log(error)
+  }
+}
+
+function createBatchTools(toolObjectArray) {
+  const toolPromises = toolObjectArray.map((obj) => {
+    const toolDocument = createToolDocument(obj)
+    return createBatchTool(toolDocument)
+  })
+  return Promise.allSettled(toolPromises)
+}
+
+export function batchImportTools(requestBody) {
+  errorList.length = 0
+  successCount = 0
+  const preparedToolObjects = prepareBatchData(requestBody)
+  createBatchTools(preparedToolObjects)
+  return {errorList, successCount} 
 }
