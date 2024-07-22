@@ -1,5 +1,5 @@
 import { getDashboardStats, getRecentlyUpdatedTools } from '../middleware/tool.js'
-import { batchImportTools } from '../middleware/import/tool.js'
+import { batchImportTools } from '../middleware/import/batch.js'
 /**
  * Renders the results page.
  * @param {object} req The request object.
@@ -46,13 +46,10 @@ export const renderBatchCreationPage = (_req, res) => {
 }
 
 export const batchCreateTools = async (req, res) => {
-  const preparedToolDocuments = batchImportTools(req.body)
-  preparedToolDocuments.forEach(async (toolDocument) => {
-    try {
-      await createTool(toolDocument)
-    } catch (error) {
-      console.error(error)
-    }
-  })
+  const {newTools, errorList} = await batchImportTools(req.body)
+  console.log(newTools)
+  res.locals.tools = newTools
+  res.locals.errorList = errorList
+  res.locals.message = `${newTools.length} tools successfully imported. ${errorList.length} failed to import.`
   res.render('results')
 }
