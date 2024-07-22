@@ -24,14 +24,13 @@
             id="autoincrement-barcode-toggle"
             checked
           />
-          <label for="autoincrement-barcode-toggle"> Auto-increment </label>
+          <label for="autoincrement-barcode-toggle">Auto-increment</label>
         </div>
         <div class="text-center">
           <input
             type="checkbox"
             name="autoincrement-serialNumber"
             id="autoincrement-serialNumber-toggle"
-            checked
           />
           <label for="autoincrement-serialNumber-toggle"> Auto-increment </label>
         </div>
@@ -40,7 +39,6 @@
             type="checkbox"
             name="autoincrement-toolID"
             id="autoincrement-toolID-toggle"
-            checked
           />
           <label for="autoincrement-toolID-toggle"> Auto-increment </label>
         </div>
@@ -76,6 +74,9 @@
   </div>
   <div class="modal-button-row">
     <label class="modal-button">
+      <a href="javascript:window.location.reload()">Clear</a>
+    </label>
+    <label class="modal-button">
       <a href="javascript:history.back()">Cancel</a>
     </label>
     <label class="modal-button">
@@ -84,11 +85,11 @@
   </div>
 </form>
 <script>
-  let entriesCount = 1
-  const plusButton = document.querySelector('#plusButton')
+   let entriesCount = 1
+   const plusButton = document.querySelector('#plusButton')
 
- // Insert New Unique value fields, having computed incremented values if necessary
-  const addAnotherTool = (e) => {
+  // Insert New Unique value fields, having computed incremented values if necessary
+const addAnotherTool = (e) => {
     const baseBarcode = document.querySelector('#barcode_0').value
     const baseSerialNumber = document.querySelector('#serialNumber_0').value
     const baseToolID = document.querySelector('#toolID_0').value
@@ -96,22 +97,22 @@
     const autoincrementSerialNumber = document.querySelector('#autoincrement-serialNumber-toggle')
     const autoincrementToolID = document.querySelector('#autoincrement-toolID-toggle')
     const additionalToolHtml = `
-      <input
-      id='barcode_${entriesCount}'
-      name='barcode'
-      type='text'
-      placeholder='Barcode'
-      class='input input-bordered'
-      />
-      <input
-      id='serialNumber_${entriesCount}'
-      name='serialNumber'
-      type='text'
-      placeholder='Serial Number'
-      class='input input-bordered'
-      minlength='5'
-      />
-      <div class="w-full">
+    <input
+    id='barcode_${entriesCount}'
+    name='barcode'
+    type='text'
+    placeholder='Barcode'
+    class='input input-bordered'
+    />
+    <input
+    id='serialNumber_${entriesCount}'
+    name='serialNumber'
+    type='text'
+    placeholder='Serial Number'
+    class='input input-bordered'
+    minlength='5'
+    />
+    <div class="w-full">
         <input
         id='toolID_${entriesCount}'
         name='toolID'
@@ -119,33 +120,86 @@
         placeholder='Tool ID ${entriesCount}'
         class='input input-bordered relative w-[90%] mr-2' />
         <label id="delete-row-${entriesCount}-button" class="btn btn-accent w-4 float-right absolute">-</label>
-        </div>
-
-      `
+        </div>       `
     e.preventDefault()
-    
+    // make and insert the new row with no values
     const additionalToolElement = document.createElement('div')
     additionalToolElement.setAttribute('id', `row-${entriesCount}`)
     additionalToolElement.classList.add('grid', 'grid-rows-1', 'grid-cols-3', 'gap-2', 'mt-2')
     additionalToolElement.innerHTML = additionalToolHtml
-    const lastToolRow = document.querySelector(`#row-${entriesCount - 1}`)
-    lastToolRow.parentElement.appendChild(additionalToolElement)
+    const toolRows = document.querySelectorAll('[id^="row-"]')
+    const lastToolRow = toolRows[toolRows.length - 1]
+    lastToolRow.insertAdjacentElement('afterend', additionalToolElement)
     // new row exists and attributes can be modified
+
     //add event listener to minus button
     const newMinusButton = document.querySelector(`#delete-row-${entriesCount}-button`).addEventListener('click', (e) => {
-      e.preventDefault()
-      const rowToDelete = e.target.parentElement.parentElement
-      rowToDelete.remove()
+    e.preventDefault()
+    const rowToDelete = e.target.parentElement.parentElement
+    rowToDelete.remove()
     })
-    // get new input field nodes
-    if(autoincrementBarcode.checked) {
-      if(baseBarcode === NaN || baseBarcode === '') {
-        autoincrementBarcode.checked = false
-      }
+    // barcode incrementing if necessary
+    if(autoincrementBarcode.checked ) {
+        if(baseBarcode === NaN || baseBarcode === '') {
+            autoincrementBarcode.checked = false
+            autoincrementBarcode.disabled = true;
+            autoincrementBarcode.nextElementSibling.style.color = 'gray'
+            autoincrementBarcode.classList.add = 'cursor-not-allowed'
+            toastr.options.closeMethod = 'fadeOut'
+            toastr.options.closeDuration = 1000
+            toastr.options.closeEasing = 'swing'
+            toastr.error('Unable to increment a blank or non-number value. You must manually enter barcodes, or refresh the page to try again.')
+    }   
+    else {
+        const barcodeElement = document.querySelector(`#barcode_${entriesCount}`)
+        const barcodeValue = parseInt(baseBarcode) + entriesCount
+        autoincrementBarcode.disabled = true;
+        barcodeElement.value = barcodeValue
+        barcodeElement.disabled = true;
+        }
+    }
+    // serial number incrementing if necessary
+    if(autoincrementSerialNumber.checked ) {
+        if(baseSerialNumber === NaN || baseSerialNumber === '') {
+            autoincrementSerialNumber.checked = false
+            autoincrementSerialNumber.disabled = true;
+            autoincrementSerialNumber.nextElementSibling.style.color = 'gray'
+            autoincrementSerialNumber.classList.add = 'cursor-not-allowed'
+            toastr.options.closeMethod = 'fadeOut'
+            toastr.options.closeDuration = 1000
+            toastr.options.closeEasing = 'swing'
+            toastr.error('Unable to increment a blank or non-number value. You must manually enter serial numbers, or refresh the page to try again.')
+    }   
+    else {
+        const serialNumberElement = document.querySelector(`#serialNumber_${entriesCount}`)
+        const serialNumberValue = parseInt(baseSerialNumber) + entriesCount
+        autoincrementSerialNumber.disabled = true;
+        serialNumberElement.value = serialNumberValue
+        serialNumberElement.disabled = true;
+        }
+    }
+    // tool ID incrementing if necessary
+    if(autoincrementToolID.checked ) {
+        if(baseToolID === NaN || baseToolID === '') {
+            autoincrementToolID.checked = false
+            autoincrementToolID.disabled = true;
+            autoincrementToolID.nextElementSibling.style.color = 'gray'
+            autoincrementToolID.classList.add = 'cursor-not-allowed'
+            toastr.options.closeMethod = 'fadeOut'
+            toastr.options.closeDuration = 1000
+            toastr.options.closeEasing = 'swing'
+            toastr.error('Unable to increment a blank or non-number value. You must manually enter tool IDs, or refresh the page to try again.')
+    }   
+    else {
+        const toolIDElement = document.querySelector(`#toolID_${entriesCount}`)
+        const toolIDValue = parseInt(baseToolID) + entriesCount
+        autoincrementToolID.disabled = true;
+        toolIDElement.value = toolIDValue
+        toolIDElement.disabled = true;
+        }
     }
     console.log(entriesCount)
     entriesCount++
-  }
+}
     plusButton.addEventListener('click', addAnotherTool)
-
 </script>
