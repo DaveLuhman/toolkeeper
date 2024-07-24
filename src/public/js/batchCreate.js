@@ -1,3 +1,35 @@
+/**
+ * Increments the rightmost consecutive digits in a string by a given iteration.
+ *
+ * @param {string} str - The input string.
+ * @param {number} iteration - The number to increment by.
+ * @returns {string} - The modified string with the rightmost consecutive digits incremented.
+ */
+export const incrementRightmostNumber = (str, iteration) => {
+  const regex = /\d+(?!.*\d)/
+  const match = str.match(regex)
+
+  if (match) {
+    const rightmostNumber = match[0]
+    const incrementedNumber = parseInt(rightmostNumber, 10) + parseInt(iteration, 10)
+    const startPosition = match.index
+    const endPosition = startPosition + rightmostNumber.length
+    return str.slice(0, startPosition) + incrementedNumber + str.slice(endPosition)
+  }
+
+  return str
+}
+
+/**
+ * Checks if a string ends with a number.
+ *
+ * @param {string} str - The string to check.
+ * @returns {boolean} Returns true if the string ends with a number, otherwise returns false.
+ */
+export const endsWithNumber = (str) => {
+  const regex = /\d+$/
+  return regex.test(str)
+}
 let entriesCount = 1
 const plusButton = document.querySelector('#plusButton')
 
@@ -7,7 +39,7 @@ const plusButton = document.querySelector('#plusButton')
  * @param {Event} e - The event object.
  * @returns {void}
  */
-const addAnotherTool = (e) => {
+export const addAnotherTool = (e) => {
   const baseBarcode = document.querySelector('#barcode_0').value
   const baseSerialNumber = document.querySelector('#serialNumber_0').value
   const baseToolID = document.querySelector('#toolID_0').value
@@ -79,7 +111,7 @@ const addAnotherTool = (e) => {
   }
   // serial number incrementing if necessary
   if (autoincrementSerialNumber.checked) {
-    if (endsWithNumber(baseSerialNumber) === false  || baseSerialNumber === '') {
+    if (endsWithNumber(baseSerialNumber) === false || baseSerialNumber === '') {
       autoincrementSerialNumber.checked = false
       incrementingErrorToastr()
     } else {
@@ -90,7 +122,7 @@ const addAnotherTool = (e) => {
   }
   // tool ID incrementing if necessary
   if (autoincrementToolID.checked) {
-    if (endsWithNumber(baseToolID) === false  || baseToolID === '') {
+    if (endsWithNumber(baseToolID) === false || baseToolID === '') {
       autoincrementToolID.checked = false
       incrementingErrorToastr()
     } else {
