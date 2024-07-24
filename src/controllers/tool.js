@@ -41,10 +41,22 @@ export const renderDashboard = async (_req, res) => {
   }
 }
 
+/**
+ * Renders the batch creation page.
+ *
+ * @param {Object} _req - The request object.
+ * @param {Object} res - The response object.
+ */
 export const renderBatchCreationPage = (_req, res) => {
   res.render('batchCreate')
 }
 
+/**
+ * Batch create tools.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
 export const batchCreateTools = async (req, res) => {
   const {newTools, errorList} = await batchImportTools(req.body)
   console.log(newTools)

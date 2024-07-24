@@ -247,9 +247,6 @@ async function createTool(req, res, next) {
   }
 }
 
-async function batchCreateTools(req, res, next) {
-}
-
 /**
  * Update the tool history.
  * @param {string} toolID The ID of the tool to update.

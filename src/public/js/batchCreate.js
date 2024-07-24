@@ -1,6 +1,12 @@
 let entriesCount = 1
 const plusButton = document.querySelector('#plusButton')
-// Insert New Unique value fields, having computed incremented values if necessary
+
+/**
+ * Adds another tool row to the form.
+ *
+ * @param {Event} e - The event object.
+ * @returns {void}
+ */
 const addAnotherTool = (e) => {
   const baseBarcode = document.querySelector('#barcode_0').value
   const baseSerialNumber = document.querySelector('#serialNumber_0').value
@@ -46,13 +52,11 @@ const addAnotherTool = (e) => {
   // new row exists and attributes can be modified
 
   //add event listener to minus button
-  const newMinusButton = document
-    .querySelector(`#delete-row-${entriesCount}-button`)
-    .addEventListener('click', (e) => {
-      e.preventDefault()
-      const rowToDelete = e.target.parentElement.parentElement
-      rowToDelete.remove()
-    })
+  document.querySelector(`#delete-row-${entriesCount}-button`).addEventListener('click', (e) => {
+    e.preventDefault()
+    const rowToDelete = e.target.parentElement.parentElement
+    rowToDelete.remove()
+  })
   const incrementingErrorToastr = () => {
     toastr.options.closeMethod = 'fadeOut'
     toastr.options.closeDuration = 1000
@@ -64,7 +68,7 @@ const addAnotherTool = (e) => {
 
   // barcode incrementing if necessary
   if (autoincrementBarcode.checked) {
-    if (baseBarcode === NaN || baseBarcode === '') {
+    if (endsWithNumber(baseBarcode) === false || baseBarcode === '') {
       autoincrementBarcode.checked = false
       incrementingErrorToastr()
     } else {
@@ -75,7 +79,7 @@ const addAnotherTool = (e) => {
   }
   // serial number incrementing if necessary
   if (autoincrementSerialNumber.checked) {
-    if (endsWithNumber(baseSerialNumber) == NaN || baseSerialNumber === '') {
+    if (endsWithNumber(baseSerialNumber) === false  || baseSerialNumber === '') {
       autoincrementSerialNumber.checked = false
       incrementingErrorToastr()
     } else {
@@ -86,7 +90,7 @@ const addAnotherTool = (e) => {
   }
   // tool ID incrementing if necessary
   if (autoincrementToolID.checked) {
-    if (baseToolID === NaN || baseToolID === '') {
+    if (endsWithNumber(baseToolID) === false  || baseToolID === '') {
       autoincrementToolID.checked = false
       incrementingErrorToastr()
     } else {
@@ -95,7 +99,8 @@ const addAnotherTool = (e) => {
       toolIDElement.disabled = true
     }
   }
-  if (entriesCount === parseInt(1)) {
+  // disable all autoincrement checkboxes on first row creation
+  if (entriesCount === 1) {
     autoincrementCheckboxes.forEach((element) => {
       element.disabled = true
       element.nextElementSibling.style.color = 'gray'
@@ -105,7 +110,9 @@ const addAnotherTool = (e) => {
   console.log(entriesCount)
   entriesCount++
 }
+// add event listener to new row button
 plusButton.addEventListener('click', addAnotherTool)
+// remove disabled attribute from all fields on form submission so all fields are included
 document.forms[0].addEventListener('submit', function () {
   const disabledFields = this.querySelectorAll('[disabled]')
   disabledFields.forEach((field) => {
