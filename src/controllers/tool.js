@@ -1,5 +1,6 @@
 import { getDashboardStats, getRecentlyUpdatedTools } from '../middleware/tool.js'
 import { batchImportTools } from '../middleware/import/batch.js'
+import { deduplicateArray } from '../middleware/util.js'
 /**
  * Renders the results page.
  * @param {object} req The request object.
@@ -60,7 +61,7 @@ export const renderBatchCreationPage = (_req, res) => {
 export const batchCreateTools = async (req, res) => {
   const {newTools, errorList} = await batchImportTools(req.body)
   console.log(newTools)
-  res.locals.tools = newTools
+  res.locals.tools = deduplicateArray(newTools).filter((tool) => tool !== undefined)
   res.locals.errorList = errorList
   res.locals.message = `${errorList.length} failed to import.`
   res.render('results')
