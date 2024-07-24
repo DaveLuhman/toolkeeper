@@ -1,0 +1,29 @@
+{{!--
+    This file isn't used for templating by express, new rows are inserted by the client via the /js/batchCreate.js.
+    This file is for reference to ensure tailwind captures all classes when building the CSS file for the app. 
+    --}}
+<input
+  id="barcode_${entriesCount}"
+  name="barcode"
+  type="text"
+  placeholder="Barcode"
+  class="input input-bordered"
+/>
+<input
+  id="serialNumber_${entriesCount}"
+  name="serialNumber"
+  type="text"
+  placeholder="Serial Number"
+  class="input input-bordered"
+  minlength="5"
+/>
+<div class="w-full">
+  <input
+    id="toolID_${entriesCount}"
+    name="toolID"
+    type="text"
+    placeholder="Tool ID ${entriesCount}"
+    class="input input-bordered relative w-[90%] mr-2"
+  />
+  <div id="delete-row-${entriesCount}-button" class="btn btn-accent w-4 float-right absolute">-</div>
+</div>

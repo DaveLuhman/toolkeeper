@@ -1,0 +1,20 @@
+<form action="/tool/batchCreate" method="POST">
+  <div class="flex flex-wrap items-center justify-evenly align-middle">
+    {{> batchCreate/_defaults}}
+    {{> batchCreate/_baseTool}}
+    <div class="w-4/6">
+      <div class="modal-button-row">
+        <label style="background-color:rgb(69 10 10)" class="modal-button">
+          <a href="javascript:window.location.reload()">Clear</a>
+        </label>
+        <label class="modal-button">
+          <a href="javascript:history.back()">Cancel</a>
+        </label>
+        <label class="modal-button">
+          <button id="batchCreate_submit" type="submit">Submit</button>
+        </label>
+      </div>
+    </div>
+  </div>
+</form>
+<script type="module" src="/js/batchCreate.js"></script>

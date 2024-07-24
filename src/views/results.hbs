@@ -1,15 +1,26 @@
-
+<div class="flex flex-col flex-wrap items-center justify-evenly align-middle">
   {{#if message}}
-    <div class="alert">{{message}}</div>
+  <div class="font-bold text-red-500">{{ message }}</div>
   {{/if}}
-  {{#eq 'serviceAssignment' searchBy}}
-    <h1 class="text-2xl" id="search-terms">Searched For: {{getServiceAssignmentJobNumber allServiceAssignments searchTerm}}.  Total Results: {{totalFound}}</h1>
-  {{/eq}}
-    {{#eq 'category' searchBy}}
-    <h1 class="text-2xl" id="search-terms">Searched For: {{getCategoryName categories searchTerm}}.  Total Results: {{totalFound}}</h1>
-  {{/eq}}
-  {{#if (searchingForOneTool searchBy)}}
-    <h1 class="text-2xl" id="search-terms">Searched For:  {{searchTerm}}.  Total Results: {{totalFound}}</h1>
+  {{#if errorList}}
+  {{> batchCreate/_errorTable}}
   {{/if}}
+</div>
+{{#eq 'serviceAssignment' searchBy}}
+<h1 class="text-2xl" id="search-terms">
+  Searched For: {{getServiceAssignmentJobNumber allServiceAssignments searchTerm}}. Total Results:
+  {{ totalFound }}
+</h1>
+{{/eq}}
+{{#eq 'category' searchBy}}
+<h1 class="text-2xl" id="search-terms">
+  Searched For: {{getCategoryName categories searchTerm}}. Total Results: {{ totalFound }}
+</h1>
+{{/eq}}
+{{#if (searchingForOneTool searchBy)}}
+<h1 class="text-2xl" id="search-terms">
+  Searched For: {{ searchTerm }}. Total Results: {{ totalFound }}
+</h1>
+{{/if}}
 {{> _toolTable}}
 {{> _devFlyout}}

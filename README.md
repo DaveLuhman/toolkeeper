@@ -58,6 +58,7 @@ This is a full-stack web application built with NodeJS and Express that allows a
 ## Features
 
 - Add and archive tools (No-Deletion Philosophy)
+   - Add tools individually from anywhere, or batch import tools to save time
 - Search for tools by a variety of fields
 - Add and delete service assignments (employees, vehicles, or jobsites)
 - Checkout and check-in tools to/from service assignments (employees, vehicles, jobsites, and stockrooms)

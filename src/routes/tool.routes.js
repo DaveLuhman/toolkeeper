@@ -17,6 +17,8 @@ import {
   renderEditTool,
   renderResults,
   renderStatusChangeConfirmationPage,
+  renderBatchCreationPage,
+  batchCreateTools
 } from '../controllers/tool.js'
 export const toolRouter = Router()
 
@@ -33,12 +35,16 @@ toolRouter.use(
 
 // retrieve current service assignment and render checkInOut prompting user to select the new assignment
 toolRouter.post('/checkInOut', listAllSAs, checkTools, renderStatusChangeConfirmationPage)
-// save the new service assignement to the database.
+
+// save the tool's new service assignment to the database.
 toolRouter.post('/submitCheckInOut', submitCheckInOut, renderResults)
 
 // create new tool
 toolRouter.post('/submit', sanitizeReqBody, createTool, renderResults)
-
+// render batch creation page
+toolRouter.get('/batchCreate', renderBatchCreationPage)
+// validate and create a batch of submitted tools
+toolRouter.post('/batchCreate', sanitizeReqBody, batchCreateTools)
 // update tool
 toolRouter.post('/update', sanitizeReqBody, updateTool, renderResults)
 

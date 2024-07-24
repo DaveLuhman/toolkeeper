@@ -20,7 +20,8 @@ const toolSchema = new Schema(
     barcode: {
       type: String,
       maxLength: 32,
-      trim: true
+      trim: true,
+      required: true
     },
     toolID: {
       type: String,

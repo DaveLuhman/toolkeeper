@@ -1,0 +1,92 @@
+<div class="w-4/6">
+  <div class="title-bar">
+    <h3 class="title-text">
+      <div
+        class="tooltip tooltip-bottom"
+        data-tip="These values will apply to all tools created in this batch"
+      >
+        <i class="fas fa-info-circle"></i>
+        Batch Default Values
+      </div>
+    </h3>
+  </div>
+  <div class="grid grid-rows-2 grid-cols-3 gap-2">
+    {{! service assignment }}
+    <select
+      id="batch_serviceAssignment"
+      name="serviceAssignment"
+      class="select select-bordered"
+    >
+      {{#each activeServiceAssignments}}
+      <option name="{{ this.jobNumber }}" value="{{ this.id }}">
+        {{ this.jobNumber }} - {{ this.jobName }}
+      </option>
+      {{/each}}
+    </select>
+    {{! category }}
+    <select id="batch_category" name="category" class="select select-bordered">
+      {{#each categories}}
+      <option name="{{ this.name }}" value="{{ this.id }}">
+        {{ this.name }}
+      </option>
+      {{/each}}
+    </select>
+    {{! description }}
+    <input
+      id="batch_description"
+      name="description"
+      type="text"
+      placeholder="Description"
+      class="input input-bordered"
+    />
+    {{! manufacturer }}
+    <input
+      id="batch_manufacturer"
+      name="manufacturer"
+      type="text"
+      placeholder="Manufacturer"
+      class="input input-bordered"
+    />
+    {{! model number }}
+    <input
+      id="batch_modelNumber"
+      name="modelNumber"
+      type="text"
+      placeholder="Model Number"
+      class="input input-bordered"
+    />
+    {{! Size Inputs }}
+    <div class="grid grid-flow-row-dense grid-rows-1 grid-cols-4 gap-1">
+      <input
+        id="batch_width"
+        name="width"
+        placeholder="W"
+        type="text"
+        class="input input-bordered"
+      />
+      <input
+        id="batch_length"
+        name="length"
+        placeholder="L"
+        type="text"
+        class="input input-bordered"
+      />
+      <input
+        id="batch_height"
+        name="height"
+        placeholder="H"
+        type="text"
+        class="input input-bordered"
+      />
+      <input
+        id="batch_weight"
+        name="weight"
+        placeholder="Lbs"
+        type="number"
+        class="input input-bordered"
+      />
+    </div>
+    {{! End Size Inputs }}
+  </div>
+</div>
+{{! end default values }}
