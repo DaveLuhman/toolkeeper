@@ -139,7 +139,6 @@ export const addAnotherTool = (e) => {
       element.classList.add = 'cursor-not-allowed'
     })
   }
-  console.log(entriesCount)
   entriesCount++
 }
 // add event listener to new row button
