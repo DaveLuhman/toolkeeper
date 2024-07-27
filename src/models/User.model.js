@@ -51,6 +51,10 @@ const UserSchema = new Schema(
     },
     token: String,
     tokenExpiry: Number,
+    customer: {
+      type: Schema.Types.ObjectId,
+      ref: 'Customer'
+    }
   },
   {
     toObject: { virtuals: true },
