@@ -13,4 +13,4 @@ async function connectToCustomerDatabase (req, res, next) {
   }
 }
 
-export default customerDB
+export default connectToCustomerDatabase
