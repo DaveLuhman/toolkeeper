@@ -50,4 +50,4 @@ const ServiceAssignmentSchema = new Schema(
   }
 )
 
-export default model('ServiceAssignment', ServiceAssignmentSchema)
+export default ServiceAssignmentSchema

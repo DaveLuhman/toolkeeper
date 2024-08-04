@@ -1,10 +1,16 @@
 import { Schema, model } from 'mongoose'
+import mongooseUniqueValidator from 'mongoose-unique-validator'
 
-const materialSchema = new Schema(
+const CategorySchema = new Schema(
   {
     _id: {
       type: Schema.Types.ObjectId,
       auto: true
+    },
+    prefix: {
+      type: String,
+      required: false,
+      unique: true
     },
     name: {
       type: String,
@@ -23,6 +29,6 @@ const materialSchema = new Schema(
     timestamps: true
   }
 )
+CategorySchema.plugin(mongooseUniqueValidator)
 
-// eslint-disable-next-line new-cap
-export default model('material', materialSchema, 'material')
+export default CategorySchema

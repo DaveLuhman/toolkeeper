@@ -1,8 +1,8 @@
 // skipcq: JS-0257
 import moment from "moment";
-import ServiceAssignment from "../models/ServiceAssignment.model.js";
-import Tool from "../models/Tool.model.js";
-import ToolHistory from "../models/ToolHistory.model.js";
+import ServiceAssignment from "../models/ServiceAssignment.schema.js";
+import Tool from "../models/Tool.schema.js";
+import ToolHistory from "../models/ToolHistory.schema.js";
 import { deduplicateArray, mutateToArray } from "./util.js";
 import { returnUniqueIdentifier } from "../helpers/index.js";
 import sortArray from "sort-array";

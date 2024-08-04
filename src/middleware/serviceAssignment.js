@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import logger from '../config/logger.js'
-import ServiceAssignment from '../models/ServiceAssignment.model.js'
+import ServiceAssignment from '../models/ServiceAssignment.schema.js'
 import { mutateToArray } from './util.js'
 /**
  * @function getServiceAssignments

@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose'
 import mongooseAutoPopulate from 'mongoose-autopopulate'
 
-const toolSchema = new Schema(
+const ToolSchema = new Schema(
   {
     serialNumber: {
       type: String,
@@ -91,11 +91,11 @@ const toolSchema = new Schema(
   }
 )
 
-toolSchema.findAll = function (callback) {
+ToolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
 }
 
-toolSchema.virtual('status').get(function () {
+ToolSchema.virtual('status').get(function () {
   if (this?.serviceAssignment === undefined) return 'Undefined'
   switch (this.serviceAssignment?.type) {
     case 'Stockroom':
@@ -114,7 +114,7 @@ toolSchema.virtual('status').get(function () {
 })
 
 // write a setter that changes the _id to a string called id
-toolSchema.set('toJSON', {
+ToolSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: (_doc, ret) => {
@@ -122,8 +122,8 @@ toolSchema.set('toJSON', {
     delete ret._id
   }
 })
-toolSchema.plugin(mongooseAutoPopulate)
+ToolSchema.plugin(mongooseAutoPopulate)
 
-const Tool = model('tool', toolSchema)
 
-export default Tool
+
+export default ToolSchema

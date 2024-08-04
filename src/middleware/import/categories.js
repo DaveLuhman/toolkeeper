@@ -1,5 +1,5 @@
 import { csvFileToEntries } from '../util.js'
-import Category from '../../models/Category.model.js'
+import Category from '../../models/Category.schema.js'
 let successCount = 0
 const errorList = []
 

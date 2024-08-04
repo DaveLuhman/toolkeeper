@@ -1,7 +1,7 @@
-import Tool from '../../models/Tool.model.js'
+import Tool from '../../models/Tool.schema.js'
 import { csvFileToEntries } from '../util.js'
-import ToolHistory from '../../models/ToolHistory.model.js'
-import Category from '../../models/Category.model.js'
+import ToolHistory from '../../models/ToolHistory.schema.js'
+import Category from '../../models/Category.schema.js'
 let successCount
 const errorList = []
 

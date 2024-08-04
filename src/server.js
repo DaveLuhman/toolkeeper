@@ -7,6 +7,7 @@ import logger from './config/logger.js'
 // db depenancies
 import connectMongoDBSession from 'connect-mongodb-session'
 import connectDB from './config/db.js'
+import connectToCustomerDatabase from './middleware/tenantDb.js'
 // express depenancies
 import cookieParser from 'cookie-parser'
 import csurf from 'csurf'
@@ -110,6 +111,7 @@ app.use(rateLimiter)
 app.use('/', indexRouter)
 // Routes (User Context)
 app.use(checkAuth)
+app.use(connectToCustomerDatabase)
 app.use(populateDropdownItems)
 app.use('/user', userRouter)
 app.use('/dashboard', dashboardRouter)

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
-import User from '../models/User.model.js'
-import Category from '../models/Category.model.js'
-import ServiceAssignment from '../models/ServiceAssignment.model.js'
+import { User } from '../models/index.models.js'
+import Category from '../models/Category.schema.js'
+import ServiceAssignment from '../models/ServiceAssignment.schema.js'
 import logger from './logger.js'
 
 /**
@@ -24,7 +24,7 @@ async function createDefaultUser() {
       lastName: 'User',
       password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
       role: 'Admin',
-      email: 'admin@toolkeeper.site'
+      email: 'admin@toolkeeper.site',
     })
     return user
   } catch (error) {
@@ -41,7 +41,7 @@ function createDefaultCategory() {
     _id: '64a1c3d8d71e121dfd39b7ab',
     prefix: 'UC',
     name: 'Uncategorized',
-    description: 'For Tools that dont have a home'
+    description: 'For Tools that dont have a category',
   })
 }
 
@@ -59,22 +59,22 @@ function createDefaultServiceAssignments() {
       type: 'Imported - Uncategorized',
       phone: '',
       notes: 'Default SA for imported tools',
-      active: true
+      active: true,
     },
     {
       _id: '64a34b651288871770df1086',
       name: 'DEPOT',
       description: 'Default stockroom for serialized tools',
       type: 'Stockroom',
-      active: true
+      active: true,
     },
     {
       _id: '64a34b651288871770df1087',
       name: 'PARTS',
       description: 'Default stockroom for consumables/parts',
       type: 'Stockroom',
-      active: true
-    }
+      active: true,
+    },
   ]
   return ServiceAssignment.create(serviceAssignments)
 }
@@ -86,23 +86,47 @@ function createDefaultServiceAssignments() {
  */
 function createDefaultDocuments() {
   const defaultPromises = [
-    createDefaultUser(),
     createDefaultCategory(),
-    createDefaultServiceAssignments()
+    createDefaultServiceAssignments(),
   ]
   return Promise.allSettled(defaultPromises)
 }
+function createDefaultGlobalDocuments() {
+  const defaultGlobalPromises = [createDefaultUser(), createDefaultTenant()]
+  return Promise.allSettled(defaultGlobalPromises)
+}
 
 /**
- * Initializes the database with default settings.
- * This function is called when no users are found in the database.
- * It logs a warning and creates default documents including a default user.
+ * Initializes a tenant database with default settings.
+ * This function is called when  no users including the default admin user are found in the database.
+ * It logs a warning and creates a demo tenant database with default categories, and service assignments.
+ * Only the admin user will be able to select the demo tenant database.
+ * @returns {Promise} A promise that resolves when the database is successfully initialized.
  */
-function initializeDatabase() {
-  logger.warn('No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper.site\nDefault password is "asdfasdf"'.red.underline)
+function initializeDemoTenantDatabase() {
+  logger.warn(
+    'Initializing Database, with tenant id "demo".\nDefault service assignments and categories will be created.'.red.underline
+      .red.underline
+  )
+  mongoose.connection.useDb('tenant_demo', {
+    useCache: true,
+  })
   createDefaultDocuments()
 }
-/** 
+/**
+ * Initializes the global database with a default admin user, and creates a demo tenant database.
+ * This function is called when no users are found in the database.
+ * It logs a warning, creates the global stuff, then initializes the demo tenant database, leaving it selected.
+ */
+function initializeDatabase() {
+  logger.warn(
+    'No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper.site\nDefault password is "asdfasdf"'
+      .red.underline
+  )
+  createDefaultGlobalDocuments()
+  initializeDemoTenantDatabase()
+}
+/**
  * Establishes a connection to the MongoDB database using the MONGO_URI environment variable.
  * @returns {Promise} A promise that resolves when the connection is successfully established.
  */
@@ -119,5 +143,30 @@ const connectDB = async () => {
   }
   if (await isUsersCollectionEmpty()) initializeDatabase()
   mongoose.ObjectId.get((v) => v.toString())
+}
+
+/**
+ * Selects the tenant database based on the provided tenant ID.
+ *
+ * @param {string} tenantId - The ID of the tenant.
+ * @returns {Promise<mongoose.Connection>} - A promise that resolves to the selected tenant database connection.
+ */
+export async function selectTenantDatabase(tenantId) {
+  try {
+    return await mongoose.connection.useDb(`tenant_${tenantId}`, {
+      useCache: true,
+    })
+  } catch (err) {
+    logger.error(err)
+  }
+}
+/**
+ * Selects the global database using the mongoose connection.
+ * @returns {Promise<mongoose.Connection>} The connection to the global database.
+ */
+export async function selectGlobalDatabase() {
+  return await mongoose.connection.useDb('global', {
+    useCache: true,
+  })
 }
 export default connectDB

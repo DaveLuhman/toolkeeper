@@ -51,9 +51,9 @@ const UserSchema = new Schema(
     },
     token: String,
     tokenExpiry: Number,
-    customer: {
+    tenant: {
       type: Schema.Types.ObjectId,
-      ref: 'Customer'
+      ref: 'Tenant'
     }
   },
   {
@@ -82,4 +82,4 @@ UserSchema.statics.findByToken = async function (token) {
   return (await model('User').findOne({ token: { $eq: token } })) || false
 }
 
-export default model('User', UserSchema)
+export default UserSchema

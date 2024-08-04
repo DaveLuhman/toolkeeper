@@ -1,5 +1,5 @@
-import Tool from '../../models/Tool.model.js'
-import ToolHistory from '../../models/ToolHistory.model.js'
+import Tool from '../../models/Tool.schema.js'
+import ToolHistory from '../../models/ToolHistory.schema.js'
 const errorList = []
 /**
  * Represents an error that occurs when a duplicate value is encountered.

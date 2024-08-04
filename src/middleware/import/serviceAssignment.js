@@ -1,5 +1,5 @@
 import logger from '../../config/logger.js'
-import ServiceAssignment from '../../models/ServiceAssignment.model.js'
+import ServiceAssignment from '../../models/ServiceAssignment.schema.js'
 import { csvFileToEntries } from '../util.js'
 let successCount = 0
 const errorList = []

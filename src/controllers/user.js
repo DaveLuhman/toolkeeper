@@ -1,4 +1,4 @@
-import User from '../models/User.model.js'
+import User from '../models/User.schema.js'
 import { createToken, sendResetPwEmail } from './util.js'
 import { hash } from 'bcrypt'
 

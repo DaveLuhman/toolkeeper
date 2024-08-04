@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */ // for the material name search
-import Material from '../models/Material.model.js'
+import Material from '../models/Material.schema.js'
 
 /**
  * Retrieves all materials.
