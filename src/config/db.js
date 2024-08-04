@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
-import { User } from '../models/index.models.js'
-import Category from '../models/Category.schema.js'
-import ServiceAssignment from '../models/ServiceAssignment.schema.js'
+import { globalModelsPromise, tenantModelsPromise } from '../models/index.models.js'
 import logger from './logger.js'
 
+const { User, Tenant } = await globalModelsPromise
+const { Category, ServiceAssignment } = await tenantModelsPromise
 /**
  * Checks if the users collection in the database is empty.
  * @returns {Promise<boolean>} A promise that resolves with true if the collection is empty, otherwise false.
@@ -19,19 +19,22 @@ async function isUsersCollectionEmpty() {
  */
 async function createDefaultUser() {
   try {
+    const { User } = await globalModelsPromise
     const user = await User.create({
+      _id: '663870c0a1a9cdb4b707c737',
       firstName: 'Admin',
       lastName: 'User',
       password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
       role: 'Admin',
       email: 'admin@toolkeeper.site',
+      tenant: '66af881237c17b64394a4166'
     })
     return user
   } catch (error) {
     logger.log(error)
   }
 }
-
+// 
 /**
  * Creates and returns a default category object for uncategorized tools.
  * @returns {Object} The newly created category object with preset values.
@@ -80,8 +83,30 @@ function createDefaultServiceAssignments() {
 }
 
 /**
+ * Creates a default tenant in the database.
+ * @returns {Promise} A promise that resolves when the default tenant is created.
+ */
+async function createDefaultTenant() {
+  try {
+    const tenant = await Tenant
+      .create({
+        _id: '66af881237c17b64394a4166',
+        name: 'demo',
+        domain: 'toolkeeper.site',
+        adminUser: '663870c0a1a9cdb4b707c737',
+        subscriptionTier: 'Pro',
+        subscriptionStatus: 'Active',
+      })
+    return tenant
+  } catch (error) {
+    logger.log(error)
+    throw error
+  }
+}
+
+/**
  * Initializes the application's database with default documents.
- * This includes creating default user, category, and service assignment documents.
+ * This includes creating default category, and service assignment documents.
  * @returns {Promise} A promise that resolves when all default documents have been created successfully.
  */
 function createDefaultDocuments() {
@@ -91,6 +116,11 @@ function createDefaultDocuments() {
   ]
   return Promise.allSettled(defaultPromises)
 }
+/**
+ * Initializes the application's global database with default documents.
+ * This includes creating default user and tenant documents.
+ * @returns {Promise} A promise that resolves when all default documents have been created successfully.
+ */
 function createDefaultGlobalDocuments() {
   const defaultGlobalPromises = [createDefaultUser(), createDefaultTenant()]
   return Promise.allSettled(defaultGlobalPromises)
@@ -103,15 +133,22 @@ function createDefaultGlobalDocuments() {
  * Only the admin user will be able to select the demo tenant database.
  * @returns {Promise} A promise that resolves when the database is successfully initialized.
  */
-function initializeDemoTenantDatabase() {
+async function initializeDemoTenantDatabase() {
   logger.warn(
-    'Initializing Database, with tenant id "demo".\nDefault service assignments and categories will be created.'.red.underline
-      .red.underline
-  )
-  mongoose.connection.useDb('tenant_demo', {
+    'Initializing Database, with tenant named "demo".\nDefault service assignments and categories will be created.'.red.underline
+  );
+  const tenantDb = await mongoose.connection.useDb('tenant_demo', {
     useCache: true,
-  })
-  createDefaultDocuments()
+  });
+
+  tenantDb.on('connected', () => {
+    console.info('Connected to tenant_demo database');
+    createDefaultDocuments();
+  });
+
+  tenantDb.on('error', (error) => {
+    console.error(`Error connecting to tenant_demo database: ${error}`);
+  });
 }
 /**
  * Initializes the global database with a default admin user, and creates a demo tenant database.
@@ -132,18 +169,20 @@ function initializeDatabase() {
  */
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI)
+    const conn = await mongoose.connect(process.env.MONGO_URI);
     logger.info(
       `[DB INIT] MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold
-    )
+    );
+
+    if (await isUsersCollectionEmpty()) {
+      initializeDatabase();
+    }
   } catch (err) {
-    logger.error('DB INIT' + err)
-    // skipcq: JS-0263
-    process.exit(1)
+    logger.error('DB INIT' + err);
+    process.exit(1);
   }
-  if (await isUsersCollectionEmpty()) initializeDatabase()
-  mongoose.ObjectId.get((v) => v.toString())
-}
+  mongoose.ObjectId.get((v) => v.toString());
+};
 
 /**
  * Selects the tenant database based on the provided tenant ID.
