@@ -21,11 +21,13 @@ async function createTenantModels(tenantId) {
 export const tenantModelsPromise = createTenantModels()
 
 async function createGlobalModels() {
-  const db = await selectGlobalDatabase()
+  const db = await selectGlobalDatabase();
+  db.model('Tenant', TenantSchema);  // Ensure model registration
+  db.model('User', UserSchema);      // Ensure model registration
   return {
     Tenant: db.model('Tenant', TenantSchema),
     User: db.model('User', UserSchema),
-  }
+  };
 }
 
-export const globalModelsPromise = createGlobalModels()
+export const globalModelsPromise = createGlobalModels();

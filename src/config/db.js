@@ -190,13 +190,21 @@ const connectDB = async () => {
  * @param {string} tenantId - The ID of the tenant.
  * @returns {Promise<mongoose.Connection>} - A promise that resolves to the selected tenant database connection.
  */
-export async function selectTenantDatabase(tenantId) {
+export async function selectTenantDatabase(tenantName) {
   try {
-    return await mongoose.connection.useDb(`tenant_${tenantId}`, {
-      useCache: true,
-    })
+    const globalDb = await selectGlobalDatabase();
+    const Tenant = globalDb.model('Tenant') || globalDb.model('Tenant', TenantSchema);
+    const tenant = await Tenant.findOne({ name: tenantName });
+    
+    if (tenant) {
+      console.log(`Found tenant: ${JSON.stringify(tenant)}`);
+      return await mongoose.connection.useDb(`tenant_${tenant._id}`, { useCache: true });
+    } else {
+      throw new Error(`Tenant with name "${tenantName}" not found.`);
+    }
   } catch (err) {
-    logger.error(err)
+    console.error(`Error selecting tenant database: ${err.message}`);
+    throw err;
   }
 }
 /**
