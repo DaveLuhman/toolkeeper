@@ -47,3 +47,13 @@ document.getElementById('clone-tool_height').value =
 document.getElementById('clone-tool_weight').value =
   document.getElementById('edit-tool_weight').value
 
+  /*
+  * populate service assignments on the clone form
+  */
+document.getElementById('clone-tool_serviceAssignment').innerHTML = document.getElementById('edit-tool_serviceAssignment').innerHTML
+
+function removeNumberAfterDash(input) {
+  return input.replace(/(\w+)-\d+/, '$1-');
+}
+
+document.getElementById('clone-tool_toolID').value = removeNumberAfterDash(document.getElementById('edit-tool_toolID').value)
