@@ -102,7 +102,7 @@ const deleteCategory = async function (req, res, next) {
  * @returns {Promise<void>} - A promise that resolves when the category names are listed.
  */
 const listCategoryNames = async (_req, res, next) => {
-  res.locals.categories = await Category.find({}, { name: 1, id: 1 }).sort({ name: 'asc' })
+  res.locals.categories = await Category.find({}, { name: 1, id: 1, prefix: 1 }).sort({ name: 'asc' })
   return next()
 }
 

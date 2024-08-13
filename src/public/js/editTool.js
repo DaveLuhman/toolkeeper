@@ -56,4 +56,3 @@ function removeNumberAfterDash(input) {
   return input.replace(/(\w+)-\d+/, '$1-');
 }
 
-document.getElementById('clone-tool_toolID').value = removeNumberAfterDash(document.getElementById('edit-tool_toolID').value)
