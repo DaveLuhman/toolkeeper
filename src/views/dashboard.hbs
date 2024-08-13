@@ -4,18 +4,33 @@
 <div class="flex flex-row">
     <div class="flex-1" id="recentlyChanged">
         {{#if recentlyUpdatedTools}}
-        {{> dashboard/_recentlyUpdated}}
+            {{> dashboard/_recentlyUpdated}}
         {{/if}}
     </div>
     <div class="flex flex-1 flex-col">
         <div class="text-center text-2xl font-semibold">Quick Search Links</div>
         <div class="flex flex-row justify-evenly">
             {{#if activeServiceAssignments}}
-            {{> dashboard/_serviceAssignmentBox}}
+                {{> dashboard/_serviceAssignmentBox}}
             {{/if}}
             {{#if categories}}
-            {{> dashboard/_categoryBox}}
+                {{> dashboard/_categoryBox}}
             {{/if}}
-            </div>
+        </div>
     </div>
 </div>
+
+<script>
+    /*
+  * Function to open the printer friendly tools in a new tab
+  */
+    // eslint-disable-next-line no-unused-vars
+    const openInNewTab = () => {
+        const x = window.open()
+        const newPage = x.document.createElement('div')
+        newPage.width = '100%'
+        newPage.height = '100%'
+        newPage.innerHTML = document.getElementById('printerFriendlyTools').innerHTML
+        x.document.body.appendChild(newPage)
+    }
+</script>

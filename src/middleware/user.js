@@ -142,7 +142,9 @@ async function updateUser(req, res, next) {
     )
     res.locals.user = user
     req.login(user, (error) => {
-      logger.log(`This is an error ${error}`)
+      if(error){
+      console.log(`This is an error ${error}`)
+      return next(error)}
     })
     logger.info('[MW] updateUser-out'.bgWhite.blue)
     return next()

@@ -29,12 +29,14 @@
                             class="input input-bordered" />
                     </div>
                     <div class="col-span-2 form-control">
-                        <label for="edit-tool_description" class="label"><span class="label-text">Description:</span></label>
+                        <label for="edit-tool_description" class="label"><span
+                                class="label-text">Description:</span></label>
                         <input name="description" value="{{description}}" type="text" placeholder="Description"
                             id="edit-tool_description" class="input input-bordered" />
                     </div>
                     <div class="form-control">
-                        <label for="edit-tool_manufacturer" class="label"><span class="label-text">Manufacturer:</span></label>
+                        <label for="edit-tool_manufacturer" class="label"><span
+                                class="label-text">Manufacturer:</span></label>
                         <input name="manufacturer" value="{{manufacturer}}" type="text" placeholder="Manufacturer"
                             id="edit-tool_manufacturer" class="input input-bordered" />
                     </div>
@@ -98,14 +100,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-button-row">
-                    <label class="modal-button" for="cloneToolModal" style="cursor:pointer">Duplicate</label>
-                    {{#eq archived true}}<label class="modal-button"><a
-                                href="/tool/unarchive/{{tool.id}}">Un-Archive</a></label>{{/eq}}
-                    {{#eq archived false}}<label id="archive-button" class="modal-button"><a
-                                href="/tool/archive/{{tool.id}}">Archive</a></label>{{/eq}}
-                    <label class="modal-button"><a href="/dashboard">Cancel</a></label>
-                    <label class="modal-button"><button id="edit-tool_submit" type="submit">Submit</button></label>
+                <div class="flex mt-1.5 justify-between">
+                    <div>
+                        <label class="btn btn-accent normal-case  btn-sm  rounded-lg text-center  m-2"
+                            for="cloneToolModal" style="cursor:pointer">Duplicate</label>
+                        {{#eq archived true}}<label
+                                class="btn btn-accent normal-case  btn-sm  rounded-lg text-center  m-2"><a
+                                    href="/tool/unarchive/{{tool.id}}">Un-Archive</a></label>{{/eq}}
+                        {{#eq archived false}}<label id="archive-button"
+                                class="btn btn-accent normal-case  btn-sm  rounded-lg text-center  m-2"><a
+                                    href="/tool/archive/{{tool.id}}">Archive</a></label>{{/eq}}
+                    </div>
+                    <div>
+                        <label class="modal-button justify-self-end"><a href="/dashboard">Cancel</a></label>
+                        <label class="modal-button justify-self-end"><button id="edit-tool_submit"
+                                type="submit">Submit</button></label>
+                    </div>
                 </div>
             {{/each}}
         </form>
