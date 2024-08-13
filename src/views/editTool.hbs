@@ -5,43 +5,46 @@
         </div>
         <form action="/tool/update" method="POST">
             {{#each tools as |tool|}}
-                <!-- this is the table of inputs -->
                 <div class="grid grid-flow-row-dense grid-cols-3 gap-2">
-                    <input id="edit-tool_id" name="id" value="{{id}}" type="hidden" placeholder="Tool ID" class="input input-bordered" />
+                    <input id="edit-tool_id" name="id" value="{{id}}" type="hidden" placeholder="Tool ID"
+                        class="input input-bordered" />
                     <div class="form-control">
-                        <label for="serialNumber" class="label"><span class="label-text">SN:</span></label>
-                        <input id="edit-tool_serialNumber" name="serialNumber" disabled value="{{serialNumber}}" type="text"
-                            placeholder="Serial Number" class="input input-bordered" />
+                        <label for="edit-tool_serialNumber" class="label"><span class="label-text">SN:</span></label>
+                        <input id="edit-tool_serialNumber" name="serialNumber" disabled value="{{serialNumber}}"
+                            type="text" placeholder="Serial Number" class="input input-bordered" />
                     </div>
                     <div class="form-control">
-                        <label for="modelNumber" class="label"><span class="label-text">PN:</span></label>
-                        <input name="modelNumber" value="{{modelNumber}}" type="text" placeholder="Model Number" id="edit-tool_modelNumber"
-                            class="input input-bordered" />
+                        <label for="edit-tool_modelNumber" class="label"><span class="label-text">PN:</span></label>
+                        <input name="modelNumber" value="{{modelNumber}}" type="text" placeholder="Model Number"
+                            id="edit-tool_modelNumber" class="input input-bordered" />
                     </div>
                     <div class="form-control">
-                        <label for="barcode" class="label"><span class="label-text">Barcode:</span></label>
-                        <input required name="barcode" value="{{barcode}}" type="text" placeholder="Barcode" id="edit-tool_barcode"
-                            class="input input-bordered" />
+                        <label for="edit-tool_barcode" class="label"><span class="label-text">Barcode:</span></label>
+                        <input required name="barcode" value="{{barcode}}" type="text" placeholder="Barcode"
+                            id="edit-tool_barcode" class="input input-bordered" />
                     </div>
                     <div class="form-control">
-                        <label for="toolID" class="label"><span class="label-text">Tool ID:</span></label>
+                        <label for="edit-tool_toolID" class="label"><span class="label-text">Tool ID:</span></label>
                         <input name="toolID" value="{{toolID}}" type="text" placeholder="Tool ID" id="edit-tool_toolID"
                             class="input input-bordered" />
                     </div>
                     <div class="col-span-2 form-control">
-                        <label for="description" class="label"><span class="label-text">Description:</span></label>
-                        <input name="description" value="{{description}}" type="text" placeholder="Description" id="edit-tool_description"
-                            class="input input-bordered" />
+                        <label for="edit-tool_description" class="label"><span
+                                class="label-text">Description:</span></label>
+                        <input name="description" value="{{description}}" type="text" placeholder="Description"
+                            id="edit-tool_description" class="input input-bordered" />
                     </div>
                     <div class="form-control">
-                        <label for="manufacturer" class="label"><span class="label-text">Manufacturer:</span></label>
-                        <input name="manufacturer" value="{{manufacturer}}" type="text" placeholder="Manufacturer" id="edit-tool_manufacturer"
-                            class="input input-bordered" />
+                        <label for="edit-tool_manufacturer" class="label"><span
+                                class="label-text">Manufacturer:</span></label>
+                        <input name="manufacturer" value="{{manufacturer}}" type="text" placeholder="Manufacturer"
+                            id="edit-tool_manufacturer" class="input input-bordered" />
                     </div>
                     <div class="form-control">
-                        <label for="serviceAssignment" class="label"><span class="label-text">Service
+                        <label for="edit-tool_serviceAssignment" class="label"><span class="label-text">Service
                                 Assignment</span></label>
-                        <select name="serviceAssignment" class="select select-bordered" id="edit-tool_serviceAssignment">
+                        <select name="serviceAssignment" class="select select-bordered"
+                            id="edit-tool_serviceAssignment">
                             {{#each ../activeServiceAssignments}}
                                 <option name='{{jobNumber}}' value='{{id}}' {{isSelected id tool.serviceAssignment.id}}>
                                     {{jobNumber}} - {{jobName}}
@@ -55,13 +58,13 @@
                         </select>
                     </div>
                     <div class="form-control">
-                        <label for="category" class="label"><span class="label-text">Category</span></label>
+                        <label for="edit-tool_category" class="label"><span class="label-text">Category</span></label>
                         <select name="category" class="select select-bordered" id="edit-tool_category">
                             {{#each ../categories}}
                                 <option name='{{name}}' value='{{id}}' {{isSelected id tool.category.id}}>{{name}}
                                 </option>
                             {{/each}}
-                            {{#unless tool.serviceAssignment}}
+                            {{#unless tool.category}}
                                 <option name='Unassigned' value=null selected>
                                     Choose A Category
                                 </option>
@@ -76,34 +79,47 @@
                     </div>
                     <div class="grid grid-flow-row-dense grid-cols-4 gap-2 collapse-content">
                         <div class="form-control">
-                            <label for="width" class="label"><span class="label-text">Width:</span></label>
-                            <input name="width" value="{{size.width}}" type="text" class="input input-bordered" id="edit-tool_width" />
+                            <label for="edit-tool_width" class="label"><span class="label-text">Width:</span></label>
+                            <input name="width" value="{{size.width}}" type="text" class="input input-bordered"
+                                id="edit-tool_width" />
                         </div>
                         <div class="form-control">
-                            <label for="length" class="label"><span class="label-text">Length:</span></label>
-                            <input name="length" value="{{size.length}}" type="text" class="input input-bordered" id="edit-tool_length" />
+                            <label for="edit-tool_length" class="label"><span class="label-text">Length:</span></label>
+                            <input name="length" value="{{size.length}}" type="text" class="input input-bordered"
+                                id="edit-tool_length" />
                         </div>
                         <div class="form-control">
-                            <label for="height" class="label"><span class="label-text">Height:</span></label>
-                            <input name="height" value="{{size.height}}" type="text" class="input input-bordered" id="edit-tool_height" />
+                            <label for="edit-tool_height" class="label"><span class="label-text">Height:</span></label>
+                            <input name="height" value="{{size.height}}" type="text" class="input input-bordered"
+                                id="edit-tool_height" />
                         </div>
                         <div class="form-control">
-                            <label for="weight" class="label"><span class="label-text">Weight:</span></label>
-                            <input name="weight" placeholder="Lbs" value="{{size.weight}}" type="number" id="edit-tool_weight"
-                                class="input input-bordered" />
+                            <label for="edit-tool_weight" class="label"><span class="label-text">Weight:</span></label>
+                            <input name="weight" placeholder="Lbs" value="{{size.weight}}" type="number"
+                                id="edit-tool_weight" class="input input-bordered" />
                         </div>
                     </div>
                 </div>
-                <div class="modal-button-row">
-                    {{#eq archived true}}<label class="modal-button"><a href="/tool/unarchive/{{tool.id}}">Un-Archive</a></label>{{/eq}}
-                    {{#eq archived false}}<label id="archive-button" class="modal-button"><a href="/tool/archive/{{tool.id}}">Archive</a></label>{{/eq}}
-                    <label class="modal-button"><a href="/dashboard">Cancel</a></label>
-                    <label class="modal-button"><button id="edit-tool_submit" type="submit">Submit</button></label>
+                <div class="flex mt-1.5 justify-between">
+                    <div>
+                        <label class="btn btn-accent normal-case  btn-sm  rounded-lg text-center  m-2"
+                            for="cloneToolModal" style="cursor:pointer">Duplicate</label>
+                        {{#eq archived true}}<label
+                                class="btn btn-accent normal-case  btn-sm  rounded-lg text-center  m-2"><a
+                                    href="/tool/unarchive/{{tool.id}}">Un-Archive</a></label>{{/eq}}
+                        {{#eq archived false}}<label id="archive-button"
+                                class="btn btn-accent normal-case  btn-sm  rounded-lg text-center  m-2"><a
+                                    href="/tool/archive/{{tool.id}}">Archive</a></label>{{/eq}}
+                    </div>
+                    <div>
+                        <label class="modal-button justify-self-end"><a href="/dashboard">Cancel</a></label>
+                        <label class="modal-button justify-self-end"><button id="edit-tool_submit"
+                                type="submit">Submit</button></label>
+                    </div>
                 </div>
             {{/each}}
-            <!-- this is the button row -->
-
         </form>
+
     {{else}}
         <h3 class="alert-danger">Somehow you got to the <i>edit tool</i> page without the tool's data</h3>
     {{/if}}
@@ -138,24 +154,5 @@
         <p>We don't have any history for this tool.</p>
     {{/if}}
 </div>
-<script>
-
-  const form = document.querySelector('form')
-  const inputs = form.querySelectorAll('input, select, textarea')
-
-  inputs.forEach((input) => {
-    input.addEventListener('change', () => {
-      input.classList.add('changed')
-    })
-  })
-    const archiveButton = document.getElementById('archive-button')
-    if(archiveButton){
-        archiveButton.addEventListener('click', function(e)
-        {
-            e.preventDefault()
-            if(window.confirm('Would you like to archive this tool?')) {
-                window.location.href = '/tool/archive/{{tools.0.id}}'
-            }
-        })
-    }
-</script>
+{{> modals/_cloneTool}}
+<script type="module" src="/js/editTool.js"></script>

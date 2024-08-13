@@ -54,8 +54,8 @@ function createDefaultServiceAssignments() {
   const serviceAssignments = [
     {
       _id: '64a19e910e675938ebb67de7',
-      name: 'IMPORT',
-      description: 'Imported',
+      jobNumber: 'IMPORT',
+      jobName: 'Imported',
       type: 'Imported - Uncategorized',
       phone: '',
       notes: 'Default SA for imported tools',
@@ -63,15 +63,15 @@ function createDefaultServiceAssignments() {
     },
     {
       _id: '64a34b651288871770df1086',
-      name: 'DEPOT',
-      description: 'Default stockroom for serialized tools',
+      jobNumber: 'DEPOT',
+      jobName: 'Default stockroom for serialized tools',
       type: 'Stockroom',
       active: true
     },
     {
       _id: '64a34b651288871770df1087',
-      name: 'PARTS',
-      description: 'Default stockroom for consumables/parts',
+      jobNumber: 'PARTS',
+      jobName: 'Default stockroom for consumables/parts',
       type: 'Stockroom',
       active: true
     }
@@ -112,12 +112,12 @@ const connectDB = async () => {
     logger.info(
       `[DB INIT] MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold
     )
+    if (await isUsersCollectionEmpty()) initializeDatabase()
   } catch (err) {
     logger.error('DB INIT' + err)
     // skipcq: JS-0263
     process.exit(1)
   }
-  if (await isUsersCollectionEmpty()) initializeDatabase()
   mongoose.ObjectId.get((v) => v.toString())
 }
 export default connectDB
