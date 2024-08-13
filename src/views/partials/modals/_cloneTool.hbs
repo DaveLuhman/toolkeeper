@@ -11,10 +11,11 @@
             <input id="clone-tool_length" name="length" type="hidden" value="{{tool.size.length}}" />
             <input id="clone-tool_height" name="height" type="hidden" value="{{tool.size.height}}" />
             <input id="clone-tool_weight" name="weight" type="hidden" value="{{tool.size.weight}}" />
-            <div class="modal-table">
-                <div class="title-bar">
+            <div class="grid grid-cols-2 gap-4 w-full items-center;">
+                <div class="col-span-full drop-shadow-xl">
                     <h3 class="title-text">Enter unique values to clone this tool</h3>
                 </div>
+
                 <input id="clone-tool_serialNumber" name="serialNumber" type="text" placeholder="Serial Number"
                     class="input input-bordered" minlength="5" required />
                 <input id="clone-tool_barcode" name="barcode" type="text" placeholder="Barcode"
@@ -23,7 +24,8 @@
                     class="input input-bordered" value="{{tools.0.category.prefix}}-" />
                 <select name="serviceAssignment" class="select select-bordered" id="clone-tool_serviceAssignment">
                 </select>
-                <div class="modal-button-row">
+
+                <div class=" col-start-2 modal-action float-right">
                     <label class="modal-button" for="cloneToolModal">Cancel</label>
                     <label class="modal-button"><button id="clone-tool_submit" type="submit">Submit</button></label>
                 </div>
