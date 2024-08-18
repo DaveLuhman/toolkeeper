@@ -113,7 +113,6 @@ export async function createServiceAssignment(req, res, next) {
  * @returns {void}
  * @description Deletes a service assignment by ID
  */
-
 export async function deleteServiceAssignment(req, res, next) {
     try {
         const id = req.params.id
@@ -167,7 +166,6 @@ export async function activateServiceAssignment(req, res, next) {
         res.status(500).send('Server Error')
     }
 }
-
 /**
  * Lists all active service assignments.
  * @param {*} _req

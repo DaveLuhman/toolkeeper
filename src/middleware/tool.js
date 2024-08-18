@@ -19,7 +19,7 @@ import { findServiceAssignmentByJobNumber } from "./serviceAssignment.js";
 async function getAllTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences;
   console.info("[MW] getAllTools-in".bgBlue.white);
-  const tools = await Tool.find({}).sort({ [sortField]: sortOrder || 1 });
+  const tools = await Tool.find({ tenant: { $eq: req.tenantId } }).sort({ [sortField]: sortOrder || 1 });
   res.locals.tools = tools; // array of tools
   console.info("[MW] getAllTools-out".bgWhite.blue);
   return next();
@@ -37,8 +37,8 @@ async function getActiveTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences;
   console.info("[MW] getAllTools-in".bgBlue.white);
   const tools = await Tool.find()
-    .where("archived")
-    .equals(false)
+    .where("archived").equals(false)
+    .where("tenant").equals(req.tenantId)
     .sort({ [sortField]: sortOrder || 1 });
   res.locals.tools = tools.filter((tool) => {
     return tool.serviceAssignment?.active;
@@ -58,8 +58,8 @@ async function getActiveTools(req, res, next) {
 async function getToolByID(req, res, next) {
   const id = req.params.id;
   console.info(`[MW] searching id: ${id}`);
-  const tools = await Tool.findById({ $eq: id });
-  const toolHistory = await ToolHistory.findById({ $eq: id }).sort({
+  const tools = await Tool.find({ id: { $eq: id }, tenantId: { $eq: req.tenantId } });
+  const toolHistory = await ToolHistory.find({id: { $eq: id }, tenantId: { $eq: req.tenantId }  }).sort({
     updatedAt: 1,
   });
   res.locals.tools = [tools];
@@ -78,10 +78,14 @@ async function getToolByID(req, res, next) {
  * @returns {array} An array of checked in tools.
  */
 async function getCheckedInTools() {
-  const tools = await Tool.find().where("archived").equals(false); //get all unarchived tools
+  const tools = await Tool.find()
+                      .where("archived").equals(false)
+                      .where('tenantId').equals(req.tenantId) //get all unarchived tools
   const stockroomDocs = await ServiceAssignment.find()
     .where("type")
-    .equals("Stockroom"); //get all stockroom documents (sa that count as checked in)
+    .equals("Stockroom")
+    .where("tenantId")
+    .equals(req.tenantId) //get all stockroom documents (sa that count as checked in)
   //initialize an array to hold the checked in tools
   const checkedInTools = [];
   // iterate through the tools and compare the service assignment id to the active service assignment ids
@@ -473,7 +477,6 @@ async function lookupToolWrapper(searchTerms) {
   }
   return tools;
 }
-
 /**
  * submitCheckInOut - Submits the check-in/out request
  * @param {*} req The request object
@@ -507,7 +510,6 @@ async function submitCheckInOut(req, res, next) {
     console.error(error.message);
   }
 }
-
 /**
  * Generates a printer-friendly tool list based on the provided tools.
  *
@@ -540,7 +542,6 @@ const generatePrinterFriendlyToolList = async (req, res, next) => {
     return next();
   }
 };
-
 /**
  * Retrieves the dashboard statistics.
  *
@@ -567,7 +568,6 @@ async function getDashboardStats() {
     return { todaysTools: 0, thisWeeksTools: 0, totalIn: 0, totalOut: 0 };
   }
 }
-
 /**
  * Retrieves the recently updated tools.
  * @returns {Promise<Array>} A promise that resolves to an array of recently updated tools.
