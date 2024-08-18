@@ -6,7 +6,6 @@ import ToolHistory from "../models/ToolHistory.schema.js";
 import { deduplicateArray, mutateToArray } from "./util.js";
 import { returnUniqueIdentifier } from "../helpers/index.js";
 import sortArray from "sort-array";
-import logger from "../config/logger.js";
 import { findServiceAssignmentByJobNumber } from "./serviceAssignment.js";
 
 /**
@@ -19,10 +18,10 @@ import { findServiceAssignmentByJobNumber } from "./serviceAssignment.js";
  */
 async function getAllTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences;
-  logger.info("[MW] getAllTools-in".bgBlue.white);
+  console.info("[MW] getAllTools-in".bgBlue.white);
   const tools = await Tool.find({}).sort({ [sortField]: sortOrder || 1 });
   res.locals.tools = tools; // array of tools
-  logger.info("[MW] getAllTools-out".bgWhite.blue);
+  console.info("[MW] getAllTools-out".bgWhite.blue);
   return next();
 }
 /**
@@ -36,7 +35,7 @@ async function getAllTools(req, res, next) {
  */
 async function getActiveTools(req, res, next) {
   const { sortField, sortOrder } = req.user.preferences;
-  logger.info("[MW] getAllTools-in".bgBlue.white);
+  console.info("[MW] getAllTools-in".bgBlue.white);
   const tools = await Tool.find()
     .where("archived")
     .equals(false)
@@ -44,7 +43,7 @@ async function getActiveTools(req, res, next) {
   res.locals.tools = tools.filter((tool) => {
     return tool.serviceAssignment?.active;
   });
-  logger.info("[MW] getActiveTools-out".bgWhite.blue);
+  console.info("[MW] getActiveTools-out".bgWhite.blue);
   return next();
 }
 
@@ -58,7 +57,7 @@ async function getActiveTools(req, res, next) {
  */
 async function getToolByID(req, res, next) {
   const id = req.params.id;
-  logger.info(`[MW] searching id: ${id}`);
+  console.info(`[MW] searching id: ${id}`);
   const tools = await Tool.findById({ $eq: id });
   const toolHistory = await ToolHistory.findById({ $eq: id }).sort({
     updatedAt: 1,
@@ -132,7 +131,7 @@ async function getCheckedOutTools() {
  * @returns {array}
  */
 async function searchTools(req, res, next) {
-  logger.info("[MW] searchTools-in".bgBlue.white);
+  console.info("[MW] searchTools-in".bgBlue.white);
   const { sortField, sortOrder } = req.user.preferences;
   const { searchBy, searchTerm } = req.body;
   switch (searchBy) {
@@ -171,7 +170,7 @@ async function searchTools(req, res, next) {
       break;
   }
   res.locals.totalFound = res.locals.tools.length;
-  logger.info("[MW] searchTools-out".bgWhite.blue);
+  console.info("[MW] searchTools-out".bgWhite.blue);
   return next();
 }
 
@@ -184,7 +183,7 @@ async function searchTools(req, res, next) {
  */
 async function createTool(req, res, next) {
   try {
-    logger.info("[MW] createTool-in".bgBlue.white);
+    console.info("[MW] createTool-in".bgBlue.white);
     const {
       serialNumber,
       modelNumber,
@@ -238,8 +237,8 @@ async function createTool(req, res, next) {
     res.locals.tools = [newTool];
     res.locals.pagination = { pageCount: 1 };
     res.status(201);
-    logger.info(`[MW] Tool Successfully Created ${newTool._id}`.green);
-    logger.info("[MW] createTool-out-3".bgWhite.blue);
+    console.info(`[MW] Tool Successfully Created ${newTool._id}`.green);
+    console.info("[MW] createTool-out-3".bgWhite.blue);
     next();
   } catch (error) {
     res.locals.message = error.message;
@@ -270,7 +269,7 @@ async function updateToolHistory(toolID) {
  * @param {*} next
  */
 async function updateTool(req, res, next) {
-  logger.info("[MW] updateTool-in".bgBlue.white);
+  console.info("[MW] updateTool-in".bgBlue.white);
 
   if (!req.body.serviceAssignment) {
     req.body.serviceAssignment = "64a34b651288871770df1086";
@@ -344,8 +343,8 @@ async function updateTool(req, res, next) {
   // }
   res.locals.tools = updatedToolArray;
   res.status(200);
-  logger.info("[MW] Successfully Updated Tools: ".green + updatedToolArray);
-  logger.info("[MW] updateTool-out-1".bgWhite.blue);
+  console.info("[MW] Successfully Updated Tools: ".green + updatedToolArray);
+  console.info("[MW] updateTool-out-1".bgWhite.blue);
   next();
 }
 /**
@@ -357,7 +356,7 @@ async function updateTool(req, res, next) {
  * @param {*} next
  */
 async function archiveTool(req, res, next) {
-  logger.info("[MW] archiveTool-in".bgBlue.white);
+  console.info("[MW] archiveTool-in".bgBlue.white);
   const { id } = req.params;
   const archivedTool = await Tool.findByIdAndUpdate(
     { _id: id },
@@ -384,7 +383,7 @@ async function archiveTool(req, res, next) {
  * @param {*} next
  */
 async function unarchiveTool(req, res, next) {
-  logger.info("[MW] archiveTool-in".bgBlue.white);
+  console.info("[MW] archiveTool-in".bgBlue.white);
   const { id } = req.params;
   const unarchivedTool = await Tool.findByIdAndUpdate(
     { _id: id },
@@ -412,7 +411,7 @@ async function unarchiveTool(req, res, next) {
 async function checkTools(req, res, next) {
   if (!req.body.searchTerms) {
     res.locals.message = "No Tools Submitted For Status Change";
-    logger.warn("[MW checkTools-out-1".bgWhite.blue);
+    console.warn("[MW checkTools-out-1".bgWhite.blue);
     res.status(400).redirect("back");
     return next();
   }
@@ -452,7 +451,7 @@ async function lookupTool(searchTerm) {
   if (!result) {
     result = {};
   }
-  logger.log(result);
+  console.log(result);
   return result;
 }
 /**
@@ -465,7 +464,7 @@ async function lookupToolWrapper(searchTerms) {
   const tools = [];
   for (let i = 0; i < searchTerms.length; i++) {
     const result = await lookupTool(searchTerms[i]);
-    logger.log(result);
+    console.log(result);
     if (result?.serialNumber === undefined) {
       tools.push({
         serialNumber: searchTerms[i],
@@ -505,7 +504,7 @@ async function submitCheckInOut(req, res, next) {
     res.locals.message = `${newTools.length} tool(s) have been updated`;
     next();
   } catch (error) {
-    logger.error(error.message);
+    console.error(error.message);
   }
 }
 

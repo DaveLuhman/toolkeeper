@@ -3,7 +3,6 @@
 import colors from 'colors'
 import 'dotenv/config'
 import morgan from 'morgan'
-import logger from './config/logger.js'
 // db depenancies
 import connectMongoDBSession from 'connect-mongodb-session'
 import connectDB from './config/db.js'
@@ -69,11 +68,7 @@ if (process.env.NODE_ENV === 'production') {
 
 // Morgan Logging in development
 if (process.env.NODE_ENV !== 'production') {
-  app.use(morgan('combined', {
-    stream: {
-      write: (message) => logger.http(message.trim())
-    }
-  }));
+  app.use(morgan('combined'));
 }
 // Handlebars Setup
 const hbs = create({
@@ -124,5 +119,5 @@ app.use((_req, res, next) => {
 })
 
 app.listen(PORT, () => {
-  logger.info(`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black)
+  console.info(`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black)
 })

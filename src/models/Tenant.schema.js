@@ -5,6 +5,7 @@ const TenantSchema = new Schema(
     name: {
       type: String,
       required: true,
+      index: true
     },
     domain: {
       type: String,
@@ -24,7 +25,7 @@ const TenantSchema = new Schema(
       required: true,
     },
   },
-  { 
+  {
     timestamps: true
   }
 )

@@ -7,7 +7,7 @@ import ToolHistorySchema from './ToolHistory.schema.js'
 import UserSchema from './User.schema.js'
 import { selectGlobalDatabase, selectTenantDatabase } from '../config/db.js'
 
-async function createTenantModels(tenantId) {
+export async function createTenantModels(tenantId) {
   const tenantConnection = await selectTenantDatabase(tenantId)
   return {
     Category: tenantConnection.model('category', CategorySchema),
@@ -18,16 +18,17 @@ async function createTenantModels(tenantId) {
   }
 }
 
-export const tenantModelsPromise = createTenantModels()
-
-async function createGlobalModels() {
+export async function createGlobalModels() {
+  console.log('createGlobalModels 1')
   const db = await selectGlobalDatabase();
-  db.model('Tenant', TenantSchema);  // Ensure model registration
-  db.model('User', UserSchema);      // Ensure model registration
+  console.log('createGlobalModels 2')
+  const Tenant = db.model('Tenant', TenantSchema);  // Ensure model registration
+  console.log('createGlobalModels 3')
+  const User = db.model('User', UserSchema);      // Ensure model registration
+  console.log('createGlobalModels 4')
   return {
-    Tenant: db.model('Tenant', TenantSchema),
-    User: db.model('User', UserSchema),
+    Tenant,
+    User,
   };
 }
 
-export const globalModelsPromise = createGlobalModels();

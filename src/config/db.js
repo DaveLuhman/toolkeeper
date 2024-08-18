@@ -1,17 +1,8 @@
 import mongoose from 'mongoose'
-import { globalModelsPromise, tenantModelsPromise } from '../models/index.models.js'
-import logger from './logger.js'
+import { createGlobalModels, createTenantModels } from '../models/index.models.js'
+import TenantSchema from '../models/Tenant.schema.js'
+import UserSchema from '../models/User.schema.js'
 
-const { User, Tenant } = await globalModelsPromise
-const { Category, ServiceAssignment } = await tenantModelsPromise
-/**
- * Checks if the users collection in the database is empty.
- * @returns {Promise<boolean>} A promise that resolves with true if the collection is empty, otherwise false.
- */
-async function isUsersCollectionEmpty() {
-  const user = await User.countDocuments()
-  return user === 0
-}
 
 /**
  * Creates a default user with admin privileges.
@@ -19,22 +10,22 @@ async function isUsersCollectionEmpty() {
  */
 async function createDefaultUser() {
   try {
-    const { User } = await globalModelsPromise
-    const user = await User.create({
-      _id: '663870c0a1a9cdb4b707c737',
-      firstName: 'Admin',
-      lastName: 'User',
-      password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
-      role: 'Admin',
-      email: 'admin@toolkeeper.site',
-      tenant: '66af881237c17b64394a4166'
-    })
+    const user = await mongoose.connections[0].model('User', UserSchema).
+      create({
+        _id: '663870c0a1a9cdb4b707c737',
+        firstName: 'Admin',
+        lastName: 'User',
+        password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
+        role: 'Admin',
+        email: 'admin@toolkeeper.site',
+        tenant: '66af881237c17b64394a4166'
+      })
     return user
   } catch (error) {
-    logger.log(error)
+    console.log(error)
   }
 }
-// 
+//
 /**
  * Creates and returns a default category object for uncategorized tools.
  * @returns {Object} The newly created category object with preset values.
@@ -88,7 +79,8 @@ function createDefaultServiceAssignments() {
  */
 async function createDefaultTenant() {
   try {
-    const tenant = await Tenant
+
+    const tenant = await mongoose.connections[0].model('Tenant', TenantSchema)
       .create({
         _id: '66af881237c17b64394a4166',
         name: 'demo',
@@ -99,7 +91,7 @@ async function createDefaultTenant() {
       })
     return tenant
   } catch (error) {
-    logger.log(error)
+    console.log(error)
     throw error
   }
 }
@@ -121,7 +113,7 @@ function createDefaultDocuments() {
  * This includes creating default user and tenant documents.
  * @returns {Promise} A promise that resolves when all default documents have been created successfully.
  */
-function createDefaultGlobalDocuments() {
+async function createDefaultGlobalDocuments() {
   const defaultGlobalPromises = [createDefaultUser(), createDefaultTenant()]
   return Promise.allSettled(defaultGlobalPromises)
 }
@@ -134,13 +126,11 @@ function createDefaultGlobalDocuments() {
  * @returns {Promise} A promise that resolves when the database is successfully initialized.
  */
 async function initializeDemoTenantDatabase() {
-  logger.warn(
+  console.warn(
     'Initializing Database, with tenant named "demo".\nDefault service assignments and categories will be created.'.red.underline
   );
-  const tenantDb = await mongoose.connection.useDb('tenant_demo', {
-    useCache: true,
-  });
-
+  const tenantDb = await mongoose.connection.useDb('tenant_demo');
+  console.log(tenantDb.db.databaseName)
   tenantDb.on('connected', () => {
     console.info('Connected to tenant_demo database');
     createDefaultDocuments();
@@ -150,52 +140,19 @@ async function initializeDemoTenantDatabase() {
     console.error(`Error connecting to tenant_demo database: ${error}`);
   });
 }
-/**
- * Initializes the global database with a default admin user, and creates a demo tenant database.
- * This function is called when no users are found in the database.
- * It logs a warning, creates the global stuff, then initializes the demo tenant database, leaving it selected.
- */
-function initializeDatabase() {
-  logger.warn(
-    'No Users In Database. Initializing Database.\nDefault User is admin@toolkeeper.site\nDefault password is "asdfasdf"'
-      .red.underline
-  )
-  createDefaultGlobalDocuments()
-  initializeDemoTenantDatabase()
-}
-/**
- * Establishes a connection to the MongoDB database using the MONGO_URI environment variable.
- * @returns {Promise} A promise that resolves when the connection is successfully established.
- */
-const connectDB = async () => {
-  try {
-    const conn = await mongoose.connect(process.env.MONGO_URI);
-    logger.info(
-      `[DB INIT] MongoDB Connected: ${conn.connection.host}`.cyan.underline.bold
-    );
 
-    if (await isUsersCollectionEmpty()) {
-      initializeDatabase();
-    }
-  } catch (err) {
-    logger.error('DB INIT' + err);
-    process.exit(1);
-  }
-  mongoose.ObjectId.get((v) => v.toString());
-};
 
 /**
  * Selects the tenant database based on the provided tenant ID.
- *
- * @param {string} tenantId - The ID of the tenant.
- * @returns {Promise<mongoose.Connection>} - A promise that resolves to the selected tenant database connection.
- */
+*
+* @param {string} tenantId - The ID of the tenant.
+* @returns {Promise<mongoose.Connection>} - A promise that resolves to the selected tenant database connection.
+*/
 export async function selectTenantDatabase(tenantName) {
+  const globalDb = await selectGlobalDatabase();
   try {
-    const globalDb = await selectGlobalDatabase();
-    const Tenant = globalDb.model('Tenant') || globalDb.model('Tenant', TenantSchema);
-    const tenant = await Tenant.findOne({ name: tenantName });
-    
+    const Tenant = globalDb.model('Tenant', TenantSchema);
+    const tenant = await Tenant.findOne({ 'name': { $eq: tenantName } });
     if (tenant) {
       console.log(`Found tenant: ${JSON.stringify(tenant)}`);
       return await mongoose.connection.useDb(`tenant_${tenant._id}`, { useCache: true });
@@ -210,10 +167,33 @@ export async function selectTenantDatabase(tenantName) {
 /**
  * Selects the global database using the mongoose connection.
  * @returns {Promise<mongoose.Connection>} The connection to the global database.
- */
+*/
 export async function selectGlobalDatabase() {
   return await mongoose.connection.useDb('global', {
     useCache: true,
   })
 }
+/**
+ * Establishes a connection to the MongoDB database using the MONGO_URI environment variable.
+ * @returns {Promise} A promise that resolves when the connection is successfully established.
+ */
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI).asPromise()
+    const { User } = await createGlobalModels()
+    console.info(
+      `[DB INIT] MongoDB Connected: ${conn.host} ${conn.db.databaseName}`.cyan.underline.bold
+    );
+    const arethereusers = await User.find()
+    if (await User.countDocuments() === 0) {
+      console.log('No users exist in the currently selected database')
+      createDefaultGlobalDocuments().then(async () => { await initializeDemoTenantDatabase() })
+
+    }
+  } catch (err) {
+    console.error('DB INIT ERROR' + err);
+    process.exit(1);
+  }
+  mongoose.ObjectId.get((v) => v.toString());
+};
 export default connectDB
