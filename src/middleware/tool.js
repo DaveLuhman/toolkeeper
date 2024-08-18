@@ -59,7 +59,7 @@ async function getToolByID(req, res, next) {
   const id = req.params.id;
   console.info(`[MW] searching id: ${id}`);
   const tools = await Tool.find({ id: { $eq: id }, tenantId: { $eq: req.tenantId } });
-  const toolHistory = await ToolHistory.find({id: { $eq: id }, tenantId: { $eq: req.tenantId }  }).sort({
+  const toolHistory = await ToolHistory.find({ id: { $eq: id }, tenantId: { $eq: req.tenantId } }).sort({
     updatedAt: 1,
   });
   res.locals.tools = [tools];
@@ -79,8 +79,8 @@ async function getToolByID(req, res, next) {
  */
 async function getCheckedInTools() {
   const tools = await Tool.find()
-                      .where("archived").equals(false)
-                      .where('tenantId').equals(req.tenantId) //get all unarchived tools
+    .where("archived").equals(false)
+    .where('tenantId').equals(req.tenantId) //get all unarchived tools
   const stockroomDocs = await ServiceAssignment.find()
     .where("type")
     .equals("Stockroom")
@@ -105,10 +105,12 @@ async function getCheckedInTools() {
  * @returns {array} An array of checked out tools.
  */
 async function getCheckedOutTools() {
-  const tools = await Tool.find().where("archived").equals(false);
+  const tools = await Tool.find()
+    .where("archived").equals(false)
+    .where("tenant").equals(req.tenantId)
   const activeServiceAssignmentsDocs = await ServiceAssignment.find()
-    .where("type")
-    .ne("Stockroom");
+    .where("type").ne("Stockroom")
+    .where("tenant").equals(req.tenantId)
   const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(
     (item) => {
       return item._id.valueOf();
@@ -145,16 +147,18 @@ async function searchTools(req, res, next) {
     case "serviceAssignment":
       res.locals.searchBy = searchBy;
       res.locals.searchTerm = searchTerm;
-      res.locals.tools = await Tool.where("serviceAssignment")
-        .equals(searchTerm)
+      res.locals.tools = await Tool
+        .where("serviceAssignment").equals(searchTerm)
+        .where("tenant").equals(req.tenantId)
         .sort({ [sortField]: sortOrder || 1 })
         .exec();
       break;
     case "category":
       res.locals.searchBy = searchBy;
       res.locals.searchTerm = searchTerm;
-      res.locals.tools = await Tool.where("category")
-        .equals(searchTerm)
+      res.locals.tools = await Tool
+        .where("category").equals(searchTerm)
+        .where("tenant").equals(req.tenantId)
         .sort({ [sortField]: sortOrder || 1 })
         .exec();
       break;
@@ -202,11 +206,12 @@ async function createTool(req, res, next) {
       length,
       weight,
     } = req.body;
+    const tenant = req.tenantId
     if (!(serialNumber || modelNumber) || !barcode) {
       throw new Error({ message: "Missing required fields", status: 400 });
     }
     const existing = await Tool.findOne({
-      $or: [{ serialNumber }, { barcode }],
+      $or: [{ serialNumber }, { barcode }], tenant: { $eq: tenant }
     });
     if (existing) {
       res.locals.tools = mutateToArray(existing);
@@ -229,6 +234,7 @@ async function createTool(req, res, next) {
       },
       updatedBy: req.user._id,
       createdBy: req.user._id,
+      tenant,
     });
     if (!newTool) {
       throw new Error({ message: "Could not create tool", status: 500 });
@@ -236,6 +242,7 @@ async function createTool(req, res, next) {
     await ToolHistory.create({
       _id: newTool._id,
       history: [newTool],
+      tenant,
     });
     res.locals.message = "Successfully Made A New Tool";
     res.locals.tools = [newTool];
@@ -445,12 +452,12 @@ async function checkTools(req, res, next) {
  */
 async function lookupTool(searchTerm) {
   searchTerm = searchTerm.toUpperCase();
-  let result = await Tool.findOne({ serialNumber: { $eq: searchTerm } });
+  let result = await Tool.findOne({ serialNumber: { $eq: searchTerm }, tenantId: { $eq: req.tenantId } });
   if (!result) {
-    result = await Tool.findOne({ barcode: { $eq: searchTerm } });
+    result = await Tool.findOne({ barcode: { $eq: searchTerm }, tenantId: { $eq: req.tenantId } });
   }
   if (!result) {
-    result = await Tool.findOne({ toolID: { $eq: searchTerm } });
+    result = await Tool.findOne({ toolID: { $eq: searchTerm }, tenantId: { $eq: req.tenantId } });
   }
   if (!result) {
     result = {};
@@ -555,9 +562,11 @@ async function getDashboardStats() {
   try {
     const todaysTools = await Tool.countDocuments({
       updatedAt: { $gte: startOfDay, $lte: endOfDay },
+      tenantId: { $eq: req.tenantId }
     });
     const thisWeeksTools = await Tool.countDocuments({
       updatedAt: { $gte: startOfWeek, $lte: endOfWeek },
+      tenantId: { $eq: req.tenantId }
     });
     const totalTools = await Tool.countDocuments();
     const stockroomTools = await getCheckedInTools();
@@ -573,7 +582,7 @@ async function getDashboardStats() {
  * @returns {Promise<Array>} A promise that resolves to an array of recently updated tools.
  */
 async function getRecentlyUpdatedTools() {
-  const tools = await Tool.find().sort({ updatedAt: -1 }).limit(50);
+  const tools = await Tool.find({ tenantId: { $eq: req.tenantId } }).sort({ updatedAt: -1 }).limit(50);
   return tools;
 }
 export {
