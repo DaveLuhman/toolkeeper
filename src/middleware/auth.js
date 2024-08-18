@@ -14,6 +14,7 @@ import passport from 'passport'
 function checkAuth(req, res, next) {
   if (req.isAuthenticated()) {
     res.locals.user = req.user
+    res.locals.tenantId = req.user.tenant
     return next()
   }
   res.locals.message = 'You must be logged in to access that page'
@@ -35,7 +36,7 @@ function isManager(req, res, next) {
     res.locals.error =
       'You are not a manager, and have been redirected to the dashboard'
     return res.redirect('/dashboard')
-    
+
   }
   return next()
 }

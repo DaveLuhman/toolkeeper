@@ -155,7 +155,3 @@ export const errorHandler = (err, _req, res, _next) => {
     })
   }
 }
-export async function hoistTenantId( req, res, next) {
-  res.locals.tenantId = req.user.tenant._id
-  return next()
-}
