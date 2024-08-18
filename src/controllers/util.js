@@ -7,7 +7,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 export function createToken() {
     return Math.random().toString(36).slice(-8)
   }
-  
+
 /**
  * Sends a password reset email.
  * @param {string} email - The email address of the recipient.
@@ -29,5 +29,4 @@ export async function sendResetPwEmail(email, token) {
     await sgMail.send(resetEmail)
 }
 
-
-// Path: src/middleware/util.js
+// Path: src/controllers/util.js

@@ -2,8 +2,7 @@ import passport from 'passport'
 import UserSchema from '../models/User.schema.js'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { compare } from 'bcrypt'
-import { selectGlobalDatabase } from './db.js'
-const User = (await selectGlobalDatabase()).model('User', UserSchema)
+import { User } from './db.js'
 /**
  * Configures passport for authentication handling.
  * @param {object} _app - The Express application instance for configuring middlewares and routes.

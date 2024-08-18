@@ -5,7 +5,7 @@ import 'dotenv/config'
 import morgan from 'morgan'
 // db depenancies
 import connectMongoDBSession from 'connect-mongodb-session'
-import connectDB from './config/db.js'
+import { connectDB } from './config/db.js'
 import connectToCustomerDatabase from './middleware/tenantDb.js'
 // express depenancies
 import cookieParser from 'cookie-parser'
@@ -42,7 +42,7 @@ const MongoDBStore = connectMongoDBSession(session)
 const PORT = process.env.PORT || 5000
 const app = express() // Create Express App
 app.use(errorHandler)
-connectDB() // Connect to MongoDB and report status to console
+await connectDB() // Connect to MongoDB and report status to console
 // create mongo store for session persistence
 const mongoStore = new MongoDBStore({
   uri: process.env.MONGO_URI,
@@ -84,7 +84,7 @@ const hbs = create({
 app.engine('.hbs', hbs.engine)
 app.set('view engine', '.hbs')
 app.set('views', './src/views')
- app.set('trust proxy', 1)
+app.set('trust proxy', 1)
 
 // Express Middleware
 app.use(cookieParser())

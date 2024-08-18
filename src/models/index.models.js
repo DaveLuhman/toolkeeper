@@ -18,17 +18,5 @@ export async function createTenantModels(tenantId) {
   }
 }
 
-export async function createGlobalModels() {
-  console.log('createGlobalModels 1')
-  const db = await selectGlobalDatabase();
-  console.log('createGlobalModels 2')
-  const Tenant = db.model('Tenant', TenantSchema);  // Ensure model registration
-  console.log('createGlobalModels 3')
-  const User = db.model('User', UserSchema);      // Ensure model registration
-  console.log('createGlobalModels 4')
-  return {
-    Tenant,
-    User,
-  };
-}
+
 

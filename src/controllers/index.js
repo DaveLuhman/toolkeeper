@@ -20,7 +20,7 @@ export const renderLoginPage = (_req, res) => {
  * @param {Object} _req - The request object.
  * @param {Object} res - The response object.
  */
-export const redirectToDashboard = (_req, res) => {
+export const redirectToDashboard = (req, res) => {
     res.redirect('/dashboard')
 }
 

@@ -6,7 +6,13 @@ const ToolHistorySchema = new Schema(
       type: Schema.Types.ObjectId,
       auto: false
     },
-    history: []
+    history: [],
+    tenant: {
+      type: Schema.Types.ObjectId,
+      ref: "Tenant",
+      default: '66af881237c17b64394a4166',
+      required: true
+    }
   },
   {
     strict: false,

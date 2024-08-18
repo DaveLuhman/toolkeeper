@@ -41,6 +41,12 @@ const ServiceAssignmentSchema = new Schema(
     },
     notes: {
       type: String
+    },
+    tenant: {
+      type: Schema.Types.ObjectId,
+      ref: "Tenant",
+      default: '66af881237c17b64394a4166',
+      required: true
     }
   },
   {
