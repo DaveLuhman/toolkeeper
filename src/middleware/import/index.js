@@ -21,26 +21,27 @@ export async function importByFile(req, res, next) {
   }
   const file = req.files.importFile
   const importTarget = req.body.importTarget
+  const tenant = req.tenantId
   let result = null;
   switch (importTarget) {
     case 'tools':
       console.log('importing tools')
-      result = await importTools(file)
+      result = await importTools(file, tenant)
       break
     case 'allServiceAssignments':
       console.log('importing all service assignments')
-      result = await importServiceAssignments(file)
+      result = await importServiceAssignments(file, tenant)
       break
     case 'activeServiceAssignments':
       console.log('marking inactive SAs as such')
-      result = await activateServiceAssignments(file)
+      result = await activateServiceAssignments(file, tenant)
       break
     case 'history':
-      result = await importHistory(file)
+      result = await importHistory(file, tenant)
       break
     case 'categories':
       console.log('importing categories')
-      result = await importCategories(file)
+      result = await importCategories(file, tenant)
       break
     default:
       res.locals.message = 'not sure how you managed this response.'

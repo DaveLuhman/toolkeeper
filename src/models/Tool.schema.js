@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema } from 'mongoose'
 import mongooseAutoPopulate from 'mongoose-autopopulate'
 
 const ToolSchema = new Schema(

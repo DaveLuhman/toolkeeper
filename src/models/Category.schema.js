@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema } from 'mongoose'
 import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 const CategorySchema = new Schema(

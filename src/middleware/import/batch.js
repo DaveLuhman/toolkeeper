@@ -1,5 +1,4 @@
-import Tool from '../../models/Tool.schema.js'
-import ToolHistory from '../../models/ToolHistory.schema.js'
+import { Tool, ToolHistory} from '../../models/index.models.js'
 const errorList = []
 /**
  * Represents an error that occurs when a duplicate value is encountered.
@@ -23,7 +22,7 @@ class DuplicateError extends Error {
  */
 async function duplicateCheckSerial(serialNumber) {
   const results = await Tool.find({ serialNumber })
-  if(results.length > 0) return results[0].id
+  if (results.length > 0) return results[0].id
   else return false
 }
 /**
@@ -33,7 +32,7 @@ async function duplicateCheckSerial(serialNumber) {
  */
 async function duplicateCheckBarcode(barcode) {
   const results = await Tool.find({ barcode })
-  if(results.length > 0) return results[0].id
+  if (results.length > 0) return results[0].id
   else return false
 }
 /**
@@ -43,7 +42,7 @@ async function duplicateCheckBarcode(barcode) {
  */
 async function duplicateCheckToolID(toolID) {
   const results = await Tool.find({ toolID })
-  if(results.length > 0) return results[0].id
+  if (results.length > 0) return results[0].id
   else return false
 }
 

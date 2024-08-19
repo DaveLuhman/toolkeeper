@@ -1,5 +1,5 @@
 import { csvFileToEntries } from '../util.js'
-import Category from '../../models/Category.schema.js'
+import { Category } from '../../models/index.models.js'
 let successCount = 0
 const errorList = []
 
@@ -9,10 +9,10 @@ const errorList = []
  * @param {Array} row - The row of data.
  * @returns {Object} - The category document.
  */
-function createCategoryDocument(row) {
+function createCategoryDocument(row, tenantId) {
   const data = row.map((cell) => cell.trim())
   const description = data[2] || ''
-  return { prefix: data[0], name: data[1], description }
+  return { prefix: data[0], name: data[1], description, tenant: tenantId }
 }
 
 /**
@@ -47,9 +47,9 @@ async function saveCategoryDocument(doc) {
  * @param {*} entries
  * @return {*}
  */
-function createCategories(entries) {
+function createCategories(entries, tenantId) {
   const categoryPromises = entries.map((entry) => {
-    const doc = createCategoryDocument(entry)
+    const doc = createCategoryDocument(entry, tenantId)
     return saveCategoryDocument(doc)
   })
   return Promise.all(categoryPromises)
@@ -61,10 +61,10 @@ function createCategories(entries) {
  * @param {File} file - The file containing the categories data.
  * @returns {Object} - An object containing the success count and error list.
  */
-export async function importCategories(file) {
+export async function importCategories(file, tenantId) {
   successCount = 0
   errorList.length = 0
   const entries = csvFileToEntries(file)
-  await createCategories(entries)
+  await createCategories(entries, tenantId)
   return { successCount, errorList }
 }

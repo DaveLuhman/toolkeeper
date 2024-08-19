@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import { Schema, model } from 'mongoose'
+import { Schema } from 'mongoose'
 const ToolHistorySchema = new Schema(
   {
     _id: {

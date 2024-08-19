@@ -1,6 +1,5 @@
-import Tool from '../../models/Tool.schema.js'
-import ToolHistory from '../../models/ToolHistory.schema.js'
-import ServiceAssignmentModel from '../../models/ServiceAssignment.schema.js'
+import {Tool, ToolHistory, ServiceAssignment} from '../../models/index.models.js'
+
 import { csvFileToEntries } from '../util.js'
 let successCount = 0
 const errorList = []
@@ -21,20 +20,21 @@ function dateTimeMixer(date, time) {
  * @param {Array} row - The row data containing information about the tool and service assignment.
  * @returns {number} - Returns 0 if the update is successful, otherwise returns 1.
  */
-async function updateToolServiceAssignment(row) {
+async function updateToolServiceAssignment(row, tenantId) {
   if (!row[3] || row[4] === null) return
   const serialNumber = row[4].trim()
-  const serviceAssignment = await ServiceAssignmentModel.findOne({
-    name: row[3]
+  const serviceAssignment = await ServiceAssignment.findOne({
+    name: row[3],
+    tenantId
   })
   if (!serviceAssignment) {
     return 1 // error
   }
-  const tool = await Tool.findOne({ serialNumber })
+  const tool = await Tool.findOne({ serialNumber, tenantId })
   if (!tool) {
     return 1 // error
   }
-  const dateTime = dateTimeMixer(row[0], row[1]) // creates a date time object for when there was a relavent transaction
+  const dateTime = dateTimeMixer(row[0], row[1]) // creates a date time object for when there was a relevant transaction
   await Tool.findByIdAndUpdate(
     { _id: tool.id },
     { serviceAssignment: serviceAssignment.id, updatedAt: dateTime },
@@ -56,13 +56,13 @@ async function updateToolServiceAssignment(row) {
  * @param {string} file - The file to import the history from.
  * @returns {number} - The number of updated tools.
  */
-export async function importHistory(file) {
+export async function importHistory(file, tenantId) {
   errorList.length = 0
   successCount = 0
   const transactions = csvFileToEntries(file)
   const updatedTools = []
   for (let i = 0; i < transactions.length; i++) {
-    const result = await updateToolServiceAssignment(transactions[i])
+    const result = await updateToolServiceAssignment(transactions[i], tenantId)
     if (result === 0) {
       successCount = successCount + 1
     } else errorList.push({ key: result })

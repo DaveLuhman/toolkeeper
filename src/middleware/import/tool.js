@@ -1,8 +1,6 @@
-import Tool from '../../models/Tool.schema.js'
+import { Tool, ToolHistory, Category } from '../../models/index.models.js'
 import { csvFileToEntries } from '../util.js'
-import ToolHistory from '../../models/ToolHistory.schema.js'
-import Category from '../../models/Category.schema.js'
-let successCount
+
 const errorList = []
 
 function trimArrayValues(array) {
@@ -28,7 +26,7 @@ async function getCategoryByPrefix(prefix) {
   }
 }
 
-function createToolDocument(row) {
+function createToolDocument(row, tenantId) {
   row = trimArrayValues(row)
   const toolDocument = {
     serialNumber: row[0],
@@ -39,6 +37,7 @@ function createToolDocument(row) {
     manufacturer: row[11],
     serviceAssignment: '64a19e910e675938ebb67de7',
     category: '64a1c3d8d71e121dfd39b7ab',
+    tenantId,
   }
   return toolDocument
 }
@@ -61,18 +60,18 @@ async function createTool(toolDocument) {
     console.log(error)
   }
 }
-export function createTools(entries) {
+export function createTools(entries, tenantId) {
   const toolPromises = entries.map((entry) => {
-    const toolDocument = createToolDocument(entry)
+    const toolDocument = createToolDocument(entry, tenantId)
     return createTool(toolDocument)
   })
   return Promise.allSettled(toolPromises)
 }
-export async function importTools(file) {
+export async function importTools(file, tenantId) {
   successCount = 0
   errorList.length = 0
   const entries = csvFileToEntries(file)
-  await createTools(entries)
+  await createTools(entries, tenantId)
   return { successCount, errorList }
 }
 

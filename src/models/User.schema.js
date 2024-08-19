@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema } from 'mongoose'
 // This code creates a new schema that is used to define the User model
 // The schema contains the fields for a user, as well as the timestamps
 // that are automatically added when the user is created and updated

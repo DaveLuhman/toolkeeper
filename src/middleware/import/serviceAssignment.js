@@ -1,4 +1,4 @@
-import ServiceAssignment from '../../models/ServiceAssignment.schema.js'
+import { ServiceAssignment } from '../../models/index.models.js'
 import { csvFileToEntries } from '../util.js'
 let successCount = 0
 const errorList = []
@@ -18,14 +18,14 @@ function determineServiceAssignmentType(memberID, mLastName) {
   } else return 'Imported - Uncategorized'
 }
 
-function createServiceAssignmentDocument(row) {
+function createServiceAssignmentDocument(row, tenantId) {
   try {
     const jobNumber = row[0] || 'ERROR'
     const jobName = row[1] ? row[1].trim() : ''
     const notes = row[4]?.trim() + ' ' + row[5]?.trim() + ' ' + row[10]?.trim()
     const phone = row[2]?.trim()
     const type = determineServiceAssignmentType(row[0], row[1])
-    const serviceAssignmentDocument = { jobNumber, jobName, notes, phone, type, active: false }
+    const serviceAssignmentDocument = { jobNumber, jobName, notes, phone, type, active: true, tenantId }
     return serviceAssignmentDocument
   } catch (error) {
     throw new Error('Could not create the document due to invalid input values')
@@ -45,18 +45,18 @@ function saveServiceAssignmentDocument(serviceAssignmentDocument) {
   }
 }
 
-function createServiceAssignments(members) {
+function createServiceAssignments(members, tenantId) {
   const serviceAssignmentsPromises = members.map((row) => {
-    const serviceAssignmentDocument = createServiceAssignmentDocument(row)
+    const serviceAssignmentDocument = createServiceAssignmentDocument(row, tenantId)
     return saveServiceAssignmentDocument(serviceAssignmentDocument)
   })
   return Promise.allSettled(serviceAssignmentsPromises)
 }
 
-export async function importServiceAssignments(file) {
+export async function importServiceAssignments(file, tenantId) {
   successCount = 0
   const members = csvFileToEntries(file)
-  await createServiceAssignments(members)
+  await createServiceAssignments(members, tenantId)
   return { successCount, errorList }
 }
 
