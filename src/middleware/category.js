@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */ // for the category name search
-import Category from '../models/Category.schema.js'
+import { Category } from '../models/index.models.js'
 
 /**
  * Retrieves categories.

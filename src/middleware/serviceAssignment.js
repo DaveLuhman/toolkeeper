@@ -1,5 +1,5 @@
 /* eslint-disable eqeqeq */
-import ServiceAssignment from '../models/ServiceAssignment.schema.js'
+import { ServiceAssignment } from '../models/index.models.js'
 import { mutateToArray } from './util.js'
 /**
  * @function getServiceAssignments

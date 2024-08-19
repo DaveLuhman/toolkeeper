@@ -1,4 +1,4 @@
-import User from '../models/User.schema.js'
+import { User } from '../models/index.models.js'
 import bcrypt from 'bcrypt'
 import { mutateToArray } from './util.js'
 
