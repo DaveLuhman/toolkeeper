@@ -71,7 +71,7 @@ function createDefaultCategory() {
  * @returns {Promise} A promise that resolves when the service assignments are successfully created.
  */
 async function createDefaultServiceAssignments() {
-  const serviceAssignments = ServiceAssignment.create([
+  const serviceAssignments = await ServiceAssignment.create([
     {
       _id: '64a19e910e675938ebb67de7',
       name: 'IMPORT',

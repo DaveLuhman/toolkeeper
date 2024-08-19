@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-export function btnToSpinner() {
+function btnToSpinner() {
   const submitBtn = document.querySelector('#testButton')
 
   submitBtn.addEventListener('click', () => {
@@ -12,7 +12,7 @@ export function btnToSpinner() {
 * Function to open the printer friendly tools in a new tab
 */
 // eslint-disable-next-line no-unused-vars
-export const openInNewTab = () => {
+const openInNewTab = () => {
   const x = window.open()
   const newPage = x.document.createElement('div')
   newPage.width = '100%'

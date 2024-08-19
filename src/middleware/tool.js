@@ -56,13 +56,12 @@ async function getActiveTools(req, res, next) {
 async function getToolByID(req, res, next) {
   const id = req.params.id;
   console.info(`[MW] searching id: ${id}`);
-  const tools = await Tool.find({ id: { $eq: id }, tenantId: { $eq: req.tenantId } });
-  const toolHistory = await ToolHistory.find({ id: { $eq: id }, tenantId: { $eq: req.tenantId } }).sort({
-    updatedAt: 1,
-  });
-  res.locals.tools = [tools];
-  if (toolHistory) {
-    res.locals.toolHistory = sortArray(toolHistory.history, {
+  const tools = await Tool.find({ _id: { $eq: id }, tenant: { $eq: req.user.tenant } });
+  const toolHistory = await ToolHistory.find({ _id: { $eq: id }, tenant: { $eq: req.user.tenant } })
+  .sort({updatedAt: 1  });
+  res.locals.tools = mutateToArray(tools);
+  if (toolHistory[0].history) {
+    res.locals.toolHistory = sortArray(toolHistory[0].history, {
       by: "updatedAt",
       order: "desc",
     });
@@ -579,8 +578,8 @@ async function getDashboardStats() {
  * Retrieves the recently updated tools.
  * @returns {Promise<Array>} A promise that resolves to an array of recently updated tools.
  */
-async function getRecentlyUpdatedTools() {
-  const tools = await Tool.find({ tenantId: { $eq: req.tenantId } }).sort({ updatedAt: -1 }).limit(50);
+async function getRecentlyUpdatedTools(tenantId) {
+  const tools = await Tool.find({ tenantId: { $eq: tenantId } }).sort({ updatedAt: -1 }).limit(50);
   return tools;
 }
 export {

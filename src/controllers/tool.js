@@ -31,10 +31,10 @@ export const renderEditTool = (_req, res) => {
  * @param _req The request object (not used in this function).
  * @param res The response object used to render the page.
  */
-export const renderDashboard = async (_req, res) => {
-  try {
+export const renderDashboard = async (req, res) => {
+  try{
     res.locals.dashboardStats = await getDashboardStats()
-    res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools()
+    res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools(req.tenantId)
     res.render('dashboard')
   } catch (err) {
     console.error(err)
