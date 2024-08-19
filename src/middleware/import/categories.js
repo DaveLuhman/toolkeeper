@@ -45,7 +45,7 @@ async function saveCategoryDocument(doc) {
  *
  *
  * @param {*} entries
- * @return {*} 
+ * @return {*}
  */
 function createCategories(entries) {
   const categoryPromises = entries.map((entry) => {

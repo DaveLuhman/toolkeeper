@@ -13,6 +13,7 @@ export async function getServiceAssignments(req, res, next) {
     console.info('[MW] getServiceAssignments-in'.bgBlue.white)
     try {
         const serviceAssignments = await ServiceAssignment.find()
+            .where("tenant").equals(req.tenantId)
             .sort('jobNumber')
             .lean()
 

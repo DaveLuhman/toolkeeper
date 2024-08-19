@@ -53,7 +53,9 @@ const UserSchema = new Schema(
     tokenExpiry: Number,
     tenant: {
       type: Schema.Types.ObjectId,
-      ref: 'Tenant'
+      ref: "Tenant",
+      default: '66af881237c17b64394a4166',
+      required: true
     }
   },
   {

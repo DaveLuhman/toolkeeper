@@ -1,8 +1,8 @@
 import passport from 'passport'
-import UserSchema from '../models/User.schema.js'
+import { User } from '../models/index.models.js'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { compare } from 'bcrypt'
-import { User } from './db.js'
+
 /**
  * Configures passport for authentication handling.
  * @param {object} _app - The Express application instance for configuring middlewares and routes.

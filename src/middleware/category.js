@@ -7,9 +7,9 @@ import Category from '../models/Category.schema.js'
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-const getCategories = async function (_req, res, next)  {
+const getCategories = async function (_req, res, next) {
   try {
-    const categories = await Category.find().sort({ prefix: 'asc' })
+    const categories = await Category.find().where("tenant").equals(req.tenantId).sort({ prefix: 'asc' })
     res.locals.categories = categories
     return next()
   } catch (error) {
@@ -46,7 +46,7 @@ const updateCategory = async function (req, res, next) {
   try {
     const updatedCategory = await Category.findByIdAndUpdate(
       { _id },
-      { name, description},
+      { name, description },
       { new: true }
     )
     res.locals.updatedCategory = updatedCategory

@@ -53,7 +53,7 @@ function searchingForOneTool(searchBy) {
     ]
     return searchesReturningOneTool.includes(searchBy)
   }
-  
+
 /**
  * Generates a unique identifier for a given tool document
  * @param {object} toolDocument - The document containing tool information
@@ -74,7 +74,7 @@ export const returnUniqueIdentifier = (toolDocument) => {
       return 'Unable to uniquely identify this tool'
     }
   }
-  
+
   /**
    * Calculates the distance from today for a given date.
    * @param {Date} date - The date to calculate the distance from today.
@@ -83,7 +83,8 @@ export const returnUniqueIdentifier = (toolDocument) => {
 const hbsDate_distanceFromToday = (date) => {
     return moment(date).fromNow()
   }
-  const customHelpers = {isSelected,
+  const customHelpers = {
+    isSelected,
     getCategoryName,
     getServiceAssignmentJobNumber,
     paginate,
@@ -93,5 +94,5 @@ const hbsDate_distanceFromToday = (date) => {
     hbsDate_distanceFromToday,
     ...handlebarsHelpers()}
 
-    
+
     export default customHelpers

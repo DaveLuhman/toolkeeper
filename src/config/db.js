@@ -1,21 +1,12 @@
 import mongoose from 'mongoose';
-import TenantSchema from '../models/Tenant.schema.js';
-import UserSchema from '../models/User.schema.js';
-import CategorySchema from '../models/Category.schema.js';
-import ServiceAssignmentSchema from '../models/ServiceAssignment.schema.js';
+import { Tenant, Category, ServiceAssignment, User } from '../models/index.models.js';
 
-// Initialize models using the global connection instance
 let globalConn;
-let User;
-let Tenant;
+
 async function connectDB() {
   try {
     globalConn = await mongoose.createConnection(process.env.MONGO_URI).asPromise();
-    User = globalConn.model('User', UserSchema);
-    Tenant = globalConn.model('Tenant', TenantSchema);
-
     console.info(`[DB INIT] MongoDB Connected: ${globalConn.host} ${globalConn.db.databaseName}`.cyan.underline.bold);
-
     const userCount = await User.countDocuments();
     if (userCount === 0) {
       console.log('No users exist in the currently selected database');
@@ -65,7 +56,7 @@ async function createDefaultTenant() {
  * @returns {Object} The newly created category object with preset values.
  */
 function createDefaultCategory() {
-  return globalConn.model('Category', CategorySchema).create({
+  return Category.create({
     _id: '64a1c3d8d71e121dfd39b7ab',
     prefix: 'UC',
     name: 'Uncategorized',
@@ -108,7 +99,7 @@ async function createDefaultServiceAssignments() {
       tenant: '66af881237c17b64394a4166',
     },
   ]
-  return await globalConn.model('ServiceAssignment', ServiceAssignmentSchema).create(serviceAssignments)
+  return ServiceAssignment.create(serviceAssignments)
 }
 
 function createDefaultDocuments() {
@@ -124,4 +115,4 @@ async function createDefaultGlobalDocuments() {
   return Promise.allSettled(defaultGlobalPromises);
 }
 
-export { connectDB, User, Tenant, globalConn };
+export default connectDB
