@@ -15,6 +15,6 @@ export const Tool = model('Tool', ToolSchema)
 export const ToolHistory = model('ToolHistory', ToolHistorySchema)
 export const User = model('User', UserSchema)
 
-const models = {Category, Tenant, Material, ServiceAssignments, Tool, ToolHistory, User}
+const models = {Category, Tenant, Material, ServiceAssignment, Tool, ToolHistory, User}
 export default models
 

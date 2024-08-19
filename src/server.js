@@ -5,8 +5,7 @@ import 'dotenv/config'
 import morgan from 'morgan'
 // db depenancies
 import connectMongoDBSession from 'connect-mongodb-session'
-import { connectDB } from './config/db.js'
-import connectToCustomerDatabase from './middleware/tenantDb.js'
+import connectDB from './config/db.js'
 // express depenancies
 import cookieParser from 'cookie-parser'
 import csurf from 'csurf'
@@ -105,8 +104,8 @@ app.use(rateLimiter)
 // Routes (No User Context)
 app.use('/', indexRouter)
 // Routes (User Context)
+
 app.use(checkAuth)
-app.use(connectToCustomerDatabase)
 app.use(populateDropdownItems)
 app.use('/user', userRouter)
 app.use('/dashboard', dashboardRouter)

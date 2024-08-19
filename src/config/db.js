@@ -5,16 +5,17 @@ let globalConn;
 
 async function connectDB() {
   try {
-    globalConn = await mongoose.createConnection(process.env.MONGO_URI).asPromise();
-    console.info(`[DB INIT] MongoDB Connected: ${globalConn.host} ${globalConn.db.databaseName}`.cyan.underline.bold);
-    const userCount = await User.countDocuments();
-    if (userCount === 0) {
-      console.log('No users exist in the currently selected database');
-      await createDefaultGlobalDocuments();
-    }
+    globalConn = await mongoose.connect(process.env.MONGO_URI)
+    console.info(`[DB INIT] MongoDB Connected: ${globalConn.connection.host}`.cyan.underline.bold);
   } catch (err) {
     console.error('DB INIT ERROR: ' + err);
     process.exit(1);
+  }
+  const userCount = await User.countDocuments();
+  if (userCount === 0) {
+    console.log('No users exist in the currently selected database');
+    await createDefaultGlobalDocuments();
+    await createDefaultDocuments();
   }
 }
 
@@ -70,8 +71,7 @@ function createDefaultCategory() {
  * @returns {Promise} A promise that resolves when the service assignments are successfully created.
  */
 async function createDefaultServiceAssignments() {
-
-  const serviceAssignments = [
+  const serviceAssignments = ServiceAssignment.create([
     {
       _id: '64a19e910e675938ebb67de7',
       name: 'IMPORT',
@@ -98,8 +98,8 @@ async function createDefaultServiceAssignments() {
       active: true,
       tenant: '66af881237c17b64394a4166',
     },
-  ]
-  return ServiceAssignment.create(serviceAssignments)
+  ])
+  return serviceAssignments
 }
 
 function createDefaultDocuments() {
