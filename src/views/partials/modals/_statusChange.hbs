@@ -1,5 +1,5 @@
 <input type="checkbox" id="checkInOutModal" class="modal-toggle" />
-<div class="modal">
+<div class="modal" role="dialog">
   <div class="modal-inner-lg">
     <label for="checkInOutModal" class="modal-close-btn">✕</label>
     <form action="/tool/checkInOut" method="POST">
@@ -41,4 +41,5 @@
       </div>
     </form>
   </div>
+  <label class="modal-backdrop" for="checkInOutModal">Close</label>
 </div>

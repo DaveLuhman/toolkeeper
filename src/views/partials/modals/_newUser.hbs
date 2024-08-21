@@ -1,12 +1,12 @@
 <input type="checkbox" id="newUserModal" class="modal-toggle" />
-<div class="modal">
+<div class="modal" role="dialog">
     <div class="modal-inner-lg">
         <label for="newUserModal" class="modal-close-btn">✕</label>
         <form action="/settings/users/create" method="POST">
             <div class="modal-table">
                 <div class="title-bar">
                     <h3 class="title-text">Create A New User</h3>
-                </div> 
+                </div>
                 <input placeholder="First Name" type="text" name="firstName" id="new-user_firstName" class="input input-bordered" required />
                 <input placeholder="Last Name" type="text" name="lastName" id="new-user_lastName" class="input input-bordered" required />
                 <input placeholder="E-Mail" type="email" name="email" id="new-user_email" class="input input-bordered" required />
@@ -26,4 +26,5 @@
             </div>
         </form>
     </div>
+    <label class="modal-backdrop" for="newUserModal">Close</label>
 </div>
