@@ -34,7 +34,7 @@ export const renderEditTool = (_req, res) => {
 export const renderDashboard = async (req, res) => {
   try{
     res.locals.dashboardStats = await getDashboardStats()
-    res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools(req.tenantId)
+    res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools(req.user.tenant.valueOf())
     res.render('dashboard')
   } catch (err) {
     console.error(err)

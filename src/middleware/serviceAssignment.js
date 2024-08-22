@@ -12,8 +12,7 @@ import { mutateToArray } from './util.js'
 export async function getServiceAssignments(req, res, next) {
     console.info('[MW] getServiceAssignments-in'.bgBlue.white)
     try {
-        const serviceAssignments = await ServiceAssignment.find()
-            .where("tenant").equals(req.tenantId)
+        const serviceAssignments = await ServiceAssignment.find({ tenant: { $eq: req.user.tenant.valueOf() } })
             .sort('jobNumber')
             .lean()
 
@@ -169,32 +168,27 @@ export async function activateServiceAssignment(req, res, next) {
 }
 /**
  * Lists all active service assignments.
- * @param {*} _req
+ * @param {*} req
  * @param {*} res
  * @param {*} next
  * @returns {void}
  */
-export async function listActiveSAs(_req, res, next) {
-    res.locals.activeServiceAssignments = await ServiceAssignment.find()
-        .where('active')
-        .equals(true)
-        .sort({
-            jobNumber: 'asc',
-        })
+export async function listActiveSAs(req, res, next) {
+    res.locals.activeServiceAssignments = await ServiceAssignment.find({ tenant: { $eq: req.user.tenant.valueOf() }, active: true })
+        .sort({ jobNumber: 'asc' })
     return next()
 }
 
 /**
  * Retrieves all service assignments and sorts them by jobNumber in ascending order.
- * @param {Object} _req - The request object.
+ * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the operation is complete.
  */
-export async function listAllSAs(_req, res, next) {
-    res.locals.allServiceAssignments = await ServiceAssignment.find().sort({
-        jobNumber: 'asc',
-    })
+export async function listAllSAs(req, res, next) {
+    res.locals.allServiceAssignments = await ServiceAssignment.find({ tenant: { $eq: req.user.tenant.valueOf() } })
+        .sort({ jobNumber: 'asc' })
     return next()
 }
 

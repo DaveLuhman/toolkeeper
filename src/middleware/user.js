@@ -10,7 +10,7 @@ import { mutateToArray } from './util.js'
  */
 async function getUsers(req, res, next) {
   console.info('[MW] getUsers-in'.bgBlue.white)
-  const users = await User.find().where("tenant").equals(req.tenantId)
+  const users = await User.find().where("tenant").equals(req.user.tenant.valueOf())
   res.locals.users = mutateToArray(users)
   console.info('[MW] getUsers-out-2'.bgWhite.blue)
   return next()
@@ -51,7 +51,7 @@ async function createUser(req, res, next) {
     res.redirect('back')
     return next(error)
   }
-  if (await User.findOne({ email, tenantId })) {
+  if (await User.findOne({ email, tenant })) {
     const error = 'Email is already registered'
     console.warn('Email is already registered'.yellow)
     console.info('[MW] createUser-out-2'.bgWhite.blue)
@@ -74,7 +74,7 @@ async function createUser(req, res, next) {
     email,
     password: hash,
     role,
-    tenant: req.tenantId
+    tenant: req.user.tenant.valueOf()
   })
   newUser.save()
   console.log(newUser)

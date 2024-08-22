@@ -3,13 +3,13 @@ import { Category } from '../models/index.models.js'
 
 /**
  * Retrieves categories.
- * @param {Object} _req - The request object.
+ * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-const getCategories = async function (_req, res, next) {
+const getCategories = async function (req, res, next) {
   try {
-    const categories = await Category.find().where("tenant").equals(req.tenantId).sort({ prefix: 'asc' })
+    const categories = await Category.find({ tenant: { $eq: req.user.tenant.valueOf() } }).sort({ prefix: 'asc' })
     res.locals.categories = categories
     return next()
   } catch (error) {
@@ -96,13 +96,13 @@ const deleteCategory = async function (req, res, next) {
 /**
  * Lists category names from the database.
  *
- * @param {Object} _req - The request object.
+ * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the category names are listed.
  */
-const listCategoryNames = async (_req, res, next) => {
-  res.locals.categories = await Category.find({}, { name: 1, id: 1 }).sort({ name: 'asc' })
+const listCategoryNames = async (req, res, next) => {
+  res.locals.categories = await Category.find({ tenant: { $eq: req.user.tenant.valueOf() } }, { name: 1, id: 1 }).sort({ name: 'asc' })
   return next()
 }
 

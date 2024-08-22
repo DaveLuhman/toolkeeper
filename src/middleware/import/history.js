@@ -20,17 +20,17 @@ function dateTimeMixer(date, time) {
  * @param {Array} row - The row data containing information about the tool and service assignment.
  * @returns {number} - Returns 0 if the update is successful, otherwise returns 1.
  */
-async function updateToolServiceAssignment(row, tenantId) {
+async function updateToolServiceAssignment(row, tenant) {
   if (!row[3] || row[4] === null) return
   const serialNumber = row[4].trim()
   const serviceAssignment = await ServiceAssignment.findOne({
     name: row[3],
-    tenantId
+    tenant
   })
   if (!serviceAssignment) {
     return 1 // error
   }
-  const tool = await Tool.findOne({ serialNumber, tenantId })
+  const tool = await Tool.findOne({ serialNumber, tenant })
   if (!tool) {
     return 1 // error
   }
@@ -56,13 +56,13 @@ async function updateToolServiceAssignment(row, tenantId) {
  * @param {string} file - The file to import the history from.
  * @returns {number} - The number of updated tools.
  */
-export async function importHistory(file, tenantId) {
+export async function importHistory(file, tenant) {
   errorList.length = 0
   successCount = 0
   const transactions = csvFileToEntries(file)
   const updatedTools = []
   for (let i = 0; i < transactions.length; i++) {
-    const result = await updateToolServiceAssignment(transactions[i], tenantId)
+    const result = await updateToolServiceAssignment(transactions[i], tenant)
     if (result === 0) {
       successCount = successCount + 1
     } else errorList.push({ key: result })

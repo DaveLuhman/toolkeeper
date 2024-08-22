@@ -3,13 +3,13 @@ import { Material } from '../models/index.models.js'
 
 /**
  * Retrieves all materials.
- * @param {Object} _req - The request object.
+ * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-const getMaterials = async (_req, res, next) => {
+const getMaterials = async (req, res, next) => {
   try {
-    const materials = await Material.find()
+    const materials = await Material.find({tenant: { $eq: req.user.tenant.valueOf() }})
     res.locals.materials = materials
     return next()
   } catch (error) {
@@ -89,12 +89,12 @@ const updateMaterial = async (req, res, next) => {
 }
 /**
  * Retrieves a list of material names.
- * @param {Object} _req - The request object.
+ * @param {Object} req - The request object.
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-const listMaterialNames = async (_req, res, next) => {
-  res.locals.materials = await Material.find({}, { name: 1, id: 1 })
+const listMaterialNames = async (_eq, res, next) => {
+  res.locals.materials = await Material.find({tenant: { $eq: req.user.tenant.valueOf() }}, { name: 1, id: 1 })
   return next()
 }
 

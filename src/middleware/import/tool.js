@@ -26,7 +26,7 @@ async function getCategoryByPrefix(prefix) {
   }
 }
 
-function createToolDocument(row, tenantId) {
+function createToolDocument(row, tenant) {
   row = trimArrayValues(row)
   const toolDocument = {
     serialNumber: row[0],
@@ -37,7 +37,7 @@ function createToolDocument(row, tenantId) {
     manufacturer: row[11],
     serviceAssignment: '64a19e910e675938ebb67de7',
     category: '64a1c3d8d71e121dfd39b7ab',
-    tenantId,
+    tenant,
   }
   return toolDocument
 }
@@ -60,18 +60,18 @@ async function createTool(toolDocument) {
     console.log(error)
   }
 }
-export function createTools(entries, tenantId) {
+export function createTools(entries, tenant) {
   const toolPromises = entries.map((entry) => {
-    const toolDocument = createToolDocument(entry, tenantId)
+    const toolDocument = createToolDocument(entry, tenant)
     return createTool(toolDocument)
   })
   return Promise.allSettled(toolPromises)
 }
-export async function importTools(file, tenantId) {
+export async function importTools(file, tenant) {
   successCount = 0
   errorList.length = 0
   const entries = csvFileToEntries(file)
-  await createTools(entries, tenantId)
+  await createTools(entries, tenant)
   return { successCount, errorList }
 }
 

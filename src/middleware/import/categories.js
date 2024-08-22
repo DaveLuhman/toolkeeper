@@ -9,10 +9,10 @@ const errorList = []
  * @param {Array} row - The row of data.
  * @returns {Object} - The category document.
  */
-function createCategoryDocument(row, tenantId) {
+function createCategoryDocument(row, tenant) {
   const data = row.map((cell) => cell.trim())
   const description = data[2] || ''
-  return { prefix: data[0], name: data[1], description, tenant: tenantId }
+  return { prefix: data[0], name: data[1], description, tenant: tenant }
 }
 
 /**
@@ -47,9 +47,9 @@ async function saveCategoryDocument(doc) {
  * @param {*} entries
  * @return {*}
  */
-function createCategories(entries, tenantId) {
+function createCategories(entries, tenant) {
   const categoryPromises = entries.map((entry) => {
-    const doc = createCategoryDocument(entry, tenantId)
+    const doc = createCategoryDocument(entry, tenant)
     return saveCategoryDocument(doc)
   })
   return Promise.all(categoryPromises)
@@ -61,10 +61,10 @@ function createCategories(entries, tenantId) {
  * @param {File} file - The file containing the categories data.
  * @returns {Object} - An object containing the success count and error list.
  */
-export async function importCategories(file, tenantId) {
+export async function importCategories(file, tenant) {
   successCount = 0
   errorList.length = 0
   const entries = csvFileToEntries(file)
-  await createCategories(entries, tenantId)
+  await createCategories(entries, tenant)
   return { successCount, errorList }
 }

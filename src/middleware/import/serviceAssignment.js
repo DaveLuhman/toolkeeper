@@ -18,14 +18,14 @@ function determineServiceAssignmentType(memberID, mLastName) {
   } else return 'Imported - Uncategorized'
 }
 
-function createServiceAssignmentDocument(row, tenantId) {
+function createServiceAssignmentDocument(row, tenant) {
   try {
     const jobNumber = row[0] || 'ERROR'
     const jobName = row[1] ? row[1].trim() : ''
     const notes = row[4]?.trim() + ' ' + row[5]?.trim() + ' ' + row[10]?.trim()
     const phone = row[2]?.trim()
     const type = determineServiceAssignmentType(row[0], row[1])
-    const serviceAssignmentDocument = { jobNumber, jobName, notes, phone, type, active: true, tenantId }
+    const serviceAssignmentDocument = { jobNumber, jobName, notes, phone, type, active: true, tenant }
     return serviceAssignmentDocument
   } catch (error) {
     throw new Error('Could not create the document due to invalid input values')
@@ -45,18 +45,18 @@ function saveServiceAssignmentDocument(serviceAssignmentDocument) {
   }
 }
 
-function createServiceAssignments(members, tenantId) {
+function createServiceAssignments(members, tenant) {
   const serviceAssignmentsPromises = members.map((row) => {
-    const serviceAssignmentDocument = createServiceAssignmentDocument(row, tenantId)
+    const serviceAssignmentDocument = createServiceAssignmentDocument(row, tenant)
     return saveServiceAssignmentDocument(serviceAssignmentDocument)
   })
   return Promise.allSettled(serviceAssignmentsPromises)
 }
 
-export async function importServiceAssignments(file, tenantId) {
+export async function importServiceAssignments(file, tenant) {
   successCount = 0
   const members = csvFileToEntries(file)
-  await createServiceAssignments(members, tenantId)
+  await createServiceAssignments(members, tenant)
   return { successCount, errorList }
 }
 

@@ -21,7 +21,7 @@ export async function importByFile(req, res, next) {
   }
   const file = req.files.importFile
   const importTarget = req.body.importTarget
-  const tenant = req.tenantId
+  const tenant = req.user.tenant.valueOf()
   let result = null;
   switch (importTarget) {
     case 'tools':
