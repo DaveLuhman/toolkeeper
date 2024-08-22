@@ -116,6 +116,7 @@ app.use('/settings', settingsRouter)
 app.use((_req, res, next) => {
   next(new AppError('Not Found', 404));
 })
+app.use(errorHandler)
 
 app.listen(PORT, () => {
   console.info(`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black)

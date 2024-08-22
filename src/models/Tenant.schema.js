@@ -1,4 +1,6 @@
 import { Schema } from 'mongoose'
+import mongooseAutoPopulate from 'mongoose-autopopulate'
+
 
 const TenantSchema = new Schema(
   {
@@ -15,6 +17,7 @@ const TenantSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
       required: true,
+      autopopulate: true
     },
     subscriptionTier: {
       type: String,
@@ -29,5 +32,6 @@ const TenantSchema = new Schema(
     timestamps: true
   }
 )
+TenantSchema.plugin(mongooseAutoPopulate)
 
 export default TenantSchema
