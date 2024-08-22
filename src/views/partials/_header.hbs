@@ -36,11 +36,11 @@
               {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>
             <ul tabindex="0" class="w-full mt-2 rounded shadow menu dropdown-content rounded-b-box">
               <li class="hover:border-gray-300 bg-base-100"><a href="/user/profile">Profile</a></li>
-              {{#eq user.role "Manager"}}
+              {{#contains "Manager, Admin, Superadmin" user.role}}
                 <li class="hover:border-gray-300 bg-base-100"><a href="/settings">Settings</a></li>
-              {{/eq}}
-              {{#eq user.role "Admin"}}
-                <li class="hover:border-gray-300 bg-base-100"><a href="/settings">Settings</a></li>
+              {{/contains}}
+              {{#eq user.role "Superadmin"}}
+                <li class="hover:border-gray-300 bg-base-100"><a href="/tenants">Tenants</a></li>
               {{/eq}}
               <li class="hover:border-gray-300 bg-base-100"><a href="/logout">Logout</a></li>
             </ul>
