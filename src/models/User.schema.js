@@ -30,7 +30,7 @@ const UserSchema = new Schema(
     role: {
       type: String,
       default: 'User',
-      enum: ['User', 'Manager', 'Admin']
+      enum: ['User', 'Manager', 'Admin', 'Superadmin']
     },
     isDisabled: {
       type: Boolean,
