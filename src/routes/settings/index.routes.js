@@ -5,6 +5,7 @@ import { serviceAssignmentRouter } from './serviceAssignments.routes.js'
 import { categoryRouter } from './category.routes.js'
 import { materialRouter } from './material.routes.js'
 import { importRouter } from './import.routes.js'
+import { tenantRouter } from './tenant.routes.js'
 import { renderSettingsUsers } from '../../controllers/settings/user.js'
 
 export const settingsRouter = expressRouter()
@@ -31,3 +32,7 @@ settingsRouter.use('/materials', materialRouter)
 // all import routes go to importRouter
 // @route * /settings/import
 settingsRouter.use('/import', importRouter)
+
+// all import routes go to importRouter
+// @route * /settings/import
+settingsRouter.use('/tenant', tenantRouter)

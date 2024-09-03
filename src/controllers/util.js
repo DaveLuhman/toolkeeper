@@ -29,4 +29,44 @@ export async function sendResetPwEmail(email, token) {
     await sgMail.send(resetEmail)
 }
 
+/**
+ * Sends an email using SendGrid.
+ * @param {string} to - The recipient's email address.
+ * @param {string} subject - The subject of the email.
+ * @param {string} body - The body of the email.
+ * @returns {Promise<void>}
+ */
+export const sendEmail = async (to, subject, body) => {
+  const msg = {
+    to,
+    from: 'donotreply@toolkeeper.site', // The fixed 'from' address
+    subject,
+    text: body,
+  };
+
+  try {
+    await sgMail.send(msg);
+    console.log('Email sent successfully');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    if (error.response) {
+      console.error(error.response.body);
+    }
+    throw new Error('Failed to send email');
+  }
+};
+
+/**
+ * Extracts the domain from a given email address.
+ * @param {string} email - The email address to extract the domain from.
+ * @returns {string} - The domain part of the email address.
+ */
+export const getDomainFromEmail = (email) => {
+  const atIndex = email.lastIndexOf('@');
+  if (atIndex === -1) {
+    throw new Error('Invalid email address');
+  }
+  return email.slice(atIndex + 1);
+};
+
 // Path: src/controllers/util.js

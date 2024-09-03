@@ -24,7 +24,7 @@ const TenantSchema = new Schema(
       required: true,
     },
     subscriptionStatus: {
-      type: String,
+      type: String,  //active, inactive
       required: true,
     },
   },

@@ -26,6 +26,9 @@
     {{> _error}}
   {{/if}}
   {{{body}}}
+  {{#if user.preferences.developer}}
+  {{stringify .}}
+  {{/if}}
   {{> _footer}}
   {{> _modals}}
   <script src="/js/util.js" type="text/javascript"></script>
