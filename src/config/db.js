@@ -8,7 +8,7 @@ async function connectDB() {
     globalConn = await mongoose.connect(process.env.MONGO_URI)
     console.info(`[DB INIT] MongoDB Connected: ${globalConn.connection.host}`.cyan.underline.bold);
   } catch (err) {
-    console.error('DB INIT ERROR: ' + err);
+    console.error(`DB INIT ERROR: ${err}`);
     process.exit(1);
   }
   const userCount = await User.countDocuments();

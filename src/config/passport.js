@@ -10,7 +10,7 @@ import { compare } from 'bcrypt'
 const passportConfig = (_app) => {
   passport.use(new LocalStrategy(
     { usernameField: 'email' },
-    async function (email, password, done) {
+    async (email, password, done) => {
       console.info(`[AUTH] ${email} attempting login`.blue.bold)
       const user = await User.findOne({ email: { $eq: email } })
       if (!user) {
@@ -23,19 +23,18 @@ const passportConfig = (_app) => {
         if (err) throw err
         if (isMatch) {
           return done(null, user)
-        } else {
-          return done(null, false, { message: 'Password incorrect' })
         }
+          return done(null, false, { message: 'Password incorrect' })
       })
     })
   )
 
   // stores user to session
-  passport.serializeUser(function (user, done) {
+  passport.serializeUser((user, done) => {
     done(null, user._id)
   })
 
-  passport.deserializeUser(async function (id, done) {
+  passport.deserializeUser(async (id, done) => {
     try {
       const user = await User.findById(id)
       done(null, user)

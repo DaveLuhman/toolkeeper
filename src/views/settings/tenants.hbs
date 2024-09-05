@@ -15,6 +15,9 @@
         <div class="flex w-screen h-screen ">
             <div id="settings-nav">
                 {{>_settings}}
+                <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm ml-5 mt-2">
+                    <label for="newTenantModal">New Tenant</label>
+                </div>
             </div>
             <div class="flex pl-10 pt-10 overflow-auto">
                 <div class="flex flex-col flex-shrink-0 w-3/5 ">
@@ -41,11 +44,15 @@
                                             <td><a href="tenant/edit/{{this._id}}"><i class="fa fa-pencil"></i></a>
                                             </td>
                                             {{#isnt this.id ../user.tenant}}
-                                            <td><a href="tenant/deactivate/{{this._id}}"><i
-                                                        class="fas fa-arrow-right"></i></a></td>
-                                            </td>
-                                            {{else}}
-                                            <td><div class="tooltip" data-tip="You cannot deactivate the tenant you are currently using!"><i class="fa-solid fa-ban"></i></div></td>
+                                                <td><a href="tenant/deactivate/{{this._id}}"><i
+                                                            class="fas fa-arrow-right"></i></a></td>
+                                                </td>
+                                    {{else}}
+                                        <td>
+                                            <div class="tooltip"
+                                                data-tip="You cannot deactivate the tenant you are currently using!"><i
+                                                    class="fa-solid fa-ban"></i></div>
+                                        </td>
                                             {{/isnt}}
                                         </tr>
                                     {{/each}}
@@ -102,11 +109,10 @@
                         <div class="title-bar">
                             <h3 class="title-text">New Tenant</h3>
                         </div>
+                        <input placeholder="Admin Email Address" type="text" name="adminEmail" id="new-tenant_admin-email"
+                            class="input input-bordered">
                         <input placeholder="Tenant Name" type="text" name="tenantName" id="new-tenant_name"
                             class="input input-bordered">
-
-                        <input placeholder="Domain" type="text" name="domain" id="new-tenant_domain"
-                            class="col-span-2 input input-bordered">
                         <div class="modal-button-row">
                             <label class="btn btn-sm"> <button id="new-tenant_submit"
                                     type="submit">Submit</button></label>
@@ -115,4 +121,4 @@
                 </form>
             </div>
         </div>
-        {{/isnt}}
+{{/isnt}}
