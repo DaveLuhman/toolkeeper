@@ -11,14 +11,14 @@ import { getServiceAssignmentJobNumber } from '../middleware/serviceAssignment.j
  * @returns {object} trimmedData, targetPage, pageCount
  */
 function paginate(data, targetPage, perPage) {
-    perPage = perPage || 10
-    targetPage = targetPage || 1
-    const pageCount = Math.ceil(data.length / perPage) // number of pages
+    const pp = perPage || 10
+    const tp = targetPage || 1
+    const pageCount = Math.ceil(data.length / pp) // number of pages
     const trimmedData = data.slice(
-      perPage * targetPage - perPage,
-      perPage * targetPage + 1
+      pp * tp - pp,
+      pp * tp + 1
     )
-    return { trimmedData, targetPage, pageCount }
+    return { trimmedData, tp, pageCount }
   }
   /**
  *
@@ -64,9 +64,11 @@ export const returnUniqueIdentifier = (toolDocument) => {
       const { toolID, barcode, serialNumber } = toolDocument
       if (toolID) {
         return `Tool ID ${toolID}`
-      } else if (barcode) {
+      }
+      if (barcode) {
         return `Barcode: ${barcode}`
-      } else if (serialNumber) {
+      }
+      if (serialNumber) {
         return `SN: ${serialNumber}`
       }
       return 'Unable to uniquely identify this tool' // Added return statement
