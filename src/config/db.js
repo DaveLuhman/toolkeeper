@@ -44,7 +44,7 @@ async function createDefaultTenant() {
       domain: 'toolkeeper.site',
       adminUser: '663870c0a1a9cdb4b707c737',
       subscriptionTier: 'Pro',
-      subscriptionStatus: 'Active',
+      subscriptionStatus: 'active',
     });
     return tenant;
   } catch (error) {
