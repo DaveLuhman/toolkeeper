@@ -26,7 +26,7 @@ async function createDefaultUser() {
       firstName: 'Admin',
       lastName: 'User',
       password: '$2b$10$cDCSqQ17sAbWloBElfevMO9NmjORalQP/1VJ7WY6BwvB7PsuNM./m',
-      role: 'Admin',
+      role: 'Superadmin',
       email: 'admin@toolkeeper.site',
       tenant: '66af881237c17b64394a4166',
     });
@@ -62,6 +62,7 @@ function createDefaultCategory() {
     prefix: 'UC',
     name: 'Uncategorized',
     description: 'For Tools that dont have a category',
+    tenant: '66af881237c17b64394a4166',
   })
 }
 
@@ -74,8 +75,8 @@ async function createDefaultServiceAssignments() {
   const serviceAssignments = await ServiceAssignment.create([
     {
       _id: '64a19e910e675938ebb67de7',
-      name: 'IMPORT',
-      description: 'Imported',
+      jobNumber: 'IMPORT',
+      jobName: 'Imported',
       type: 'Imported - Uncategorized',
       phone: '',
       notes: 'Default SA for imported tools',
@@ -84,21 +85,23 @@ async function createDefaultServiceAssignments() {
     },
     {
       _id: '64a34b651288871770df1086',
-      name: 'DEPOT',
-      description: 'Default stockroom for serialized tools',
+      jobNumber: 'DEPOT',
+      jobName: 'Default stockroom for serialized tools',
       type: 'Stockroom',
       active: true,
       tenant: '66af881237c17b64394a4166',
     },
     {
       _id: '64a34b651288871770df1087',
-      name: 'PARTS',
-      description: 'Default stockroom for consumables/parts',
+      jobNumber: 'PARTS',
+      jobName: 'Default stockroom for consumables/parts',
       type: 'Stockroom',
       active: true,
       tenant: '66af881237c17b64394a4166',
     },
-  ])
+  ]).catch((error) => {
+    console.log(error.message)
+  })
   return serviceAssignments
 }
 
