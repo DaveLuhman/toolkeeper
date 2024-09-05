@@ -14,7 +14,7 @@ import xss from 'xss'
  */
 export function mutateToArray(data) {
   if (!Array.isArray(data)) {
-    data = [data]
+    return [data]
   }
   return data
 }
