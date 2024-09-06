@@ -166,7 +166,7 @@ export const createTenant = async (req, res, next) => {
 		// Abort the transaction in case of an error
 		await session.abortTransaction();
 		session.endSession();
-		res.status(400).render("error", { message: error.message });
+		res.status(400).render("error/error", { message: error.message });
 	}
 };
 
