@@ -54,5 +54,6 @@ const ServiceAssignmentSchema = new Schema(
     timestamps: true
   }
 )
+ServiceAssignmentSchema.index({ jobNumber: 1, tenant: 1 }, { unique: true });
 
 export default ServiceAssignmentSchema

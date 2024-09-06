@@ -96,6 +96,7 @@ const ToolSchema = new Schema(
     strict: false
   }
 )
+ToolSchema.index({ serialNumber: 1, tenant: 1 }, { unique: true });
 
 ToolSchema.findAll = function (callback) {
   return this.model('tool').find({}, callback)
@@ -125,7 +126,7 @@ ToolSchema.set('toJSON', {
   versionKey: false,
   transform: (_doc, ret) => {
     ret.id = ret._id.toString()
-    delete ret._id
+    ret._id = undefined
   }
 })
 ToolSchema.plugin(mongooseAutoPopulate)

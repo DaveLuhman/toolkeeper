@@ -19,4 +19,5 @@ const ToolHistorySchema = new Schema(
     timestamps: true
   }
 )
+ToolHistorySchema.index({ serialNumber: 1, tenant: 1 }, { unique: true });
 export default ToolHistorySchema

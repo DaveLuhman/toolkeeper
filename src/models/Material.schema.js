@@ -29,5 +29,6 @@ const MaterialSchema = new Schema(
     timestamps: true
   }
 )
+MaterialSchema.index({ name: 1, tenant: 1 }, { unique: true });
 
 export default MaterialSchema
