@@ -4,5 +4,5 @@ export const renderTenantsPage = (_req, res) => {
 }
 
 export const createTenantRedirect = (_req, res) => {
-  res.status(201).redirect('settings/tenants');
+  res.status(201).redirect('/settings/tenant');
 };

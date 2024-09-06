@@ -10,12 +10,10 @@ const CategorySchema = new Schema(
     prefix: {
       type: String,
       required: false,
-      unique: true
     },
     name: {
       type: String,
       required: true,
-      unique: true
     },
     description: {
       type: String,

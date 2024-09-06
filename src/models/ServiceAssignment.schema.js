@@ -9,7 +9,6 @@ const ServiceAssignmentSchema = new Schema(
     jobNumber: {
       type: String,
       required: true,
-      unique: true
     },
     jobName: {
       type: String,

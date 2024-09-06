@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Tenant } from "../models/index.models.js";
 import { User } from "../models/index.models.js";
 import { sendEmail, getDomainFromEmail } from "../controllers/util.js";
+import { demoTenantId } from "../config/db.js";
 
 // Utility function to generate a random password
 const generatePassword = () => {
@@ -113,59 +114,41 @@ const generatePassword = () => {
 };
 
 export const createTenant = async (req, res, next) => {
-	const session = await mongoose.startSession();
-	session.startTransaction();
-
 	try {
 		const { tenantName, adminEmail } = req.body;
 		const domain = getDomainFromEmail(adminEmail);
 		// Check if the admin user already exists
-		let adminUser = await User.findOne({ email: adminEmail }).session(session);
+		let adminUser = null
+		adminUser = await User.findOne({ email: adminEmail });
+		const password = generatePassword();
 
 		if (!adminUser) {
-			const password = generatePassword();
 
-			// Create the Tenant document first without the adminUser field
-			const tenant = new Tenant({
-				name: tenantName,
-				domain: domain,
-				subscriptionTier: "default",
-				subscriptionStatus: "inactive",
+			adminUser = await User.create({
+				email: req.body.adminEmail,
+				password: password, // The setter in the User model will hash this
+				role: "Admin",
+				tenant: demoTenantId, // Assign the default demo tenant here
 			});
 
-			await tenant.save({ session });
-
-			// Now create the User document with the tenant reference
-			adminUser = new User({
-				email: adminEmail,
-				password,
-				role: "admin",
-				tenant: tenant._id, // Assign the tenant to the user
-			});
-
-			await adminUser.save({ session });
-
-			// Update the Tenant document with the adminUser reference
-			tenant.adminUser = adminUser._id;
-			await tenant.save({ session });
-
-			// Send an email to the new admin user with their credentials
-			const subject = "Your ToolKeeper Admin Account";
-			const text = `Your admin account for ToolKeeper has been created. Your login credentials are:\n\nEmail: ${adminEmail}\nPassword: ${password}\n\nPlease log in and change your password as soon as possible.`;
-
-			await sendEmail(adminEmail, subject, text);
+			await adminUser.save();
 		}
+		const tenant = await Tenant.createWithDefaults({
+			name: tenantName,
+			domain,
+			adminUser: adminUser._id,
+		});
+		// Update the adminUser document with the Tenant reference
+		adminUser.tenant = tenant._id;
+		await adminUser.save();
 
-		// Commit the transaction if everything is successful
-		await session.commitTransaction();
-		session.endSession();
+		// Send an email to the new admin user with their credentials
+		const subject = "Your ToolKeeper Admin Account";
+		const text = `Your admin account for ToolKeeper has been created. Your login credentials are:\n\nEmail: ${adminEmail}\nPassword: ${password}\n\nPlease log in and change your password as soon as possible.`;
 
-		req.tenant = tenant;
+		await sendEmail(adminEmail, subject, text);
 		next();
 	} catch (error) {
-		// Abort the transaction in case of an error
-		await session.abortTransaction();
-		session.endSession();
 		res.status(400).render("error/error", { message: error.message });
 	}
 };
@@ -183,10 +166,10 @@ export const getTenants = async (req, res, next) => {
 
 		// Split tenants into active and inactive groups
 		const activeTenants = tenants.filter(
-			(tenant) => tenant.subscriptionStatus === "active",
+			(tenant) => tenant.subscriptionActive === true,
 		);
 		const inactiveTenants = tenants.filter(
-			(tenant) => tenant.subscriptionStatus === "inactive",
+			(tenant) => tenant.subscriptionActive === false,
 		);
 
 		// Hoist active and inactive tenants to res.locals

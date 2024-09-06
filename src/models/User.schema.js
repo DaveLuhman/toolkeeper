@@ -1,4 +1,5 @@
 import { Schema } from 'mongoose'
+import bcrypt from 'bcrypt'
 // This code creates a new schema that is used to define the User model
 // The schema contains the fields for a user, as well as the timestamps
 // that are automatically added when the user is created and updated
@@ -26,12 +27,12 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
-      set: async (cleartextPassword) => {
+      set: (cleartextPassword) => {
         if (!cleartextPassword) return cleartextPassword;
 
         const saltRounds = 10;
         try {
-          const hashedPassword = await bcrypt.hash(cleartextPassword, saltRounds);
+          const hashedPassword = bcrypt.hashSync(cleartextPassword, saltRounds);
           return hashedPassword;
         } catch (error) {
           throw new Error('Error hashing password');
