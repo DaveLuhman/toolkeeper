@@ -131,6 +131,4 @@ ToolSchema.set('toJSON', {
 })
 ToolSchema.plugin(mongooseAutoPopulate)
 
-
-
 export default ToolSchema

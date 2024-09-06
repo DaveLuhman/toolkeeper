@@ -11,7 +11,7 @@ export const incrementRightmostNumber = (str, iteration) => {
 
   if (match) {
     const rightmostNumber = match[0]
-    const incrementedNumber = parseInt(rightmostNumber, 10) + parseInt(iteration, 10)
+    const incrementedNumber = Number.parseInt(rightmostNumber, 10) + Number.parseInt(iteration, 10)
     const startPosition = match.index
     const endPosition = startPosition + rightmostNumber.length
     return str.slice(0, startPosition) + incrementedNumber + str.slice(endPosition)
@@ -133,11 +133,11 @@ export const addAnotherTool = (e) => {
   }
   // disable all autoincrement checkboxes on first row creation
   if (entriesCount === 1) {
-    autoincrementCheckboxes.forEach((element) => {
+    for(const element in autoincrementCheckboxes) {
       element.disabled = true
       element.nextElementSibling.style.color = 'gray'
       element.classList.add = 'cursor-not-allowed'
-    })
+    }
   }
   entriesCount++
 }
@@ -146,7 +146,7 @@ plusButton.addEventListener('click', addAnotherTool)
 // remove disabled attribute from all fields on form submission so all fields are included
 document.forms[0].addEventListener('submit', function () {
   const disabledFields = this.querySelectorAll('[disabled]')
-  disabledFields.forEach((field) => {
+  for (const field in disabledFields){
     field.disabled = false
-  })
+  }
 })

@@ -5,15 +5,8 @@
                 <th>Service Assignments</th>
             </tr>
         </thead>
-        <tbody>
-            {{#if activeServiceAssignments}}
-            {{#each activeServiceAssignments}}
-            <tr>
-                <td><a href="/tool/search?searchBy=serviceAssignment&searchTerm={{id}}"> {{toolCount}} | {{jobNumber}} - {{jobName}}</td>
+        <tbody id="service-assignments-parent">
 
-            </tr>
-            {{/each}}
-            {{/if}}
         </tbody>
     </table>
 </div>

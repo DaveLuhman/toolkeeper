@@ -27,14 +27,14 @@ async function getCategoryByPrefix(prefix) {
 }
 
 function createToolDocument(row, tenant) {
-  row = trimArrayValues(row)
+  const trimmedRow = trimArrayValues(row)
   const toolDocument = {
-    serialNumber: row[0],
-    barcode: row[1],
-    description: row[2],
-    modelNumber: row[9],
-    toolID: row[10],
-    manufacturer: row[11],
+    serialNumber: trimmedRow[0],
+    barcode: trimmedRow[1],
+    description: trimmedRow[2],
+    modelNumber: trimmedRow[9],
+    toolID: trimmedRow[10],
+    manufacturer: trimmedRow[11],
     serviceAssignment: '64a19e910e675938ebb67de7',
     category: '64a1c3d8d71e121dfd39b7ab',
     tenant,

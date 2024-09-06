@@ -6,7 +6,7 @@ const errorList = []
 function determineServiceAssignmentType(memberID, mLastName) {
   const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
   if (!memberID || memberID === '') {
-    console.error('Invalid Member ID' + memberID)
+    console.error(`Invalid Member ID${memberID}`)
     return 'Imported - Uncategorized'
   }
   if (memberID[0] === 'C') return 'Contract Jobsite'
@@ -14,15 +14,15 @@ function determineServiceAssignmentType(memberID, mLastName) {
   if (stockrooms.includes(memberID)) return 'Stockroom'
   if (memberID[0] === '0') {
     if (mLastName.includes('VAN' || 'TRUCK')) return 'Vehicle'
-    else return 'Employee'
-  } else return 'Imported - Uncategorized'
+    return 'Employee'
+  }return 'Imported - Uncategorized'
 }
 
 function createServiceAssignmentDocument(row, tenant) {
   try {
     const jobNumber = row[0] || 'ERROR'
     const jobName = row[1] ? row[1].trim() : ''
-    const notes = row[4]?.trim() + ' ' + row[5]?.trim() + ' ' + row[10]?.trim()
+    const notes = `${row[4]?.trim()} ${row[5]?.trim()} ${row[10]?.trim()}`
     const phone = row[2]?.trim()
     const type = determineServiceAssignmentType(row[0], row[1])
     const serviceAssignmentDocument = { jobNumber, jobName, notes, phone, type, active: true, tenant }

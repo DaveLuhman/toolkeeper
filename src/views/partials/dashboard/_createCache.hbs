@@ -1,0 +1,16 @@
+{{!-- This inline script must be included on the template so the cached content is populated by handlebars --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const cachedContent = {{{ JSONstringify cachedContent }}}
+
+    // Get the current cached data and hash from localStorage
+    const cachedHash = localStorage.getItem('serviceDataHash')
+
+    // If the hash doesn't match, update the cache
+    if (cachedHash !== cachedContent.hash) {
+        // Store the new data and hash in localStorage
+        localStorage.setItem('serviceData', JSON.stringify(cachedContent.data))
+        localStorage.setItem('serviceDataHash', cachedContent.hash)
+    }
+  })
+</script>

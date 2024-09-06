@@ -35,7 +35,7 @@ export const renderDashboard = async (req, res) => {
   try{
     res.locals.dashboardStats = await getDashboardStats()
     res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools(req.user.tenant.valueOf())
-    res.render('dashboard')
+    res.render('dashboard', {cachedContent: res.locals.cachedContent})
   } catch (err) {
     console.error(err)
     res.render('error/error')

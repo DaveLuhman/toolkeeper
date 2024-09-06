@@ -7,7 +7,7 @@ import { Category } from '../models/index.models.js'
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-const getCategories = async function (req, res, next) {
+const getCategories = async (req, res, next) => {
   try {
     const categories = await Category.find({ tenant: { $eq: req.user.tenant.valueOf() } }).sort({ prefix: 'asc' })
     res.locals.categories = categories
@@ -22,7 +22,7 @@ const getCategories = async function (req, res, next) {
  * @param {Object} res - The response object.
  * @param {Function} next - The next middleware function.
  */
-const getCategoryByID = async function (req, res, next) {
+const getCategoryByID = async (req, res, next) => {
   const { id } = req.params
   try {
     const category = await Category.findById({ $eq: id })
@@ -41,7 +41,7 @@ const getCategoryByID = async function (req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the category is updated.
  */
-const updateCategory = async function (req, res, next) {
+const updateCategory = async (req, res, next) => {
   const { _id, name, description } = req.body
   try {
     const updatedCategory = await Category.findByIdAndUpdate(
@@ -63,7 +63,7 @@ const updateCategory = async function (req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the category is created.
  */
-const createCategory = async function (req, res, next) {
+const createCategory = async (req, res, next) => {
   const category = req.body
   const newCategory = new Category(category)
   try {
@@ -82,13 +82,13 @@ const createCategory = async function (req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the category is deleted.
  */
-const deleteCategory = async function (req, res, next) {
+const deleteCategory = async (req, res, next) => {
   const { id } = req.params
   try {
     await Category.findByIdAndRemove({ $eq: id })
     return next()
   } catch (error) {
-    res.status(404).json({ message: error.message })
+    res.status(500).json({ message: error.message })
   }
 }
 
@@ -111,7 +111,7 @@ const listCategoryNames = async (req, res, next) => {
 const getCategoryName = (categories, id) => {
   try {
     const category = categories.filter((item) => {
-      return item.id == id
+      return item._id === id
     })
     return category[0].name
   } catch (error) {

@@ -60,11 +60,9 @@ export async function getServiceAssignmentByID(req, res, next) {
  */
 export async function updateServiceAssignment(req, res, next) {
     try {
-        let active = false
+
         const { id, jobNumber, jobName, type, phone, notes } = req.body
-        if (req.body.active === 'on') {
-            active = true
-        }
+        const active = !!(req.body.active === 'on')
         const updatedServiceAssignment =
             await ServiceAssignment.findByIdAndUpdate(
                 id,
@@ -96,6 +94,7 @@ export async function createServiceAssignment(req, res, next) {
             phone,
             notes,
             active: true,
+            tenant: req.user.tenant.valueOf()
         })
         res.locals.serviceAssignments = mutateToArray(newServiceAssignment)
         return next()
@@ -201,7 +200,7 @@ export async function listAllSAs(req, res, next) {
 export const getServiceAssignmentJobNumber = (serviceAssignments, id) => {
     try {
         const serviceAssignment = serviceAssignments.filter((item) => {
-            return item.id == id
+            return item._id === id
         })
         return `${serviceAssignment[0].jobNumber} - ${serviceAssignment[0].jobName}`
     } catch (error) {
@@ -215,6 +214,6 @@ export const getServiceAssignmentJobNumber = (serviceAssignments, id) => {
  * @returns {Promise<string|null>} - A promise that resolves to the ID of the found service assignment, or null if not found.
  */
 export const findServiceAssignmentByJobNumber = async (jobNumber) => {
-    const sa = await ServiceAssignment.findOne({ jobNumber: { $eq: jobNumber } }).exec()
+    const sa = await ServiceAssignment.findOne({ jobNumber: { $eq: jobNumber }, tenant: {$eq: req.user.tenant.valueOf()} }).exec()
     return sa?.id
 }

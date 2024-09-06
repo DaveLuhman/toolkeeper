@@ -42,6 +42,7 @@ const getMaterialByID = async (req, res, next) => {
  */
 const createMaterial = async (req, res, next) => {
   const material = req.body
+  material.tenant = req.user.tenant.valueOf()
   const newMaterial = new Material(material)
   try {
     await newMaterial.save()
@@ -63,7 +64,7 @@ const deleteMaterial = async (req, res, next) => {
     await Material.findByIdAndRemove({ $eq: id })
     return next()
   } catch (error) {
-    res.status(404).json({ message: error.message })
+    res.status(500).json({ message: error.message })
   }
 }
 
@@ -84,7 +85,7 @@ const updateMaterial = async (req, res, next) => {
     res.locals.updatedMaterial = updatedMaterial
     return next()
   } catch (error) {
-    res.status(404).json({ message: error.message })
+    res.status(500).json({ message: error.message })
   }
 }
 /**
@@ -103,7 +104,7 @@ const listMaterialNames = async (_eq, res, next) => {
 const getMaterialName = (materials, id) => {
   try {
     const material = materials.filter((item) => {
-      return item.id == id
+      return item._id === id
     })
     return material[0].name
   } catch (error) {

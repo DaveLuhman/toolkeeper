@@ -2,7 +2,7 @@ import { activateServiceAssignments, importServiceAssignments } from './serviceA
 import { importTools } from './tool.js'
 import { importHistory } from './history.js'
 import { importCategories } from './categories.js'
-import 'fs/promises'
+import 'node:fs/promises'
 
 /**
  * Imports data from a file.
