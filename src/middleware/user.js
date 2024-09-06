@@ -41,47 +41,64 @@ async function getUserByID(req, res, next) {
  * @returns {Promise<void>} - A promise that resolves when the user is created.
  */
 async function createUser(req, res, next) {
-  console.info('[MW] createUser-in'.bgBlue.white)
-  const { firstName, lastName, email, password, confirmPassword, role } =
-    req.body
+  console.info('[MW] createUser-in'.bgBlue.white);
+
+  const { firstName, lastName, email, password, confirmPassword, role } = req.body;
+
+  // Check if email and password are provided
   if (!email || !password) {
-    const error = 'Email and Password are required'
-    console.warn('Email and Password are both required'.yellow)
-    console.info('[MW] createUser-out-1'.bgWhite.blue)
-    res.redirect('back')
-    return next(error)
+    const error = 'Email and Password are required';
+    console.warn(error.yellow);
+    res.locals.error = error;
+    console.info('[MW] createUser-out-1'.bgWhite.blue);
+    return res.status(400).redirect('back');
   }
-  if (await User.findOne({ email, tenant })) {
-    const error = 'Email is already registered'
-    console.warn('Email is already registered'.yellow)
-    console.info('[MW] createUser-out-2'.bgWhite.blue)
-    res.redirect('back')
-    return next(error)
+
+  // Check if email already exists
+  try {
+    const existingUser = await User.findOne({ email, tenant: req.user.tenant });
+    if (existingUser) {
+      const error = 'Email is already registered';
+      console.warn(error.yellow);
+      res.locals.error = error;
+      console.info('[MW] createUser-out-2'.bgWhite.blue);
+      return res.status(400).redirect('back');
+    }
+  } catch (err) {
+    console.error(`[MW] Error checking email: ${err.message}`.bgRed.white);
+    return next(err); // Pass error to error handler middleware
   }
+
+  // Check if passwords match
   if (password !== confirmPassword) {
-    const error = 'Passwords do not match'
-    console.warn(
-      'Passwords do not match  '.yellow
-    )
-    console.info('[MW] createUser-out-3'.bgWhite.blue)
-    res.redirect('back')
-    return next(error)
+    const error = 'Passwords do not match';
+    console.warn(error.yellow);
+    res.locals.error = error;
+    console.info('[MW] createUser-out-3'.bgWhite.blue);
+    return res.status(400).redirect('back');
   }
-  const hash = bcrypt.hashSync(password, 10)
-  const newUser = await User.create({
-    firstName,
-    lastName,
-    email,
-    password: hash,
-    role,
-    tenant: req.user.tenant.valueOf()
-  })
-  newUser.save()
-  console.log(newUser)
-  console.info(`Created User ${newUser._id}`.green)
-  console.info('[MW] createUser-out-4'.bgWhite.blue)
-  return next()
+
+  // Try to create a new user
+  try {
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      tenant: req.user.tenant.valueOf() // Assuming tenant is part of req.user
+    });
+
+    console.log(newUser);
+    console.info(`Created User ${newUser._id}`.green);
+    console.info('[MW] createUser-out-4'.bgWhite.blue);
+    return next();
+  } catch (err) {
+    console.error(`[MW] Error creating user: ${err.message}`.bgRed.white);
+    return next(err); // Pass error to error handler middleware
+  }
 }
+
 /**
  * Verifies if the current user is the same as the target user.
  * @param {object} req The request object.
@@ -164,28 +181,38 @@ async function updateUser(req, res, next) {
  * @returns {Promise<void>} Executes the next middleware function.
  */
 async function resetPassword(req, res, next) {
-  console.info('[MW] resetPassword-in'.bgBlue.white)
-  // get data from request body
-  const { _id, password, confirmPassword } = req.body
+  console.info('[MW] resetPassword-in'.bgBlue.white);
+
+  const { _id, password, confirmPassword } = req.body;
+
   // if new password and confirm password are not set
   if (!password || !confirmPassword) {
-    res.locals.message = 'New password and confirm password are required'
-    console.info('[MW] resetPassword-out-1'.bgWhite.blue)
-    res.status(400).redirect('back')
-    return
+    res.locals.message = 'New password and confirm password are required';
+    console.info('[MW] resetPassword-out-1'.bgWhite.blue);
+    res.status(400).redirect('back');
+    return;
   }
+
   // if new password and confirm password do not match
   if (password !== confirmPassword) {
-    res.locals.error = 'New password and confirm password must match'
-    console.info('[MW] resetPassword-out-2'.bgWhite.blue)
-    res.status(400).redirect('back')
-    return
+    res.locals.error = 'New password and confirm password must match';
+    console.info('[MW] resetPassword-out-2'.bgWhite.blue);
+    res.status(400).redirect('back');
+    return;
   }
-  const hash = bcrypt.hashSync(password, 10)
-  await User.findByIdAndUpdate(_id, { $set: { password: hash } })
-  console.info('[MW] resetPassword-out-4'.bgWhite.blue)
-  next()
+
+  try {
+    const hash = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate(_id, { $set: { password: hash } });
+    console.info('[MW] resetPassword-out-4'.bgWhite.blue);
+    next();
+  } catch (error) {
+    console.error(`[MW] resetPassword-error: ${error.message}`.bgRed.white);
+    res.locals.error = 'An error occurred while resetting the password';
+    res.status(500).redirect('back');
+  }
 }
+
 /**
  * Disables a user by setting the isDisabled flag to true in the database.
  * @param {object} req - The request object containing the user ID.

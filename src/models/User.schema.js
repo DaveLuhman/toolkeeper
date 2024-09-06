@@ -25,7 +25,18 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: true
+      required: true,
+      set: async (cleartextPassword) => {
+        if (!cleartextPassword) return cleartextPassword;
+
+        const saltRounds = 10;
+        try {
+          const hashedPassword = await bcrypt.hash(cleartextPassword, saltRounds);
+          return hashedPassword;
+        } catch (error) {
+          throw new Error('Error hashing password');
+        }
+      }
     },
     role: {
       type: String,
@@ -77,11 +88,7 @@ UserSchema.virtual('displayName')
     this.set({ firstName, lastName })
   })
 
-UserSchema.statics.findByEmail = async function (email) {
-  return (await model('User').findOne({ email: { $eq: email } })) || false
-}
-UserSchema.statics.findByToken = async function (token) {
-  return (await model('User').findOne({ token: { $eq: token } })) || false
-}
+UserSchema.statics.findByEmail = async (email) => (await model('User').findOne({ email: { $eq: email } })) || false
+UserSchema.statics.findByToken = async (token) => (await model('User').findOne({ token: { $eq: token } })) || false
 
 export default UserSchema
