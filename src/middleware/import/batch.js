@@ -23,7 +23,7 @@ class DuplicateError extends Error {
 async function duplicateCheckSerial(serialNumber) {
   const results = await Tool.find({ serialNumber })
   if (results.length > 0) return results[0].id
-  else return false
+  return false
 }
 /**
  * Checks if a barcode is already duplicated in the Tool collection.
@@ -33,7 +33,7 @@ async function duplicateCheckSerial(serialNumber) {
 async function duplicateCheckBarcode(barcode) {
   const results = await Tool.find({ barcode })
   if (results.length > 0) return results[0].id
-  else return false
+  return false
 }
 /**
  * Checks if a tool with the given toolID already exists in the database.
@@ -43,7 +43,7 @@ async function duplicateCheckBarcode(barcode) {
 async function duplicateCheckToolID(toolID) {
   const results = await Tool.find({ toolID })
   if (results.length > 0) return results[0].id
-  else return false
+  return false
 }
 
 /**
