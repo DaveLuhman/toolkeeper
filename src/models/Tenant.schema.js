@@ -81,6 +81,7 @@ TenantSchema.statics.createWithDefaults = async function (tenantData) {
 
 		return tenant; // Return the created tenant
 	} catch (error) {
+		// biome-ignore lint/complexity/noUselessCatch: <explanation>
 		throw error; // Re-throw the error to be handled by the caller
 	}
 };
