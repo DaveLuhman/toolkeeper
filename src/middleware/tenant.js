@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { Tenant } from "../models/index.models.js";
 import { User } from "../models/index.models.js";
 import { sendEmail, getDomainFromEmail } from "../controllers/util.js";

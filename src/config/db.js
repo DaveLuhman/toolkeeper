@@ -8,28 +8,48 @@ import {
 
 let globalConn;
 
-async function connectDB() {
-	try {
-		globalConn = await mongoose.connect(process.env.MONGO_URI);
-		console.info(
-			`[DB INIT] MongoDB Connected: ${globalConn.connection.host}`.cyan
-				.underline.bold,
-		);
-	} catch (err) {
-		console.error(`DB INIT ERROR: ${err}`);
-		process.exit(1);
-	}
+async function checkUserCountAndCreateDocuments() {
 	const userCount = await User.countDocuments();
 	if (userCount === 0) {
-		console.log("No users exist in the currently selected database. Creating default user, tenant, and documents");
+		console.log(
+			"No users exist in the currently selected database. Creating default user, tenant, and documents",
+		);
 		await createDefaultGlobalDocuments();
 		await createDefaultDocuments();
 	}
 }
 
+async function connectDB() {
+	let retries = 3;
+	while (retries > 0) {
+		try {
+			globalConn = await mongoose.connect(process.env.MONGO_URI, {
+				// Adding a timeout of 30 seconds
+				serverSelectionTimeoutMS: 30000,
+			});
+			console.info(
+				`[DB INIT] MongoDB Connected: ${globalConn.connection.host}`.cyan
+					.underline.bold,
+			);
+			break; // Connection successful, exit retry loop
+		} catch (err) {
+			console.error(`DB INIT ERROR: ${err}`);
+			retries--;
+			if (retries === 0) {
+				console.error(
+					"Failed to connect to the database after multiple attempts. Exiting.",
+				);
+				process.exit(1);
+			}
+			console.warn(`Retrying database connection. Retries left: ${retries}`);
+		}
+	}
+	await checkUserCountAndCreateDocuments();
+}
+
 async function createDefaultUser() {
 	try {
-		const user = await User.create({
+		const createdUser = await User.create({
 			_id: "663870c0a1a9cdb4b707c737",
 			firstName: "Admin",
 			lastName: "User",
@@ -38,9 +58,10 @@ async function createDefaultUser() {
 			email: "admin@toolkeeper.site",
 			tenant: "66af881237c17b64394a4166",
 		});
-		return user;
+		return createdUser;
 	} catch (error) {
-		console.error(error);
+		console.error(`Error creating default user: ${error.message}`);
+		throw new Error(`Failed to create default user: ${error.message}`);
 	}
 }
 
