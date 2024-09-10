@@ -113,16 +113,15 @@ async function createPendingUser(req, res, next) {
 
   const { firstName, lastName, email, companyName } = req.body;
   const userValues = {firstName, lastName, email, companyName, role: "Admin", tenant: demoTenantId }
-  // Check if email and password are provided
-  if (!email || !password) {
-    const error = 'Email and Password are required';
+  // Check if email and companyName are provided
+  if (!email || !companyName) {
+    const error = 'Email and Company Name are required';
     console.warn(error.yellow);
     res.locals.error = error;
     console.info('[MW] createPendingUser-out-1'.bgWhite.blue);
     return res.status(400).redirect('back');
   }
-
-  // Check if email already exists
+  // Check if email already registered
   try {
     const existingUser = await User.findOne({ email, tenant: req.user.tenant });
     if (existingUser) {
@@ -136,16 +135,6 @@ async function createPendingUser(req, res, next) {
     console.error(`[MW] Error checking email: ${err.message}`.bgRed.white);
     return next(err); // Pass error to error handler middleware
   }
-
-  // Check if passwords match
-  if (password !== confirmPassword) {
-    const error = 'Passwords do not match';
-    console.warn(error.yellow);
-    res.locals.error = error;
-    console.info('[MW] createPendingUser-out-3'.bgWhite.blue);
-    return res.status(400).redirect('back');
-  }
-
   // Try to create a new user
   try {
     const newUser = await User.create({
@@ -153,13 +142,10 @@ async function createPendingUser(req, res, next) {
       lastName,
       email,
       password,
-      role,
-      tenant: req.user.tenant.valueOf() // Assuming tenant is part of req.user
+      role: 'Admin',
+      tenant: demoTenantId // Assuming tenant is part of req.user
     });
-
-    console.log(newUser);
     console.info(`Created User ${newUser._id}`.green);
-    console.info('[MW] createPendingUser-out-4'.bgWhite.blue);
     return next();
   } catch (err) {
     console.error(`[MW] Error creating user: ${err.message}`.bgRed.white);
