@@ -72,12 +72,12 @@ body {
 }
 
 /* ------------------LOGIN----------------------- */
-#login-wrapper {
+.login-wrapper {
   @apply flex-col;
   @apply justify-center;
   @apply sm:py-12;
 }
-#login-container {
+.login-container {
   @apply p-10;
   @apply mx-auto;
   @apply md:w-full;
@@ -324,18 +324,18 @@ svg.fill-current {
 ::-webkit-scrollbar {
     width: 10px;
 }
- 
+
 /* Track */
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 5px;
 }
- 
+
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
