@@ -1,6 +1,7 @@
 import { User } from '../models/index.models.js'
 import bcrypt from 'bcrypt'
 import { mutateToArray } from './util.js'
+import { demoTenantId } from '../config/db.js'
 
 /**
  * getUsers - queries all users from db
@@ -32,6 +33,7 @@ async function getUserByID(req, res, next) {
   console.info('[MW] getUserByID-out'.bgWhite.blue)
   return next()
 }
+
 /**
  * Creates a new user.
  *
@@ -98,7 +100,72 @@ async function createUser(req, res, next) {
     return next(err); // Pass error to error handler middleware
   }
 }
+/**
+ * Creates a new user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Promise<void>} - A promise that resolves when the user is created.
+ */
+async function createPendingUser(req, res, next) {
+  console.info('[MW] createPendingUser-in'.bgBlue.white);
 
+  const { firstName, lastName, email, companyName } = req.body;
+  const userValues = {firstName, lastName, email, companyName, role: "Admin", tenant: demoTenantId }
+  // Check if email and password are provided
+  if (!email || !password) {
+    const error = 'Email and Password are required';
+    console.warn(error.yellow);
+    res.locals.error = error;
+    console.info('[MW] createPendingUser-out-1'.bgWhite.blue);
+    return res.status(400).redirect('back');
+  }
+
+  // Check if email already exists
+  try {
+    const existingUser = await User.findOne({ email, tenant: req.user.tenant });
+    if (existingUser) {
+      const error = 'Email is already registered';
+      console.warn(error.yellow);
+      res.locals.error = error;
+      console.info('[MW] createPendingUser-out-2'.bgWhite.blue);
+      return res.status(400).redirect('back');
+    }
+  } catch (err) {
+    console.error(`[MW] Error checking email: ${err.message}`.bgRed.white);
+    return next(err); // Pass error to error handler middleware
+  }
+
+  // Check if passwords match
+  if (password !== confirmPassword) {
+    const error = 'Passwords do not match';
+    console.warn(error.yellow);
+    res.locals.error = error;
+    console.info('[MW] createPendingUser-out-3'.bgWhite.blue);
+    return res.status(400).redirect('back');
+  }
+
+  // Try to create a new user
+  try {
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      tenant: req.user.tenant.valueOf() // Assuming tenant is part of req.user
+    });
+
+    console.log(newUser);
+    console.info(`Created User ${newUser._id}`.green);
+    console.info('[MW] createPendingUser-out-4'.bgWhite.blue);
+    return next();
+  } catch (err) {
+    console.error(`[MW] Error creating user: ${err.message}`.bgRed.white);
+    return next(err); // Pass error to error handler middleware
+  }
+}
 /**
  * Verifies if the current user is the same as the target user.
  * @param {object} req The request object.
@@ -230,6 +297,7 @@ export {
   resetPassword,
   getUsers,
   createUser,
+  createPendingUser,
   verifySelf,
   updateUser,
   disableUser,
