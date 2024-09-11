@@ -1,8 +1,8 @@
 import { Schema } from "mongoose";
 
 const subscriptionSchema = new Schema({
-	userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // For renewal contact
-	tenantId: { type: mongoose.Schema.Types.ObjectId, ref: "Tenant" }, // Tenant associated with this subscription
+	userId: { type: Schema.Types.ObjectId, ref: "User" }, // For renewal contact
+	tenantId: { type: Schema.Types.ObjectId, ref: "Tenant" }, // Tenant associated with this subscription
 	status: {
 		type: String,
 		enum: ["pending", "active", "lapsed", "cancelled"],
