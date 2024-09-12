@@ -20,6 +20,7 @@ import {
   renderBatchCreationPage,
   batchCreateTools
 } from '../controllers/tool.js'
+import { redirectToDashboard } from '../controllers/index.js'
 export const toolRouter = Router()
 
 // search for tools and render the results with the dashboard view
@@ -40,7 +41,7 @@ toolRouter.post('/checkInOut', listAllSAs, checkTools, renderStatusChangeConfirm
 toolRouter.post('/submitCheckInOut', submitCheckInOut, renderResults)
 
 // create new tool
-toolRouter.post('/submit', sanitizeReqBody, createTool, renderResults)
+toolRouter.post('/submit', sanitizeReqBody, createTool, redirectToDashboard)
 // render batch creation page
 toolRouter.get('/batchCreate', renderBatchCreationPage)
 // validate and create a batch of submitted tools
