@@ -33,6 +33,6 @@ settingsRouter.use('/materials', materialRouter)
 // @route * /settings/import
 settingsRouter.use('/import', importRouter)
 
-// all import routes go to importRouter
-// @route * /settings/import
+// all tenant routes go to settingsRouter
+// @route * /settings/tenant
 settingsRouter.use('/tenant', tenantRouter)

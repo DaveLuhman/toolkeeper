@@ -85,6 +85,7 @@
     <div class="modal-inner-md">
         <label for="newServiceAssignmentModal" class="modal-close-btn">✕</label>
         <form action="/settings/serviceAssignments/create" method="POST">
+         <input name="tenant" type="hidden" value="{{user.tenant}}" />
             <div class="grid items-center w-full grid-cols-2 grid-rows-3 gap-1">
                 <div class="title-bar">
                     <h3 class="title-text">New Service Assignment</h3>

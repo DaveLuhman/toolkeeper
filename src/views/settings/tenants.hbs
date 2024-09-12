@@ -37,17 +37,30 @@
                             <tbody>
                                 {{#if activeTenants}}
                                     {{#each activeTenants}}
+                                        {{!-- Impersontate button --}}
                                         <tr>
-                                            <td><a href="/tenant/{{this.id}}/impersonate"><i
-                                                        class="fas fa-theater-masks"></i></a></td>
-                                            <td>{{this.name}}</td>
-                                            <td><a href="tenant/edit/{{this._id}}"><i class="fa fa-pencil"></i></a>
-                                            </td>
                                             {{#isnt this.id ../user.tenant}}
-                                                <td><a href="tenant/deactivate/{{this._id}}"><i
+                                                <td><a href="/settings/tenant/{{this.id}}/impersonate"><i
+                                                            class="fas fa-theater-masks"></i></a></td>
+                                    {{else}}
+                                        <td>
+                                            <div class="tooltip"
+                                                data-tip="You cannot impersonate the tenant you are currently using!"><i
+                                                    class="fa-solid fa-ban"></i></div>
+                                        </td>
+                                            {{/isnt}}
+                                            {{!-- Tenant Name --}}
+                                            <td>{{this.name}}</td>
+                                            {{!-- Edit Tenant Button --}}
+                                            <td><a href="/settings/tenant/edit/{{this._id}}"><i
+                                                        class="fa fa-pencil"></i></a>
+                                            </td>
+                                            {{!-- deactivate button --}}
+                                            {{#isnt this.id ../user.tenant}}
+                                                <td><a href="/settings/tenant/deactivate/{{this._id}}"><i
                                                             class="fas fa-arrow-right"></i></a></td>
                                                 </td>
-                                    {{else}}
+                                            {{else}}
                                         <td>
                                             <div class="tooltip"
                                                 data-tip="You cannot deactivate the tenant you are currently using!"><i
@@ -81,12 +94,14 @@
                                 {{#if inactiveTenants}}
                                     {{#each inactiveTenants}}
                                         <tr>
-                                            <td><a href="tenant/activate/{{_id}}"><i class="fas fa-arrow-left"></i></a>
+                                            <td><a href="/settings/tenant/activate/{{_id}}"><i
+                                                        class="fas fa-arrow-left"></i></a>
                                             </td>
                                             <td>{{jobNumber}}</td>
                                             <td class="hidden md:table-cell min-w-fit">{{name}}</td>
-                                            <td><a href="tenant/edit/{{_id}}"><i class="fa fa-pencil"></i></a></td>
-                                            <td><a href="tenant/delete/{{_id}}"
+                                            <td><a href="/settings/tenant/edit/{{_id}}"><i class="fa fa-pencil"></i></a>
+                                            </td>
+                                            <td><a href="/settings/tenant/delete/{{_id}}"
                                                     onclick="return confirm('Are you sure you want to delete {{name}}')"><i
                                                         class="fa fa-trash"></i></a>
                                             </td>
@@ -109,8 +124,8 @@
                         <div class="title-bar">
                             <h3 class="title-text">New Tenant</h3>
                         </div>
-                        <input placeholder="Admin Email Address" type="text" name="adminEmail" id="new-tenant_admin-email"
-                            class="input input-bordered">
+                        <input placeholder="Admin Email Address" type="text" name="adminEmail"
+                            id="new-tenant_admin-email" class="input input-bordered">
                         <input placeholder="Tenant Name" type="text" name="tenantName" id="new-tenant_name"
                             class="input input-bordered">
                         <div class="modal-button-row">

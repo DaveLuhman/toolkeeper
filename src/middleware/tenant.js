@@ -117,15 +117,14 @@ export const createTenant = async (req, res, next) => {
 		const { firstName, lastName, tenantName, adminEmail } = req.body;
 		const domain = getDomainFromEmail(adminEmail);
 		// Check if the admin user already exists
-		let adminUser = null
+		let adminUser = null;
 		adminUser = await User.findOne({ email: adminEmail });
 		const password = generatePassword();
 
 		if (!adminUser) {
-
 			adminUser = await User.create({
-				firstName: firstName || 'Admin',
-				lastName: lastName || 'User',
+				firstName: firstName || "Admin",
+				lastName: lastName || "User",
 				email: req.body.adminEmail,
 				password: password, // The setter in the User model will hash this
 				role: "Admin",
@@ -186,3 +185,68 @@ export const getTenants = async (req, res, next) => {
 			.render("error", { message: "Failed to load tenants", error });
 	}
 };
+
+/**
+ * Middleware to impersonate a tenant for superadmins
+ */
+export const impersonateTenant = async (req, res, next) => {
+	try {
+		const { tenantId } = req.params; // Assuming tenantId is passed as a URL parameter
+
+		// Check if the logged-in user is a superadmin
+		if (req.user.role !== "Superadmin") {
+			// Render an error page with 401 status for unauthorized access
+			return res.status(401).render("error/error", {
+				message: "You do not have permission to impersonate tenants.",
+				status: 401,
+			});
+		}
+
+		// If tenantId is "original", revert to the superadmin's original tenant then render the dashboard via the route terminator
+		if (tenantId === "original") {
+			req.user.tenant = req.session.originalTenant;
+			req.session.originalTenant = undefined; // Clear the stored original tenant
+			req.session.impersonatedTenant = undefined; // clear the stored impersonation target
+			return next();
+		}
+
+		// Find the tenant by ID
+		const targetTenant = await Tenant.findById(tenantId).lean();
+		if (!targetTenant) {
+			// Render an error page if the tenant is not found
+			return res.status(404).render("error/error", {
+				message: "Tenant not found.",
+				status: 404,
+			});
+		}
+
+		// Store the original tenant in the session (if not already stored)
+		if (!req.session.originalTenant) {
+			req.session.originalTenant = req.user.tenant;
+		}
+
+		// Change the tenant for the current session
+		req.session.impersonatedTenant = targetTenant._id;
+
+
+		// Proceed to the next middleware or route handler
+		next();
+	} catch (error) {
+		console.error("Error impersonating tenant:", error);
+		res.status(500).render("error/error", {
+			message: "An error occurred while impersonating the tenant.",
+			status: 500,
+		});
+	}
+};
+
+export const applyImpersonation = async (req, res, next) => {
+	// Check if the session has an impersonated tenant
+	if (req.session.impersonatedTenant) {
+		// apply impersonation
+	  req.user.tenant = req.session.impersonatedTenant;
+	  // hoist tenant object for impersonation banner to identify the target tenant
+	  res.locals.tenant = await Tenant.findById(req.session.impersonatedTenant).lean();
+	}
+	next();
+  };

@@ -62,3 +62,33 @@
         </div>
     </div>
 </div>
+<input type="checkbox" id="newUserModal" class="modal-toggle" />
+<div class="modal" role="dialog">
+    <div class="modal-inner-lg">
+        <label for="newUserModal" class="modal-close-btn">✕</label>
+        <form action="/settings/users/create" method="POST">
+            <div class="modal-table">
+                <div class="title-bar">
+                    <h3 class="title-text">Create A New User</h3>
+                </div>
+                <input placeholder="First Name" type="text" name="firstName" id="new-user_firstName" class="input input-bordered" required />
+                <input placeholder="Last Name" type="text" name="lastName" id="new-user_lastName" class="input input-bordered" required />
+                <input placeholder="E-Mail" type="email" name="email" id="new-user_email" class="input input-bordered" required />
+                <select id="new-user_role" class="select select-bordered" name="role">
+                    <option>Role</option>
+                    <option value="User">User</option>
+                    <option value="Manager">Manager</option>
+                    <option value="Admin">Admin</option>
+                </select>
+                <input placeholder="Password" type="password" name="password" id="new-user_password"
+                    class="input input-bordered" required />
+                <input placeholder="Confirm Password" type="password" name="confirmPassword" id="new-user_confirmPassword"
+                    class="input input-bordered" required>
+                <div class="modal-button-row">
+                    <label class="btn btn-sm"> <button id="new-user_submit" type="submit">Submit</button></label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <label class="modal-backdrop" for="newUserModal">Close</label>
+</div>

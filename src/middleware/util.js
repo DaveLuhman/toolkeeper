@@ -163,11 +163,11 @@ export const initCachedContent = async (req, res, next) => {
 		const serviceAssignments = await ServiceAssignment.find({
 			tenant: req.user.tenant,
 		}).lean();
-		const categories = await Category.find({ tenant: req.user.tenant }).lean();
+		const categories = await Category.find({ tenant: req.user.tenant.valueOf() }).lean();
     await Promise.all(
       serviceAssignments.map(async (assignment) => {
         // Pre-compute toolCount for each assignment
-        assignment.toolCount = await Tool.countDocuments({ serviceAssignment: assignment._id });
+        assignment.toolCount = await Tool.countDocuments({ serviceAssignment: assignment._id, tenant: req.user.tenant.valueOf() });
       })
     );
 

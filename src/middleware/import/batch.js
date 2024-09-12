@@ -71,6 +71,7 @@ function prepareBatchData(jsonData) {
       serialNumber,
       description,
       toolID,
+      tenant
     } = jsonData
     const barcodes = barcode.split(',')
     const serialNumbers = serialNumber.split(',')
@@ -86,6 +87,7 @@ function prepareBatchData(jsonData) {
         serviceAssignment,
         category,
         size: { width, length, height, weight },
+        tenant
       }
       preparedToolObjects.push(toolObject)
     }

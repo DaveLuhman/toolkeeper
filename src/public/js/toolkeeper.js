@@ -35,7 +35,7 @@ function populateDashboard(cachedData) {
 			const assignmentElement = document.createElement("div");
 			assignmentElement.innerHTML = `
       <tr>
-        <td><a href="/tool/search?searchBy=serviceAssignment&searchTerm=${assignment.id}"> ${assignment.toolCount}  | ${assignment.jobNumber} - ${assignment.jobName}</td>
+        <td><a href="/tool/search?searchBy=serviceAssignment&searchTerm=${assignment._id}"> ${assignment.toolCount}  | ${assignment.jobNumber} - ${assignment.jobName}</td>
       </tr>
     `;
 
