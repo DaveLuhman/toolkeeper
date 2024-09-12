@@ -255,8 +255,9 @@ async function resetPassword(req, res, next) {
   }
 
   try {
-    const hash = await bcrypt.hash(password, 10);
-    await User.findByIdAndUpdate(_id, { $set: { password: hash } });
+        const targetUser = await User.findById(_id);
+        targetUser.password = password
+        targetUser.save()
     console.info('[MW] resetPassword-out-4'.bgWhite.blue);
     next();
   } catch (error) {
