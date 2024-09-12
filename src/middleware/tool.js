@@ -87,17 +87,17 @@ async function getToolByID(req, res, next) {
  * Retrieves a list of checked in tools.
  * @returns {array} An array of checked in tools.
  */
-async function getCheckedInTools() {
+async function getCheckedInTools(tenantId) {
 	const tools = await Tool.find()
 		.where("archived")
 		.equals(false)
 		.where("tenant")
-		.equals(req.user.tenant.valueOf()); //get all unarchived tools
+		.equals(tenantId); //get all unarchived tools
 	const stockroomDocs = await ServiceAssignment.find()
 		.where("type")
 		.equals("Stockroom")
 		.where("tenant")
-		.equals(req.user.tenant.valueOf()); //get all stockroom documents (sa that count as checked in)
+		.equals(tenantId); //get all stockroom documents (sa that count as checked in)
 	//initialize an array to hold the checked in tools
 	const checkedInTools = [];
 	// iterate through the tools and compare the service assignment id to the active service assignment ids
@@ -116,17 +116,17 @@ async function getCheckedInTools() {
  * Retrieves a list of checked out tools.
  * @returns {array} An array of checked out tools.
  */
-async function getCheckedOutTools() {
+async function getCheckedOutTools(tenantId) {
 	const tools = await Tool.find()
 		.where("archived")
 		.equals(false)
 		.where("tenant")
-		.equals(req.user.tenant.valueOf());
+		.equals(tenantId);
 	const activeServiceAssignmentsDocs = await ServiceAssignment.find()
 		.where("type")
 		.ne("Stockroom")
 		.where("tenant")
-		.equals(req.user.tenant.valueOf());
+		.equals(tenantId);
 	const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(
 		(item) => {
 			return item._id.valueOf();
@@ -186,8 +186,8 @@ async function searchTools(req, res, next) {
 			res.locals.searchBy = searchBy;
 			res.locals.searchTerm = searchTerm;
 			if (searchTerm === "Checked In")
-				res.locals.tools = await getCheckedInTools();
-			else res.locals.tools = await getCheckedOutTools();
+				res.locals.tools = getCheckedInTools(req.user.tenant.valueOf());
+			else res.locals.tools = getCheckedOutTools(req.user.tenant.valueOf());
 			break;
 		default:
 			res.locals.searchTerm = searchTerm;
@@ -459,7 +459,7 @@ async function checkTools(req, res, next) {
 	}
 	res.locals.destinationServiceAssignment = destinationServiceAssignment;
 	const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/));
-	const toolsToBeChanged = await lookupToolWrapper(search);
+	const toolsToBeChanged = await lookupToolWrapper(search, req.user.tenantId.valueOf());
 	if (toolsToBeChanged.length === 0) {
 		res.locals.message = "No Tools Found Matching ";
 	}
@@ -472,22 +472,22 @@ async function checkTools(req, res, next) {
  * @param {string} searchField optional, key to search - if not provided, will search all fields
  * @returns {object}
  */
-async function lookupTool(searchTerm) {
+async function lookupTool(searchTerm, tenantId) {
 	const capitalizedSearchTerm = searchTerm.toUpperCase();
 	let result = await Tool.findOne({
 		serialNumber: { $eq: capitalizedSearchTerm },
-		tenant: { $eq: req.user.tenant.valueOf() },
+		tenant: { $eq: tenantId },
 	});
 	if (!result) {
 		result = await Tool.findOne({
 			barcode: { $eq: capitalizedSearchTerm },
-			tenant: { $eq: req.user.tenant.valueOf() },
+			tenant: { $eq: tenantId },
 		});
 	}
 	if (!result) {
 		result = await Tool.findOne({
 			toolID: { $eq: capitalizedSearchTerm },
-			tenant: { $eq: req.user.tenant.valueOf() },
+			tenant: { $eq: tenantId },
 		});
 	}
 	if (!result) {
@@ -501,10 +501,10 @@ async function lookupTool(searchTerm) {
  * @param {*} searchTerms
  * @return {*} array of tools, with dummy objects if nothing is found
  */
-async function lookupToolWrapper(searchTerms) {
+async function lookupToolWrapper(searchTerms, tenantId) {
 	const tools = [];
 	for (let i = 0; i < searchTerms.length; i++) {
-		const result = await lookupTool(searchTerms[i]);
+		const result = await lookupTool(searchTerms[i], tenantId);
 		if (result?.serialNumber === undefined) {
 			tools.push({
 				serialNumber: searchTerms[i],
@@ -585,7 +585,7 @@ const generatePrinterFriendlyToolList = async (req, res, next) => {
  *
  * @returns {Object} - An object containing the dashboard statistics.
  */
-async function getDashboardStats() {
+async function getDashboardStats(tenantId) {
 	const startOfDay = moment().startOf("day").toDate();
 	const endOfDay = moment().endOf("day").toDate();
 	const startOfWeek = moment().startOf("week").toDate();
@@ -593,14 +593,14 @@ async function getDashboardStats() {
 	try {
 		const todaysTools = await Tool.countDocuments({
 			updatedAt: { $gte: startOfDay, $lte: endOfDay },
-			tenant: { $eq: req.user.tenant.valueOf() },
+			tenant: { $eq: tenantId },
 		});
 		const thisWeeksTools = await Tool.countDocuments({
 			updatedAt: { $gte: startOfWeek, $lte: endOfWeek },
-			tenant: { $eq: req.user.tenant.valueOf() },
+			tenant: { $eq: tenantId },
 		});
-		const totalTools = await Tool.countDocuments();
-		const stockroomTools = await getCheckedInTools();
+		const totalTools = await Tool.countDocuments({tenant: tenantId});
+		const stockroomTools = await getCheckedInTools(tenantId);
 		const totalIn = stockroomTools.length;
 		const totalOut = totalTools - totalIn;
 		return { todaysTools, thisWeeksTools, totalIn, totalOut, totalTools };
