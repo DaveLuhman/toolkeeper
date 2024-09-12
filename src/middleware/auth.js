@@ -1,5 +1,4 @@
-import passport from 'passport'
-
+import passport from "passport";
 /**
  * @param req Express Request object
  * @param  res  Express Response object
@@ -12,12 +11,12 @@ import passport from 'passport'
  * })
  **/
 function checkAuth(req, res, next) {
-  if (req.isAuthenticated()) {
-    res.locals.user = req.user
-    return next()
-  }
-  res.locals.message = 'You must be logged in to access that page'
-  res.redirect('/login')
+	if (req.isAuthenticated()) {
+		res.locals.user = req.user;
+		return next();
+	}
+	res.locals.message = "You must be logged in to access that page";
+	res.redirect("/login");
 }
 /**
  * @param req Express Request object
@@ -31,13 +30,12 @@ function checkAuth(req, res, next) {
  * })
  **/
 function isManager(req, res, next) {
-  if (req.user.role === 'User') {
-    res.locals.error =
-      'You are not a manager, and have been redirected to the dashboard'
-    return res.redirect('/dashboard')
-
-  }
-  return next()
+	if (req.user.role === "User") {
+		res.locals.error =
+			"You are not a manager, and have been redirected to the dashboard";
+		return res.redirect("/dashboard");
+	}
+	return next();
 }
 /**
  * @param req Express Request object
@@ -52,11 +50,11 @@ function isManager(req, res, next) {
  * @todo fix the failure message
  **/
 function login(req, res, next) {
-  passport.authenticate('local', {
-    failureRedirect: '/login',
-    failureFlash: true,
-    successRedirect: '/dashboard'
-  })(req, res, next)
+	passport.authenticate("local", {
+		failureRedirect: "/login",
+		failureFlash: true,
+		successRedirect: "/dashboard",
+	})(req, res, next);
 }
 
 /**
@@ -71,12 +69,12 @@ function login(req, res, next) {
  * })
  **/
 function logout(req, res, next) {
-  req.logout((err) => {
-    if (err) {
-      return next(err)
-    }
-    res.redirect('/')
-  })
+	req.logout((err) => {
+		if (err) {
+			return next(err);
+		}
+		res.redirect("/");
+	});
 }
 
-export { checkAuth, isManager, login, logout }
+export { checkAuth, isManager, login, logout };

@@ -19,7 +19,7 @@ indexRouter.post('/login', login)
 // Render register Page
 indexRouter.get('/register', renderRegisterPage)
 // Register User
-indexRouter.post('/register', createUser, renderLoginPage)
+indexRouter.post('/register', createPendingUser)
 // Logout User
 indexRouter.get('/logout', logout)
 // Submit Forgot Password Modal

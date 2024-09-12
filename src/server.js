@@ -35,6 +35,7 @@ import { toolRouter } from './routes/tool.routes.js'
 import { userRouter } from './routes/user.routes.js'
 import customHelpers from './helpers/index.js'
 import { applyImpersonation } from './middleware/tenant.js'
+import webhookRouter from './routes/webhooks.routes.js'
 
 // use the imported dependencies as needed in the server.js file
 
@@ -104,6 +105,7 @@ app.use(rateLimiter)
 
 // Routes (No User Context)
 app.use('/', indexRouter)
+app.use('/webhooks', webhookRouter)
 // Routes (User Context)
 
 app.use(checkAuth)

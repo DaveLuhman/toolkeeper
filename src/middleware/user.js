@@ -2,6 +2,7 @@ import { User } from '../models/index.models.js'
 import bcrypt from 'bcrypt'
 import { mutateToArray } from './util.js'
 import { demoTenantId } from '../config/db.js'
+import { toolkeeperCheckoutLink, annualWebhookSignature } from '../config/lemonSqueezy.js'
 
 /**
  * getUsers - queries all users from db
@@ -143,10 +144,10 @@ async function createPendingUser(req, res, next) {
       email,
       password,
       role: 'Admin',
-      tenant: demoTenantId // Assuming tenant is part of req.user
+      tenant: demoTenantId // temporary value pre-payment
     });
     console.info(`Created User ${newUser._id}`.green);
-    return next();
+    res.redirect(toolkeeperCheckoutLink)
   } catch (err) {
     console.error(`[MW] Error creating user: ${err.message}`.bgRed.white);
     return next(err); // Pass error to error handler middleware
