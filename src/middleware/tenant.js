@@ -4,7 +4,7 @@ import { sendEmail, getDomainFromEmail } from "../controllers/util.js";
 import { demoTenantId } from "../config/db.js";
 
 // Utility function to generate a random password
-const generatePassword = () => {
+export const generatePassword = () => {
 	const tools = [
 		"Hammer",
 		"Screwdriver",

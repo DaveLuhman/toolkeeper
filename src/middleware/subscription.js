@@ -1,10 +1,7 @@
-import { Tenant } from '../models/index.models'; // Tenant model
-import { User } from '../models/index.models'; // User model
-import { Subscription } from '../models/index.models'; // Subscription model
-import { generatePassword } from '../controllers/tenant.js'; // Password generation utility
-import { sendEmail } from '../controllers/util.js'; // Email utility
+import { Subscription, User, Tenant } from '../models/index.models.js'; // Subscription model
+import { generatePassword } from '../middleware/tenant.js'; // Password generation utility
+import { getDomainFromEmail, sendEmail } from '../controllers/util.js'; // Email utility
 import { annualWebhookSignature } from '../config/lemonSqueezy.js'; // Signature for webhook verification
-import { getDomainFromEmail } from '../controllers/util.js'; // Utility for domain extraction
 
 // Utility function to generate ToolKeeper instance URL
 const getInstanceUrl = () => {

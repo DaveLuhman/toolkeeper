@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { login, logout } from '../middleware/auth.js'
-import { createUser } from '../middleware/user.js'
+import { createPendingUser, createUser } from '../middleware/user.js'
 import {
   renderLandingPage,
   renderLoginPage,

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { subscriptionCreatedWebhookHandler } from "../middleware/subscription";
+import { subscriptionCreatedWebhookHandler } from "../middleware/subscription.js";
 
 const webhookRouter = new Router()
 
