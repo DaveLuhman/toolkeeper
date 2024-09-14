@@ -124,7 +124,7 @@ async function createPendingUser(req, res, next) {
   }
   // Check if email already registered
   try {
-    const existingUser = await User.findOne({ email, tenant: req.user.tenant });
+    const existingUser = await User.findOne({ email  });
     if (existingUser) {
       const error = 'Email is already registered';
       console.warn(error.yellow);
