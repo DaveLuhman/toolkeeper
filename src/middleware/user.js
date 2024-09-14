@@ -1,5 +1,6 @@
 import { User } from '../models/index.models.js'
 import bcrypt from 'bcrypt'
+import { generatePassword } from "./tenant.js"
 import { mutateToArray } from './util.js'
 import { demoTenantId } from '../config/db.js'
 import { toolkeeperCheckoutLink, annualWebhookSignature } from '../config/lemonSqueezy.js'
@@ -142,7 +143,7 @@ async function createPendingUser(req, res, next) {
       firstName,
       lastName,
       email,
-      password,
+      password: generatePassword(),
       role: 'Admin',
       tenant: demoTenantId // temporary value pre-payment
     });
