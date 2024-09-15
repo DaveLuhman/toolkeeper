@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 
 const subscriptionSchema = new Schema({
-	userId: { type: Schema.Types.ObjectId, ref: "User" }, // For renewal contact
+	user: { type: Schema.Types.ObjectId, ref: "User" }, // For renewal contact
 	tenantId: { type: Schema.Types.ObjectId, ref: "Tenant" }, // Tenant associated with this subscription
 	status: {
 		type: String,
@@ -11,8 +11,14 @@ const subscriptionSchema = new Schema({
 	plan: { type: String, enum: ["monthly", "annual"] },
 
 	lemonSqueezyId: { type: String, required: true }, // Corresponds to the "id" field
-	lemonSqueezyObject: {
-		storeId: { type: Number, required: true },
+	lemonSqueezyObject: Object
+
+});
+
+export default subscriptionSchema
+
+/** saving this data shape for posterity
+ * storeId: { type: Number, required: true },
 		customerId: { type: Number, required: true },
 		orderId: { type: Number, required: true },
 		orderItemId: { type: Number, required: true },
@@ -56,6 +62,4 @@ const subscriptionSchema = new Schema({
 		updatedAt: { type: Date, required: true },
 		testMode: { type: Boolean, default: false },
 	},
-});
-
-export default subscriptionSchema
+ */

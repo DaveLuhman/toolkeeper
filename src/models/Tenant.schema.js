@@ -19,18 +19,12 @@ const TenantSchema = new Schema(
 			required: true,
 			autopopulate: true,
 		},
-		subscriptionTier: {
-			type: String,
-			required: true,
-			enum: ["Trial", "Pro", "Premium"],
-			default: "Trial",
+		subscription: {
+			type: Schema.Types.ObjectId,
+			ref: "Subscription",
+			autopopulate: true,
+		  }
 		},
-		subscriptionActive: {
-			type: Boolean,
-			default: true,
-			required: true,
-		},
-	},
 	{
 		timestamps: true,
 	},
@@ -76,9 +70,6 @@ TenantSchema.statics.createWithDefaults = async function (tenantData) {
 			importedAssignment.save(),
 			partsAssignment.save(),
 		]);
-
-
-
 		return tenant; // Return the created tenant
 	} catch (error) {
 		// biome-ignore lint/complexity/noUselessCatch: <explanation>

@@ -1,4 +1,4 @@
-import { User } from '../models/index.models.js'
+import { PendingUser, User } from '../models/index.models.js'
 import bcrypt from 'bcrypt'
 import { generatePassword } from "./tenant.js"
 import { mutateToArray } from './util.js'
@@ -114,7 +114,7 @@ async function createPendingUser(req, res, next) {
   console.info('[MW] createPendingUser-in'.bgBlue.white);
 
   const { firstName, lastName, email, companyName } = req.body;
-  const userValues = {firstName, lastName, email, companyName, role: "Admin", tenant: demoTenantId }
+  const userValues = {firstName, lastName, email, companyName}
   // Check if email and companyName are provided
   if (!email || !companyName) {
     const error = 'Email and Company Name are required';
@@ -139,14 +139,7 @@ async function createPendingUser(req, res, next) {
   }
   // Try to create a new user
   try {
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      email,
-      password: generatePassword(),
-      role: 'Admin',
-      tenant: demoTenantId // temporary value pre-payment
-    });
+    const newUser = await PendingUser.create(userValues);
     console.info(`Created User ${newUser._id}`.green);
     res.redirect(toolkeeperCheckoutLink)
   } catch (err) {

@@ -189,3 +189,9 @@ export const initCachedContent = async (req, res, next) => {
 		res.status(500).json({ error: "Failed to fetch cached content" });
 	}
 };
+
+export const rawBodySaver =  (req, _res, buf, encoding) => {
+	if (buf && buf.length) {
+	  req.rawBody = buf.toString(encoding || 'utf8');
+	}
+  }

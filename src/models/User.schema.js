@@ -44,9 +44,9 @@ const UserSchema = new Schema(
       default: 'User',
       enum: ['User', 'Manager', 'Admin', 'Superadmin']
     },
-    isDisabled: {
-      type: Boolean,
-      default: false
+    status: {
+      type: String,
+      default: 'Lapsed'
     },
     lastLogin: {
       type: Date
