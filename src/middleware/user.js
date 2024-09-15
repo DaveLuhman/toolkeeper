@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import { generatePassword } from "./tenant.js"
 import { mutateToArray } from './util.js'
 import { demoTenantId } from '../config/db.js'
-import { toolkeeperCheckoutLink, annualWebhookSignature } from '../config/lemonSqueezy.js'
+import { toolkeeperCheckoutLink, secret } from '../config/lemonSqueezy.js'
 
 /**
  * getUsers - queries all users from db
