@@ -2,7 +2,7 @@ import { Subscription, User, Tenant } from '../models/index.models.js' // Subscr
 import { generatePassword } from '../middleware/tenant.js' // Password generation utility
 import { getDomainFromEmail, sendEmail } from '../controllers/util.js' // Email utility
 import { secret } from '../config/lemonSqueezy.js' // Signature for webhook verification
-import { createHmac } from 'node:crypto'
+import { createHmac, timingSafeEqual } from 'node:crypto'
 // Utility function to generate ToolKeeper instance URL
 const getInstanceUrl = () => {
   return process.env.NODE_ENV === 'production'
@@ -12,11 +12,11 @@ const getInstanceUrl = () => {
 
 const subscriptionCreatedWebhookHandler = async (req, res, next) => {
   // Verify the X-Signature header from LemonSqueezy
-  const hmac = crypto.createHmac('sha256', secret)
+  const hmac = createHmac('sha256', secret)
   const digest = Buffer.from(hmac.update(request.rawBody).digest('hex'), 'utf8')
   const signature = Buffer.from(request.get('X-Signature') || '', 'utf8')
 
-  if (!crypto.timingSafeEqual(digest, signature)) {
+  if (!timingSafeEqual(digest, signature)) {
     throw new Error('Invalid signature.')
   }
 
