@@ -13,7 +13,7 @@ const getInstanceUrl = () => {
 const subscriptionCreatedWebhookHandler = async (req, res, next) => {
   // Verify the X-Signature header from LemonSqueezy
   const hmac = createHmac('sha256', secret)
-  const digest = Buffer.from(hmac.update(req.rawBody).digest('hex'), 'utf8')
+  const digest = Buffer.from(hmac.update(req.body).digest('hex'), 'utf8')
   const signature = Buffer.from(req.get('X-Signature') || '', 'utf8')
 
   if (!timingSafeEqual(digest, signature)) {
