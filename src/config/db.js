@@ -145,6 +145,9 @@ async function createDefaultGlobalDocuments() {
 	return Promise.allSettled(defaultGlobalPromises);
 }
 
+export const closeDbConnection = () => {
+	mongoose.disconnect()
+}
 export const demoTenantId = "66af881237c17b64394a4166";
 
 export default connectDB;
