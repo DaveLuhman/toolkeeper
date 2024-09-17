@@ -1,9 +1,6 @@
 import { PendingUser, User } from '../models/index.models.js'
-import bcrypt from 'bcrypt'
-import { generatePassword } from "./tenant.js"
 import { mutateToArray } from './util.js'
-import { demoTenantId } from '../config/db.js'
-import { toolkeeperCheckoutLink, secret } from '../config/lemonSqueezy.js'
+import { checkoutUrl } from '../config/lemonSqueezy.js'
 
 /**
  * getUsers - queries all users from db
@@ -103,7 +100,7 @@ async function createUser(req, res, next) {
   }
 }
 /**
- * Creates a new user.
+ * Registers a pending user and redirects the user to the checkout page
  *
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
@@ -119,7 +116,7 @@ async function createPendingUser(req, res, next) {
   if (!email || !companyName) {
     const error = 'Email and Company Name are required';
     console.warn(error.yellow);
-    res.locals.error = error;
+    res.locals.message = error;
     console.info('[MW] createPendingUser-out-1'.bgWhite.blue);
     return res.status(400).redirect('back');
   }
@@ -129,7 +126,7 @@ async function createPendingUser(req, res, next) {
     if (existingUser) {
       const error = 'Email is already registered';
       console.warn(error.yellow);
-      res.locals.error = error;
+      res.locals.message = error;
       console.info('[MW] createPendingUser-out-2'.bgWhite.blue);
       return res.status(400).redirect('back');
     }
@@ -141,7 +138,7 @@ async function createPendingUser(req, res, next) {
   try {
     const newUser = await PendingUser.create(userValues);
     console.info(`Created User ${newUser._id}`.green);
-    res.redirect(toolkeeperCheckoutLink)
+    res.redirect(checkoutUrl)
   } catch (err) {
     console.error(`[MW] Error creating user: ${err.message}`.bgRed.white);
     return next(err); // Pass error to error handler middleware
