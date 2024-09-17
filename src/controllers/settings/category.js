@@ -17,3 +17,5 @@ export const renderSettingsCategories = (_req, res) => {
 export const renderSettingsEditCategory = (_req, res) => {
     res.render('settings/editCategory')
 }
+
+// src\controllers\settings\category.js

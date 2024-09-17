@@ -38,3 +38,4 @@ async function checkToolUpdatedAt() {
 
 // Run the script
 checkToolUpdatedAt();
+// src\scripts\validateTimestampsAsDates.js

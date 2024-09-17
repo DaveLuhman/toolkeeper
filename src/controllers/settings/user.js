@@ -16,3 +16,4 @@ export const renderSettingsUsers = (_req, res) => {
 export const renderSettingsEditUser = (_req, res) => {
     res.render('settings/editUser')
 }
+// src\controllers\settings\user.js

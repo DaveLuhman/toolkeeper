@@ -93,3 +93,5 @@ UserSchema.statics.findByEmail = async (email) => (await model('User').findOne({
 UserSchema.statics.findByToken = async (token) => (await model('User').findOne({ token: { $eq: token } })) || false
 
 export default UserSchema
+
+// src\models\User.schema.js

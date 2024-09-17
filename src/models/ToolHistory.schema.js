@@ -20,3 +20,5 @@ const ToolHistorySchema = new Schema(
   }
 )
 export default ToolHistorySchema
+
+// src\models\ToolHistory.schema.js

@@ -151,3 +151,5 @@ export const closeDbConnection = () => {
 export const demoTenantId = "66af881237c17b64394a4166";
 
 export default connectDB;
+
+// src\config\db.js

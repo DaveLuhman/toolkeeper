@@ -13,3 +13,4 @@ const migrateServiceAssignments = async (db) => {
 };
 
 export default migrateServiceAssignments
+// src\scripts\migration\serviceAssignment.js

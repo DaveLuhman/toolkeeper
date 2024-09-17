@@ -37,3 +37,5 @@ CategorySchema.plugin(mongooseUniqueValidator)
 CategorySchema.index({ name: 1, tenant: 1 }, { unique: true });
 
 export default CategorySchema
+
+// src\models\Category.schema.js

@@ -53,3 +53,5 @@ const ServiceAssignmentSchema = new Schema(
 ServiceAssignmentSchema.index({ jobNumber: 1, tenant: 1 }, { unique: true });
 
 export default ServiceAssignmentSchema;
+
+// src\models\ServiceAssignment.schema.js

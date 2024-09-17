@@ -150,3 +150,5 @@ document.forms[0].addEventListener('submit', function () {
     field.disabled = false
   }
 })
+
+// src\public\js\batchCreate.js

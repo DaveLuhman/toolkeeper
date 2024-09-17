@@ -36,3 +36,5 @@ settingsRouter.use('/import', importRouter)
 // all tenant routes go to settingsRouter
 // @route * /settings/tenant
 settingsRouter.use('/tenant', tenantRouter)
+
+// src\routes\settings\index.routes.js

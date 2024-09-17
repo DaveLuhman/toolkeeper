@@ -134,3 +134,5 @@ app.listen(PORT, () => {
 		`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black,
 	);
 });
+
+// src\server.js

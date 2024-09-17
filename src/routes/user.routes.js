@@ -16,3 +16,5 @@ userRouter.post('/profile', sanitizeReqBody, updateUser, login, (_req, res) => {
 userRouter.post('/resetPassword', resetPassword, (_req, res) => {
   res.redirect('/user/profile')
 })
+
+// src\routes\user.routes.js

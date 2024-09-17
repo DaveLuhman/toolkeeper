@@ -38,3 +38,6 @@ categoryRouter.get('/delete/:id',
   deleteCategory,
   getCategories,
   renderSettingsCategories)
+
+  // File: src/routes/settings/category.routes.js
+// src\routes\settings\category.routes.js

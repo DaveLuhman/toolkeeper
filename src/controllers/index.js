@@ -32,3 +32,4 @@ export const redirectToDashboard = (req, res) => {
 export const renderRegisterPage = (_req, res) => {
     res.render('auth/register', { layout: 'auth.hbs' })
 }
+// src\controllers\index.js

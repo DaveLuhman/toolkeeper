@@ -43,3 +43,5 @@ materialRouter.get(
   getMaterials,
   renderSettingsMaterials
 )
+
+// src\routes\settings\material.routes.js

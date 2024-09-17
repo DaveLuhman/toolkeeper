@@ -70,3 +70,5 @@ export async function executeResetPasswordRequest(req, res) {
     res.locals.message = 'Your password has been successfully reset. Please log in with your new password.'
     res.redirect('/login')
 }
+
+// src\controllers\user.js

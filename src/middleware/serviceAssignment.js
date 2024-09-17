@@ -217,3 +217,5 @@ export const findServiceAssignmentByJobNumber = async (jobNumber) => {
     const sa = await ServiceAssignment.findOne({ jobNumber: { $eq: jobNumber }, tenant: {$eq: req.user.tenant.valueOf()} }).exec()
     return sa?.id
 }
+
+// src\middleware\serviceAssignment.js

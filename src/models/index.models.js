@@ -22,3 +22,5 @@ export const PendingUser = model('PendingUser', PendingUserSchema)
 const models = {Category, Tenant, Material, ServiceAssignment, Tool, ToolHistory, User, Subscription}
 export default models
 
+
+// src\models\index.models.js

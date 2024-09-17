@@ -11,3 +11,4 @@ const migrateUsers = async (db, tenantId) => {
 };
 
 export default migrateUsers
+// src\scripts\migration\user.js

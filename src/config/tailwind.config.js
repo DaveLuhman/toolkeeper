@@ -514,3 +514,5 @@ module.exports = {
   variants,
   plugins
 };
+
+// src\config\tailwind.config.js

@@ -14,3 +14,4 @@ export const renderSettingsMaterials = (_req, res) => {
 export const renderSettingsEditMaterial = (_req, res) => {
     res.render('settings/editMaterial') // render
 }
+// src\controllers\settings\material.js

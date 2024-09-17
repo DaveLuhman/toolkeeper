@@ -14,3 +14,5 @@ const migrateCollections = async (db) => {
 
 
 
+
+// src\scripts\migration\index.js

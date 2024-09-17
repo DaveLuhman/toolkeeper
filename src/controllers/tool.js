@@ -66,3 +66,5 @@ export const batchCreateTools = async (req, res) => {
   res.locals.message = `${errorList.length} failed to import.`
   res.render('results')
 }
+
+// src\controllers\tool.js

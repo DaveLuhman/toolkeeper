@@ -30,3 +30,5 @@ const PendingUserSchema = new Schema(
 );
 
 export default PendingUserSchema;
+
+// src\models\pendingUser.schema.js

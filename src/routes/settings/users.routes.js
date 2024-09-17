@@ -35,3 +35,5 @@ userSettingsRouter.get('/:id', getUserByID, renderSettingsEditUser)
 // @endpoint POST /settings/users/:id
 userSettingsRouter.post('/:id', sanitizeReqBody, updateUser, getUsers, renderSettingsUsers)
 
+
+// src\routes\settings\users.routes.js

@@ -56,3 +56,5 @@ toolRouter.get('/unarchive/:id', unarchiveTool, getAllTools, renderResults)
 
 // get tool by id
 toolRouter.get('/:id', getToolByID, renderEditTool)
+
+// src\routes\tool.routes.js

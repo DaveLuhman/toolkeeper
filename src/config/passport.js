@@ -45,3 +45,5 @@ const passportConfig = (_app) => {
 }
 
 export default passportConfig
+
+// src\config\passport.js

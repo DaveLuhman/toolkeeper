@@ -78,3 +78,5 @@ function logout(req, res, next) {
 }
 
 export { checkAuth, isManager, login, logout };
+
+// src\middleware\auth.js

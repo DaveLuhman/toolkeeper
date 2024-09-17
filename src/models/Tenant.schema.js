@@ -77,3 +77,5 @@ TenantSchema.statics.createWithDefaults = async function (tenantData) {
 	}
 };
 export default TenantSchema;
+
+// src\models\Tenant.schema.js

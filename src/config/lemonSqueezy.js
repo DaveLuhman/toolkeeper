@@ -74,3 +74,4 @@ export const checkoutUrl = async () => {
     const attributes = await toolkeeperProductObject()
     return attributes.buy_now_url
 }
+// src\config\lemonSqueezy.js

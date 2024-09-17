@@ -10,3 +10,5 @@ dashboardRouter.get(
   generatePrinterFriendlyToolList,
   renderDashboard
 )
+
+// src\routes\dashboard.routes.js

@@ -14,3 +14,4 @@ export const renderSettingsServiceAssignments =  (_req, res) => {
 export const renderSettingsEditServiceAssignment =  (_req, res) => {
     res.render('settings/editServiceAssignment')
   }
+// src\controllers\settings\serviceAssignment.js

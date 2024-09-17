@@ -71,3 +71,5 @@ export async function activateServiceAssignments(file) {
   const activatedSAs = await Promise.all(activeServiceRows.map((entry) => { return ServiceAssignment.findOneAndUpdate({ jobNumber: entry[0] }, { active: true }, { new: true }) }))
   return { successCount: activatedSAs.length, errorList }
 }
+
+// src\middleware\import\serviceAssignment.js

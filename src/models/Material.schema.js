@@ -32,3 +32,5 @@ const MaterialSchema = new Schema(
 MaterialSchema.index({ name: 1, tenant: 1 }, { unique: true });
 
 export default MaterialSchema
+
+// src\models\Material.schema.js

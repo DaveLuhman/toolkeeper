@@ -28,3 +28,4 @@ indexRouter.post('/forgotPassword', submitResetPasswordRequest)
 indexRouter.get('/forgotPassword/:token', verifyResetPasswordRequest)
 // Execute Reset Password
 indexRouter.post('/forgotPassword/:token', executeResetPasswordRequest)
+// src\routes\index.routes.js

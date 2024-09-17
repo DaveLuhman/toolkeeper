@@ -18,3 +18,5 @@ tenantRouter.post("/create", createTenant, createTenantRedirect);
 tenantRouter.get("/:tenantId/impersonate", impersonateTenant, applyImpersonation, redirectToDashboard);
 tenantRouter.get("/original/impersonate", impersonateTenant, applyImpersonation, redirectToDashboard);
 
+
+// src\routes\settings\tenant.routes.js

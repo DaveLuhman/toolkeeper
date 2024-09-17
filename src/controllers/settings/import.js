@@ -6,3 +6,4 @@
 export const renderSettingsImport = (_req, res) => {
     res.render('settings/import')
 }
+// src\controllers\settings\import.js

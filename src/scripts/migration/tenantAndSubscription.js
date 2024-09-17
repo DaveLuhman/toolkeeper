@@ -34,3 +34,5 @@ const createTenantAndSubscription = async (db) => {
 };
 
 const tenantId = await createTenantAndSubscription(db);
+
+// src\scripts\migration\tenantAndSubscription.js

@@ -10,3 +10,5 @@ importRouter.get('/', listAllSAs, getAllTools, renderSettingsImport)
 
 // pre-import check and validation
 importRouter.post('/submit', importByFile, renderSettingsImport )
+
+// src\routes\settings\import.routes.js
