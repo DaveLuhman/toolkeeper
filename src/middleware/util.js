@@ -191,7 +191,7 @@ export const initCachedContent = async (req, res, next) => {
 };
 
 export const rawBodySaver =  (req, _res, buf, encoding) => {
-	if (buf && buf.length) {
+	if ( buf?.length) {
 	  req.rawBody = buf.toString(encoding || 'utf8');
 	}
   }
