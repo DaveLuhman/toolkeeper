@@ -25,53 +25,10 @@ const toolkeeperProductObject = async () => {
 }
 };
 
-// 	{
-// 		type: "products",
-// 		id: "349759",
-// 		attributes: {
-// 			store_id: 122311,
-// 			name: "Toolkeeper",
-// 			slug: "toolkeeper",
-// 			description:
-// 				"<p>ToolKeeper is a powerful tool crib management platform designed to help contractors keep track of what tools are where with ease.</p>",
-// 			status: "published",
-// 			status_formatted: "Published",
-// 			thumb_url:
-// 				"https://lemonsqueezy.imgix.net/media/122311/55697374-fc66-4208-994e-286f7b5d5f64.png?fit=clip&h=100&ixlib=php-3.3.1&w=100&s=e278680c1cb00005b7619bb14ffba973",
-// 			large_thumb_url:
-// 				"https://lemonsqueezy.imgix.net/media/122311/55697374-fc66-4208-994e-286f7b5d5f64.png?fit=clip&h=1000&ixlib=php-3.3.1&w=1000&s=8ffcd4bf785faf70e99b275d017eb5d6",
-// 			price: 10000,
-// 			price_formatted: "$100.00 - $1,200.00",
-// 			from_price: 10000,
-// 			to_price: 120000,
-// 			pay_what_you_want: false,
-// 			buy_now_url:
-// 				"https://store.ado.software/checkout/buy/7e74e0bb-3f63-4973-a60f-3969d31ffeae",
-// 			from_price_formatted: "$100.00",
-// 			to_price_formatted: "$1,200.00",
-// 			created_at: "2024-09-09T23:38:46.000000Z",
-// 			updated_at: "2024-09-14T22:24:45.000000Z",
-// 			test_mode: true,
-// 		},
-// 		relationships: {
-// 			store: {
-// 				links: {
-// 					related: "https://api.lemonsqueezy.com/v1/products/349759/store",
-// 					self: "https://api.lemonsqueezy.com/v1/products/349759/relationships/store",
-// 				},
-// 			},
-// 			variants: {
-// 				links: {
-// 					related: "https://api.lemonsqueezy.com/v1/products/349759/variants",
-// 					self: "https://api.lemonsqueezy.com/v1/products/349759/relationships/variants",
-// 				},
-// 			},
-// 		},
-// 		links: { self: "https://api.lemonsqueezy.com/v1/products/349759" },
-// 	}
-
 export const checkoutUrl = async () => {
     const attributes = await toolkeeperProductObject()
     return attributes.buy_now_url
 }
+
+
 // src\config\lemonSqueezy.js
