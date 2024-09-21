@@ -30,5 +30,9 @@ export const checkoutUrl = async () => {
     return attributes.buy_now_url
 }
 
-
+export const inTestMode = async () => {
+	const attributes = await toolkeeperProductObject()
+    return attributes.test_mode
+}
+}
 // src\config\lemonSqueezy.js
