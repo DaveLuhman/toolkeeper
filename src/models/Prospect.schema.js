@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-const PendingUserSchema = new Schema(
+const ProspectSchema = new Schema(
 	{
 		_id: {
 			type: Schema.Types.ObjectId,
@@ -29,6 +29,6 @@ const PendingUserSchema = new Schema(
 	},
 );
 
-export default PendingUserSchema;
+export default ProspectSchema;
 
-// src\models\pendingUser.schema.js
+// src\models\Prospect.schema.js

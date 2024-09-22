@@ -2,7 +2,7 @@ import {
 	Subscription,
 	User,
 	Tenant,
-	PendingUser,
+	Prospect,
 } from "../models/index.models.js";
 import { generatePassword } from "../middleware/tenant.js";
 import { getDomainFromEmail, sendEmail } from "../controllers/util.js";
@@ -32,14 +32,14 @@ const verifySignature = (req) => {
 };
 
 // Create a new user based on pending user data
-const createUserFromPending = async (pendingUser) => {
+const createUserFromProspect = async (Prospect) => {
 	try {
 		const newPassword = generatePassword();
 
 		const activeUser = await User.create({
-			firstName: pendingUser.firstName,
-			lastName: pendingUser.lastName,
-			email: pendingUser.email,
+			firstName: Prospect.firstName,
+			lastName: Prospect.lastName,
+			email: Prospect.email,
 			password: newPassword,
 			role: "Admin",
 		});
@@ -52,10 +52,10 @@ const createUserFromPending = async (pendingUser) => {
 };
 
 // Create a new tenant and associate the user as admin
-const createTenantForUser = async (activeUser, pendingUser) => {
+const createTenantForUser = async (activeUser, Prospect) => {
 	try {
 		const tenantData = {
-			name: pendingUser.companyName,
+			name: Prospect.companyName,
 			domain: getDomainFromEmail(activeUser.email),
 			adminUser: activeUser._id, // Assign the admin user to the tenant
 		};
@@ -84,11 +84,11 @@ const createSubscription = async (subscriptionData, activeUser, tenant) => {
 };
 
 // Send a welcome email to the new user
-const sendWelcomeEmail = async (pendingUser, activeUser, newPassword) => {
+const sendWelcomeEmail = async (prospect, activeUser, newPassword) => {
 	try {
 		const instanceUrl = getInstanceUrl();
 		const emailSubject = "Welcome to ToolKeeper!";
-		const emailBody = `Dear ${pendingUser.firstName},\n\nYour ToolKeeper account has been created successfully. Your login credentials are:\n\nEmail: ${pendingUser.email}\nPassword: ${newPassword}\n\nPlease log in to your account at ${instanceUrl} and change your password immediately.\n\nBest regards,\nThe ToolKeeper Team`;
+		const emailBody = `Dear ${prospect.firstName},\n\nYour ToolKeeper account has been created successfully. Your login credentials are:\n\nEmail: ${prospect.email}\nPassword: ${newPassword}\n\nPlease log in to your account at ${instanceUrl} and change your password immediately.\n\nBest regards,\nThe ToolKeeper Team`;
 
 		await sendEmail(activeUser.email, emailSubject, emailBody);
 	} catch (error) {
@@ -97,6 +97,15 @@ const sendWelcomeEmail = async (pendingUser, activeUser, newPassword) => {
 	}
 };
 
+const createProspectFromSubscriptionData = (subscriptionData) => {
+	const names = subscriptionData.attributes.user_name.split(" ");
+	return {
+		firstName: names[0],
+		lastName: names[1],
+		email: subscriptionData.attributes.user_email,
+		companyName: `${subscriptionData.attributes.user_name}'s Tools`,
+	};
+};
 // Main subscription webhook handler
 const subscriptionCreatedWebhookHandler = async (req, res) => {
 	try {
@@ -108,18 +117,17 @@ const subscriptionCreatedWebhookHandler = async (req, res) => {
 		const subscriptionData = webhookPayload.data;
 		const userEmail = subscriptionData?.attributes?.user_email;
 
-		// Find the pending user
-		const pendingUser = await PendingUser.findOne({ email: userEmail });
-		if (!pendingUser) {
-			return res.status(400).json({ error: "Pending user not found." });
+		// Find the prospect from the collection if it exists
+		let prospect = await Prospect.findOne({ email: userEmail });
+		if (!prospect) {
+			prospect = createProspectFromSubscriptionData(subscriptionData);
 		}
 
 		// Create the user and assign a password
-		const { activeUser, newPassword } =
-			await createUserFromPending(pendingUser);
+		const { activeUser, newPassword } = await createUserFromPending(prospect);
 
 		// Create the tenant and associate it with the user
-		const tenant = await createTenantForUser(activeUser, pendingUser);
+		const tenant = await createTenantForUser(activeUser, prospect);
 
 		// Create a new subscription linked to the user and tenant
 		await createSubscription(subscriptionData, activeUser, tenant);
@@ -128,11 +136,11 @@ const subscriptionCreatedWebhookHandler = async (req, res) => {
 		activeUser.tenant = tenant._id;
 		await activeUser.save();
 
-		// Delete the pending user
-		await pendingUser.deleteOne();
+		// Delete the prospect user from its collection
+		await prospect.deleteOne();
 
 		// Send a welcome email to the user
-		await sendWelcomeEmail(pendingUser, activeUser, newPassword);
+		await sendWelcomeEmail(prospect, activeUser, newPassword);
 
 		// Send a success response
 		res.status(200).json({

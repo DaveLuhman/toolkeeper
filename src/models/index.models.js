@@ -6,7 +6,7 @@ import ToolSchema from './Tool.schema.js'
 import ToolHistorySchema from './ToolHistory.schema.js'
 import UserSchema from './User.schema.js'
 import SubscriptionSchema from './Subscription.schema.js'
-import PendingUserSchema from './pendingUser.schema.js'
+import ProspectSchema from './Prospect.schema.js'
 import { model } from 'mongoose'
 
 export const Category = model('Category', CategorySchema)
@@ -17,9 +17,9 @@ export const ServiceAssignment = model('ServiceAssignment', ServiceAssignmentSch
 export const Tool = model('Tool', ToolSchema)
 export const ToolHistory = model('ToolHistory', ToolHistorySchema)
 export const User = model('User', UserSchema)
-export const PendingUser = model('PendingUser', PendingUserSchema)
+export const Prospect = model('Prospect', ProspectSchema)
 
-const models = {Category, Tenant, Material, ServiceAssignment, Tool, ToolHistory, User, Subscription}
+const models = {Category, Tenant, Material, ServiceAssignment, Tool, ToolHistory, User, Subscription,Prospect}
 export default models
 
 

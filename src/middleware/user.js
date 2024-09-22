@@ -1,4 +1,4 @@
-import { PendingUser, User } from '../models/index.models.js'
+import { Prospect, User } from '../models/index.models.js'
 import { mutateToArray } from './util.js'
 import { checkoutUrl } from '../config/lemonSqueezy.js'
 
@@ -107,8 +107,8 @@ async function createUser(req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the user is created.
  */
-async function createPendingUser(req, res, next) {
-  console.info('[MW] createPendingUser-in'.bgBlue.white);
+async function createProspect(req, res, next) {
+  console.info('[MW] createProspect-in'.bgBlue.white);
 
   const { firstName, lastName, email, companyName } = req.body;
   const userValues = {firstName, lastName, email, companyName}
@@ -117,7 +117,7 @@ async function createPendingUser(req, res, next) {
     const error = 'Email and Company Name are required';
     console.warn(error.yellow);
     res.locals.message = error;
-    console.info('[MW] createPendingUser-out-1'.bgWhite.blue);
+    console.info('[MW] createProspect-out-1'.bgWhite.blue);
     return res.status(400).redirect('back');
   }
   // Check if email already registered
@@ -127,7 +127,7 @@ async function createPendingUser(req, res, next) {
       const error = 'Email is already registered';
       console.warn(error.yellow);
       res.locals.message = error;
-      console.info('[MW] createPendingUser-out-2'.bgWhite.blue);
+      console.info('[MW] createProspect-out-2'.bgWhite.blue);
       return res.status(400).redirect('back');
     }
   } catch (err) {
@@ -136,8 +136,8 @@ async function createPendingUser(req, res, next) {
   }
   // Try to create a new user
   try {
-    const newUser = await PendingUser.create(userValues);
-    console.info(`Created User ${newUser._id}`.green);
+    const newUser = await Prospect.create(userValues);
+    console.info(`Created User ${newUser.email}`.green);
     res.redirect(checkoutUrl)
   } catch (err) {
     console.error(`[MW] Error creating user: ${err.message}`.bgRed.white);
@@ -276,7 +276,7 @@ export {
   resetPassword,
   getUsers,
   createUser,
-  createPendingUser,
+  createProspect,
   verifySelf,
   updateUser,
   disableUser,
