@@ -259,65 +259,71 @@ async function searchTools(req, res, next) {
 	const { searchBy, searchTerm } = req.body;
 
 	try {
-	  if (!searchBy || searchBy === "Search By") {
-		res.locals.message = "You must specify search parameters";
+		if (!searchBy || searchBy === "Search By") {
+			res.locals.message = "You must specify search parameters";
+			return next();
+		}
+
+		res.locals.searchBy = searchBy;
+		res.locals.searchTerm = searchTerm;
+
+		switch (searchBy) {
+			case "serviceAssignment":
+				res.locals.tools = await Tool.where("serviceAssignment")
+					.equals(searchTerm)
+					.where("tenant")
+					.equals(req.user.tenant.valueOf())
+					.sort({ [sortField]: sortOrder || 1 })
+					.exec();
+				break;
+
+			case "category":
+				res.locals.tools = await Tool.where("category")
+					.equals(searchTerm)
+					.where("tenant")
+					.equals(req.user.tenant.valueOf())
+					.sort({ [sortField]: sortOrder || 1 })
+					.exec();
+				break;
+
+			case "status":
+				if (searchTerm === "Checked In") {
+					res.locals.tools = await getCheckedInTools(
+						req.user.tenant.valueOf(),
+						req.logger,
+					);
+				} else {
+					res.locals.tools = await getCheckedOutTools(
+						req.user.tenant.valueOf(),
+						req.logger,
+					);
+				}
+				break;
+
+			default:
+				res.locals.tools = await Tool.find({
+					[searchBy]: { $eq: searchTerm },
+					tenant: { $eq: req.user.tenant.valueOf() },
+				}).sort({ [sortField]: sortOrder || 1 });
+				break;
+		}
+
+		res.locals.totalFound = res.locals.tools.length;
 		return next();
-	  }
-
-	  res.locals.searchBy = searchBy;
-	  res.locals.searchTerm = searchTerm;
-
-	  switch (searchBy) {
-		case "serviceAssignment":
-		  res.locals.tools = await Tool.where("serviceAssignment")
-			.equals(searchTerm)
-			.where("tenant")
-			.equals(req.user.tenant.valueOf())
-			.sort({ [sortField]: sortOrder || 1 })
-			.exec();
-		  break;
-
-		case "category":
-		  res.locals.tools = await Tool.where("category")
-			.equals(searchTerm)
-			.where("tenant")
-			.equals(req.user.tenant.valueOf())
-			.sort({ [sortField]: sortOrder || 1 })
-			.exec();
-		  break;
-
-		case "status":
-		  if (searchTerm === "Checked In") {
-			res.locals.tools = await getCheckedInTools(req.user.tenant.valueOf(), req.logger);
-		  } else {
-			res.locals.tools = await getCheckedOutTools(req.user.tenant.valueOf(), req.logger);
-		  }
-		  break;
-
-		default:
-		  res.locals.tools = await Tool.find({
-			[searchBy]: { $eq: searchTerm },
-			tenant: { $eq: req.user.tenant.valueOf() },
-		  }).sort({ [sortField]: sortOrder || 1 });
-		  break;
-	  }
-
-	  res.locals.totalFound = res.locals.tools.length;
-	  return next();
 	} catch (err) {
-	  req.logger.error({
-		message: 'Search tools failed',
-		metadata: {
-		  tenantId: req.user.tenant.valueOf(),
-		  searchBy,
-		  searchTerm,
-		},
-		error: err.message,
-	  });
+		req.logger.error({
+			message: "Search tools failed",
+			metadata: {
+				tenantId: req.user.tenant.valueOf(),
+				searchBy,
+				searchTerm,
+			},
+			error: err.message,
+		});
 
-	  return next(err);
+		return next(err);
 	}
-  }
+}
 
 /**
  *
@@ -396,19 +402,99 @@ async function createTool(req, res, next) {
 }
 
 /**
- * Update the tool history.
- * @param {string} toolID The ID of the tool to update.
+ * Middleware to create a new tool for the current tenant.
+ *
+ * @param {object} req - Express request object containing the tool details in `req.body`
+ * @param {object} res - Express response object with `res.locals.message` containing feedback for the user
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>}
  */
-async function updateToolHistory(toolID) {
-	const oldTool = await Tool.findById(toolID);
-	await ToolHistory.findByIdAndUpdate(
-		{ _id: toolID },
-		{
-			$push: { history: oldTool },
-			$inc: { __v: 1 },
-			$set: { updatedAt: moment().toDate() },
-		},
-	);
+async function createTool(req, res, next) {
+	try {
+		const {
+			serialNumber,
+			modelNumber,
+			barcode,
+			description,
+			toolID,
+			serviceAssignment,
+			category,
+			manufacturer,
+			width,
+			height,
+			length,
+			weight,
+		} = req.body;
+
+		const tenant = req.user.tenant.valueOf();
+
+		// Validate required fields
+		if (!(serialNumber || modelNumber) || !barcode) {
+			throw new Error("Missing required fields");
+		}
+
+		// Check if the tool already exists
+		const existing = await Tool.findOne({
+			$or: [{ serialNumber }, { barcode }],
+			tenant: { $eq: tenant },
+		});
+
+		if (existing) {
+			res.locals.tools = mutateToArray(existing);
+			throw new Error("Tool already exists");
+		}
+
+		// Create the new tool
+		const newTool = await Tool.create({
+			serialNumber,
+			modelNumber,
+			barcode,
+			description,
+			toolID,
+			serviceAssignment,
+			category,
+			manufacturer,
+			size: {
+				height,
+				width,
+				length,
+				weight,
+			},
+			updatedBy: req.user._id,
+			createdBy: req.user._id,
+			tenant,
+		});
+
+		if (!newTool) {
+			throw new Error("Could not create tool");
+		}
+
+		// Log the creation of the tool's history
+		await ToolHistory.create({
+			_id: newTool._id,
+			history: [newTool],
+			tenant,
+		});
+
+		res.locals.message = "Successfully made a new tool";
+		res.locals.tools = [newTool];
+		res.locals.pagination = { pageCount: 1 };
+		res.status(201);
+		return next();
+	} catch (error) {
+		req.logger.error({
+			message: "Failed to create tool",
+			metadata: {
+				tenantId: req.user.tenant.valueOf(),
+				userId: req.user._id,
+				toolDetails: req.body,
+			},
+			error: error.message,
+		});
+
+		res.locals.message = error.message;
+		res.status(500).redirect("back");
+	}
 }
 
 /**
