@@ -8,6 +8,7 @@ import UserSchema from './User.schema.js'
 import SubscriptionSchema from './Subscription.schema.js'
 import ProspectSchema from './Prospect.schema.js'
 import { model } from 'mongoose'
+import logSchema from './Log.schema.js'
 
 export const Category = model('Category', CategorySchema)
 export const Subscription = model('Subscription', SubscriptionSchema)
@@ -18,9 +19,11 @@ export const Tool = model('Tool', ToolSchema)
 export const ToolHistory = model('ToolHistory', ToolHistorySchema)
 export const User = model('User', UserSchema)
 export const Prospect = model('Prospect', ProspectSchema)
+export const Log = mongoose.model('Log', logSchema);
 
-const models = {Category, Tenant, Material, ServiceAssignment, Tool, ToolHistory, User, Subscription,Prospect}
+const models = {Category, Tenant, Material, ServiceAssignment, Tool, ToolHistory, User, Subscription,Prospect, Log}
 export default models
 
 
 // src\models\index.models.js
+

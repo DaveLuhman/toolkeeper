@@ -38,6 +38,7 @@ import customHelpers from "./helpers/index.js";
 import { applyImpersonation } from "./middleware/tenant.js";
 import webhookRouter from "./routes/webhooks.routes.js";
 import bodyParser from "body-parser";
+import tenantLogger from "./logging/middleware.js";
 
 // use the imported dependencies as needed in the server.js file
 
@@ -69,10 +70,8 @@ if (process.env.NODE_ENV === "production") {
 	sessionConfig.store = mongoStore;
 }
 
-// Morgan Logging in development
-if (process.env.NODE_ENV !== "production") {
-	app.use(morgan("combined"));
-}
+// custom Logging
+app.use(tenantLogger)
 // Handlebars Setup
 const hbs = create({
 	helpers: customHelpers,
