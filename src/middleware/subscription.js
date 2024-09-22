@@ -124,7 +124,7 @@ const subscriptionCreatedWebhookHandler = async (req, res) => {
 		}
 
 		// Create the user and assign a password
-		const { activeUser, newPassword } = await createUserFromPending(prospect);
+		const { activeUser, newPassword } = await createUserFromProspect(prospect);
 
 		// Create the tenant and associate it with the user
 		const tenant = await createTenantForUser(activeUser, prospect);

@@ -123,9 +123,17 @@ async function createBatchTool(toolObject) {
       _id: newTool._id,
     })
     return newTool
-  } catch (error) {
+  } catch (duplicateError) {
+    const {cause, duplicateValue, existingTool} = duplicateError
     errorList.push(error)
-    console.log(error)
+    req.logger.error({
+      message: duplicateError.message,
+      metadata: {
+        cause,
+        duplicateValue,
+        existingTool
+      },
+    });
   }
 }
 
