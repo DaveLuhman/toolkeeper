@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { login, logout } from '../middleware/auth.js'
-import { createPendingUser, createUser } from '../middleware/user.js'
+import { createProspect, createUser } from '../middleware/user.js'
 import {
   renderLandingPage,
   renderLoginPage,
@@ -19,7 +19,7 @@ indexRouter.post('/login', login)
 // Render register Page
 indexRouter.get('/register', renderRegisterPage)
 // Register User
-indexRouter.post('/register', createPendingUser)
+indexRouter.post('/register', createProspect)
 // Logout User
 indexRouter.get('/logout', logout)
 // Submit Forgot Password Modal

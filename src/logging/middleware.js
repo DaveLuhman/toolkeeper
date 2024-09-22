@@ -1,3 +1,5 @@
+import logger from "./index.js";
+
 const tenantLogger = (req, res, next) => {
     const tenantId = req.session?.user?.tenant?._id || 'unknown';
 
