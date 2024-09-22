@@ -11,197 +11,313 @@ import sortArray from "sort-array";
 import { findServiceAssignmentByJobNumber } from "./serviceAssignment.js";
 
 /**
- *
- * @param {array} res.locals.tools returns array of tools in response
- * @param {*} next
+ * @name getAllTools
  * @returns {array}
- *
- * This function will return all tools in the database along with pagination data
+ * @description This function will return all tools in the database along with pagination data
  */
 async function getAllTools(req, res, next) {
 	const { sortField, sortOrder } = req.user.preferences;
-	console.info("[MW] getAllTools-in".bgBlue.white);
-	const tools = await Tool.find({
-		tenant: { $eq: req.user.tenant.valueOf() },
-	}).sort({ [sortField]: sortOrder || 1 });
-	res.locals.tools = tools; // array of tools
-	console.info("[MW] getAllTools-out".bgWhite.blue);
-	return next();
-}
-/**
- *
+	const tenantId = req.user.tenant.valueOf();
+	try {
+		// Fetch tools for the tenant, sorted by user preferences
+		const tools = await Tool.find({ tenant: tenantId }).sort({
+			[sortField]: sortOrder || 1,
+		});
 
- * @param {array} res.locals.tools returns array of tools in response
- * @param {*} next
- * @returns {array}
+		// Pass tools to the next middleware
+		res.locals.tools = tools;
+		return next();
+	} catch (err) {
+		// Log error
+		req.logger.error({
+			message: "Failed to fetch tools",
+			metadata: {
+				tenantId,
+				userId: req.user._id,
+				sortField,
+				sortOrder,
+			},
+			error: err.message,
+		});
+		return next(err);
+	}
+}
+
+/**
+ * Middleware to get all active tools in the database for the current tenant.
  *
- * This function will return all tools in the database along with pagination data
+ * @param {object} req - Express request object containing user preferences and tenant information
+ * @param {object} res - Express response object with `res.locals.tools` containing an array of active tools
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>} - Returns nothing directly; passes filtered tools to the next middleware
+ *
+ * This function fetches tools that are not archived and belong to the current tenant,
+ * sorts them by the user's preferences, and filters out inactive service assignments.
  */
 async function getActiveTools(req, res, next) {
 	const { sortField, sortOrder } = req.user.preferences;
-	console.info("[MW] getAllTools-in".bgBlue.white);
-	const tools = await Tool.find()
-		.where("archived")
-		.equals(false)
-		.where("tenant")
-		.equals(req.user.tenant.valueOf())
-		.sort({ [sortField]: sortOrder || 1 });
-	res.locals.tools = tools.filter((tool) => {
-		return tool.serviceAssignment?.active;
-	});
-	console.info("[MW] getActiveTools-out".bgWhite.blue);
-	return next();
+	const tenantId = req.user.tenant.valueOf();
+
+	try {
+		// Fetch tools that are not archived and belong to the current tenant
+		const tools = await Tool.find()
+			.where("archived")
+			.equals(false)
+			.where("tenant")
+			.equals(tenantId)
+			.sort({ [sortField]: sortOrder || 1 });
+
+		// Filter tools with active service assignments
+		res.locals.tools = tools.filter((tool) => tool.serviceAssignment?.active);
+
+		// Pass control to the next middleware
+		return next();
+	} catch (err) {
+		// Log error and pass it to the next middleware
+		req.logger.error({
+			message: "Failed to fetch active tools",
+			metadata: {
+				tenantId,
+				userId: req.user._id,
+				sortField,
+				sortOrder,
+			},
+			error: err.message,
+		});
+
+		return next(err); // Pass the error to the error handling middleware
+	}
 }
 
 /**
- * getToolByID
- * uses the id in the request to find a tool in the database, returning the tool in the response. It returns it in an array so handlebars can iterate over it despite there only being one tool.
- * @param {string} req.params.id Tool ID
- * @param {array} res.locals.tools returns array of tools in response
- * @param {*} next
- * @returns {array}
+ * Middleware to get a tool by its ID and return it in the response.
+ *
+ * @param {object} req - Express request object containing the tool ID in `req.params.id`
+ * @param {object} res - Express response object with `res.locals.tools` containing an array of tools
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>} - Returns nothing directly; passes tool and its history (if available) to the next middleware
+ *
+ * This function fetches the tool by ID for the current tenant, along with its history, and returns them in the response.
+ * The tool is returned in an array so that Handlebars can iterate over it.
  */
 async function getToolByID(req, res, next) {
 	const id = req.params.id;
-	console.info(`[MW] searching id: ${id}`);
-	const tools = await Tool.find({
-		_id: { $eq: id },
-		tenant: { $eq: req.user.tenant },
-	});
-	const toolHistory = await ToolHistory.find({
-		_id: { $eq: id },
-		tenant: { $eq: req.user.tenant },
-	}).sort({ updatedAt: 1 });
-	res.locals.tools = mutateToArray(tools);
-	if (toolHistory[0].history) {
-		res.locals.toolHistory = sortArray(toolHistory[0].history, {
-			by: "updatedAt",
-			order: "desc",
+	const tenantId = req.user.tenant.valueOf();
+
+	try {
+		// Log the tool search attempt
+		req.logger.info(`[MW] searching for tool by ID: ${id}`);
+		// Fetch the tool by ID and tenant
+		const tools = await Tool.find({
+			_id: { $eq: id },
+			tenant: { $eq: tenantId },
 		});
+		// Fetch tool history by tool ID and tenant, sorted by `updatedAt`
+		const toolHistory = await ToolHistory.find({
+			_id: { $eq: id },
+			tenant: { $eq: tenantId },
+		}).sort({ updatedAt: 1 });
+		// If tool not found, throw an error
+		if (!tools.length) {
+			throw new Error(`Tool with ID ${id} not found for tenant ${tenantId}`);
+		}
+		// Set the fetched tool in response locals as an array (for Handlebars)
+		res.locals.tools = mutateToArray(tools);
+		// Check if tool history exists, and sort it by `updatedAt` if present
+		if (toolHistory.length && toolHistory[0].history) {
+			res.locals.toolHistory = sortArray(toolHistory[0].history, {
+				by: "updatedAt",
+				order: "desc",
+			});
+		}
+		// Pass control to the next middleware
+		return next();
+	} catch (err) {
+		// Log the error and pass it to the error handling middleware
+		req.logger.error({
+			message: "Failed to fetch tool by ID",
+			metadata: {
+				tenantId,
+				userId: req.user._id,
+				toolId: id,
+			},
+			error: err.message,
+		});
+		return next(err);
 	}
-	return next();
 }
 
 /**
- * getCheckedInTools
- * Retrieves a list of checked in tools.
- * @returns {array} An array of checked in tools.
- */
-async function getCheckedInTools(tenantId) {
-	const tools = await Tool.find()
-		.where("archived")
-		.equals(false)
-		.where("tenant")
-		.equals(tenantId); //get all unarchived tools
-	const stockroomDocs = await ServiceAssignment.find()
-		.where("type")
-		.equals("Stockroom")
-		.where("tenant")
-		.equals(tenantId); //get all stockroom documents (sa that count as checked in)
-	//initialize an array to hold the checked in tools
-	const checkedInTools = [];
-	// iterate through the tools and compare the service assignment id to the active service assignment ids
-	// adding only the checked in tools to the array if they're in active service assignmetns
-	for (let i = 0; i < tools.length; i++) {
-		for (let ii = 0; ii < stockroomDocs.length; ii++) {
-			if (stockroomDocs[ii]?.id === tools[i].serviceAssignment?.id) {
-				checkedInTools.push(tools[i]);
-			}
-		}
-	}
-	return checkedInTools;
-}
-/**
- * getCheckedOutTools
- * Retrieves a list of checked out tools.
- * @returns {array} An array of checked out tools.
- */
-async function getCheckedOutTools(tenantId) {
-	const tools = await Tool.find()
-		.where("archived")
-		.equals(false)
-		.where("tenant")
-		.equals(tenantId);
-	const activeServiceAssignmentsDocs = await ServiceAssignment.find()
-		.where("type")
-		.ne("Stockroom")
-		.where("tenant")
-		.equals(tenantId);
-	const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(
-		(item) => {
-			return item._id.valueOf();
-		},
-	);
-	const checkedInTools = [];
-	for (let i = 0; i < tools.length; i++) {
-		for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
-			if (
-				activeServiceAssignmentArray[ii] === tools[i].serviceAssignment?._id
-			) {
-				checkedInTools.push(tools[i]);
-			}
-		}
-	}
-	return checkedInTools;
-}
-/**
+ * Retrieves a list of checked-in tools for the given tenant.
  *
- * @param {string} req.body.searchBy The key to search by
- * @param {string} req.body.searchValue The terms to search for
- * @param {number} req.query.p Page Number
- * @param {object} res.locals.pagination {page: targetPage, pageCount: pageCount} pagination data
- * @param {array} res.locals.tools returns array of tools in response
- * @param {*} next
- * @returns {array}
+ * @param {string} tenantId - The ID of the tenant
+ * @returns {Promise<array>} - An array of checked-in tools
+ */
+async function getCheckedInTools(tenantId, logger) {
+	try {
+		// Fetch all unarchived tools for the tenant
+		const tools = await Tool.find()
+			.where("archived")
+			.equals(false)
+			.where("tenant")
+			.equals(tenantId);
+
+		// Fetch all stockroom service assignments for the tenant
+		const stockroomDocs = await ServiceAssignment.find()
+			.where("type")
+			.equals("Stockroom")
+			.where("tenant")
+			.equals(tenantId);
+
+		// Initialize an array to hold the checked-in tools
+		const checkedInTools = [];
+
+		// Iterate through the tools and stockroom documents
+		for (let i = 0; i < tools.length; i++) {
+			for (let ii = 0; ii < stockroomDocs.length; ii++) {
+				if (stockroomDocs[ii]?.id === tools[i].serviceAssignment?.id) {
+					checkedInTools.push(tools[i]);
+				}
+			}
+		}
+
+		return checkedInTools;
+	} catch (err) {
+		// Log any errors that occur
+		logger.error({
+			message: "Failed to fetch checked-in tools",
+			metadata: { tenantId },
+			error: err.message,
+		});
+
+		throw err;
+	}
+}
+
+/**
+ * Retrieves a list of checked-out tools for the given tenant.
+ *
+ * @param {string} tenantId - The ID of the tenant
+ * @returns {Promise<array>} - An array of checked-out tools
+ */
+async function getCheckedOutTools(tenantId, logger) {
+	try {
+		// Fetch all unarchived tools for the tenant
+		const tools = await Tool.find()
+			.where("archived")
+			.equals(false)
+			.where("tenant")
+			.equals(tenantId);
+		// Fetch all active service assignments except for Stockroom
+		const activeServiceAssignmentsDocs = await ServiceAssignment.find()
+			.where("type")
+			.ne("Stockroom")
+			.where("tenant")
+			.equals(tenantId);
+		// Map service assignments to an array of IDs
+		const activeServiceAssignmentArray = activeServiceAssignmentsDocs.map(
+			(item) => item._id.valueOf(),
+		);
+		// Initialize an array to hold the checked-out tools
+		const checkedOutTools = [];
+		// Iterate through the tools and active service assignments
+		for (let i = 0; i < tools.length; i++) {
+			for (let ii = 0; ii < activeServiceAssignmentArray.length; ii++) {
+				if (
+					activeServiceAssignmentArray[ii] === tools[i].serviceAssignment?._id
+				) {
+					checkedOutTools.push(tools[i]);
+				}
+			}
+		}
+		return checkedOutTools;
+	} catch (err) {
+		// Log any errors that occur
+		logger.error({
+			message: "Failed to fetch checked-out tools",
+			metadata: { tenantId },
+			error: err.message,
+		});
+
+		throw err;
+	}
+}
+
+/**
+ * Middleware to search tools based on user input (serviceAssignment, category, status, or other fields).
+ *
+ * @param {object} req - Express request object
+ * @param {string} req.body.searchBy - The key to search by
+ * @param {string} req.body.searchTerm - The term to search for
+ * @param {number} req.query.p - Page number
+ * @param {object} res - Express response object with `res.locals.pagination` and `res.locals.tools`
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>} - Returns an array of tools based on search criteria
  */
 async function searchTools(req, res, next) {
-	console.info("[MW] searchTools-in".bgBlue.white);
 	const { sortField, sortOrder } = req.user.preferences;
 	const { searchBy, searchTerm } = req.body;
-	switch (searchBy) {
-		case "Search By":
-			res.locals.message = "You must specify search parameters";
-			return next();
+
+	try {
+	  if (!searchBy || searchBy === "Search By") {
+		res.locals.message = "You must specify search parameters";
+		return next();
+	  }
+
+	  res.locals.searchBy = searchBy;
+	  res.locals.searchTerm = searchTerm;
+
+	  switch (searchBy) {
 		case "serviceAssignment":
-			res.locals.searchBy = searchBy;
-			res.locals.searchTerm = searchTerm;
-			res.locals.tools = await Tool.where("serviceAssignment")
-				.equals(searchTerm)
-				.where("tenant")
-				.equals(req.user.tenant.valueOf())
-				.sort({ [sortField]: sortOrder || 1 })
-				.exec();
-			break;
+		  res.locals.tools = await Tool.where("serviceAssignment")
+			.equals(searchTerm)
+			.where("tenant")
+			.equals(req.user.tenant.valueOf())
+			.sort({ [sortField]: sortOrder || 1 })
+			.exec();
+		  break;
+
 		case "category":
-			res.locals.searchBy = searchBy;
-			res.locals.searchTerm = searchTerm;
-			res.locals.tools = await Tool.where("category")
-				.equals(searchTerm)
-				.where("tenant")
-				.equals(req.user.tenant.valueOf())
-				.sort({ [sortField]: sortOrder || 1 })
-				.exec();
-			break;
+		  res.locals.tools = await Tool.where("category")
+			.equals(searchTerm)
+			.where("tenant")
+			.equals(req.user.tenant.valueOf())
+			.sort({ [sortField]: sortOrder || 1 })
+			.exec();
+		  break;
+
 		case "status":
-			res.locals.searchBy = searchBy;
-			res.locals.searchTerm = searchTerm;
-			if (searchTerm === "Checked In")
-				res.locals.tools = getCheckedInTools(req.user.tenant.valueOf());
-			else res.locals.tools = getCheckedOutTools(req.user.tenant.valueOf());
-			break;
+		  if (searchTerm === "Checked In") {
+			res.locals.tools = await getCheckedInTools(req.user.tenant.valueOf(), req.logger);
+		  } else {
+			res.locals.tools = await getCheckedOutTools(req.user.tenant.valueOf(), req.logger);
+		  }
+		  break;
+
 		default:
-			res.locals.searchTerm = searchTerm;
-			res.locals.searchBy = searchBy;
-			res.locals.tools = await Tool.find({
-				[searchBy]: { $eq: searchTerm },
-				tenant: { $eq: req.user.tenant.valueOf() },
-			}).sort({ [sortField]: sortOrder || 1 });
-			break;
+		  res.locals.tools = await Tool.find({
+			[searchBy]: { $eq: searchTerm },
+			tenant: { $eq: req.user.tenant.valueOf() },
+		  }).sort({ [sortField]: sortOrder || 1 });
+		  break;
+	  }
+
+	  res.locals.totalFound = res.locals.tools.length;
+	  return next();
+	} catch (err) {
+	  req.logger.error({
+		message: 'Search tools failed',
+		metadata: {
+		  tenantId: req.user.tenant.valueOf(),
+		  searchBy,
+		  searchTerm,
+		},
+		error: err.message,
+	  });
+
+	  return next(err);
 	}
-	res.locals.totalFound = res.locals.tools.length;
-	console.info("[MW] searchTools-out".bgWhite.blue);
-	return next();
-}
+  }
 
 /**
  *
@@ -459,7 +575,10 @@ async function checkTools(req, res, next) {
 	}
 	res.locals.destinationServiceAssignment = destinationServiceAssignment;
 	const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/));
-	const toolsToBeChanged = await lookupToolWrapper(search, req.user.tenantId.valueOf());
+	const toolsToBeChanged = await lookupToolWrapper(
+		search,
+		req.user.tenantId.valueOf(),
+	);
 	if (toolsToBeChanged.length === 0) {
 		res.locals.message = "No Tools Found Matching ";
 	}
@@ -557,8 +676,9 @@ async function submitCheckInOut(req, res, next) {
 const generatePrinterFriendlyToolList = async (req, res, next) => {
 	try {
 		if (!res.locals.tools || res.locals.tools?.length === 0) {
-      res.locals.message = "There are no tools to make into a list"
-      return next();}
+			res.locals.message = "There are no tools to make into a list";
+			return next();
+		}
 		const { tools } = res.locals;
 		const printerFriendlyToolArray = await tools.map((tool) => {
 			const { serialNumber, modelNumber, toolID, barcode, description } = tool;
@@ -599,7 +719,7 @@ async function getDashboardStats(tenantId) {
 			updatedAt: { $gte: startOfWeek, $lte: endOfWeek },
 			tenant: { $eq: tenantId },
 		});
-		const totalTools = await Tool.countDocuments({tenant: tenantId});
+		const totalTools = await Tool.countDocuments({ tenant: tenantId });
 		const stockroomTools = await getCheckedInTools(tenantId);
 		const totalIn = stockroomTools.length;
 		const totalOut = totalTools - totalIn;
