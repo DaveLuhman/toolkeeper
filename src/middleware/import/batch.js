@@ -1,5 +1,6 @@
-import { Tool, ToolHistory} from '../../models/index.models.js'
-const errorList = []
+import { Tool } from '../../models/index.models.js'; // Removed ToolHistory
+const errorList = [];
+
 /**
  * Represents an error that occurs when a duplicate value is encountered.
  * @class
@@ -8,56 +9,56 @@ const errorList = []
  */
 class DuplicateError extends Error {
   constructor(message, options) {
-    super(message)
-    this.name = 'DuplicateError'
-    this.cause = options.cause
-    this.duplicateValue = options.duplicateValue
-    this.existingTool = options.existingTool
+    super(message);
+    this.name = 'DuplicateError';
+    this.cause = options.cause;
+    this.duplicateValue = options.duplicateValue;
+    this.existingTool = options.existingTool;
   }
 }
+
 /**
  * Checks if a tool with the given serial number already exists in the database.
  * @param {string} serialNumber - The serial number of the tool to check.
  * @returns {string|boolean} - The ID of the existing tool if found, or `false` if not found.
  */
 async function duplicateCheckSerial(serialNumber) {
-  const results = await Tool.find({ serialNumber })
-  if (results.length > 0) return results[0].id
-  return false
+  const results = await Tool.find({ serialNumber });
+  if (results.length > 0) return results[0].id;
+  return false;
 }
+
 /**
  * Checks if a barcode is already duplicated in the Tool collection.
  * @param {string} barcode - The barcode to check for duplication.
  * @returns {string|boolean} - The ID of the duplicated tool if found, otherwise false.
  */
 async function duplicateCheckBarcode(barcode) {
-  const results = await Tool.find({ barcode })
-  if (results.length > 0) return results[0].id
-  return false
+  const results = await Tool.find({ barcode });
+  if (results.length > 0) return results[0].id;
+  return false;
 }
+
 /**
  * Checks if a tool with the given toolID already exists in the database.
  * @param {string} toolID - The ID of the tool to check for duplicates.
  * @returns {string|boolean} - The ID of the existing tool if found, or `false` if not found.
  */
 async function duplicateCheckToolID(toolID) {
-  const results = await Tool.find({ toolID })
-  if (results.length > 0) return results[0].id
-  return false
+  const results = await Tool.find({ toolID });
+  if (results.length > 0) return results[0].id;
+  return false;
 }
 
 /**
  * Prepares batch data by transforming the provided JSON data into an array of tool objects.
  *
  * @param {Object} jsonData - The JSON data containing information about the tools.
- * @param {string} jsonData.barcode - The barcodes of the tools, separated by commas.
- * @param {string} jsonData.serialNumber - The serial numbers of the tools, separated by commas.
- * @param {string} jsonData.toolID - The tool IDs of the tools, separated by commas.
  * @returns {Array} An array of tool objects.
  */
 function prepareBatchData(jsonData) {
   try {
-    const preparedToolObjects = []
+    const preparedToolObjects = [];
     const {
       category,
       serviceAssignment,
@@ -72,10 +73,12 @@ function prepareBatchData(jsonData) {
       description,
       toolID,
       tenant
-    } = jsonData
-    const barcodes = barcode.split(',')
-    const serialNumbers = serialNumber.split(',')
-    const toolIDs = toolID.split(',')
+    } = jsonData;
+
+    const barcodes = barcode.split(',');
+    const serialNumbers = serialNumber.split(',');
+    const toolIDs = toolID.split(',');
+
     for (let i = 0; i < serialNumbers.length; i++) {
       const toolObject = {
         serialNumber: serialNumbers[i],
@@ -87,85 +90,110 @@ function prepareBatchData(jsonData) {
         serviceAssignment,
         category,
         size: { width, length, height, weight },
-        tenant
-      }
-      preparedToolObjects.push(toolObject)
+        tenant,
+        history: [
+          {
+            updatedBy: tenant, // Assuming this is the user/tenant initiating the batch process
+            updatedAt: Date.now(),
+            serviceAssignment,
+            status: 'Created', // Set status as 'Created' initially
+            changeDescription: 'Tool created in batch import',
+          },
+        ],
+      };
+      preparedToolObjects.push(toolObject);
     }
-    return preparedToolObjects
+    return preparedToolObjects;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
+
 /**
- * Creates a new tool batch.
+ * Creates a new tool batch and tracks its history.
  *
  * @param {Object} toolObject - The tool object containing the properties of the tool.
  * @returns {Promise<Object>} - A promise that resolves to the newly created tool.
  */
 async function createBatchTool(toolObject) {
-  const { serialNumber, barcode, toolID } = toolObject
+  const { serialNumber, barcode, toolID } = toolObject;
   try {
-    const duplicateSerial = await duplicateCheckSerial(serialNumber)
+    const duplicateSerial = await duplicateCheckSerial(serialNumber);
     if (duplicateSerial) {
-      throw new DuplicateError(`Duplicate serial number: ${serialNumber}`, { cause: 'Serial Number', duplicateValue: serialNumber, existingTool: duplicateSerial })
+      throw new DuplicateError(`Duplicate serial number: ${serialNumber}`, {
+        cause: 'Serial Number',
+        duplicateValue: serialNumber,
+        existingTool: duplicateSerial,
+      });
     }
-    const duplicateBarcode = await duplicateCheckBarcode(barcode)
+
+    const duplicateBarcode = await duplicateCheckBarcode(barcode);
     if (duplicateBarcode) {
-      throw new DuplicateError(`Duplicate barcode: ${barcode}`, { cause: 'Barcode', duplicateValue: barcode, existingTool: duplicateBarcode })
+      throw new DuplicateError(`Duplicate barcode: ${barcode}`, {
+        cause: 'Barcode',
+        duplicateValue: barcode,
+        existingTool: duplicateBarcode,
+      });
     }
-    const duplicateToolID = await duplicateCheckToolID(toolID)
+
+    const duplicateToolID = await duplicateCheckToolID(toolID);
     if (duplicateToolID) {
-      throw new DuplicateError(`Duplicate toolID: ${toolID}`, { cause: 'Tool ID', duplicateValue: toolID, existingTool: duplicateToolID })
+      throw new DuplicateError(`Duplicate toolID: ${toolID}`, {
+        cause: 'Tool ID',
+        duplicateValue: toolID,
+        existingTool: duplicateToolID,
+      });
     }
-    const newTool = await Tool.create(toolObject)
-    console.log(`New Tool Created: ${newTool}`)
-    await ToolHistory.create({
-      _id: newTool._id,
-    })
-    return newTool
+
+    const newTool = await Tool.create(toolObject);
+    console.log(`New Tool Created: ${newTool}`);
+
+    return newTool;
   } catch (duplicateError) {
-    const {cause, duplicateValue, existingTool} = duplicateError
-    errorList.push(error)
+    const { cause, duplicateValue, existingTool } = duplicateError;
+    errorList.push(duplicateError);
     req.logger.error({
       message: duplicateError.message,
       metadata: {
         cause,
         duplicateValue,
-        existingTool
+        existingTool,
       },
     });
   }
 }
 
 /**
- * Creates batch tools asynchronously.
+ * Creates batch tools asynchronously and tracks the history in the tool document.
  *
  * @param {Array} toolObjectArray - An array of tool objects.
  * @returns {Promise<Array>} - A promise that resolves to an array of settled promises.
  */
 async function createBatchTools(toolObjectArray) {
   const toolPromises = toolObjectArray.map((obj) => {
-    const tool = createBatchTool(obj)
-    return tool
-  })
-  return await Promise.allSettled(toolPromises)
+    const tool = createBatchTool(obj);
+    return tool;
+  });
+  return await Promise.allSettled(toolPromises);
 }
 
 /**
- * Imports tools in batch.
+ * Imports tools in batch and tracks their creation history.
  *
  * @param {Object} requestBody - The request body containing the tools to import.
  * @returns {Object} - An object containing the new tools and any errors that occurred during the import.
  */
 export async function batchImportTools(requestBody) {
-  errorList.length = 0
-  const preparedToolObjects = prepareBatchData(requestBody)
-  const toolPromises = await createBatchTools(preparedToolObjects)
+  errorList.length = 0; // Clear the error list for the new batch
+  const preparedToolObjects = prepareBatchData(requestBody);
+  const toolPromises = await createBatchTools(preparedToolObjects);
+
   const newTools = toolPromises
     .filter((tool) => tool !== undefined)
     .filter((tool) => tool.status === 'fulfilled')
-    .map((tool) => tool.value)
-  return { newTools, errorList }
+    .map((tool) => tool.value);
+
+  return { newTools, errorList };
 }
 
-// src\middleware\import\batch.js
+// File: src/middleware/import/batch.js

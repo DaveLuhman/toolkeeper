@@ -3,7 +3,7 @@ const migrateUsers = async (db, tenantId) => {
 
     const newUsers = oldUsers.map((user) => ({
         ...user,
-        tenant: user.tenant || tenantId,  // New field
+        tenant:tenantId || user.tenant  // New field
     }));
 
     await db.collection('users').insertMany(newUsers);

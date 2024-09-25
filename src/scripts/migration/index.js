@@ -1,5 +1,6 @@
 import migrateTools from "./tool.js";
 import migrateServiceAssignments from "./serviceAssignment.js";
+import migrateCategory from './category.js'
 
 const migrateCollections = async (db) => {
     await db.collection('tools').rename('tools_old');

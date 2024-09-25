@@ -423,6 +423,7 @@ async function createTool(req, res, next) {
 
 /**
  * Middleware to update a single tool by its ID.
+ * Adds an entry to the embedded history for service assignment changes.
  *
  * @param {object} req - Express request object containing the tool data in `req.body`
  * @param {string} req.body.id - The ID of the tool to update
@@ -435,11 +436,9 @@ async function updateTool(req, res, next) {
 		const {
 			id,
 			modelNumber,
-			barcode,
 			description,
-			toolID,
-			serviceAssignment = "64a34b651288871770df1086", // Default value
-			category = "64a1c3d8d71e121dfd39b7ab", // Default value
+			serviceAssignment,
+			category,
 			manufacturer,
 			width,
 			height,
@@ -448,18 +447,16 @@ async function updateTool(req, res, next) {
 		} = req.body;
 
 		// Validate the required fields
-		if (!id || !barcode) {
-			throw new Error("Missing required fields: id and barcode");
+		if (!id) {
+			throw new Error("Missing required fields: id");
 		}
 
 		// Find the tool by ID and update it
 		const updatedTool = await Tool.findByIdAndUpdate(
 			id,
 			{
-				barcode,
 				modelNumber,
 				description,
-				toolID,
 				serviceAssignment,
 				category,
 				manufacturer,
@@ -480,8 +477,15 @@ async function updateTool(req, res, next) {
 			throw new Error("Tool not found or could not be updated");
 		}
 
-		// Update the tool's history
-		await updateToolHistory(id);
+		// Add a history entry to track changes
+		updatedTool.history.push({
+			updatedBy: req.user._id,
+			serviceAssignment,
+			status: updatedTool.status, // Derived from serviceAssignment
+			changeDescription: `Service assignment updated to ${serviceAssignment}`,
+		});
+
+		await updatedTool.save();
 
 		// Return the updated tool in response
 		res.locals.tools = [updatedTool];
@@ -691,6 +695,129 @@ async function submitCheckInOut(req, res, next) {
 			error: error.message,
 		});
 		res.status(500).json({ message: error.message });
+	}
+}
+/**
+ * Generates a printer-friendly tool list based on the provided tools.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Promise<void>} - A promise that resolves when the operation is complete.
+ */
+const generatePrinterFriendlyToolList = async (req, res, next) => {
+	try {
+		if (!res.locals.tools || res.locals.tools.length === 0) {
+			res.locals.message = "There are no tools to make into a list";
+			req.logger.info({
+				message: "No tools available for printer-friendly list",
+				metadata: { tenantId: req.user.tenant.valueOf() },
+			});
+			return next();
+		}
+
+		const { tools } = res.locals;
+		const printerFriendlyToolArray = tools.map((tool) => {
+			const { serialNumber, modelNumber, toolID, barcode, description } = tool;
+			return { serialNumber, modelNumber, toolID, barcode, description };
+		});
+
+		if (printerFriendlyToolArray.length === 0) {
+			throw new Error("There was a problem creating the printer-friendly data");
+		}
+
+		res.locals.printerFriendlyTools = printerFriendlyToolArray || [];
+		req.logger.info({
+			message: "Printer-friendly tool list generated",
+			metadata: {
+				tenantId: req.user.tenant.valueOf(),
+				toolCount: printerFriendlyToolArray.length,
+			},
+		});
+
+		return next();
+	} catch (err) {
+		req.logger.error({
+			message: "Failed to generate printer-friendly tool list",
+			metadata: { tenantId: req.user.tenant.valueOf() },
+			error: err.message,
+		});
+
+		res.locals.message = err.message;
+		res.locals.printerFriendlyTools = [];
+		return next();
+	}
+};
+/**
+ * Retrieves the dashboard statistics.
+ *
+ * @returns {Object} - An object containing the dashboard statistics.
+ */
+async function getDashboardStats(tenantId, logger) {
+	const startOfDay = moment().startOf("day").toDate();
+	const endOfDay = moment().endOf("day").toDate();
+	const startOfWeek = moment().startOf("week").toDate();
+	const endOfWeek = moment().endOf("week").toDate();
+
+	try {
+		const todaysTools = await Tool.countDocuments({
+			updatedAt: { $gte: startOfDay, $lte: endOfDay },
+			tenant: { $eq: tenantId },
+		});
+		const thisWeeksTools = await Tool.countDocuments({
+			updatedAt: { $gte: startOfWeek, $lte: endOfWeek },
+			tenant: { $eq: tenantId },
+		});
+		const totalTools = await Tool.countDocuments({ tenant: tenantId });
+		const stockroomTools = await getCheckedInTools(tenantId);
+		const totalIn = stockroomTools.length;
+		const totalOut = totalTools - totalIn;
+
+		logger.info({
+			message: "Fetched dashboard stats",
+			metadata: {
+				tenantId,
+				todaysTools,
+				thisWeeksTools,
+				totalIn,
+				totalOut,
+				totalTools,
+			},
+		});
+
+		return { todaysTools, thisWeeksTools, totalIn, totalOut, totalTools };
+	} catch (error) {
+		logger.error({
+			message: "Failed to fetch dashboard stats",
+			metadata: { tenantId },
+			error: error.message,
+		});
+		return { todaysTools: 0, thisWeeksTools: 0, totalIn: 0, totalOut: 0 };
+	}
+}
+/**
+ * Retrieves the recently updated tools.
+ * @returns {Promise<Array>} A promise that resolves to an array of recently updated tools.
+ */
+async function getRecentlyUpdatedTools(tenant, logger) {
+	try {
+		const tools = await Tool.find({ tenant: { $eq: tenant } })
+			.sort({ updatedAt: -1 })
+			.limit(50);
+
+		logger.info({
+			message: "Fetched recently updated tools",
+			metadata: { tenantId: tenant, toolCount: tools.length },
+		});
+
+		return tools;
+	} catch (error) {
+		logger.error({
+			message: "Failed to fetch recently updated tools",
+			metadata: { tenantId: tenant },
+			error: error.message,
+		});
+		return [];
 	}
 }
 
