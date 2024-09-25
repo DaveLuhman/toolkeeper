@@ -422,332 +422,278 @@ async function createTool(req, res, next) {
 }
 
 /**
+ * Middleware to update a single tool by its ID.
  *
- * @param {*} req.body._id The id of the tool to update
- * @param {*} res
- * @param {*} next
+ * @param {object} req - Express request object containing the tool data in `req.body`
+ * @param {string} req.body.id - The ID of the tool to update
+ * @param {object} res - Express response object with `res.locals.tools` containing the updated tool
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>}
  */
 async function updateTool(req, res, next) {
-	console.info("[MW] updateTool-in".bgBlue.white);
-
-	if (!req.body.serviceAssignment) {
-		req.body.serviceAssignment = "64a34b651288871770df1086";
-	}
-	if (!req.body.category) {
-		req.body.category = "64a1c3d8d71e121dfd39b7ab";
-	}
-	// block level function to update a single tool
-	const {
-		id,
-		modelNumber,
-		barcode,
-		description,
-		toolID,
-		serviceAssignment,
-		category,
-		manufacturer,
-		width,
-		height,
-		length,
-		weight,
-	} = req.body;
-	const updatedTool = await Tool.findByIdAndUpdate(
-		{ $eq: id },
-		{
-			barcode,
+	try {
+		const {
+			id,
 			modelNumber,
+			barcode,
 			description,
 			toolID,
-			serviceAssignment,
-			category,
+			serviceAssignment = "64a34b651288871770df1086", // Default value
+			category = "64a1c3d8d71e121dfd39b7ab", // Default value
 			manufacturer,
-			size: {
-				width,
-				height,
-				length,
-				weight,
-			},
-			$inc: { __v: 1 },
-			$set: { updatedAt: Date.now() },
-		},
-		{ new: true },
-	);
+			width,
+			height,
+			length,
+			weight,
+		} = req.body;
 
-	const updatedToolArray = [];
-	// if (typeof req.body.id === 'string') {
-	updateToolHistory(id); // Update the tools history
-	updatedToolArray.push(updatedTool);
-	// }
-	// if (Array.isArray(req.body._id) && req.body._id.length > 0) {
-	//   for (let i = 0; i < req.body.id.length > 100; i++) {
-	//     const updatedTool = await ut({
-	//       _id: req.body.id[i],
-	//       modelNumber: req.body.modelNumber[i],
-	//       description: req.body.description[i],
-	//       toolID: req.body.toolID[i],
-	//       serviceAssignment: req.body.serviceAssignment[i],
-	//       category: req.body.category[i],
-	//       manufacturer: req.body.manufacturer[i],
-	//       size: {
-	//         width: req.body.size.width[i],
-	//         height: req.body.size.height[i],
-	//         length: req.body.size.length[i],
-	//         weight: req.body.size.weight[i]
-	//       },
-	//       $inc: { __v: 1 },
-	//       $set: { updatedAt: Date.now() }
-	//     })
-	//     updatedToolArray.push(updatedTool)
-	//   }
-	// }
-	res.locals.tools = updatedToolArray;
-	res.status(200);
-	console.info("[MW] Successfully Updated Tools: ".green + updatedToolArray);
-	console.info("[MW] updateTool-out-1".bgWhite.blue);
-	next();
+		// Validate the required fields
+		if (!id || !barcode) {
+			throw new Error("Missing required fields: id and barcode");
+		}
+
+		// Find the tool by ID and update it
+		const updatedTool = await Tool.findByIdAndUpdate(
+			id,
+			{
+				barcode,
+				modelNumber,
+				description,
+				toolID,
+				serviceAssignment,
+				category,
+				manufacturer,
+				size: {
+					width,
+					height,
+					length,
+					weight,
+				},
+				$inc: { __v: 1 }, // Increment version number
+				updatedAt: Date.now(), // Set the updated time
+			},
+			{ new: true }, // Return the updated document
+		);
+
+		// If no tool was updated, throw an error
+		if (!updatedTool) {
+			throw new Error("Tool not found or could not be updated");
+		}
+
+		// Update the tool's history
+		await updateToolHistory(id);
+
+		// Return the updated tool in response
+		res.locals.tools = [updatedTool];
+		res.status(200);
+		next();
+	} catch (error) {
+		// Log the error
+		req.logger.error({
+			message: "Failed to update tool",
+			metadata: {
+				toolId: req.body.id,
+				userId: req.user._id,
+				toolDetails: req.body,
+			},
+			error: error.message,
+		});
+
+		res.status(500).json({ message: error.message });
+	}
 }
+
 /**
- * archiveTool - Archives a tool
- * @param {string} req.params.id The id of the tool to archive
- * @param {string} res.locals.message The message to display to the user
- * @param {array} res.locals.tools The tool that was archived
- * @param {number} res.status The status code to return
- * @param {*} next
+ * Middleware to archive a tool by its ID.
+ *
+ * @param {object} req - Express request object containing the tool ID in `req.params.id`
+ * @param {object} res - Express response object with `res.locals.message` and `res.locals.tools`
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>}
  */
 async function archiveTool(req, res, next) {
-	console.info("[MW] archiveTool-in".bgBlue.white);
-	const { id } = req.params;
-	const archivedTool = await Tool.findByIdAndUpdate(
-		{ _id: id },
-		{ archived: true },
-		{ new: true },
-	);
-	await ToolHistory.findByIdAndUpdate(
-		{ _id: id },
-		{ $push: { history: [archivedTool] } },
-		{ new: true },
-	);
-	res.locals.message = `Successfully Archived Tool ${archivedTool.toolID}`;
-	res.locals.tools = mutateToArray(archivedTool);
-	res.status(201);
-	next();
+	try {
+		const { id } = req.params;
+
+		const archivedTool = await Tool.findByIdAndUpdate(
+			id,
+			{ archived: true },
+			{ new: true },
+		);
+
+		if (!archivedTool) {
+			throw new Error(`Tool with ID ${id} not found`);
+		}
+
+		await ToolHistory.findByIdAndUpdate(
+			id,
+			{ $push: { history: [archivedTool] } },
+			{ new: true },
+		);
+
+		res.locals.message = `Successfully Archived Tool ${archivedTool.toolID}`;
+		res.locals.tools = mutateToArray(archivedTool);
+		res.status(201);
+		next();
+	} catch (error) {
+		req.logger.error({
+			message: "Failed to archive tool",
+			metadata: {
+				toolId: req.params.id,
+				userId: req.user._id,
+			},
+			error: error.message,
+		});
+		res.status(500).json({ message: error.message });
+	}
 }
 
 /**
- * unarchiveTool - Unarchives a tool
- * @param {string} req.params.id The id of the tool to unarchive
- * @param {string} res.locals.message The message to display to the user
- * @param {array} res.locals.tools The tool that was unarchived
- * @param {number} res.status The status code to return
- * @param {*} next
+ * Middleware to unarchive a tool by its ID.
+ *
+ * @param {object} req - Express request object containing the tool ID in `req.params.id`
+ * @param {object} res - Express response object with `res.locals.message` and `res.locals.tools`
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>}
  */
 async function unarchiveTool(req, res, next) {
-	console.info("[MW] archiveTool-in".bgBlue.white);
-	const { id } = req.params;
-	const unarchivedTool = await Tool.findByIdAndUpdate(
-		{ _id: id },
-		{ archived: false },
-		{ new: true },
-	);
-	await ToolHistory.findByIdAndUpdate(
-		{ _id: id },
-		{ $push: { history: [unarchivedTool] } },
-		{ new: true },
-	);
-	res.locals.message = `Successfully Restored Tool ${returnUniqueIdentifier(
-		unarchivedTool,
-	)}`;
-	res.locals.tools = mutateToArray(unarchivedTool);
-	res.status(201);
-	next();
+	try {
+		const { id } = req.params;
+
+		const unarchivedTool = await Tool.findByIdAndUpdate(
+			id,
+			{ archived: false },
+			{ new: true },
+		);
+
+		if (!unarchivedTool) {
+			throw new Error(`Tool with ID ${id} not found`);
+		}
+
+		await ToolHistory.findByIdAndUpdate(
+			id,
+			{ $push: { history: [unarchivedTool] } },
+			{ new: true },
+		);
+
+		res.locals.message = `Successfully Restored Tool ${returnUniqueIdentifier(unarchivedTool)}`;
+		res.locals.tools = mutateToArray(unarchivedTool);
+		res.status(201);
+		next();
+	} catch (error) {
+		req.logger.error({
+			message: "Failed to unarchive tool",
+			metadata: {
+				toolId: req.params.id,
+				userId: req.user._id,
+			},
+			error: error.message,
+		});
+		res.status(500).json({ message: error.message });
+	}
 }
+
 /**
- * checkTools - Checks the tools
- * @param {*} req The request object
- * @param {*} res The response object
- * @param {*} next The next middleware function
+ * Middleware to check tools for service assignment changes.
+ *
+ * @param {object} req - Express request object containing search terms in `req.body.searchTerms`
+ * @param {object} res - Express response object with `res.locals.message` and `res.locals.tools`
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>}
  */
 async function checkTools(req, res, next) {
-	if (!req.body.searchTerms) {
-		res.locals.message = "No Tools Submitted For Status Change";
-		console.warn("[MW checkTools-out-1".bgWhite.blue);
-		res.status(400).redirect("back");
-		return next();
+	try {
+		if (!req.body.searchTerms) {
+			res.locals.message = "No Tools Submitted For Status Change";
+			res.status(400).redirect("back");
+			return next();
+		}
+
+		const destinationServiceAssignment =
+			req.body.serviceAssignmentInput === ""
+				? req.body.serviceAssignmentSelector
+				: await findServiceAssignmentByJobNumber(
+						req.body.serviceAssignmentInput,
+					);
+
+		if (!destinationServiceAssignment) {
+			res.locals.message =
+				"No Service Assignment Found. Please select one from the dropdown";
+			res.locals.displaySelector = true;
+		}
+
+		res.locals.destinationServiceAssignment = destinationServiceAssignment;
+
+		const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/));
+		const toolsToBeChanged = await lookupToolWrapper(
+			search,
+			req.user.tenantId.valueOf(),
+		);
+
+		if (toolsToBeChanged.length === 0) {
+			res.locals.message = "No Tools Found Matching ";
+		}
+
+		res.locals.tools = toolsToBeChanged;
+		next();
+	} catch (error) {
+		req.logger.error({
+			message: "Failed to check tools",
+			metadata: {
+				tenantId: req.user.tenantId.valueOf(),
+				searchTerms: req.body.searchTerms,
+			},
+			error: error.message,
+		});
+		res.status(500).json({ message: error.message });
 	}
-	const destinationServiceAssignment =
-		req.body.serviceAssignmentInput === ""
-			? req.body.serviceAssignmentSelector
-			: await findServiceAssignmentByJobNumber(req.body.serviceAssignmentInput);
-	if (!destinationServiceAssignment) {
-		res.locals.message =
-			"No Service Assignment Found. Please select one from the dropdown";
-		res.locals.displaySelector = true;
-	}
-	res.locals.destinationServiceAssignment = destinationServiceAssignment;
-	const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/));
-	const toolsToBeChanged = await lookupToolWrapper(
-		search,
-		req.user.tenantId.valueOf(),
-	);
-	if (toolsToBeChanged.length === 0) {
-		res.locals.message = "No Tools Found Matching ";
-	}
-	res.locals.tools = toolsToBeChanged;
-	next();
 }
+
 /**
+ * Middleware to submit check-in/out requests for tools.
  *
- * @param {string} searchTerm search target
- * @param {string} searchField optional, key to search - if not provided, will search all fields
- * @returns {object}
- */
-async function lookupTool(searchTerm, tenantId) {
-	const capitalizedSearchTerm = searchTerm.toUpperCase();
-	let result = await Tool.findOne({
-		serialNumber: { $eq: capitalizedSearchTerm },
-		tenant: { $eq: tenantId },
-	});
-	if (!result) {
-		result = await Tool.findOne({
-			barcode: { $eq: capitalizedSearchTerm },
-			tenant: { $eq: tenantId },
-		});
-	}
-	if (!result) {
-		result = await Tool.findOne({
-			toolID: { $eq: capitalizedSearchTerm },
-			tenant: { $eq: tenantId },
-		});
-	}
-	if (!result) {
-		result = {};
-	}
-	return result;
-}
-/**
- * @name lookupToolWrapper
- * @desc iterator for looking up multiple search terms for checkTools
- * @param {*} searchTerms
- * @return {*} array of tools, with dummy objects if nothing is found
- */
-async function lookupToolWrapper(searchTerms, tenantId) {
-	const tools = [];
-	for (let i = 0; i < searchTerms.length; i++) {
-		const result = await lookupTool(searchTerms[i], tenantId);
-		if (result?.serialNumber === undefined) {
-			tools.push({
-				serialNumber: searchTerms[i],
-			});
-		} else tools.push(result);
-	}
-	return tools;
-}
-/**
- * submitCheckInOut - Submits the check-in/out request
- * @param {*} req The request object
- * @param {*} res The response object
- * @param {*} next The next middleware function
+ * @param {object} req - Express request object containing tool IDs and service assignment
+ * @param {object} res - Express response object with `res.locals.tools` and `res.locals.message`
+ * @param {function} next - Express `next` function to pass control to the next middleware
+ * @returns {Promise<void>}
  */
 async function submitCheckInOut(req, res, next) {
 	try {
 		const id = mutateToArray(req.body.id);
 		const { destinationServiceAssignment } = req.body;
 		const newTools = [];
+
 		for (let i = 0; i < id.length; i++) {
 			if (id[i] === "toolNotFound") break;
 			updateToolHistory(id[i]);
-			newTools.push(
-				await Tool.findByIdAndUpdate(
-					{ _id: id[i] },
-					{
-						serviceAssignment: destinationServiceAssignment,
-						$inc: { __v: 1 },
-						$set: { updatedAt: Date.now() },
-					},
-					{ new: true },
-				),
+			const updatedTool = await Tool.findByIdAndUpdate(
+				id[i],
+				{
+					serviceAssignment: destinationServiceAssignment,
+					$inc: { __v: 1 },
+					updatedAt: Date.now(),
+				},
+				{ new: true },
 			);
+			newTools.push(updatedTool);
 		}
+
 		res.locals.tools = newTools;
 		res.locals.message = `${newTools.length} tool(s) have been updated`;
 		next();
 	} catch (error) {
-		console.error(error.message);
+		req.logger.error({
+			message: "Failed to submit check-in/out",
+			metadata: {
+				toolIds: req.body.id,
+				userId: req.user._id,
+			},
+			error: error.message,
+		});
+		res.status(500).json({ message: error.message });
 	}
 }
-/**
- * Generates a printer-friendly tool list based on the provided tools.
- *
- * @param {Object} req - The request object.
- * @param {Object} res - The response object.
- * @param {Function} next - The next middleware function.
- * @returns {Promise<void>} - A promise that resolves when the operation is complete.
- */
-const generatePrinterFriendlyToolList = async (req, res, next) => {
-	try {
-		if (!res.locals.tools || res.locals.tools?.length === 0) {
-			res.locals.message = "There are no tools to make into a list";
-			return next();
-		}
-		const { tools } = res.locals;
-		const printerFriendlyToolArray = await tools.map((tool) => {
-			const { serialNumber, modelNumber, toolID, barcode, description } = tool;
-			return {
-				serialNumber,
-				modelNumber,
-				toolID,
-				barcode,
-				description,
-			};
-		});
-		if (printerFriendlyToolArray?.length === 0)
-			throw new Error("There was a problem creating the printer friendly data");
-		res.locals.printerFriendlyTools = printerFriendlyToolArray || [];
-		return next();
-	} catch (err) {
-		res.locals.message = err.message;
-		res.locals.printerFriendlyTools = [];
-		return next();
-	}
-};
-/**
- * Retrieves the dashboard statistics.
- *
- * @returns {Object} - An object containing the dashboard statistics.
- */
-async function getDashboardStats(tenantId) {
-	const startOfDay = moment().startOf("day").toDate();
-	const endOfDay = moment().endOf("day").toDate();
-	const startOfWeek = moment().startOf("week").toDate();
-	const endOfWeek = moment().endOf("week").toDate();
-	try {
-		const todaysTools = await Tool.countDocuments({
-			updatedAt: { $gte: startOfDay, $lte: endOfDay },
-			tenant: { $eq: tenantId },
-		});
-		const thisWeeksTools = await Tool.countDocuments({
-			updatedAt: { $gte: startOfWeek, $lte: endOfWeek },
-			tenant: { $eq: tenantId },
-		});
-		const totalTools = await Tool.countDocuments({ tenant: tenantId });
-		const stockroomTools = await getCheckedInTools(tenantId);
-		const totalIn = stockroomTools.length;
-		const totalOut = totalTools - totalIn;
-		return { todaysTools, thisWeeksTools, totalIn, totalOut, totalTools };
-	} catch (error) {
-		return { todaysTools: 0, thisWeeksTools: 0, totalIn: 0, totalOut: 0 };
-	}
-}
-/**
- * Retrieves the recently updated tools.
- * @returns {Promise<Array>} A promise that resolves to an array of recently updated tools.
- */
-async function getRecentlyUpdatedTools(tenant) {
-	const tools = await Tool.find({ tenant: { $eq: tenant } })
-		.sort({ updatedAt: -1 })
-		.limit(50);
-	return tools;
-}
+
 export {
 	getAllTools,
 	getActiveTools,
