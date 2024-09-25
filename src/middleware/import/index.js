@@ -1,6 +1,5 @@
 import { activateServiceAssignments, importServiceAssignments } from './serviceAssignment.js'
 import { importTools } from './tool.js'
-import { importHistory } from './history.js'
 import { importCategories } from './categories.js'
 import 'node:fs/promises'
 
@@ -36,9 +35,7 @@ export async function importByFile(req, res, next) {
       console.log('marking inactive SAs as such')
       result = await activateServiceAssignments(file, tenant)
       break
-    case 'history':
-      result = await importHistory(file, tenant)
-      break
+
     case 'categories':
       console.log('importing categories')
       result = await importCategories(file, tenant)

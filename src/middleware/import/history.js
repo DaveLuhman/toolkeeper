@@ -1,4 +1,4 @@
-import {Tool, ToolHistory, ServiceAssignment} from '../../models/index.models.js'
+import {Tool, ServiceAssignment} from '../../models/index.models.js'
 
 import { csvFileToEntries } from '../util.js'
 let successCount = 0

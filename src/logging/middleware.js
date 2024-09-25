@@ -1,16 +1,16 @@
 import logger from "./index.js";
 
 const tenantLogger = (req, res, next) => {
-    const tenantId = req.session?.user?.tenant?._id || 'unknown';
+	const tenantId = req?.user?.tenant.valueOf() || "unknown";
 
-    req.logger = logger.child({ tenantId });
+	req.logger = logger.child({ tenantId });
 
-    req.logger.info({
-      message: `Incoming request: ${req.method} ${req.url}`,
-      metadata: { userId: req.session?.user?._id || 'guest' },
-    });
+	req.logger.info({
+		message: `Incoming request: ${req.method} ${req.url}`,
+		metadata: { userId: req?.user?._id || "guest" },
+	});
 
-    next();
-  };
+	next();
+};
 
-  export default tenantLogger
+export default tenantLogger;

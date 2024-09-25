@@ -1,4 +1,4 @@
-import { Tool } from '../../models/index.models.js'; // Removed ToolHistory
+import { Tool } from '../../models/index.models.js'
 const errorList = [];
 
 /**

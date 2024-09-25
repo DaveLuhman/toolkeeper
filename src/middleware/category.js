@@ -102,12 +102,83 @@ const deleteCategory = async (req, res, next) => {
 	}
 };
 
+/**
+ * Lists category names from the database and logs the operation.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @param {Function} next - The next middleware function.
+ * @returns {Promise<void>} - A promise that resolves when the category names are listed.
+ */
+const listCategoryNames = async (req, res, next) => {
+	try {
+		// Log the start of the operation
+		req.logger.info({
+			message: "Fetching category names",
+			tenantId: req.session?.user?.tenant?._id,
+		});
+
+		res.locals.categories = await Category.find(
+			{
+				tenant: { $eq: req.user.tenant.valueOf() },
+			},
+			{ name: 1, id: 1 },
+		).sort({ name: "asc" });
+
+		// Log success
+		req.logger.info({
+			message: "Category names fetched successfully",
+			count: res.locals.categories.length,
+		});
+		return next();
+	} catch (error) {
+		// Log error
+		req.logger.error({
+			message: "Error fetching category names",
+			error: error.message,
+		});
+		return next(error);
+	}
+};
+
+/**
+ * Handlebars helper function to look up the category name based on the id. Includes logging.
+ *
+ * @param {Array} categories - Array of category objects.
+ * @param {string} id - The ID of the category to retrieve.
+ * @returns {string} - The name of the category, or 'Uncategorized' if not found.
+ */
+const getCategoryName = (categories, id) => {
+	try {
+		const category = categories.filter((item) => item._id === id);
+
+		if (category.length === 0) {
+			req.logger.warn({ message: "Category not found", id });
+			return "Uncategorized";
+		}
+
+		req.logger.info({
+			message: "Category found",
+			categoryName: category[0].name,
+		});
+		return category[0].name;
+	} catch (error) {
+		req.logger.error({
+			message: "Error looking up category name",
+			error: error.message,
+		});
+		return "Uncategorized";
+	}
+};
+
 export {
 	getCategories,
 	getCategoryByID,
 	createCategory,
 	deleteCategory,
 	updateCategory,
+	listCategoryNames,
+	getCategoryName,
 };
 
 // src\middleware\category.js

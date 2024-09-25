@@ -71,7 +71,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // custom Logging
-app.use(tenantLogger)
+
 // Handlebars Setup
 const hbs = create({
 	helpers: customHelpers,
@@ -109,7 +109,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(rateLimiter);
-
+app.use(tenantLogger);
 // Routes (No User Context)
 app.use("/", indexRouter);
 // Routes (User Context)

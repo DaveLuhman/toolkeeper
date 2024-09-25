@@ -15,12 +15,11 @@ export const Tenant = model('Tenant', TenantSchema)
 export const Material = model('Material', MaterialSchema)
 export const ServiceAssignment = model('ServiceAssignment', ServiceAssignmentSchema)
 export const Tool = model('Tool', ToolSchema)
-export const ToolHistory = model('ToolHistory', ToolHistorySchema)
 export const User = model('User', UserSchema)
 export const Prospect = model('Prospect', ProspectSchema)
 export const Log = model('Log', logSchema);
 
-const models = {Category, Tenant, Material, ServiceAssignment, Tool, ToolHistory, User, Subscription,Prospect, Log}
+const models = {Category, Tenant, Material, ServiceAssignment, Tool, User, Subscription,Prospect, Log}
 export default models
 
 
