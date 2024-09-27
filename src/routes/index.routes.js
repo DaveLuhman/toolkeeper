@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { login, logout } from '../middleware/auth.js'
+import { checkAuth, login, logout } from '../middleware/auth.js'
 import { createProspect, createUser } from '../middleware/user.js'
 import {
   renderLandingPage,
@@ -7,6 +7,7 @@ import {
   renderRegisterPage,
 } from '../controllers/index.js'
 import { executeResetPasswordRequest, submitResetPasswordRequest, verifyResetPasswordRequest } from '../controllers/user.js'
+import { renderLogView } from '../logging/middleware.js'
 
 export const indexRouter = Router()
 
@@ -28,4 +29,6 @@ indexRouter.post('/forgotPassword', submitResetPasswordRequest)
 indexRouter.get('/forgotPassword/:token', verifyResetPasswordRequest)
 // Execute Reset Password
 indexRouter.post('/forgotPassword/:token', executeResetPasswordRequest)
+// render logs page (per tenant)
+indexRouter.get('/logs', checkAuth, renderLogView)
 // src\routes\index.routes.js
