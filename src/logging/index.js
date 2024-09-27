@@ -1,5 +1,6 @@
 import winston from 'winston';
 import 'winston-mongodb'; // Optional for MongoDB transport
+import { Log } from '../models/index.models.js';
 
 function replaceDatabaseName(uri, dbName) {
     // Use a regular expression to find the database name in the URI
@@ -15,7 +16,7 @@ const logger = winston.createLogger({
     new winston.transports.File({ filename: 'error.log', level: 'error' }), // Error log
     // Optional: MongoDB transport for tenant-specific logs
     new winston.transports.MongoDB({
-      db: replaceDatabaseName(process.env.MONGO_URI, 'toolkeeperLogs'),
+      db: process.env.MONGO_URI,
       collection: 'logs',
       level: 'error',
       options: { useUnifiedTopology: true },
@@ -24,5 +25,9 @@ const logger = winston.createLogger({
     }),
   ],
 });
+
+export const getLogsByTenant = async (tenantId) => {
+  return await Log.find({ tenantId }).sort({ timestamp: -1 }).lean();  // Fetch logs, most recent first
+};
 
 export default logger
