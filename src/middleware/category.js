@@ -142,7 +142,7 @@ const listCategoryNames = async (req, res, next) => {
 };
 
 /**
- * Handlebars helper function to look up the category name based on the id. Includes logging.
+ * Handlebars helper function to look up the category name based on the id. Includes client-side logging.
  *
  * @param {Array} categories - Array of category objects.
  * @param {string} id - The ID of the category to retrieve.
@@ -153,17 +153,17 @@ const getCategoryName = (categories, id) => {
 		const category = categories.filter((item) => item._id === id);
 
 		if (category.length === 0) {
-			req.logger.warn({ message: "Category not found", id });
+			console.warn({ message: "Category not found", id });
 			return "Uncategorized";
 		}
 
-		req.logger.info({
+		console.info({
 			message: "Category found",
 			categoryName: category[0].name,
 		});
 		return category[0].name;
 	} catch (error) {
-		req.logger.error({
+		console.error({
 			message: "Error looking up category name",
 			error: error.message,
 		});
