@@ -143,8 +143,11 @@ async function createDefaultGlobalDocuments() {
 export const closeDbConnection = () => {
 	disconnect()
 }
-export const demoTenantId = "66af881237c17b64394a4166";
 
+export const demoTenantId = "66af881237c17b64394a4166";
+export const DEFAULT_USER_IDS=["663870c0a1a9cdb4b707c737"]
+export const DEFAULT_CATEGORY_IDS=["64a1c3d8d71e121dfd39b7ab"]
+export const DEFAULT_ASSIGNMENT_IDS=["64a19e910e675938ebb67de7", "64a34b651288871770df1086", "64a34b651288871770df1087"]
 export default connectDB
 
 
