@@ -163,14 +163,13 @@ export const getTenants = async (req, res, next) => {
 	try {
 		// Fetch all tenants from the database
 		const tenants = await Tenant.find();
+		const activeTenants = []
+		const inactiveTenants = []
 
 		// Split tenants into active and inactive groups
-		const activeTenants = tenants.filter(
-			(tenant) => tenant.subscriptionActive === true,
-		);
-		const inactiveTenants = tenants.filter(
-			(tenant) => tenant.subscriptionActive === false,
-		);
+		for(const tenant of tenants){
+			tenant.subscription.status === "active" ? activeTenants.push(tenant) : inactiveTenants.push(tenant)
+		}
 
 		// Hoist active and inactive tenants to res.locals
 		res.locals.activeTenants = activeTenants;
@@ -182,7 +181,7 @@ export const getTenants = async (req, res, next) => {
 		// Handle any errors that occur during the database query
 		res
 			.status(500)
-			.render("error", { message: "Failed to load tenants", error });
+			.render("error/error", { message: "Failed to load tenants", error });
 	}
 };
 
