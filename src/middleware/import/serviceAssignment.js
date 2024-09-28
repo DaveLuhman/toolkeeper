@@ -1,7 +1,7 @@
 import { ServiceAssignment } from '../../models/index.models.js'
-import { csvFileToEntries } from '../util.js'
-let successCount = 0
-const errorList = []
+import { readCSVFile, checkDuplicate, saveDocument } from './importUtils.js';
+let successCount = 0;
+const errorList = [];
 
 function determineServiceAssignmentType(memberID, mLastName) {
   const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
@@ -32,17 +32,9 @@ function createServiceAssignmentDocument(row, tenant) {
   }
 }
 
-function saveServiceAssignmentDocument(serviceAssignmentDocument) {
-  try {
-    const serviceAssignment = new ServiceAssignment(serviceAssignmentDocument)
-    serviceAssignment.save()
-    successCount++
-  } catch (error) {
-    errorList.push({
-      key: serviceAssignmentDocument.jobNumber,
-      reason: error.message
-    })
-  }
+async function saveServiceAssignmentDocument(serviceAssignmentDocument) {
+  const savedDoc = await saveDocument(ServiceAssignment, serviceAssignmentDocument, errorList);
+  if (savedDoc) successCount++;
 }
 
 function createServiceAssignments(members, tenant) {
@@ -55,7 +47,7 @@ function createServiceAssignments(members, tenant) {
 
 export async function importServiceAssignments(file, tenant) {
   successCount = 0
-  const members = csvFileToEntries(file)
+const members = readCSVFile(file)
   await createServiceAssignments(members, tenant)
   return { successCount, errorList }
 }
@@ -67,7 +59,7 @@ export async function importServiceAssignments(file, tenant) {
  */
 export async function activateServiceAssignments(file) {
   successCount = 0
-  const activeServiceRows = csvFileToEntries(file)
+const activeServiceRows = readCSVFile(file)
   const activatedSAs = await Promise.all(activeServiceRows.map((entry) => { return ServiceAssignment.findOneAndUpdate({ jobNumber: entry[0] }, { active: true }, { new: true }) }))
   return { successCount: activatedSAs.length, errorList }
 }

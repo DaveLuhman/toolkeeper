@@ -1,7 +1,7 @@
-import { csvFileToEntries } from '../util.js'
-import { Category } from '../../models/index.models.js'
-let successCount = 0
-const errorList = []
+import { readCSVFile, checkDuplicate, saveDocument } from './importUtils.js';
+import { Category } from '../../models/index.models.js';
+let successCount = 0;
+const errorList = [];
 
 /**
  * Create a category document from a row of data.
@@ -21,9 +21,8 @@ function createCategoryDocument(row, tenant) {
  * @param {string} prefix - The prefix to check.
  * @returns {boolean} - True if a duplicate category exists, false otherwise.
  */
-async function checkDuplicate(prefix) {
-  const dup = await Category.find({ prefix })
-  return dup.length !== 0
+async function checkDuplicateCategory(prefix) {
+  return await checkDuplicate(Category, 'prefix', prefix);
 }
 
 /**
@@ -33,13 +32,12 @@ async function checkDuplicate(prefix) {
  * @returns {Promise} - A promise that resolves to the saved category document.
  */
 async function saveCategoryDocument(doc) {
-  try {
-    if (await checkDuplicate(doc.prefix)) throw new Error('Duplicate Prefix')
-    successCount++
-    return await Category.create(doc)
-  } catch (error) {
-    errorList.push({ key: doc.prefix, reason: error.message })
+  if (await checkDuplicateCategory(doc.prefix)) {
+    errorList.push({ key: doc.prefix, reason: 'Duplicate Prefix' });
+    return;
   }
+  const savedDoc = await saveDocument(Category, doc, errorList);
+  if (savedDoc) successCount++;
 }
 /**
  *
@@ -64,7 +62,7 @@ function createCategories(entries, tenant) {
 export async function importCategories(file, tenant) {
   successCount = 0
   errorList.length = 0
-  const entries = csvFileToEntries(file)
+const entries = readCSVFile(file)
   await createCategories(entries, tenant)
   return { successCount, errorList }
 }

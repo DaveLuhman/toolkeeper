@@ -1,16 +1,62 @@
 import { Tool, Category } from '../../models/index.models.js';
-import { csvFileToEntries } from '../util.js';
+import { readCSVFile, checkDuplicate, saveDocument } from './importUtils.js';
 
 const errorList = [];
 let successCount = 0;
+
+/**
+ * Mixes the given date and time into a single ISO string.
+ * @param {string} date - The date in the format 'YYYY-MM-DD'.
+ * @param {string} time - The time in the format 'HH:MM:SS'.
+ * @returns {string} - The mixed date and time in ISO string format.
+ */
+function dateTimeMixer(date, time) {
+  const returnValue = new Date(`${date} ${time}`).toISOString();
+  return returnValue;
+}
+
+/**
+ * Updates the service assignment for a tool based on the given row data.
+ * @param {Array} row - The row data containing information about the tool and service assignment.
+ * @returns {number} - Returns 0 if the update is successful, otherwise returns 1.
+ */
+async function updateToolServiceAssignment(row, tenant) {
+  if (!row[3] || row[4] === null) return;
+  const serialNumber = row[4].trim();
+  const serviceAssignment = await ServiceAssignment.findOne({
+    name: row[3],
+    tenant
+  });
+  if (!serviceAssignment) {
+    return 1; // error
+  }
+  const tool = await Tool.findOne({ serialNumber, tenant });
+  if (!tool) {
+    return 1; // error
+  }
+  const dateTime = dateTimeMixer(row[0], row[1]); // creates a date time object for when there was a relevant transaction
+  await Tool.findByIdAndUpdate(
+    { _id: tool.id },
+    { serviceAssignment: serviceAssignment.id, updatedAt: dateTime },
+    { new: true }
+  );
+  await ToolHistory.findByIdAndUpdate(
+    tool._id,
+    {
+      $push: { history: tool },
+      $inc: { __v: 1 }
+    },
+    { new: true }
+  );
+  return 0;
+}
 
 function trimArrayValues(array) {
   return array.map((cell) => cell.trim());
 }
 
 async function checkForDuplicates(serialNumber) {
-  const results = await Tool.find({ serialNumber });
-  return results.length > 0;
+  return await checkDuplicate(Tool, 'serialNumber', serialNumber);
 }
 
 function getPrefixFromToolID(toolID) {
@@ -56,19 +102,14 @@ function createToolDocument(row, tenant) {
  * Creates a tool document and tracks history.
  */
 async function createTool(toolDocument) {
-  try {
-    if (await checkForDuplicates(toolDocument.serialNumber)) {
-      throw new Error('Duplicate serial number');
-    }
-    const tool = new Tool(toolDocument);
-    tool.category = await getCategoryByPrefix(getPrefixFromToolID(tool.toolID));
-    await tool.save();
-    successCount++;
-    return tool;
-  } catch (error) {
-    errorList.push({ key: toolDocument.serialNumber, reason: error.message });
-    console.error(error.message);
+  if (await checkForDuplicates(toolDocument.serialNumber)) {
+    errorList.push({ key: toolDocument.serialNumber, reason: 'Duplicate serial number' });
+    return;
   }
+  toolDocument.category = await getCategoryByPrefix(getPrefixFromToolID(toolDocument.toolID));
+  const savedDoc = await saveDocument(Tool, toolDocument, errorList);
+  if (savedDoc) successCount++;
+  return savedDoc;
 }
 
 /**
@@ -88,7 +129,7 @@ export async function createTools(entries, tenant) {
 export async function importTools(file, tenant) {
   successCount = 0;
   errorList.length = 0;
-  const entries = csvFileToEntries(file);
+const entries = readCSVFile(file);
   await createTools(entries, tenant);
   return { successCount, errorList };
 }
