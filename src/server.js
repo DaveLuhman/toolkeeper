@@ -40,98 +40,102 @@ import webhookRouter from "./routes/webhooks.routes.js";
 import bodyParser from "body-parser";
 import tenantLogger from "./logging/middleware.js";
 
-// use the imported dependencies as needed in the server.js file
-
 const MongoDBStore = connectMongoDBSession(session);
 const PORT = process.env.PORT || 5000;
-const app = express(); // Create Express App
-app.use(errorHandler);
-await connectDB(); // Connect to MongoDB and report status to console
-// create mongo store for session persistence
-const mongoStore = new MongoDBStore({
-	uri: process.env.MONGO_URI,
-	collection: "sessions",
-});
-// Configure session options
-const sessionConfig = {
-	secret: process.env.SECRET_KEY,
-	resave: true,
-	saveUninitialized: false,
-	cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 },
-};
-// If in production, use secure cookies and mongo store
-if (process.env.NODE_ENV === "production") {
-	sessionConfig.cookie = {
-		secure: true,
-		httpOnly: false,
-		maxAge: 1000 * 60 * 60 * 24,
-		sameSite: true,
-	};
-	sessionConfig.store = mongoStore;
-}
+export const app = express(); // Create Express App
 
-// custom Logging
 
-// Handlebars Setup
-const hbs = create({
-	helpers: customHelpers,
-	extname: ".hbs",
-	defaultLayout: "main",
-	partialsDir: ["./src/views/partials", "./src/views/partials/modals"],
-	runtimeOptions: {
-		allowProtoPropertiesByDefault: true,
-		allowProtoMethodsByDefault: true,
-	},
-});
-app.engine(".hbs", hbs.engine);
-app.set("view engine", ".hbs");
-app.set("views", "./src/views");
-app.set("trust proxy", 1);
 
-// Express Middleware
-app.use(cookieParser());
-if (process.NODE_ENV === "PRODUCTION") app.use(csurf({ cookie: true })); // Cross Site Request Forgery protection middleware
-app.use(express.static("./src/public")); // Serve Static Files
-app.use(fileUpload());
-// Middleware to capture the raw body for /webhooks route
-app.use("/webhooks", bodyParser.raw({ type: "*/*" }), (req, res, next) => {
-	req.rawBody = req.body; // Capture the raw body buffer
-	next();
-});
-app.use("/webhooks", bodyParser.json(), webhookRouter);
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: false })); // Parse URL-encoded values
-app.use(session(sessionConfig));
-app.use(flash());
-// Passport
-passportConfig(app);
-app.use(passport.initialize());
-app.use(passport.session());
+    app.use(errorHandler);
+    await connectDB(); // Connect to MongoDB and report status to console
+    // create mongo store for session persistence
+    const mongoStore = new MongoDBStore({
+        uri: process.env.MONGO_URI,
+        collection: "sessions",
+    });
+    // Configure session options
+    const sessionConfig = {
+        secret: process.env.SECRET_KEY,
+        resave: true,
+        saveUninitialized: false,
+        cookie: { secure: false, httpOnly: false, maxAge: 1000 * 60 * 60 * 24 },
+    };
+    // If in production, use secure cookies and mongo store
+    if (process.env.NODE_ENV === "production") {
+        sessionConfig.cookie = {
+            secure: true,
+            httpOnly: false,
+            maxAge: 1000 * 60 * 60 * 24,
+            sameSite: true,
+        };
+        sessionConfig.store = mongoStore;
+    }
 
-app.use(rateLimiter);
-app.use(tenantLogger);
-// Routes (No User Context)
-app.use("/", indexRouter);
-// Routes (User Context)
+    // custom Logging
 
-app.use(checkAuth);
-app.use(applyImpersonation);
-app.use(populateDropdownItems);
-app.use("/user", userRouter);
-app.use("/dashboard", dashboardRouter);
-app.use("/tool", toolRouter);
-app.use(isManager);
-app.use("/settings", settingsRouter);
-// catch 404 and forward to error handler
-app.use((_req, res, next) => {
-	next(new AppError("Not Found", 404));
-});
-app.use(errorHandler);
+    // Handlebars Setup
+    const hbs = create({
+        helpers: customHelpers,
+        extname: ".hbs",
+        defaultLayout: "main",
+        partialsDir: ["./src/views/partials", "./src/views/partials/modals"],
+        runtimeOptions: {
+            allowProtoPropertiesByDefault: true,
+            allowProtoMethodsByDefault: true,
+        },
+    });
+    app.engine(".hbs", hbs.engine);
+    app.set("view engine", ".hbs");
+    app.set("views", "./src/views");
+    app.set("trust proxy", 1);
 
-app.listen(PORT, () => {
-	console.info(
-		`[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black,
-	);
-});
+    // Express Middleware
+    app.use(cookieParser());
+    if (process.NODE_ENV === "PRODUCTION") app.use(csurf({ cookie: true })); // Cross Site Request Forgery protection middleware
+    app.use(express.static("./src/public")); // Serve Static Files
+    app.use(fileUpload());
+    // Middleware to capture the raw body for /webhooks route
+    app.use("/webhooks", bodyParser.raw({ type: "*/*" }), (req, res, next) => {
+        req.rawBody = req.body; // Capture the raw body buffer
+        next();
+    });
+    app.use("/webhooks", bodyParser.json(), webhookRouter);
+    app.use(bodyParser.json());
+    app.use(express.urlencoded({ extended: false })); // Parse URL-encoded values
+    app.use(session(sessionConfig));
+    app.use(flash());
+    // Passport
+    passportConfig(app);
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    app.use(rateLimiter);
+    app.use(tenantLogger);
+    // Routes (No User Context)
+    app.use("/", indexRouter);
+    // Routes (User Context)
+
+    app.use(checkAuth);
+    app.use(applyImpersonation);
+    app.use(populateDropdownItems);
+    app.use("/user", userRouter);
+    app.use("/dashboard", dashboardRouter);
+    app.use("/tool", toolRouter);
+    app.use(isManager);
+    app.use("/settings", settingsRouter);
+    // catch 404 and forward to error handler
+    app.use((_req, res, next) => {
+        next(new AppError("Not Found", 404));
+    });
+    app.use(errorHandler);
+
+    const server = app.listen(PORT, () => {
+        console.info(
+            `[INIT] Server is running at http://localhost:${PORT}`.bgWhite.black,
+        );
+    });
+
+export default { app, server };
+
 
 // src\server.js
