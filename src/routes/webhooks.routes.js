@@ -1,9 +1,9 @@
 import  { Router } from "express";
-import { subscriptionCreatedWebhookHandler } from "../middleware/subscription.js";
+import  handleWebhookEvent  from "../middleware/subscription.js";
 
 const webhookRouter = new Router()
 
-webhookRouter.post('/annual', subscriptionCreatedWebhookHandler)
+webhookRouter.post('/annual', handleWebhookEvent)
 
 export default webhookRouter
 // src\routes\webhooks.routes.js

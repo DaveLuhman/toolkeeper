@@ -1,10 +1,5 @@
-import mongoose from "mongoose";
-import {
-	Tenant,
-	Category,
-	ServiceAssignment,
-	User,
-} from "../models/index.models.js";
+import { connect, disconnect } from "mongoose";
+import { Tenant, Category, ServiceAssignment, User } from "../models/index.models.js";
 
 let globalConn;
 
@@ -23,7 +18,7 @@ async function connectDB() {
 	let retries = 3;
 	while (retries > 0) {
 		try {
-			globalConn = await mongoose.connect(process.env.MONGO_URI, {
+			globalConn = await connect(process.env.MONGO_URI, {
 				// Adding a timeout of 30 seconds
 				serverSelectionTimeoutMS: 30000,
 			});
@@ -146,10 +141,11 @@ async function createDefaultGlobalDocuments() {
 }
 
 export const closeDbConnection = () => {
-	mongoose.disconnect()
+	disconnect()
 }
 export const demoTenantId = "66af881237c17b64394a4166";
 
-export default connectDB;
+export default connectDB
+
 
 // src\config\db.js

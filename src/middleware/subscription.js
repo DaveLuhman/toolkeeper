@@ -106,8 +106,47 @@ const createProspectFromSubscriptionData = (subscriptionData) => {
 		companyName: `${subscriptionData.attributes.user_name}'s Tools`,
 	};
 };
-// Main subscription webhook handler
-const subscriptionCreatedWebhookHandler = async (req, res) => {
+
+const handleSubscriptionEvent = async (eventType, subscriptionData) => {
+	let status;
+	switch (eventType) {
+		case "subscription_cancelled":
+			status = "cancelled";
+			break;
+		case "subscription_resumed":
+			status = "active";
+			break;
+		case "subscription_expired":
+			status = "expired";
+			break;
+		case "subscription_created": {
+			const prospect = createProspectFromSubscriptionData(subscriptionData);
+			const { activeUser, newPassword } =
+				await createUserFromProspect(prospect);
+			const tenant = await createTenantForUser(activeUser, prospect);
+			await createSubscription(subscriptionData, activeUser, tenant);
+			await sendWelcomeEmail(prospect, activeUser, newPassword);
+			return "Subscription created, user and tenant created, and welcome email sent.";
+		}
+		default:
+			throw new Error("Unhandled event type");
+	}
+
+	// Find the subscription and update its status
+	const subscription = await Subscription.findOneAndUpdate(
+		{ lemonSqueezyId: subscriptionData.id },
+		{ status: status },
+		{ new: true },
+	);
+
+	if (!subscription) {
+		throw new Error("Subscription not found");
+	}
+
+	return `Subscription ${status} and updated.`;
+};
+
+const handleWebhookEvent = async (req, res) => {
 	try {
 		// Verify the request signature
 		verifySignature(req);
@@ -115,44 +154,20 @@ const subscriptionCreatedWebhookHandler = async (req, res) => {
 		// Parse the raw body into JSON
 		const webhookPayload = JSON.parse(req.rawBody.toString("utf8"));
 		const subscriptionData = webhookPayload.data;
-		const userEmail = subscriptionData?.attributes?.user_email;
+		const eventType = webhookPayload.type;
 
-		// Find the prospect from the collection if it exists
-		let prospect = await Prospect.findOne({ email: userEmail });
-		if (!prospect) {
-			prospect = createProspectFromSubscriptionData(subscriptionData);
-		}
-
-		// Create the user and assign a password
-		const { activeUser, newPassword } = await createUserFromProspect(prospect);
-
-		// Create the tenant and associate it with the user
-		const tenant = await createTenantForUser(activeUser, prospect);
-
-		// Create a new subscription linked to the user and tenant
-		await createSubscription(subscriptionData, activeUser, tenant);
-
-		// Assign the tenant to the user
-		activeUser.tenant = tenant._id;
-		await activeUser.save();
-
-		// Delete the prospect user from its collection
-		await prospect.deleteOne();
-
-		// Send a welcome email to the user
-		await sendWelcomeEmail(prospect, activeUser, newPassword);
+		// Handle the subscription event
+		const message = await handleSubscriptionEvent(eventType, subscriptionData);
 
 		// Send a success response
 		res.status(200).json({
-			message: "Subscription created, tenant assigned, and user updated.",
+			message: message,
 		});
 	} catch (error) {
 		// Centralized error handling
-		console.error("Error processing subscription webhook:", error.message);
+		console.error(`Error processing ${eventType} webhook:`, error.message);
 		res.status(500).json({ error: "Internal server error." });
 	}
 };
 
-export { subscriptionCreatedWebhookHandler };
-
-// src\middleware\subscription.js
+export default handleWebhookEvent
