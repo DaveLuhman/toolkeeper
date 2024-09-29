@@ -21,7 +21,7 @@ export async function submitResetPasswordRequest(req, res) {
         user.save()
         await sendResetPwEmail(user.email, user.token)
         res.locals.message = `An e-mail has been sent to ${user.email} with further instructions.`
-        res.redirect('/login')
+        res.render('auth/login')
     }
 }
 

@@ -21,10 +21,16 @@
 
 <body class="min-h-screen">
   {{#if error}}
-    {{> _error}}
+    {{> error/_error}}
   {{/if}}
+
+  {{#if message}}
+    <div>{{message}}</div>
+  {{/if}}
+
   {{{body}}}
   {{> _footer}}
+  {{stringify .}}
 </body>
 
 </html>
