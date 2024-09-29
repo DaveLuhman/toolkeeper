@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose'
+import { Schema, model } from 'mongoose'
 import bcrypt from 'bcrypt'
 // This code creates a new schema that is used to define the User model
 // The schema contains the fields for a user, as well as the timestamps
