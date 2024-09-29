@@ -42,7 +42,7 @@ async function collectTenantDataAndUpload() {
 
     // Upload the JSON data to Wasabi S3
     const params = {
-        Bucket: 'development-exports', // Target bucket
+        Bucket: 'ado-development-exports', // Target bucket
         Key: path.join('exports', fileName), // File path within the bucket
         Body: jsonOutput,
         ContentType: 'application/json'
@@ -55,7 +55,6 @@ async function collectTenantDataAndUpload() {
 async function deleteNonDefaultDocuments() {
     // Define all default ID lists for each model
     const defaultIds = {
-        Tool: DEFAULT_TOOL_IDS,
         Category: DEFAULT_CATEGORY_IDS,
         ServiceAssignment: DEFAULT_ASSIGNMENT_IDS,
         User: DEFAULT_USER_IDS
