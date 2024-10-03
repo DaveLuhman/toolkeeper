@@ -13,7 +13,7 @@ function appendRelativeFilenameAsComment(dir = ".") {
 			return;
 		}
 
-		items.forEach((item) => {
+		for(const item of items) {
 			const fullPath = path.join(dir, item.name);
 
 			if (item.isDirectory()) {
@@ -32,7 +32,7 @@ function appendRelativeFilenameAsComment(dir = ".") {
 					}
 				});
 			}
-		});
+		}
 	});
 }
 
