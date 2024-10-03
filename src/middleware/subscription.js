@@ -32,14 +32,14 @@ const verifySignature = (req) => {
 };
 
 // Create a new user based on pending user data
-const createUserFromProspect = async (Prospect) => {
+const createUserFromProspect = async (prospect) => {
 	try {
 		const newPassword = generatePassword();
 
 		const activeUser = await User.create({
-			firstName: Prospect.firstName,
-			lastName: Prospect.lastName,
-			email: Prospect.email,
+			firstName: prospect.firstName,
+			lastName: prospect.lastName,
+			email: prospect.email,
 			password: newPassword,
 			role: "Admin",
 		});
@@ -52,10 +52,10 @@ const createUserFromProspect = async (Prospect) => {
 };
 
 // Create a new tenant and associate the user as admin
-const createTenantForUser = async (activeUser, Prospect) => {
+const createTenantForUser = async (activeUser, prospect) => {
 	try {
 		const tenantData = {
-			name: Prospect.companyName,
+			name: prospect.companyName,
 			domain: getDomainFromEmail(activeUser.email),
 			adminUser: activeUser._id, // Assign the admin user to the tenant
 		};
