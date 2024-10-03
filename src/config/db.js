@@ -142,6 +142,7 @@ async function createDefaultGlobalDocuments() {
 
 export const closeDbConnection = () => {
 	disconnect()
+	return console.log("database has disconnected")
 }
 
 export const demoTenantId = "66af881237c17b64394a4166";

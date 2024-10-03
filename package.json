@@ -8,7 +8,8 @@
     "start": "node ./src/server.js",
     "dev": "nodemon ./src/server.js",
     "build:css": "npx tailwindcss -c ./src/config/tailwind.config.js --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css",
-    "watch:css": "npx tailwindcss -c ./src/config/tailwind.config.js --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w"
+    "watch:css": "npx tailwindcss -c ./src/config/tailwind.config.js --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o ./src/public/css/style.css -w",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,7 @@
   "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
   "dependencies": {
     "@sendgrid/mail": "^8.1.3",
+    "@shelf/jest-mongodb": "^4.3.2",
     "@tailwindcss/typography": "^0.5.15",
     "autoprefixer": "^10.4.20",
     "aws-sdk": "^2.1691.0",
@@ -45,6 +47,7 @@
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
     "moment": "^2.30.1",
+    "mongodb-memory-server": "^10.0.1",
     "mongoose": "^8.6.1",
     "mongoose-autopopulate": "^1.1.0",
     "mongoose-unique-validator": "^5.0.1",
