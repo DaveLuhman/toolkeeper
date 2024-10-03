@@ -26,7 +26,6 @@ import {
 	rateLimiter,
 	errorHandler,
 	AppError,
-	rawBodySaver,
 } from "./middleware/util.js";
 // routers
 import { dashboardRouter } from "./routes/dashboard.routes.js";
