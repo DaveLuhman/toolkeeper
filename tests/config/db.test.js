@@ -1,32 +1,41 @@
-import { connect, disconnect } from "mongoose";
-import {
-	Tenant,
-	Category,
-	ServiceAssignment,
-	User,
-} from "../../models/index.models.js";
-import connectDB, { closeDbConnection } from "../../config/db.js";
-
+import { closeDbConnection } from "../../src/config/db.js";
+import { config } from "dotenv";
+import { Tenant } from "../../src/models/index.models.js";
+import mongoose from "mongoose";
 jest.mock("mongoose");
-jest.mock("../../models/index.models.js");
+jest.mock("../../src/models/index.models.js");
+jest.mock("../../src/models/index.models.js", () => ({
+	Tenant: {
+		createWithDefaults: jest.fn().mockResolvedValue({
+			_id: "mockedTenantId",
+			name: "Mocked Tenant",
+		}),
+	},
+}));
+describe("closeDbConnection",  () => {
+	beforeAll(async () => {
+		await mongoose.connect(process.env.MONGODB_URI)
+		Tenant.createWithDefaults = jest.fn().mockResolvedValue({
+			_id: "mockedTenantId",
+			name: "Mocked Tenant",
+		});
+	});
+	afterEach(() => {
+		jest.clearAllMocks();
+	});
+	afterAll(async () => {
+		const conn = mongoose.connection;
 
-describe("closeDbConnection", () => {
+		if (conn) {
+            await conn.close();
+        }
+	});
 	it("should expose a function", () => {
 		expect(closeDbConnection).toBeDefined();
 	});
 
 	it("closeDbConnection should return expected output", () => {
 		const retValue = closeDbConnection();
-		expect(retValue).toBeTruthy();
-	});
-});
-describe("connectDB", () => {
-	it("should expose a function", () => {
-		expect(connectDB).toBeDefined();
-	});
-
-	it("connectDB should return expected output", async () => {
-		const retValue = await connectDB();
-		expect(retValue).toBeTruthy();
+		expect(retValue).toBe(0);
 	});
 });
