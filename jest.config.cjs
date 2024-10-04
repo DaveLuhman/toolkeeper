@@ -6,6 +6,8 @@ module.exports = {
   globalSetup: "./tests/jest/globalSetup.js",
   globalTeardown: "./tests/jest/globalTeardown.js",
 
+  setupFiles: ["./tests/jest/setupEnv.js"],
+
   // File(s) that will be executed after the environment is set up
   setupFilesAfterEnv: [
     "./tests/jest/setupFile.js"

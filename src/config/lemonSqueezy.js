@@ -1,6 +1,6 @@
 export const secret = "df027e53-f33b-4155-8ef2-a7366f65acfe";
 
-const toolkeeperProductObject = async () => {
+export const toolkeeperProductObject = async () => {
     try{
 	const response = await fetch("https://api.lemonsqueezy.com/v1/products", {
 		method: "get",
@@ -35,4 +35,5 @@ export const inTestMode = async () => {
     return attributes.test_mode
 }
 
+export default toolkeeperProductObject
 // src\config\lemonSqueezy.js

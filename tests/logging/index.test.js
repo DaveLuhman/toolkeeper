@@ -1,6 +1,6 @@
 import winston from 'winston';
 
-import { Log } from '../../models/index.models.js';
+import { Log } from '../../src./models/index.models.js';
 import { getLogsByTenant } from '../../logging/index';
 
 jest.mock('winston');

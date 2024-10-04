@@ -1,5 +1,5 @@
-import { checkoutUrl, inTestMode } from "../../config/lemonSqueezy";
-jest.mock("../../config/lemonSqueezy.js");
+import toolkeeperProductObject, { checkoutUrl, inTestMode } from "../../src/config/lemonSqueezy";
+jest.mock("../../src/config/lemonSqueezy.js");
 
 describe("toolkeeperProductObject", () => {
   it('should return a complex object called attributes', async ()=>{
