@@ -4,7 +4,7 @@
  * @param {Object} res - The response object.
  */
 export const renderLandingPage = (_req, res) => {
-    res.render('index', { layout: 'public.hbs' })
+    res.status(200).render('index', { layout: 'public.hbs' })
 }
 
 /**

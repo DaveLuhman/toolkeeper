@@ -34,7 +34,7 @@ async function connectDB() {
 				console.error(
 					"Failed to connect to the database after multiple attempts. Exiting.",
 				);
-				process.exit(1);
+				throw new Error("Connection failed");
 			}
 			console.warn(`Retrying database connection. Retries left: ${retries}`);
 		}
