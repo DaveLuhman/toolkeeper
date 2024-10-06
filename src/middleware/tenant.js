@@ -168,7 +168,7 @@ export const getTenants = async (req, res, next) => {
 
 		// Split tenants into active and inactive groups
 		for(const tenant of tenants){
-			tenant.subscription.status === "active" ? activeTenants.push(tenant) : inactiveTenants.push(tenant)
+			tenant.subscription?.status === "active" ? activeTenants.push(tenant) : inactiveTenants.push(tenant)
 		}
 
 		// Hoist active and inactive tenants to res.locals
