@@ -56,4 +56,18 @@ document.addEventListener("DOMContentLoaded", () => {
 	}
 });
 
+import "../css/style.css";
+
+document.addEventListener("DOMContentLoaded", () => {
+	const myDrawerTrigger = document.querySelector(".drawer #my-drawer");
+	// biome-ignore lint/complexity/noForEach: <explanation>
+	document.querySelectorAll(".drawer .drawer-side ul li").forEach((el) => {
+		el.addEventListener("click", () => {
+			if (myDrawerTrigger) {
+				myDrawerTrigger.checked = false;
+			}
+		});
+	});
+});
+
 // src\public\js\toolkeeper.js
