@@ -138,7 +138,7 @@ async function createProspect(req, res, next) {
   try {
     const newUser = await Prospect.create(userValues);
     console.info(`Created User ${newUser.email}`.green);
-    res.redirect(checkoutUrl)
+    res.redirect(await checkoutUrl())
   } catch (err) {
     console.error(`[MW] Error creating user: ${err.message}`.bgRed.white);
     return next(err); // Pass error to error handler middleware

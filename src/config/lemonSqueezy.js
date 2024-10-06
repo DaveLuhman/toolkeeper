@@ -10,7 +10,7 @@ export const toolkeeperProductObject = async () => {
 		headers: {
 			"Content-Type": "application/json",
 			Authorization:
-				`Bearer ${process.env.LEMON_SQUEEZY_API_KEY}`,
+				`Bearer ${process.env.LEMONSQUEEZY_API_KEY}`,
 		},
 	});
     if (! response.ok) throw new Error("Invalid response")
