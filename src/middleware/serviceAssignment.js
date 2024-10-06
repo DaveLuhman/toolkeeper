@@ -1,6 +1,6 @@
 import { ServiceAssignment } from "../models/index.models.js";
 import { mutateToArray } from "./util.js";
-
+import logger from "../logging/index.js";
 /**
  * Gets all service assignments.
  */
@@ -192,14 +192,14 @@ export const getServiceAssignmentJobNumber = (serviceAssignments, id) => {
         const serviceAssignment = serviceAssignments.filter((item) => item._id === id);
 
         if (serviceAssignment.length === 0) {
-            req.logger.warn({ message: 'Service assignment not found', id });
+            logger.warn({ message: 'Service assignment not found', id });
             return 'Unassigned';
         }
 
-        req.logger.info({ message: 'Service assignment found', jobNumber: serviceAssignment[0].jobNumber });
+        logger.info({ message: 'Service assignment found', jobNumber: serviceAssignment[0].jobNumber });
         return `${serviceAssignment[0].jobNumber} - ${serviceAssignment[0].jobName}`;
     } catch (error) {
-        req.logger.error({ message: 'Error retrieving service assignment', error: error.message });
+        logger.error({ message: 'Error retrieving service assignment', error: error.message });
         return 'Unassigned';
     }
 };
