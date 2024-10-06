@@ -7,9 +7,8 @@ body {
   @apply bg-gradient-to-t;
   @apply from-gray-700;
   @apply to-base-300;
-  @apply min-h-screen;
-  @apply min-w-min;
-  @apply p-0;
+  @apply min-w-min p-0 min-h-screen;
+  @apply overflow-x-hidden bg-base-100 font-body text-sm text-base-content antialiased;
 }
 /* custom css classes */
 .main-view {
@@ -358,9 +357,7 @@ html{
     @apply relative scroll-smooth;
 }
 
-body{
-    @apply overflow-x-hidden bg-base-100 font-body text-sm text-base-content antialiased;
-}
+
 
 :target {
     @apply lg:scroll-mt-0 scroll-m-12
