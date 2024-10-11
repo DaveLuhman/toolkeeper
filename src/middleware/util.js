@@ -3,6 +3,7 @@ import rateLimit from 'express-rate-limit'
 import { listCategoryNames } from './category.js'
 import { listActiveSAs } from './serviceAssignment.js'
 import xss from 'xss'
+import MongoStore from 'rate-limit-mongo'
 
 
 
@@ -14,7 +15,7 @@ import xss from 'xss'
  */
 export function mutateToArray(data) {
   if (!Array.isArray(data)) {
-    data = [data]
+    newData = [data]
   }
   return data
 }
@@ -66,10 +67,12 @@ export function sanitizeReqBody(req, _res, next) {
 export const populateDropdownItems = [listCategoryNames, listActiveSAs]
 
 export const rateLimiter = rateLimit({
+  skip: (req, res) => {return req.isAuthenticated()}, // Only apply rate limiting to unauthenticated users
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
   standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  skipSuccessfulRequests: true, // Skip middleware incrementer for successful requests
 })
 
 export const createAccountLimiter = rateLimit({

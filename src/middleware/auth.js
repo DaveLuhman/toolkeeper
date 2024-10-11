@@ -35,7 +35,7 @@ function isManager(req, res, next) {
     res.locals.error =
       'You are not a manager, and have been redirected to the dashboard'
     return res.redirect('/dashboard')
-    
+
   }
   return next()
 }
@@ -71,7 +71,7 @@ function login(req, res, next) {
  * })
  **/
 function logout(req, res, next) {
-  req.logout(function (err) {
+  req.logout((err) => {
     if (err) {
       return next(err)
     }
