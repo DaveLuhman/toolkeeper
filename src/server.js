@@ -35,7 +35,9 @@ import { settingsRouter } from './routes/settings/index.routes.js'
 import { toolRouter } from './routes/tool.routes.js'
 import { userRouter } from './routes/user.routes.js'
 import customHelpers from './helpers/index.js'
-
+import path from 'node:path'
+import { fileURLToPath } from 'node:url';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // use the imported dependencies as needed in the server.js file
 
 const MongoDBStore = connectMongoDBSession(session)
@@ -93,7 +95,7 @@ app.set('views', './src/views')
 // Express Middleware
 app.use(cookieParser())
 if (process.NODE_ENV === 'PRODUCTION') app.use(csurf({ cookie: true })) // Cross Site Request Forgery protection middleware
-app.use(express.static('./src/public')) // Serve Static Files
+app.use(express.static(path.join(__dirname, 'public')))
 app.use(fileUpload())
 app.use(express.json()) // JSON Body Parser
 app.use(express.urlencoded({ extended: false })) // Parse URL-encoded values

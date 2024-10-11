@@ -19,7 +19,7 @@ if (archiveButton) {
   archiveButton.addEventListener('click', function (e) {
     e.preventDefault()
     if (window.confirm('Would you like to archive this tool?')) {
-      window.location.href = '/tool/archive/{{tools.0.id}}'
+      window.location.href = archiveButton.children[0].getAttribute('href')
     }
   })
 }
