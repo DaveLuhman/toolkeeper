@@ -15,7 +15,7 @@ import MongoStore from 'rate-limit-mongo'
  */
 export function mutateToArray(data) {
   if (!Array.isArray(data)) {
-    newData = [data]
+    data = [data]
   }
   return data
 }
