@@ -23,15 +23,14 @@ const TenantSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "Subscription",
 			autopopulate: true,
-		  }
 		},
+	},
 	{
 		timestamps: true,
 	},
 );
 TenantSchema.plugin(mongooseAutoPopulate);
 TenantSchema.statics.createWithDefaults = async function (tenantData) {
-
 	try {
 		// Step 1: Create the tenant
 		const tenant = await this.create(tenantData);
@@ -77,12 +76,10 @@ TenantSchema.statics.createWithDefaults = async function (tenantData) {
 	}
 };
 
-TenantSchema.virtuals.activeUsers = {
-	get: async function () {
-        const User = mongoose.model("User");
-        return await User.find({ tenant: this._id }).countDocuments();
-    },
-};
+TenantSchema.virtual("activeUsers").get(async function () {
+	const User = mongoose.model("User");
+	return await User.find({ tenant: this._id }).countDocuments();
+});
 
 export default TenantSchema;
 
