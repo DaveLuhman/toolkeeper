@@ -6,27 +6,13 @@ import {Tenant} from "../../src/models/index.models.js"; // Adjust this import t
 let mongoServer;
 
 describe("Tenant Model", () => {
-	// Set up an in-memory MongoDB instance before each test
-	beforeEach(async () => {
-		mongoServer = await MongoMemoryServer.create();
-		const uri = mongoServer.getUri();
-		await mongoose.connect(uri, {
-			useNewUrlParser: true,
-			useUnifiedTopology: true,
-		});
-	});
-
-	// Disconnect from in-memory MongoDB after each test
-	afterEach(async () => {
-		await mongoose.disconnect();
-		await mongoServer.stop();
-	});
 
 	// Test case 1: Valid tenant creation
 	it("should create a tenant successfully with valid fields", async () => {
 		const validTenantData = {
-			name: "Test Tenant",
-			subscriptionStatus: "active",
+			name: "demo",
+			domain: "toolkeeper.site",
+			adminUser: "663870c0a1a9cdb4b707c737"
 		};
 		const tenant = new Tenant(validTenantData);
 		const savedTenant = await tenant.save();
