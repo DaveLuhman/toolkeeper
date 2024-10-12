@@ -37,6 +37,9 @@ import { applyImpersonation } from "./middleware/tenant.js";
 import webhookRouter from "./routes/webhooks.routes.js";
 import bodyParser from "body-parser";
 import tenantLogger from "./logging/middleware.js";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const MongoDBStore = connectMongoDBSession(session);
 const PORT = process.env.PORT || 5000;
@@ -86,7 +89,8 @@ app.set("trust proxy", 1);
 // Express Middleware
 app.use(cookieParser());
 if (process.NODE_ENV === "PRODUCTION") app.use(csurf({ cookie: true })); // Cross Site Request Forgery protection middleware
-app.use(express.static("./src/public")); // Serve Static Files
+
+app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 // Middleware to capture the raw body for /webhooks route
 app.use("/webhooks", bodyParser.raw({ type: "*/*" }), (req, res, next) => {
