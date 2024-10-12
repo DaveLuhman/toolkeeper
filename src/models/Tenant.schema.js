@@ -76,6 +76,14 @@ TenantSchema.statics.createWithDefaults = async function (tenantData) {
 		throw error; // Re-throw the error to be handled by the caller
 	}
 };
+
+TenantSchema.virtuals.activeUsers = {
+	get: async function () {
+        const User = mongoose.model("User");
+        return await User.find({ tenant: this._id }).countDocuments();
+    },
+};
+
 export default TenantSchema;
 
 // src\models\Tenant.schema.js
