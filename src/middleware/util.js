@@ -64,11 +64,13 @@ export function sanitizeReqBody(req, _res, next) {
 export const populateDropdownItems = [listCategoryNames, listActiveSAs];
 
 export const rateLimiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-});
+  skip: (req, res) => {return req.isAuthenticated()}, // Only apply rate limiting to unauthenticated users
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  skipSuccessfulRequests: false, // Skip middleware incrementer for successful requests
+})
 
 export const createAccountLimiter = rateLimit({
 	windowMs: 60 * 60 * 1000, // 1 hour
