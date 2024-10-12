@@ -8,7 +8,7 @@ const subscriptionSchema = new Schema({
 		enum: ["pending", "active", "lapsed", "cancelled", "expired"],
 		default: "pending",
 	},
-	plan: { type: String, enum: ["monthly", "annual"] },
+	plan: { type: String, enum: ["monthly", "annual"], required: true },
 	lemonSqueezyId: { type: String, required: true }, // Corresponds to the "id" field
 	lemonSqueezyObject: Object
 },
