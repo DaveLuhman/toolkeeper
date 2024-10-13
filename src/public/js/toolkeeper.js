@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 function btnToSpinner() {
 	const submitBtn = document.querySelector("#testButton");
 
