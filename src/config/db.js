@@ -44,8 +44,8 @@ async function connectDB() {
 }
 
 async function createDefaultUser() {
-	try {
-		const createdUser = await User.create({
+	const usersToCreate = [
+		{
 			_id: "663870c0a1a9cdb4b707c737",
 			firstName: "Admin",
 			lastName: "User",
@@ -53,8 +53,19 @@ async function createDefaultUser() {
 			role: "Superadmin",
 			email: "admin@toolkeeper.site",
 			tenant: "66af881237c17b64394a4166",
-		});
-		return createdUser;
+		},
+		{
+			_id: "663870c0a1a9cdb4b707c738",
+			firstName: "Demo",
+			lastName: "User",
+			password: "demo",
+			role: "Manager",
+			email: "demo@toolkeeper.site",
+			tenant: "66af881237c17b64394a4166",
+		}]
+	try {
+		const createdUsers = await User.create(usersToCreate);
+		return createdUsers;
 	} catch (error) {
 		console.error(`Error creating default user: ${error.message}`);
 		throw new Error(`Failed to create default user: ${error.message}`);
