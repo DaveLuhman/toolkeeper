@@ -189,7 +189,7 @@ export async function listAllSAs(req, res, next) {
  */
 export const getServiceAssignmentJobNumber = (serviceAssignments, id) => {
     try {
-        const serviceAssignment = serviceAssignments.filter((item) => item._id === id);
+        const serviceAssignment = serviceAssignments.filter((item) => item._id.valueOf() === id);
 
         if (serviceAssignment.length === 0) {
             logger.warn({ message: 'Service assignment not found', id });

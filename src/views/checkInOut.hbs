@@ -25,7 +25,7 @@
                                     {{serviceAssignment.jobName}}
                                 </td>
                                 <td name="newServiceAssignmment">
-                                    {{getServiceAssignmentJobNumber ../allServiceAssignments ../destinationServiceAssignment}}
+                                    {{getServiceAssignmentJobNumber ../activeServiceAssignments ../destinationServiceAssignment}}
 
                                 </td>
                             </tr>
@@ -82,3 +82,4 @@
     {{destinationServiceAssignment}}
     {{/if}}
 </div>
+  {{stringify .}}

@@ -15,7 +15,8 @@ function openInNewTab() {
 	newPage.innerHTML = document.getElementById("printerFriendlyTools").innerHTML;
 	x.document.body.appendChild(newPage);
 }
-if (document.getElementsByClassName("fa-print")) {
+if (document.getElementsByClassName("fa-print").length > 0) {
+	console.log("Print button found.");
 	document
 		.getElementsByClassName("fa-print")[0]
 		.addEventListener("click", openInNewTab);
