@@ -90,6 +90,14 @@ app.set("trust proxy", 1);
 app.use(cookieParser());
 if (process.NODE_ENV === "PRODUCTION") app.use(csurf({ cookie: true })); // Cross Site Request Forgery protection middleware
 
+// Add this middleware before express.static
+app.use((req, res, next) => {
+  if (req.path.endsWith('.js')) {
+    res.setHeader('Content-Type', 'application/javascript');
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 // Middleware to capture the raw body for /webhooks route

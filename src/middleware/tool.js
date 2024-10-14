@@ -453,7 +453,7 @@ async function checkTools(req, res, next) {
     const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/));
     const toolsToBeChanged = await lookupToolWrapper(
       search,
-      req.user.tenantId.valueOf()
+      req.user.tenant.valueOf()
     );
 
     if (toolsToBeChanged.length === 0) {
@@ -474,7 +474,53 @@ async function checkTools(req, res, next) {
     res.status(500).json({ message: error.message });
   }
 }
-
+/**
+ *
+ * @param {string} searchTerm search target
+ * @param {string} searchField optional, key to search - if not provided, will search all fields
+ * @returns {object}
+ */
+async function lookupTool(searchTerm, tenant) {
+	const capitalizedSearchTerm = searchTerm.toUpperCase();
+	let result = await Tool.findOne({
+		serialNumber: { $eq: capitalizedSearchTerm },
+		tenant: { $eq: tenant },
+	});
+	if (!result) {
+		result = await Tool.findOne({
+			barcode: { $eq: capitalizedSearchTerm },
+			tenant: { $eq: tenant },
+		});
+	}
+	if (!result) {
+		result = await Tool.findOne({
+			toolID: { $eq: capitalizedSearchTerm },
+			tenant: { $eq: tenant },
+		});
+	}
+	if (!result) {
+		result = {};
+	}
+	return result;
+}
+/**
+ * @name lookupToolWrapper
+ * @desc iterator for looking up multiple search terms for checkTools
+ * @param {*} searchTerms
+ * @return {*} array of tools, with dummy objects if nothing is found
+ */
+async function lookupToolWrapper(searchTerms, tenantId) {
+	const tools = [];
+	for (let i = 0; i < searchTerms.length; i++) {
+		const result = await lookupTool(searchTerms[i], tenantId);
+		if (result?.serialNumber === undefined) {
+			tools.push({
+				serialNumber: searchTerms[i],
+			});
+		} else tools.push(result);
+	}
+	return tools;
+}
 /**
  * Middleware to submit check-in/out requests for tools.
  */

@@ -7,19 +7,19 @@ function btnToSpinner() {
 	});
 }
 
-/*
- * Function to open the printer friendly tools in a new tab
- */
-// eslint-disable-next-line no-unused-vars
-const openInNewTab = () => {
+function openInNewTab() {
 	const x = window.open();
 	const newPage = x.document.createElement("div");
 	newPage.width = "100%";
 	newPage.height = "100%";
 	newPage.innerHTML = document.getElementById("printerFriendlyTools").innerHTML;
 	x.document.body.appendChild(newPage);
-};
-
+}
+if (document.getElementsByClassName("fa-print")) {
+	document
+		.getElementsByClassName("fa-print")[0]
+		.addEventListener("click", openInNewTab);
+}
 function populateDashboard(cachedData) {
 	const serviceAssignmentsContainer = document.getElementById(
 		"service-assignments-parent",
@@ -54,8 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
 		console.log("No cached data found.");
 	}
 });
-
-import "../css/style.css";
 
 document.addEventListener("DOMContentLoaded", () => {
 	const myDrawerTrigger = document.querySelector(".drawer #my-drawer");
