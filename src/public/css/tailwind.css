@@ -1,8 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-/* Global CSS */
+
+
 body {
   @apply bg-gradient-to-t;
   @apply from-gray-700;
@@ -10,7 +8,7 @@ body {
   @apply min-w-min p-0 min-h-screen;
   @apply overflow-x-hidden bg-base-100 font-body text-sm text-base-content antialiased;
 }
-/* custom css classes */
+
 .main-view {
   @apply flex;
   @apply items-center;
@@ -70,7 +68,7 @@ body {
   @apply z-10;
 }
 
-/* ------------------LOGIN----------------------- */
+
 .login-wrapper {
   @apply flex-col;
   @apply justify-center;
@@ -155,11 +153,11 @@ body {
   @apply focus:ring-opacity-50;
   @apply ring-inset;
 }
-/* ------------------END LOGIN----------------------- */
-/* START MAIN.hbs LAYOUT RENDER TARGETS */
 
-/* dashboard view */
-/* -------------SEARCH TERMS FLASH----------------- */
+
+
+
+
 h1#search-terms {
   @apply text-xl;
   @apply text-center;
@@ -172,7 +170,7 @@ h1#search-terms {
   @apply ml-5;
   @apply mr-5;
 }
-/* -----------------TABLE------------------ */
+
 table.table {
   @apply text-gray-100;
 
@@ -206,12 +204,12 @@ td {
   @apply border-base-300;
   @apply text-center;
 }
-/* -----------------END TABLE------------------ */
+
 #settings-nav {
   @apply w-auto;
   @apply mt-10;
 }
-/* ----------------MODALS------------- */
+
 .modal-inner-lg {
   @apply modal-box;
   @apply max-w-5xl;
@@ -270,7 +268,7 @@ td {
   @apply text-center;
   @apply m-2;
 }
-/* ------------Form Fields----------------- */
+
 .form-wrapper {
   @apply flex;
   @apply flex-wrap;
@@ -287,7 +285,7 @@ td {
   @apply gap-4;
   @apply mb-2;
 }
-/* ------------PAGINATION BAR------------------------ */
+
 .paginate-bar {
   @apply flex;
   @apply flex-wrap;
@@ -302,7 +300,7 @@ td {
   @apply btn;
 }
 
-/* ------- FOOTER ---------- */
+
 footer.tk-footer {
   @apply flex;
   @apply flex-wrap;
@@ -314,32 +312,32 @@ footer.tk-footer {
   @apply relative;
   @apply z-10;
 }
-/* This is for the Twitter - Youtube - Facebook Icons in the footer */
+
 svg.fill-current {
   @apply inline-block;
 }
-/* ------- SCROLLBAR SETTINGS --------*/
-/* width */
+
+
 ::-webkit-scrollbar {
     width: 10px;
 }
 
-/* Track */
+
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
 
-/* Handle */
+
 ::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 5px;
 }
 
-/* Handle on hover */
+
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
-/* js invoked classes */
+
 .changed {
   @apply bg-red-500;
   @apply text-white;

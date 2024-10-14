@@ -10,7 +10,12 @@ import { checkoutUrl } from '../config/lemonSqueezy.js'
  */
 async function getUsers(req, res, next) {
   console.info('[MW] getUsers-in'.bgBlue.white)
-  const users = await User.find().where("tenant").equals(req.user.tenant.valueOf())
+  const users = await User.find()
+  .where("tenant")
+  .equals(req.user.tenant.valueOf())
+  .where("role")
+  .in(["Manager", "User", "Admin"])
+  .sort({ createdAt: -1 })
   res.locals.users = mutateToArray(users)
   console.info('[MW] getUsers-out-2'.bgWhite.blue)
   return next()
