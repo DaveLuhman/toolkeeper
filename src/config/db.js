@@ -72,6 +72,22 @@ async function createDefaultUser() {
 	}
 }
 
+async function createDefaultSubscription() {
+	try {
+        return await Subscription.create({
+            _id: "66af881237c17b64394a4167",
+            user: "663870c0a1a9cdb4b707c737",
+            tenant: "66af881237c17b64394a4166",
+			status: "Active",
+            plan: "Basic",
+
+        });
+    } catch (error) {
+        console.error(`Error creating default subscription: ${error.message}`);
+        throw new Error(`Failed to create default subscription: ${error.message}`);
+    }
+}
+
 async function createDefaultTenant() {
 	try {
 		const tenant = await Tenant.create({

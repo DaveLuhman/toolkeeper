@@ -1,9 +1,8 @@
  const migrateCategory = async (db, tenant) => {
-    const oldCategories = await db.collection('categories').find({}).toArray();
+    const oldCategories = await db.collection('categories_old').find({}).toArray();
 
-    const newCategories = oldCategories.map((assignment) => ({
-        ...assignment,
-        toolCount: 0, // New field
+    const newCategories = oldCategories.map((category) => ({
+        ...category,
         tenant,
     }));
 
