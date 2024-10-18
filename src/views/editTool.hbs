@@ -153,7 +153,7 @@
                 <tr>
                     <td class="hidden md:table-cell">{{entry.description}}</td>
                     <td>{{entry.status}}</td>
-                    <td>{{getServiceAssignmentJobNumber ../activeServiceAssignments entry.serviceAssignment}}</td>
+                    <td>{{getServiceAssignmentJobNumber ../allServiceAssignments entry.serviceAssignment}}</td>
                     <td class="hidden md:table-cell">{{getCategoryName ../categories entry.category}}</td>
                     <td>{{moment entry.updatedAt format="MM/DD/YYYY hh:mm A"}}</td>
                 </tr>

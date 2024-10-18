@@ -63,6 +63,6 @@ toolRouter.get("/archive/:id", archiveTool, getAllTools, renderResults);
 toolRouter.get("/unarchive/:id", unarchiveTool, getAllTools, renderResults);
 
 // get tool by id
-toolRouter.get("/:id", getToolByID, renderEditTool);
+toolRouter.get("/:id", getToolByID, listAllSAs, renderEditTool);
 
 // src\routes\tool.routes.js

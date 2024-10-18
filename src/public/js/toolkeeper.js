@@ -32,15 +32,17 @@ function populateDashboard(cachedData) {
 		// Loop through the cached service assignments and render them
 		// biome-ignore lint/complexity/noForEach: <explanation>
 		cachedData.serviceAssignments.forEach((assignment) => {
-			const assignmentElement = document.createElement("div");
-			assignmentElement.innerHTML = `
+			if (assignment.toolCount > 0 && assignment.active) {
+				const assignmentElement = document.createElement("div");
+				assignmentElement.innerHTML = `
       <tr>
         <td><a href="/tool/search?searchBy=serviceAssignment&searchTerm=${assignment._id}"> ${assignment.toolCount}  | ${assignment.jobNumber} - ${assignment.jobName}</td>
       </tr>
     `;
 
-			// Append each assignment to the container
-			serviceAssignmentsContainer.appendChild(assignmentElement);
+				// Append each active assignment to the container
+				serviceAssignmentsContainer.appendChild(assignmentElement);
+			}
 		});
 	}
 }

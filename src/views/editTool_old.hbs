@@ -127,7 +127,7 @@
                     <td>{{entry.modelNumber}}</td>
                     <td>{{entry.description}}</td>
                     <td>{{entry.status}}</td>
-                    <td>{{getServiceAssignmentJobNumber ../activeServiceAssignments entry.serviceAssignment}}</td>
+                    <td>{{getServiceAssignmentJobNumber ../allServiceAssignments entry.serviceAssignment}}</td>
                     <td>{{getCategoryName ../categories entry.category}}</td>
                     <td>{{moment entry.updatedAt format="MM/DD/YYYY hh:mm A"}}</td>
                     <td>{{entry.__v}}</td>
@@ -138,6 +138,7 @@
         <p>We don't have any history for this tool.</p>
     {{/if}}
 </div>
+{{stringify .}}
 <script>
 
   const form = document.querySelector('form')
