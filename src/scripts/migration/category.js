@@ -1,12 +1,13 @@
- const migrateCategory = async (db, tenant) => {
-    const oldCategories = await db.collection('categories_old').find({}).toArray();
+import { Category } from "../../models/index.models.js";
+import mongoose from "mongoose";
+const migrateCategory = async (tenant) => {
+    const oldCategories = await Category.find({})
+    await mongoose.connection.collection('categories').rename('categories_old');
+    for (const category of oldCategories) {
+        category.tenant = tenant;
+    }
 
-    const newCategories = oldCategories.map((category) => ({
-        ...category,
-        tenant,
-    }));
-
-    await db.collection('categories').insertMany(newCategories);
+    await Category.insertMany(oldCategories);
     console.log('Categories migrated successfully.');
 };
 

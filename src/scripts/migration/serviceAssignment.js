@@ -1,12 +1,14 @@
-const migrateServiceAssignments = async (db, tenant) => {
-    const oldAssignments = await db.collection('serviceassignments_old').find({}).toArray();
+import { ServiceAssignment } from "../../models/index.models.js";
+import mongoose from "mongoose";
 
-    const newAssignments = oldAssignments.map((assignment) => ({
-        ...assignment,
-        tenant
-    }));
-
-    await db.collection('serviceassignments').insertMany(newAssignments);
+const migrateServiceAssignments = async (tenant) => {
+    console.log('Migrating Service Assignments...');
+    const oldAssignments = await ServiceAssignment.find({})
+    await mongoose.connection.collection("serviceassignments").rename("serviceassignments_old");
+    for (const assignment of oldAssignments) {
+        assignment.tenant = tenant;
+    }
+    await ServiceAssignment.insertMany(oldAssignments);
     console.log('ServiceAssignments migrated successfully.');
 };
 

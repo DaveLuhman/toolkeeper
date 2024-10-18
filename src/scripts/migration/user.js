@@ -1,14 +1,13 @@
-const migrateUsers = async (db, tenantId) => {
-    const oldUsers = await db.collection('users_old').find({}).toArray();
+import { User } from "../../models/index.models.js";
 
-    const newUsers = oldUsers.map((user) => ({
-        ...user,
-        tenant:tenantId || user.tenant  // New field
-    }));
-
-    await db.collection('users').insertMany(newUsers);
-    console.log('Users migrated successfully.');
+const migrateUsers = async (tenantId) => {
+	const users = await User.find()
+	for (const user of users) {
+		user.tenant = tenantId;
+		await user.save();
+	}
+	console.log("Users migrated successfully.");
 };
 
-export default migrateUsers
+export default migrateUsers;
 // src\scripts\migration\user.js
