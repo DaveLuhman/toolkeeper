@@ -6,7 +6,6 @@ const ToolSchema = new Schema(
 		serialNumber: {
 			type: String,
 			upperCase: true,
-			unique: true,
 			maxLength: 32,
 			trim: true,
 			required: true,
@@ -97,6 +96,8 @@ const ToolSchema = new Schema(
 		strict: false,
 	},
 );
+ToolSchema.index({ serialNumber: 1, tenant: 1 }, { unique: true });
+ToolSchema.index({ barcode: 1, tenant: 1 }, { unique: true });
 
 ToolSchema.plugin(mongooseAutoPopulate);
 

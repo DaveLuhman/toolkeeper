@@ -3,12 +3,15 @@ import mongoose from "mongoose";
 
 const migrateServiceAssignments = async (tenant) => {
     console.log('Migrating Service Assignments...');
-    const oldAssignments = await ServiceAssignment.find({})
-    await mongoose.connection.collection("serviceassignments").rename("serviceassignments_old");
-    for (const assignment of oldAssignments) {
-        assignment.tenant = tenant;
+    const allServiceAssignments = await ServiceAssignment.find({})
+    try{
+    for (const assignment of allServiceAssignments) {
+        if(assignment.tenant === undefined) assignment.tenant = tenant;
+        await assignment.save();
+    }}
+    catch(err){
+        console.error(err);
     }
-    await ServiceAssignment.insertMany(oldAssignments);
     console.log('ServiceAssignments migrated successfully.');
 };
 

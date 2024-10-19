@@ -22,7 +22,7 @@ async function getCheckedInTools(tenantId, logger) {
 
 		const checkedInTools = tools.filter((tool) =>
 			stockroomDocs.some((stockroomDoc) =>
-				stockroomDoc._id.equals(tool.serviceAssignment),
+				stockroomDoc.equals(tool.serviceAssignment),
 			),
 		);
 
