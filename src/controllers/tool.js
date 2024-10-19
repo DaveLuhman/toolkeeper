@@ -123,27 +123,7 @@ async function getDashboardStats(tenantId, logger) {
 /**
  * Retrieves the recently updated tools.
  */
-async function getRecentlyUpdatedTools(tenant, logger) {
-	try {
-		const tools = await Tool.find({ tenant: { $eq: tenant } })
-			.sort({ updatedAt: -1 })
-			.limit(50);
 
-		logger.info({
-			message: "Fetched recently updated tools",
-			metadata: { tenantId: tenant, toolCount: tools.length },
-		});
-
-		return tools;
-	} catch (error) {
-		logger.error({
-			message: "Failed to fetch recently updated tools",
-			metadata: { tenantId: tenant },
-			error: error.message,
-		});
-		return [];
-	}
-}
 
 /**
  * Renders the results page.
@@ -178,10 +158,6 @@ export const renderEditTool = (_req, res) => {
 export const renderDashboard = async (req, res) => {
 	try {
 		res.locals.dashboardStats = await getDashboardStats(
-			req.user.tenant,
-			req.logger,
-		);
-		res.locals.recentlyUpdatedTools = await getRecentlyUpdatedTools(
 			req.user.tenant,
 			req.logger,
 		);

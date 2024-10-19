@@ -28,6 +28,15 @@
   {{/if}}
   {{{body}}}
   {{#if user.preferences.developer}}
+  <div class="flex flex-col max-w-screen-md " id="developer">
+  {{#forEach (organizeContext .)}}
+  <div class=" flex-wrap">
+    <h2>{{key}}</h2>
+    <pre class="overflow-y-scroll max-h-128 text-pretty">{{stringify content}}</pre>
+  </div>
+  {{/forEach}}
+  </div>
+  </div>
   {{/if}}
   {{> _footer}}
   {{> _modals}}
