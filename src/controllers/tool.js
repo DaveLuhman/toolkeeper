@@ -186,7 +186,6 @@ export const renderBatchCreationPage = (_req, res) => {
  */
 export const batchCreateTools = async (req, res) => {
 	const { newTools, errorList } = await batchImportTools(req.body);
-	console.log(newTools);
 	res.locals.tools = deduplicateArray(newTools).filter(
 		(tool) => tool !== undefined,
 	);

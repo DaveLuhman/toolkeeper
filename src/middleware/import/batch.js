@@ -146,7 +146,6 @@ async function createBatchTool(toolObject) {
     }
 
     const newTool = await Tool.create(toolObject);
-    console.log(`New Tool Created: ${newTool}`);
 
     return newTool;
   } catch (duplicateError) {
