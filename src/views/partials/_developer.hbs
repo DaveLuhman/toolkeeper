@@ -1,0 +1,12 @@
+{{#if user.preferences.developer}}
+<div class="flex justify-between mx-[8%]" id="developer">
+  <div class="grid grid-cols-3 gap-4 max-w-screen-md">
+    {{#forEach (organizeContext .)}}
+    <div class="overflow-auto max-h-[150px]">
+      <h2 class="font-bold mb-2">{{key}}</h2>
+      <pre class="whitespace-pre-wrap break-words">{{stringify content}}</pre>
+    </div>
+    {{/forEach}}
+  </div>
+</div>
+{{/if}}
