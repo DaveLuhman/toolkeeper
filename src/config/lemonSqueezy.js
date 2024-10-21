@@ -1,29 +1,24 @@
 export const secret = "df027e53-f33b-4155-8ef2-a7366f65acfe";
+import { lemonSqueezySetup } from '@lemonsqueezy/lemonsqueezy.js';
+lemonSqueezySetup({apiKey: process.env.LEMONSQUEEZY_API_KEY});
+import { lemonSqueezyClient } from '@lemonsqueezy/lemonsqueezy.js';
 
 export const toolkeeperProductObject = async () => {
-    try{
-	const response = await fetch("https://api.lemonsqueezy.com/v1/products", {
-		method: "get",
-		mode: "cors",
-		credentials: "include",
-		cache: "no-store",
-		headers: {
-			"Content-Type": "application/json",
-			Authorization:
-				`Bearer ${process.env.LEMONSQUEEZY_API_KEY}`,
-		},
-	});
-    if (! response.ok) throw new Error("Invalid response")
+    try {
+        const { data: products } = await lemonSqueezyClient.listAllProducts();
+        const toolkeeper = products.find(product => product.attributes.slug === "toolkeeper");
 
-	const jsonData = await response.json();
-	const toolkeeper = jsonData.data.filter((product) => {
-		return product.attributes.slug === "toolkeeper";
-	});
-	return toolkeeper[0].attributes;
-} catch(err){
-    console.log(err.message)
-}
+        if (!toolkeeper) {
+            throw new Error("Toolkeeper product not found");
+        }
+
+        return toolkeeper.attributes;
+    } catch (err) {
+        console.error("Error fetching Toolkeeper product:", err.message);
+        throw err;
+    }
 };
+
 
 export const checkoutUrl = async () => {
     const attributes = await toolkeeperProductObject()

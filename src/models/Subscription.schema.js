@@ -8,12 +8,53 @@ const subscriptionSchema = new Schema({
 		enum: ["pending", "active", "lapsed", "cancelled", "expired"],
 		default: "pending",
 	},
-	plan: { type: String, enum: ["monthly", "annual"], required: true },
 	lemonSqueezyId: { type: String, required: true }, // Corresponds to the "id" field
-	lemonSqueezyObject: Object
+	lemonSqueezyObject: {
+		type: Object,
+		required: true,
+		default: {},
+		// Define some common fields, but allow for flexibility
+		storeId: Number,
+		customerId: Number,
+		orderId: Number,
+		orderItemId: Number,
+		productId: Number,
+		variantId: Number,
+		productName: String,
+		variantName: String,
+		userName: String,
+		userEmail: String,
+		status: String,
+		statusFormatted: String,
+		cardBrand: String,
+		cardLastFour: String,
+		pause: String,
+		cancelled: Boolean,
+		trialEndsAt: Date,
+		billingAnchor: Number,
+		firstSubscriptionItem: {
+			id: Number,
+			subscriptionId: Number,
+			priceId: Number,
+			quantity: Number,
+			createdAt: Date,
+			updatedAt: Date,
+		},
+		urls: {
+			updatePaymentMethod: String,
+			customerPortal: String,
+			customerPortalUpdateSubscription: String,
+		},
+		renewsAt: Date,
+		endsAt: Date,
+		createdAt: Date,
+		updatedAt: Date,
+		testMode: Boolean,
+	}
 },
 {
 	timestamps: true,
+	strict: false // This allows for additional fields not explicitly defined
 });
 
 export default subscriptionSchema

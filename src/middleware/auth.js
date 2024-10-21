@@ -80,3 +80,7 @@ function logout(req, res, next) {
 export { checkAuth, isManager, login, logout };
 
 // src\middleware\auth.js
+
+// add function that checks if the user's tenant's subscription is active
+
+

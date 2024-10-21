@@ -1,4 +1,4 @@
-import { Prospect, User } from '../models/index.models.js'
+import { Prospect, User, Tenant } from '../models/index.models.js'
 import { mutateToArray } from './util.js'
 import { checkoutUrl } from '../config/lemonSqueezy.js'
 
@@ -50,58 +50,73 @@ async function createUser(req, res, next) {
   console.info('[MW] createUser-in'.bgBlue.white);
 
   const { firstName, lastName, email, password, confirmPassword, role } = req.body;
+  const tenant = req.user.tenant.valueOf();
 
-  // Check if email and password are provided
-  if (!email || !password) {
-    const error = 'Email and Password are required';
-    console.warn(error.yellow);
-    res.locals.error = error;
-    console.info('[MW] createUser-out-1'.bgWhite.blue);
-    return res.status(400).redirect('back');
-  }
-
-  // Check if email already exists
   try {
-    const existingUser = await User.findOne({ email, tenant: req.user.tenant });
-    if (existingUser) {
-      const error = 'Email is already registered';
-      console.warn(error.yellow);
-      res.locals.error = error;
-      console.info('[MW] createUser-out-2'.bgWhite.blue);
-      return res.status(400).redirect('back');
+    // Check if email and password are provided
+    if (!email || !password) {
+      throw new Error('Email and Password are required');
     }
-  } catch (err) {
-    console.error(`[MW] Error checking email: ${err.message}`.bgRed.white);
-    return next(err); // Pass error to error handler middleware
-  }
 
-  // Check if passwords match
-  if (password !== confirmPassword) {
-    const error = 'Passwords do not match';
-    console.warn(error.yellow);
-    res.locals.error = error;
-    console.info('[MW] createUser-out-3'.bgWhite.blue);
-    return res.status(400).redirect('back');
-  }
+    // Check if email already exists in the same tenant
+    const existingUser = await User.findOne({ email, tenant });
+    if (existingUser) {
+      throw new Error('Email is already registered');
+    }
 
-  // Try to create a new user
-  try {
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      throw new Error('Passwords do not match');
+    }
+
+    // Check user limit based on subscription
+    const tenantDoc = await Tenant.findById(tenant).populate('subscription');
+    if (!tenantDoc || !tenantDoc.subscription) {
+      throw new Error('Invalid tenant or subscription');
+    }
+
+    const currentUserCount = await User.countDocuments({ tenant });
+
+    // Derive the plan variant from lemonSqueezyObject
+    const variantId = tenantDoc.subscription.lemonSqueezyObject.variantId;
+    let userLimit;
+
+    switch (variantId) {
+      case 123: // Assuming 123 is the variant ID for the enterprise plan
+        userLimit = Infinity; // No limit for enterprise
+        break;
+      case 456: // Assuming 456 is the variant ID for the pro plan
+        userLimit = 5;
+        break;
+      default:
+        userLimit = 1; // Default limit for other plans (e.g., basic)
+    }
+
+    if (currentUserCount >= userLimit) {
+      const planName = tenantDoc.subscription.lemonSqueezyObject.variantName;
+      throw new Error(`User limit reached for ${planName} plan`);
+    }
+
+    // Create the new user
     const newUser = await User.create({
       firstName,
       lastName,
       email,
       password,
       role,
-      tenant: req.user.tenant.valueOf() // Assuming tenant is part of req.user
+      tenant
     });
 
     console.log(newUser);
     console.info(`Created User ${newUser._id}`.green);
-    console.info('[MW] createUser-out-4'.bgWhite.blue);
+    res.locals.message = 'User created successfully';
+    res.status(201);
     return next();
-  } catch (err) {
-    console.error(`[MW] Error creating user: ${err.message}`.bgRed.white);
-    return next(err); // Pass error to error handler middleware
+  } catch (error) {
+    console.error(`[MW] Error creating user: ${error.message}`.bgRed.white);
+    res.locals.error = error.message;
+    res.status(400);
+    return next(error);
   }
 }
 /**
@@ -289,3 +304,6 @@ export {
 }
 
 // src\middleware\user.js
+
+
+
