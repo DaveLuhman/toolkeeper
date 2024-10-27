@@ -2,7 +2,6 @@ import { Router } from "express";
 import { checkAuth, login, logout } from "../middleware/auth.js";
 import { createProspect, createUser } from "../middleware/user.js";
 import {
-	renderDemoPage,
 	renderLandingPage,
 	renderLoginPage,
 	renderRegisterPage,
@@ -20,8 +19,6 @@ export const indexRouter = Router();
 indexRouter.get("/", renderLandingPage);
 // Render Login Page
 indexRouter.get("/login", renderLoginPage);
-// Login User
-indexRouter.get("/demo", renderDemoPage);
 // Login User
 indexRouter.post("/login", login);
 // Render register Page

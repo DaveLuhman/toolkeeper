@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { renderDocsPage, renderFaqPage, renderGettingStartedPage } from "../controllers/docs";
+import { renderDocsPage, renderFaqPage, renderGettingStartedPage } from "../controllers/docs.js";
 
 const docsRouter = Router();
 
