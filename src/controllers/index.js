@@ -16,19 +16,11 @@ export const renderLoginPage = (_req, res) => {
 }
 
 /**
- * Renders the login page.
- * @param {Object} res - The response object.
- */
-export const renderDemoPage = (_req, res) => {
-    res.render('auth/demo', { layout: 'auth.hbs' });
-}
-
-/**
  * Redirects to the dashboard.
  * @param {Object} _req - The request object.
  * @param {Object} res - The response object.
  */
-export const redirectToDashboard = (req, res) => {
+export const redirectToDashboard = (_req, res) => {
     res.redirect('/dashboard')
 }
 

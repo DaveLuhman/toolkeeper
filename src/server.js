@@ -119,14 +119,15 @@ app.use(rateLimiter);
 app.use(tenantLogger);
 // Routes (No User Context)
 app.use("/", indexRouter);
+app.use("/docs", docsRouter);
 // Routes (User Context)
-
 app.use(checkAuth);
 app.use(applyImpersonation);
 app.use(populateDropdownItems);
 app.use("/user", userRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/tool", toolRouter);
+// Routes (Manager Context)
 app.use(isManager);
 app.use("/settings", settingsRouter);
 // catch 404 and forward to error handler
