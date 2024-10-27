@@ -39,6 +39,7 @@ import bodyParser from "body-parser";
 import tenantLogger from "./logging/middleware.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import docsRouter from "./routes/docs.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const MongoDBStore = connectMongoDBSession(session);
@@ -92,10 +93,10 @@ if (process.NODE_ENV === "PRODUCTION") app.use(csurf({ cookie: true })); // Cros
 
 // Add this middleware before express.static
 app.use((req, res, next) => {
-  if (req.path.endsWith('.js')) {
-    res.setHeader('Content-Type', 'application/javascript');
-  }
-  next();
+	if (req.path.endsWith(".js")) {
+		res.setHeader("Content-Type", "application/javascript");
+	}
+	next();
 });
 
 app.use(express.static(path.join(__dirname, "public")));
