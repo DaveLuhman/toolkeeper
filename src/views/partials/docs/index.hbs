@@ -1,0 +1,28 @@
+{{#if message}}
+    <div id="message">
+        <span title="message">
+            <div class="font-extrabold text-red-700 alert alert-info">{{message}}</div>
+        </span>
+    </div>
+{{/if}}
+{{#if error}}
+    <div id="error">
+        <span title="error">
+            <div class="font-extrabold text-red-700 alert alert-error">{{error}}</div>
+        </span>
+    </div>
+{{/if}}
+<div id="docs-nav">
+    {{> docs/_tableOfContents}}
+</div>
+<div class="flex-grow">
+    <h1>Welcome to the Tool Manager Documentation</h1>
+    <p>This is the documentation for the Tool Manager application. Please use the navigation on the left to browse the documentation.</p>
+    <h3>Quick Links</h3>
+    <ul>
+        <li>F.A.Q</li>
+        <li>Getting Started</li>
+        <li>Core Workflows</li>
+        <li>User Roles and Permissions</li>
+    </ul>
+</div>
