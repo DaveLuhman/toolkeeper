@@ -83,7 +83,7 @@ async function createUser(req, res, next) {
 
     switch (variantId) {
       case 123: // Assuming 123 is the variant ID for the enterprise plan
-        userLimit = Infinity; // No limit for enterprise
+        userLimit = Number.POSITIVE_INFINITY; // No limit for enterprise
         break;
       case 456: // Assuming 456 is the variant ID for the pro plan
         userLimit = 5;
