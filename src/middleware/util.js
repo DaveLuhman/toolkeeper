@@ -191,5 +191,8 @@ export const initCachedContent = async (req, res, next) => {
 		res.status(500).json({ error: "Failed to fetch cached content" });
 	}
 };
-
+export const getBaseUrl = (req, res, next) => {
+	res.locals.baseUrl = `${req.protocol}://${req.get("host")}`;
+	next();
+};
 // src\middleware\util.js

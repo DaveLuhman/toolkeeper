@@ -25,6 +25,7 @@ import {
 	rateLimiter,
 	errorHandler,
 	AppError,
+	getBaseUrl,
 } from "./middleware/util.js";
 // routers
 import { dashboardRouter } from "./routes/dashboard.routes.js";
@@ -115,7 +116,7 @@ app.use(flash());
 passportConfig(app);
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(getBaseUrl);
 app.use(rateLimiter);
 app.use(tenantLogger);
 // Routes (No User Context)

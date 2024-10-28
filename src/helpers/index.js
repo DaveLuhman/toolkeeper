@@ -83,6 +83,7 @@ export const returnUniqueIdentifier = (toolDocument) => {
 const hbsDate_distanceFromToday = (date) => {
 	return moment(date).fromNow();
 };
+
 const customHelpers = {
 	organizeContext,
 	isSelected,
