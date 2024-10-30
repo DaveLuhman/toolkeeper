@@ -14,137 +14,178 @@
         </span>
     </div>
 {{/if}}
-<div id="docs-nav">
+<div class="flex flex-row flex-nowrap gap-4 mt-5">
+
     {{> _docsToC}}
-</div>
-<div class="flex-grow">
-    <h1>Frequently Asked Questions</h1>
-    <h3>General Questions</h3>
-    <h4>What is ToolKeeper</h4>
-    <p>Toolkeeper is a comprehensive tool crib management platform designed to help maintenance and service teams track,
-        manage, and optimize their tool inventory. It's a cloud-based solution that supports multiple users and
-        locations. </p>
-    <hr>
-    <h4>Who is Toolkeeper designed for?</h4>
-    <p>Toolkeeper is designed for:</p>
-    <ul>
-        <li>Maintenance departments</li>
-        <li>Service departments</li>
-        <li>Facility management teams</li>
-        <li>Construction or contracting companies</li>
-        <li>Anyone who needs to manage a tool inventory</li>
-    </ul>
-    <hr>
-    <h4>What devices are supported?</h4>
-    <p>Toolkeeper is supported on all devices that can run a modern web browser, including laptops, tablets, and
-        smartphones.</p>
-    <hr>
-    <h3>Account Management</h3>
-    <h4>How do i get started with Toolkeeper?</h4>
-    <p>To get started with Toolkeeper, you will need to create an account. You can do this by clicking the "Sign Up"
-        button on the <a href="https://toolkeeper.site">homepage</a> and submit payment details for your choice of tier
-        and billing cycle. Shortly after, you will receive an email with your login credentials.</p>
-    <hr>
-    <h4>Can I have multiple administrators?</h4>
-    <p>No, each tenant has a single administrator, although manager account should fill the need. See <a
-            href="/docs/userRoles">User Roles and Permissions</a> for more information.</p>
-    <hr>
-    <h4>How are user roles assigned?</h4>
-    <p>Administrators can assign roles through the Settings module. Each role comes with predefined permissions that can
-        be customized to meet your organization's needs.</p>
-    <hr>
-    <h3>Tool Management</h3>
-    <h4>How do I add tools to the system?</h4>
-    <p>You have several options:</p>
-    <ul>
-        <li>Individual tool creation through the web interface</li>
-        <li>Bulk creation using the <a href="/docs/tools/bulkCreate">Bulk Create</a> page</li>
-        <li>Bulk import using CSV files</li>
-    </ul>
-    <hr>
-    <h4>Is the history of each tool tracked?</h4>
-    <p>Yes, the history for each tool is tracked. Each time a tool has any changable value modified, a new history
-        entry is created. This includes things like service assignment, category, and tool ID. The history entry
-        contains the tool's data from before the change was made.
-    </p>
-    <hr>
-    <h4>What happens if a tool is lost or damaged?</h4>
-    <p>We recommend the following steps:</p>
-    <ul>
-        <li>Mark tools as lost or damaged by updating the tool's service assignment. Create separate service assignments
-            for
-            lost and damaged tools.</li>
-        <li>Archive the tool with the "Archive Tool" button on the edit tool page. This prevents the tools from
-            appearing in most lists and reports.</li>
-        <li>Because barcodes and serial numbers are permanent, you cannot reuse them. This ensures that you can always
-            identify the tool uniquely, regardless if it's yesterday or in 10 years.</li>
-        <li>If you ever need reporting on how many or what tools are lost/damaged, you can search for either service
-            assignment and click the print-friendly report button for a full printable list.</li>
-    </ul>
-    <hr>
-    <h3>Data Management</h3>
-    <h4>How is my data protected?</h4>
-    <p>We implement multiple security measures:</p>
-    <ul>
-        <li>Encrypted data storage</li>
-        <li>Regular automated backups</li>
-        <li>Role-based access control</li>
-        <li>SSL/TLS encryption for all connections</li>
-    </ul>
-    <hr>
-    <h4>Can I export my data?</h4>
-    <p>Exporting your data is on the roadmap as a feature, but not yet available. By request, you can request the
-        following at no cost:</p>
-    <ul>
-        <li>Tool inventory reports</li>
-        <li>Usage statistics</li>
-        <li>Maintenance records</li>
-        <li>User activity logs</li>
-        <li>Custom reports</li>
-    </ul>
-    <hr>
-    <h3>Technical Questions</h3>
-    <h4>Does toolkeeper work offline?</h4>
-    <p>No, Toolkeeper is a cloud-based application and does not work offline. It requires an active internet connection
-        to function.</p>
-    <hr>
-    <h4>Does toolkeeper use cookies?</h4>
-    <p>Yes, Toolkeeper uses cookies to store your login session. These cookies are automatically deleted when you log
-        out
-        or your session expires. We also use session storage to cache service assignments, categories, and other data
-        that is used frequently. This keeps page loads to a minimum. We aren't GDPR compliant, but we don't do business
-        in
-        the EU so it's not a concern for us at present.</p>
-    <hr>
-    <h3>Billing Questions</h3>
-    <h4>How do I change my billing cycle?</h4>
-    <p>The admin account can change the billing cycle for the entire tenant at any time. This can be done by clicking
-        the "Billing" link in the main navigation menu. This will take you to the LemonSqueezy dashboard where you can
-        change the billing cycle or update payment details. Keep in mind, we don't offer proration on partial billing
-        cycles, so it is theoretically possible to overpay for a month if you switch billing cycles with 3 weeks left in
-        the current cycle.</p>
-    <hr>
-    <h4>How do I cancel my subscription?</h4>
-    <p>The admin account can cancel the subscription for the entire tenant at any time. This can be done by clicking the
-        "Billing" link in the main navigation menu. This will take you to the LemonSqueezy dashboard where you can
-        cancel
-        the subscription.</p>
-    <hr>
-    <h4>What payment methods are accepted?</h4>
-    <p>We accept Visa, Mastercard, American Express, and Discover. Paypal and Cashapp payments are also accepted by
-        lemonSqueezy. On a case-by-case basis, we can do PO/Accounts payable by check, but that is not the preferred
-        method
-        of payment.</p>
-    <hr>
-    <h4>What is your refund policy?</h4>
-    <p>We do not offer credits for partial months remaining on your billing cycle, but we are happy to work with
-        customers to improve the platform or modify their tenant's deployment of toolkeeper to better align with their
-        needs.</p>
-    <hr>
-    <h4>Where do I send questions or feedback?</h4>
-    <p>You can send questions or feedback to <a href="mailto:support@toolkeeper.site">support@toolkeeper.site</a>. If
-        you
-        have questions or feature requests, you can visit the <a
-            href="https://github.com/Toolkeeper/Toolkeeper/issues">github issues page</a> and discuss the feature or ask
-        questions.</p>
+
+    <div class="flex-grow p-6">
+        <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">Frequently Asked Questions</h1>
+        <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">General Questions</h3>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">What is ToolKeeper</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">Toolkeeper is a comprehensive tool crib management platform designed
+            to
+            help maintenance and service teams track,
+            manage, and optimize their tool inventory. It's a cloud-based solution that supports multiple users and
+            locations. </p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">Who is Toolkeeper designed for?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">Toolkeeper is designed for:</p>
+        <div class="flex flex-wrap">
+            <div class="w-1/2">
+                <ul>
+                    <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Maintenance departments</li>
+                    <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Service departments</li>
+                    <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Facility management teams</li>
+                </ul>
+            </div>
+            <div class="w-1/2">
+                <ul>
+                    <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Construction or contracting companies</li>
+                    <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Anyone who needs to manage a tool inventory</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">What devices are supported?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">Toolkeeper is supported on all devices that can run a modern web
+            browser, including laptops, tablets, and
+            smartphones.</p>
+        <hr>
+        <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Account Management</h3>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">How do i get started with Toolkeeper?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">To get started with Toolkeeper, you will need to create an account.
+            You
+            can do this by clicking the "Sign Up"
+            button on the <a href="https://toolkeeper.site">homepage</a> and submit payment details for your choice of
+            tier
+            and billing cycle. Shortly after, you will receive an email with your login credentials.</p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">Can I have multiple administrators?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">No, each tenant has a single administrator, although manager account
+            should fill the need. See <a href="/docs/userRoles">User Roles and Permissions</a> for more information.</p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">How are user roles assigned?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">Administrators can assign roles through the Settings module. Each
+            role
+            comes with predefined permissions that can
+            be customized to meet your organization's needs.</p>
+        <hr>
+        <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Tool Management</h3>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">How do I add tools to the system?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">You have several options:</p>
+        <ul>
+            <li>Individual tool creation through the web interface</li>
+            <li>Bulk creation using the <a href="/docs/tools/bulkCreate">Bulk Create</a> page</li>
+            <li>Bulk import using CSV files</li>
+        </ul>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">Is the history of each tool tracked?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">Yes, the history for each tool is tracked. Each time a tool has any
+            changable value modified, a new history
+            entry is created. This includes things like service assignment, category, and tool ID. The history entry
+            contains the tool's data from before the change was made.
+        </p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">What happens if a tool is lost or damaged?
+        </h4>
+        <p class="text-zinc-800 dark:text-zinc-300">We recommend the following steps:</p>
+        <ol>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Mark tools as lost or damaged by updating the tool's service assignment. Create separate service
+                assignments
+                for
+                lost and damaged tools.</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Archive the tool with the "Archive Tool" button on the edit tool page. This prevents the tools from
+                appearing in most lists and reports.</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Because barcodes and serial numbers are permanent, you cannot reuse them. This ensures that you can
+                always
+                identify the tool uniquely, regardless if it's yesterday or in 10 years.</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> If you ever need reporting on how many or what tools are lost/damaged, you can search for either service
+                assignment and click the print-friendly report button for a full printable list.</li>
+        </ol>
+        <hr>
+        <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Data Management</h3>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">How is my data protected?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">We implement multiple security measures:</p>
+        <ul>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Encrypted data storage</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Regular automated backups</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Role-based access control</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> SSL/TLS encryption for all connections</li>
+        </ul>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">Can I export my data?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">Exporting your data is on the roadmap as a feature, but not yet
+            available. By request, you can request the
+            following at no cost:</p>
+        <ul>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Tool inventory reports</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Usage statistics</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Maintenance records</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> User activity logs</li>
+            <li><span class="text-zinc-800 dark:text-zinc-300">•</span> Custom reports</li>
+        </ul>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">Does toolkeeper work offline?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">No, Toolkeeper is a cloud-based application and does not work
+            offline.
+            It requires an active internet connection
+            to function.</p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">Does toolkeeper use cookies?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">Yes, Toolkeeper uses cookies to store your login session. These
+            cookies
+            are automatically deleted when you log
+            out
+            or your session expires. We also use session storage to cache service assignments, categories, and other
+            data
+            that is used frequently. This keeps page loads to a minimum. We aren't GDPR compliant, but we don't do
+            business
+            in
+            the EU so it's not a concern for us at present.</p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">How do I change my billing cycle?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">The admin account can change the billing cycle for the entire tenant
+            at
+            any time. This can be done by clicking
+            the "Billing" link in the main navigation menu. This will take you to the LemonSqueezy dashboard where you
+            can
+            change the billing cycle or update payment details. Keep in mind, we don't offer proration on partial
+            billing
+            cycles, so it is theoretically possible to overpay for a month if you switch billing cycles with 3 weeks
+            left in
+            the current cycle.</p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">How do I cancel my subscription?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">The admin account can cancel the subscription for the entire tenant
+            at
+            any time. This can be done by clicking the
+            "Billing" link in the main navigation menu. This will take you to the LemonSqueezy dashboard where you can
+            cancel
+            the subscription.</p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">What payment methods are accepted?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">We accept Visa, Mastercard, American Express, and Discover. Paypal
+            and
+            Cashapp payments are also accepted by
+            lemonSqueezy. On a case-by-case basis, we can do PO/Accounts payable by check, but that is not the preferred
+            method
+            of payment.</p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">What is your refund policy?</h4>
+        <p class="text-zinc-800 dark:text-zinc-300">We do not offer credits for partial months remaining on your billing
+            cycle, but we are happy to work with
+            customers to improve the platform or modify their tenant's deployment of toolkeeper to better align with
+            their
+            needs.</p>
+        <hr>
+        <h4 class="text-lg font-medium text-zinc-900 dark:text-zinc-100 mb-2">Where do I send questions or feedback?
+        </h4>
+        <p class="text-zinc-800 dark:text-zinc-300">You can send questions or feedback to <a
+                href="mailto:support@toolkeeper.site">support@toolkeeper.site</a>. If
+            you
+            have questions or feature requests, you can visit the <a
+                href="https://github.com/Toolkeeper/Toolkeeper/issues">github issues page</a> and discuss the feature or
+            ask
+            questions.</p>
+    </div>
 </div>

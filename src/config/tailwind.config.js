@@ -12,7 +12,7 @@ const mode = 'jit';
 const daisyui = {
   themes: ['light', 'dark', 'dracula', 'corporate', 'synthwave', 'retro']
 };
-
+const darkMode = 'class';
 const theme = {
   extend: {
     screens: {
@@ -503,7 +503,34 @@ const variants = {
 
 const plugins = [
   require('@tailwindcss/typography'),
-  require('daisyui')
+  require('daisyui'),
+  ({ addUtilities }) => {
+    const newUtilities = {
+      '.text-gradient-adaptive': {
+        'background-image': 'var(--tw-gradient-text)',
+        '-webkit-background-clip': 'text',
+        'background-clip': 'text',
+        'color': 'transparent',
+        '--tw-gradient-text': `linear-gradient(
+          to bottom,
+          rgb(24 24 27) 0%,
+          rgb(24 24 27) 70%,
+          rgb(250 250 250) 70%,
+          rgb(250 250 250) 100%
+        )`
+      },
+      '.dark .text-gradient-adaptive': {
+        '--tw-gradient-text': `linear-gradient(
+          to bottom,
+          rgb(244 244 245) 0%,
+          rgb(244 244 245) 70%,
+          rgb(39 39 42) 70%,
+          rgb(39 39 42) 100%
+        )`
+      }
+    };
+    addUtilities(newUtilities);
+  }
 ];
 
 module.exports = {
@@ -512,7 +539,8 @@ module.exports = {
   daisyui,
   theme,
   variants,
-  plugins
+  plugins,
+  darkMode
 };
 
 // src\config\tailwind.config.js
