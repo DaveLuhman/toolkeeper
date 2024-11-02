@@ -3,19 +3,29 @@
 
     <div class="space-y-8 text-lg">
         <div>
-            <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">First Time Setup</h3>
-            <div class="space-y-6">
-                <div>
+            <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">First Time Setup</h3><i id="first-time-setup-arrow" class="fa-solid fa-arrow-down collapse-arrow" onclick="toggleSection('first-time-setup')"></i>
+            <div class="space-y-6 section" id="first-time-setup">
+                <div class="content">
                     <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">Create some service
                         assignments</h4>
                     <p class="text-zinc-800 dark:text-zinc-300">Service Assignment answer the "where" or "who" a tool is
-                        assigned to. By default there will be three defaults, IMPORT, STOCK, and PARTS.  You're going
+                        assigned to. By default there will be three defaults, IMPORT, STOCK, and PARTS. You're going
                         to want to add your own service assignments to match your business, typically starting with
                         Stockrooms. Tools are <strong>checked in</strong> when they're in a stockroom. All other service
-                        assignments will list tools as <strong>checked out</strong>.</p>
-
-                    <img src="/img/docs/getting-started/create-service-assignments.png"
-                        alt="Create Service Assignments" class="h-full">
+                        assignments will list tools as <strong>checked out</strong>. </p>
+                    <br>
+                    <div>
+                        <div class="flex flex-col justify-center ">
+                            <caption>Create Service Assignments Modal</caption><br>
+                            <img src="/img/docs/create-service-assignment.png" alt="Create Service Assignments"
+                                width="660px" height="265px">
+                        </div>
+                        <p class="text-zinc-800 dark:text-zinc-300">In the dropdown, there are five options, but with
+                            the
+                            exception of Stockroom, they all function the same. The dropdown is used to select the
+                            service assignment type, the remaining text fields are descriptive fields for the SA's
+                            details. Job Number is the shortname field. Job Name is the full name.</p>
+                    </div>
                 </div>
             </div>
         </div>

@@ -180,11 +180,10 @@ table.table {
   }
 th {
   @apply text-white;
-  @apply text-base-content;
   @apply font-bold;
   @apply uppercase;
   @apply p-2;
-  @apply bg-stone-700;
+  @apply bg-slate-700;
 }
 tr {
   @apply table-row;
@@ -361,3 +360,12 @@ html{
     @apply lg:scroll-mt-0 scroll-m-12
 }
 
+.content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.content.expanded {
+  max-height: 500px; /* Adjust based on expected content height */
+}

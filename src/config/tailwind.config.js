@@ -10,7 +10,7 @@ const content = [
 const mode = 'jit';
 
 const daisyui = {
-  themes: ['light', 'dark', 'dracula', 'corporate', 'synthwave', 'retro']
+  themes: ['dark', 'dracula', 'corporate', 'synthwave', 'retro']
 };
 const darkMode = 'class';
 const theme = {
@@ -485,10 +485,6 @@ const theme = {
       50: '50',
       auto: 'auto'
     }
-  },
-  fontFamily: {
-    sans: ['Roboto', 'sans-serif'], // Preserved from the first config
-    serif: ['Merriweather', 'serif'], // Preserved from the first config
   },
   screens: {
     sm: '576px', // Preserved from the first config
