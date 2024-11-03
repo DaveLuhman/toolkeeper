@@ -172,14 +172,11 @@ h1#search-terms {
 }
 
 table.table {
-  @apply text-gray-100;
-
   @apply shadow;
   @apply mb-4;
   @apply pr-5
   }
 th {
-  @apply text-white;
   @apply font-bold;
   @apply uppercase;
   @apply p-2;
@@ -367,5 +364,5 @@ html{
 }
 
 .content.expanded {
-  max-height: 500px; /* Adjust based on expected content height */
+  max-height: 900rem; /* Adjust based on expected content height */
 }
