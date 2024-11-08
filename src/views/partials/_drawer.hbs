@@ -1,0 +1,74 @@
+<div class="drawer">
+    <input id="drawer-sidebar" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content">
+        <!-- Navbar -->
+        <div class="navbar  bg-base-300 w-full">
+            <!-- Button to open sidebar -->
+            <div class="flex-none md:hidden">
+                <label for="drawer-sidebar" aria-label="open sidebar" class="btn btn-square btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                        class="inline-block h-6 w-6 stroke-current">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </label>
+            </div>
+            <!-- Toolkeeper Logos -->
+            <div class="mx-2 flex px-2">
+                <img class="hidden md:inline-flex w-full h-fit" src="/img/toolKeeperLogo-dark-full.png"
+                    alt="Toolkeeper Logo">
+                <img class="flex md:hidden" src="/img/toolKeeperLogo-dark-small.png" alt="Toolkeeper Logo">
+            </div>
+            <!-- Navbar Links -->
+            <div class="hidden  flex-none md:block">
+                <ul class="menu menu-horizontal">
+                    <!-- Navbar menu content here -->
+                    <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline text-zinc-800 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors lg:-ml-2"
+                            href="{{baseUrl}}/#features">Features</a></li>
+                    <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline text-zinc-800 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors lg:-ml-2"
+                            href="{{baseUrl}}/#pricing">Pricing</a></li>
+                    <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline text-zinc-800 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors lg:-ml-2"
+                            href="{{baseUrl}}/docs">Docs</a></li>
+                </ul>
+            </div>
+<!-- login/register buttons -->
+            <div class="flex justify-end items-center w-full">
+                <a href="/login">
+                    <button
+                        class="p-2 mr-4 bg-transparent border border-gray-300 rounded  text-zinc-800 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">Login</button>
+                </a>
+                <a href="/register">
+                    <button
+                        class="p-2 mr-4 bg-transparent border border-gray-300 rounded  text-zinc-800 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors">Register</button>
+                </a>
+
+                <button type="button" id="theme-toggle" class="rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-700">
+                    <!-- Sun icon for dark mode -->
+                    <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-zinc-800 dark:text-zinc-200"
+                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" />
+                    </svg>
+                    <!-- Moon icon for light mode -->
+                    <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-zinc-800 dark:text-zinc-200"
+                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="drawer-side">
+    <label for="drawer-sidebar" aria-label="close sidebar" class="drawer-overlay"></label>
+    <ul class="menu bg-base-200 min-h-full w-80 p-4">
+        <!-- Sidebar content here -->
+        <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline text-zinc-800 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors lg:-ml-2"
+                href="{{baseUrl}}/#features">Features</a></li>
+        <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline text-zinc-800 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors lg:-ml-2"
+                href="{{baseUrl}}/#pricing">Pricing</a></li>
+        <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline text-zinc-800 dark:text-zinc-300 hover:bg-zinc-300 dark:hover:bg-zinc-700 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors lg:-ml-2"
+                href="{{baseUrl}}/docs">Docs</a></li>
+    </ul>
+</div>
+</div>
