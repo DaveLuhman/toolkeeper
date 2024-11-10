@@ -1,0 +1,89 @@
+<div class="flex-grow w-5/12 p-6">
+    <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">Tool Management</h1>
+
+    <div class="space-y-8 text-lg">
+        <div>
+            <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Overview:</h3>
+            <div class="space-y-6">
+                <div>
+                    <p class="text-zinc-800 dark:text-zinc-300">
+                        Tools are at the very core of ToolKeeper—it's right there in the name! This section covers
+                        everything you need to know about managing tools within the ToolKeeper system, where each tool
+                        is treated as a unique, serialized object. Though any serialized object can technically fit the
+                        definition of a "tool," it’s essential to understand the foundational requirements and optional
+                        attributes that make managing these items straightforward and effective.</p>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">Tool Requirement</h4>
+                    <p class="text-zinc-800 dark:text-zinc-300">Each tool in ToolKeeper requires three unique
+                        identifiers, ensuring clarity and traceability across your entire inventory. Here’s what you
+                        need for each tool:</p>
+                    <div class="flex flex-wrap">
+                        <div class="w-1/3 p-3">
+                            <ul <li><span class="text-zinc-800 dark:text-zinc-100">•</span> <strong>Serial
+                                    Number:</strong> A
+                                required, immutable identifier. Once a serial number is assigned to a tool, it
+                                cannot be modified or reused, even if the tool is retired or decommissioned.
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="w-1/3 p-3">
+                            <ul>
+                                <li><span class="text-zinc-900 dark:text-zinc-100">•</span> <strong>Tool ID:</strong> A
+                                    unique
+                                    identifier within ToolKeeper, often based on the tool's category and sequential
+                                    numbering. This makes it easy to identify items in bulk, such as having "LM-38" as
+                                    the Tool ID for the 38th label maker.</li>
+                            </ul>
+                        </div>
+                        <div class="w-1/3 p-3">
+                            <ul>
+                                <li><span class="text-zinc-800 dark:text-zinc-100">•</span><strong>Barcode:</strong>
+                                    Another
+                                    required, unique identifier that provides quick, scannable access to each tool's
+                                    profile within ToolKeeper.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">Optional Tool Attributes</h4>
+                    <p class="text-zinc-800 dark:text-zinc-300">ToolKeeper includes several optional fields to help you
+                        organize and search for tools efficiently. Every field is searchable, enabling you to locate
+                        tools based on various characteristics. Here’s an overview of each field:</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                              <div>
+                            <h3 class="text-lg font-semibold">Model Number</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Unique identifier for the tool's make and type.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Description</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Optional short description (max 128 characters) for unique
+                                attributes.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Manufacturer</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Optional name of the tool's maker or brand.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Service Assignment</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Tool's current employee, vehicle, or job assignment.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Category</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Tool’s type or classification as created by the user/admin for easy filtering.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Size</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Optional physical attributes, like length or weight.</p>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>

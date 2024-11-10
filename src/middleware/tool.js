@@ -198,12 +198,12 @@ async function createTool(req, res, next) {
 
 		const tenant = req.user.tenant.valueOf();
 
-		if (!(serialNumber || modelNumber) || !barcode) {
+		if (!(serialNumber || toolID) || !barcode) {
 			throw new Error("Missing required fields");
 		}
 
 		const existing = await Tool.findOne({
-			$or: [{ serialNumber }, { barcode }],
+			$or: [{ serialNumber }, { barcode }, { toolID }],
 			tenant,
 		});
 

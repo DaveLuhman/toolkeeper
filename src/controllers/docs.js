@@ -20,3 +20,17 @@ export const renderFaqPage = (_req, res) => {
 export const renderGettingStartedPage = (_req, res) => {
     res.render('docs/gettingStarted', { layout: 'docs.hbs' });
 }
+/**
+ * Renders the tool management page.
+ * @param {Object} res - The response object.
+ */
+export const renderToolManagementPage = (_req, res) => {
+    res.render('docs/toolManagement', { layout: 'docs.hbs' });
+}
+/**
+ * Renders the tool management page.
+ * @param {Object} res - The response object.
+ */
+export const renderServiceAssignmentPage = (_req, res) => {
+    res.render('docs/serviceAssignment', { layout: 'docs.hbs' });
+}
