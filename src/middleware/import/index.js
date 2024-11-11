@@ -27,15 +27,10 @@ export async function importByFile(req, res, next) {
       console.log('importing tools')
       result = await importTools(file, tenant)
       break
-    case 'allServiceAssignments':
+    case 'serviceAssignments':
       console.log('importing all service assignments')
       result = await importServiceAssignments(file, tenant)
       break
-    case 'activeServiceAssignments':
-      console.log('marking inactive SAs as such')
-      result = await activateServiceAssignments(file, tenant)
-      break
-
     case 'categories':
       console.log('importing categories')
       result = await importCategories(file, tenant)
