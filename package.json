@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/DaveLuhman/toolkeeper#readme",
   "dependencies": {
-    "@sendgrid/mail": "^8.1.3",
+    "@sendgrid/mail": "^8.1.4",
     "@tailwindcss/typography": "^0.5.15",
     "autoprefixer": "^10.4.20",
     "bcrypt": "^5.1.1",
