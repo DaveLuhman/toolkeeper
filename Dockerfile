@@ -1,14 +1,34 @@
-FROM node:20-alpine as base
-WORKDIR /src
-COPY . /
-EXPOSE 3000
+FROM oven/bun:1 AS base
+WORKDIR /usr/src/app
+
+# install dependencies into temp directory
+# this will cache them and speed up future builds
+FROM base AS install
+RUN mkdir -p /temp/dev
+COPY package.json bun.lockb /temp/dev/
+RUN cd /temp/dev && bun install --frozen-lockfile
+
+# install with --production (exclude devDependencies)
+RUN mkdir -p /temp/prod
+COPY package.json bun.lockb /temp/prod/
+RUN cd /temp/prod && bun install --frozen-lockfile --production
+
+# copy node_modules from temp directory
+# then copy all (non-ignored) project files into the image
+FROM base AS prerelease
+COPY --from=install /temp/dev/node_modules node_modules
+COPY . .
+
+# build tailwindCSS files
 ENV NODE_ENV=PRODUCTION
-LABEL org.opencontainers.image.description="toolKeeper by ADO Software"
-LABEL org.opencontainers.image.authors="Dave Luhman, <<dave@ado.software>>"
-LABEL org.opencontainers.image.url="https://ghcr.io/daveluhman/toolkeeper"
-LABEL org.opencontainers.image.source="https://github.com/daveluhman/toolkeeper"
-LABEL org.opencontainers.image.version="v1.2.0"
-RUN npm install --omit dev 
-RUN npm run build:css
-COPY . /
-CMD ["npm", "start"]
+RUN bun run build:css
+
+# copy production dependencies and source code into final image
+FROM base AS release
+COPY --from=install /temp/prod/node_modules node_modules
+COPY --from=prerelease /usr/src/app .
+
+
+USER bun
+EXPOSE 3000/tcp
+ENTRYPOINT ["bun", "run", "start"]
