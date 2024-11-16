@@ -5,9 +5,12 @@ lemonSqueezySetup({ apiKey: process.env.LEMONSQUEEZY_API_KEY });
 
 export const toolkeeperProductObject = async () => {
 	try {
-		const { data } = await listProducts();
-		const toolkeeper = data.find(
-			(product) => product.attributes.slug === "toolkeeper",
+		const response = await listProducts();
+		// Ensure we're working with the correct data structure
+		const products = Array.isArray(response.data) ? response.data : response.data?.data || [];
+
+		const toolkeeper = products.find(
+			(product) => product.attributes.slug === "toolkeeper"
 		);
 
 		if (!toolkeeper) {
