@@ -3,6 +3,7 @@ import {
 	User,
 	Tenant,
 	Prospect,
+	Onboarding,
 } from "../models/index.models.js";
 import { generatePassword } from "../middleware/tenant.js";
 import { getDomainFromEmail, sendEmail } from "../controllers/util.js";
@@ -45,9 +46,35 @@ const createUserFromProspect = async (prospect) => {
 			role: "Admin",
 		});
 
+		// Initialize onboarding for the new user
+		try {
+			await Onboarding.create({
+				user: activeUser._id,
+				tenant: null, // Will be updated after tenant creation
+				steps: {
+					profileSetup: false,
+					categoryCreated: false,
+					serviceAssignmentCreated: false,
+					firstToolAdded: false,
+					csvImportUsed: false,
+					userInvited: false,
+					preferencesCustomized: false
+				},
+				progress: {
+					currentStep: 'profile',
+					completedAt: null
+				}
+			});
+			logger.info(`Initialized onboarding for user ${activeUser._id}`);
+		} catch (onboardingError) {
+			logger.error("Error initializing onboarding:", onboardingError);
+			await User.findByIdAndDelete(activeUser._id);
+			throw new Error('Failed to initialize user onboarding');
+		}
+
 		return { activeUser, newPassword };
 	} catch (error) {
-		logger.error("Error creating user from pending data:", error.message);
+		logger.error("Error in createUserFromProspect:", error.message);
 		throw error;
 	}
 };
@@ -71,13 +98,21 @@ const createTenantForUser = async (activeUser, prospect) => {
 // Create a subscription in the database
 const createSubscription = async (subscriptionData, activeUser, tenant) => {
 	try {
-		return await Subscription.create({
+		const subscription = await Subscription.create({
 			user: activeUser._id,
 			tenant: tenant._id,
 			status: "active",
-			lemonSqueezyId: subscriptionData.id, // Use subscription ID from webhook
-			lemonSqueezyObject: subscriptionData.attributes, // Store full subscription details
+			lemonSqueezyId: subscriptionData.id,
+			lemonSqueezyObject: subscriptionData.attributes,
 		});
+
+		// Update the onboarding document with the tenant ID
+		await Onboarding.findOneAndUpdate(
+			{ user: activeUser._id },
+			{ tenant: tenant._id }
+		);
+
+		return subscription;
 	} catch (error) {
 		logger.error("Error creating subscription:", error.message);
 		throw error;
@@ -88,9 +123,39 @@ const createSubscription = async (subscriptionData, activeUser, tenant) => {
 const sendWelcomeEmail = async (prospect, activeUser, newPassword) => {
 	try {
 		const instanceUrl = getInstanceUrl();
-		console.log(instanceUrl)
-		const emailSubject = "Welcome to ToolKeeper!";
-		const emailBody = `Dear ${prospect.firstName},\n\nYour ToolKeeper account has been created successfully. Your login credentials are:\n\nEmail: ${prospect.email}\nPassword: ${newPassword}\n\nPlease log in to your account at ${instanceUrl} and change your password immediately.\n\nBest regards,\nThe ToolKeeper Team`;
+		const emailSubject = "Welcome to ToolKeeper - Let's Get Started!";
+
+		const emailBody = `
+Dear ${prospect.firstName},
+
+Welcome to ToolKeeper! Your account has been successfully created. Here's everything you need to get started:
+
+🔐 Your Login Credentials:
+Email: ${prospect.email}
+Password: ${newPassword}
+
+🚀 Quick Start Guide:
+1. Login at ${instanceUrl}
+2. Change your password immediately
+3. Complete your company profile
+4. Invite your team members
+5. Start managing your tools inventory
+
+💡 Key Features:
+• Tool Inventory Management
+• Team Collaboration
+• Real-time Tracking
+• Custom Reports
+
+🔍 Need Help?
+• Visit our documentation: ${instanceUrl}/docs
+• Contact support: support@toolkeeper.site
+• Join our community: ${instanceUrl}/community
+
+We're excited to have you on board!
+
+Best regards,
+The ToolKeeper Team`;
 
 		await sendEmail(activeUser.email, emailSubject, emailBody);
 	} catch (error) {

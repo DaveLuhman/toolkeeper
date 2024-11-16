@@ -1,4 +1,4 @@
-import { Prospect, User, Tenant } from '../models/index.models.js'
+import { Prospect, User, Tenant, Onboarding } from '../models/index.models.js'
 import { mutateToArray } from './util.js'
 import { checkoutUrl } from '../config/lemonSqueezy.js'
 
@@ -48,6 +48,7 @@ async function getUserByID(req, res, next) {
  */
 async function createUser(req, res, next) {
   console.info('[MW] createUser-in'.bgBlue.white);
+  let newUser;
 
   const { firstName, lastName, email, password, confirmPassword, role } = req.body;
   const tenant = req.user.tenant.valueOf();
@@ -97,23 +98,60 @@ async function createUser(req, res, next) {
       throw new Error(`User limit reached for ${planName} plan`);
     }
 
-    // Create the new user
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      email,
-      password,
-      role,
-      tenant
-    });
+    // Create the new user in a try-catch block
+    try {
+      newUser = await User.create({
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+        tenant
+      });
+      console.info(`Created User ${newUser._id}`.green);
+    } catch (userError) {
+      console.error('[MW] Error creating user record:'.bgRed.white, userError);
+      throw new Error('Failed to create user account');
+    }
 
-    console.log(newUser);
-    console.info(`Created User ${newUser._id}`.green);
+    // Initialize onboarding in a separate try-catch block
+    try {
+      await Onboarding.create({
+        user: newUser._id,
+        tenant: tenant,
+        steps: {
+          profileSetup: false,
+          categoryCreated: false,
+          serviceAssignmentCreated: false,
+          firstToolAdded: false,
+          csvImportUsed: false,
+          userInvited: false,
+          preferencesCustomized: false
+        },
+        progress: {
+          currentStep: 'profile',
+          completedAt: null
+        }
+      });
+      console.info(`Initialized onboarding for user ${newUser._id}`.green);
+    } catch (onboardingError) {
+      // Log the error but don't fail the user creation
+      console.error('[MW] Error initializing onboarding:'.bgYellow.black, onboardingError);
+      // Attempt to cleanup the user if onboarding fails
+      try {
+        await User.findByIdAndDelete(newUser._id);
+        throw new Error('Failed to initialize user onboarding');
+      } catch (cleanupError) {
+        console.error('[MW] Error during user cleanup:'.bgRed.white, cleanupError);
+        throw new Error('Critical error during user setup');
+      }
+    }
+
     res.locals.message = 'User created successfully';
     res.status(201);
     return next();
   } catch (error) {
-    console.error(`[MW] Error creating user: ${error.message}`.bgRed.white);
+    console.error(`[MW] Error in createUser: ${error.message}`.bgRed.white);
     res.locals.error = error.message;
     res.status(400);
     return next(error);
