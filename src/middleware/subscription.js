@@ -8,6 +8,7 @@ import { generatePassword } from "../middleware/tenant.js";
 import { getDomainFromEmail, sendEmail } from "../controllers/util.js";
 import { secret } from "../config/lemonSqueezy.js";
 import { createHmac, timingSafeEqual } from "node:crypto";
+import logger from "../logging/index.js";
 
 const getInstanceUrl = () => {
 	return process.env.NODE_ENV === "production"
@@ -17,18 +18,18 @@ const getInstanceUrl = () => {
 
 // Verify the X-Signature to ensure the request is legitimate
 const verifySignature = (req) => {
-	try {
-		const hmac = createHmac("sha256", secret);
-		const digest = Buffer.from(hmac.update(req.rawBody).digest("hex"), "utf8");
-		const signature = Buffer.from(req.get("X-Signature") || "", "utf8");
+    try {
+        const hmac = createHmac("sha256", secret);
+        const digest = Buffer.from(hmac.update(req.rawBody).digest("hex"), "utf8");
+        const signature = Buffer.from(req.get("X-Signature") || "", "utf8");
 
-		if (!timingSafeEqual(digest, signature)) {
-			throw new Error("Invalid signature");
-		}
-	} catch (error) {
-		console.error("Error verifying signature:", error.message);
-		throw error;
-	}
+        if (!timingSafeEqual(digest, signature)) {
+            throw new Error("Invalid signature");
+        }
+    } catch (error) {
+        logger.error("Error verifying signature:", error.message);
+        throw error;
+    }
 };
 
 // Create a new user based on pending user data
@@ -46,7 +47,7 @@ const createUserFromProspect = async (prospect) => {
 
 		return { activeUser, newPassword };
 	} catch (error) {
-		console.error("Error creating user from pending data:", error.message);
+		logger.error("Error creating user from pending data:", error.message);
 		throw error;
 	}
 };
@@ -62,7 +63,7 @@ const createTenantForUser = async (activeUser, prospect) => {
 
 		return await Tenant.createWithDefaults(tenantData);
 	} catch (error) {
-		console.error("Error creating tenant for user:", error.message);
+		logger.error("Error creating tenant for user:", error.message);
 		throw error;
 	}
 };
@@ -78,7 +79,7 @@ const createSubscription = async (subscriptionData, activeUser, tenant) => {
 			lemonSqueezyObject: subscriptionData.attributes, // Store full subscription details
 		});
 	} catch (error) {
-		console.error("Error creating subscription:", error.message);
+		logger.error("Error creating subscription:", error.message);
 		throw error;
 	}
 };
@@ -92,7 +93,7 @@ const sendWelcomeEmail = async (prospect, activeUser, newPassword) => {
 
 		await sendEmail(activeUser.email, emailSubject, emailBody);
 	} catch (error) {
-		console.error("Error sending welcome email:", error.message);
+		logger.error("Error sending welcome email:", error.message);
 		throw error;
 	}
 };
@@ -147,26 +148,77 @@ const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 };
 
 const handleWebhookEvent = async (req, res) => {
+	let eventType = 'unknown'; // Initialize eventType for error logging
 	try {
+		// Validate request body
+		if (!req.rawBody) {
+			return res.status(400).json({ error: 'Missing request body' });
+		}
+
 		// Verify the request signature
-		verifySignature(req);
+		try {
+			verifySignature(req);
+		} catch (error) {
+			return res.status(401).json({ error: 'Invalid signature' });
+		}
 
 		// Parse the raw body into JSON
-		const webhookPayload = JSON.parse(req.rawBody.toString("utf8"));
+		let webhookPayload;
+		try {
+			webhookPayload = JSON.parse(req.rawBody.toString('utf8'));
+		} catch (error) {
+			return res.status(400).json({ error: 'Invalid JSON payload' });
+		}
+
+		// Validate webhook payload structure
+		if (!webhookPayload.data || !webhookPayload.event_name) {
+			return res.status(400).json({ error: 'Invalid webhook payload structure' });
+		}
+
 		const subscriptionData = webhookPayload.data;
-		const eventType = webhookPayload.type;
+		eventType = webhookPayload.event_name;
+
+		// Validate subscription data
+		if (!subscriptionData.id || !subscriptionData.attributes) {
+			return res.status(400).json({ error: 'Invalid subscription data' });
+		}
 
 		// Handle the subscription event
 		const message = await handleSubscriptionEvent(eventType, subscriptionData);
 
+		// Log successful operation
+		console.log(`Successfully processed ${eventType} webhook for subscription ${subscriptionData.id}`);
+
 		// Send a success response
-		res.status(200).json({
+		return res.status(200).json({
+			success: true,
 			message: message,
 		});
 	} catch (error) {
-		// Centralized error handling
-		console.error(`Error processing ${eventType} webhook:`, error.message);
-		res.status(500).json({ error: "Internal server error." });
+		// Determine appropriate status code based on error type
+		let statusCode = 500;
+		let errorMessage = 'Internal server error';
+
+		if (error.message === 'Unhandled event type') {
+			statusCode = 400;
+			errorMessage = `Unsupported webhook event type: ${eventType}`;
+		} else if (error.message === 'Subscription not found') {
+			statusCode = 404;
+			errorMessage = `Subscription not found for event: ${eventType}`;
+		}
+
+		// Log the detailed error for debugging
+		logger.error(`Error processing ${eventType} webhook:`, {
+			error: error.message,
+			stack: error.stack,
+			eventType,
+		});
+
+		// Send error response
+		return res.status(statusCode).json({
+			success: false,
+			error: errorMessage
+		});
 	}
 };
 
