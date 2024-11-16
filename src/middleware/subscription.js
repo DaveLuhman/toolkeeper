@@ -172,7 +172,7 @@ const handleWebhookEvent = async (req, res) => {
 		}
 
 		// Validate webhook payload structure
-		if (!webhookPayload.data || !webhookPayload.event_name) {
+		if (!webhookPayload.data || !webhookPayload.meta || !webhookPayload.meta.event_name) {
 			console.log(webhookPayload)
 			return res
 				.status(400)
@@ -180,7 +180,7 @@ const handleWebhookEvent = async (req, res) => {
 		}
 
 		const subscriptionData = webhookPayload.data;
-		eventType = webhookPayload.event_name;
+		eventType = webhookPayload.meta.event_name;
 
 		// Validate subscription data
 		if (!subscriptionData.id || !subscriptionData.attributes) {
