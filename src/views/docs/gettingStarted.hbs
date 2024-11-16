@@ -3,28 +3,26 @@
 
     <div class="space-y-8 text-lg">
         <div>
-            <h3 class="text-2xl font-semibold text-zinc-600 dark:text-zinc-100 mb-4">First Time Setup</h3>
+            <h3 class="text-2xl font-semibold text-zinc-800 dark:text-zinc-100 mb-4">First Time Setup</h3>
             <div class="space-y-6 section" id="service-assignments">
-                <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">1. Create some service
+                <h4 class="text-xl font-medium text-zinc-800 dark:text-zinc-100 mb-2">1. Create some service
                     assignments<i id="step-one-setup-arrow" class="fa-solid fa-arrow-down arrow ml-2"
                         onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
                 <div class="content expanded">
-                    <div class="flex md:flex-row flex-col justify-evenly items-center ">
-                        <div class="justify-center items-center align-middle">
+                    <div class="flex md:flex-row flex-col justify-evenly items-center">
+                        <div class="justify-evenly items-center align-middle">
                             <p class="prose text-zinc-800 dark:text-zinc-300">Service Assignments answer the "where" or
-                                "who" a tool
-                                is
-                                assigned to. By default there will be three, IMPORT, STOCK, and PARTS. You're going
+                                "who" a tool is assigned to. By default there will be three, IMPORT, STOCK, and PARTS.
+                                You're going
                                 to want to add your own service assignments to suit your needs, typically starting with
                                 Stockrooms. Tools are <strong class="text-zinc-900 dark:text-zinc-400">checked
                                     in</strong> when they're in a stockroom. All other service
                                 assignments will list tools as <strong class="text-zinc-900 dark:text-zinc-400">checked
-                                    out</strong>. </p>
+                                    out</strong>.</p>
                             <br>
                             <p class="prose text-zinc-800 dark:text-zinc-300">In the dropdown, there are five options,
-                                but with
-                                the
-                                exception of Stockroom, they all function the same. The dropdown is used to select the
+                                but with the exception of Stockroom, they all function the same. The dropdown is used to
+                                select the
                                 service assignment type, the remaining text fields are descriptive fields for the SA's
                                 details. Job Number is the shortname field. Job Name is the full name.</p>
                         </div>
@@ -38,24 +36,23 @@
                         id="step-two-setup-arrow" class="fa-solid fa-arrow-right arrow ml-2"
                         onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
                 <div class="content">
-                    <div class="flex md:flex-row flex-col justify-evenly items-center ">
+                    <div class="flex md:flex-row flex-col justify-evenly items-center">
                         <img src="/img/docs/create-category.png" alt="Create Category" width="517px" height="314px">
-                        <div class="justify-center items-center align-middle">
+                        <div class="justify-evenly items-center align-middle">
                             <p class="prose text-zinc-800 dark:text-zinc-300">Categories are used to group tools by
-                                type, and
-                                there is only one by default, "Uncategorized". For example, you might have a category
+                                type, and there is only one by default, "Uncategorized". For example, you might have a
+                                category
                                 called "Cordless Drills" and another called "Ladders". This helps with reporting and
-                                filtering.
-                                Be as specific as you like, although keep in mind, each tool can only possess one
-                                category.
-                            </p>
+                                filtering. Be as specific as you like, although keep in mind, each tool can only possess
+                                one
+                                category.</p>
                             <br>
                             <p class="prose text-zinc-800 dark:text-zinc-300">Categories use the "Name" field, although
-                                have a
-                                prefix value as well. This is for the ToolId field on the tool. If a tool has an ID with
+                                have a prefix value as well. This is for the ToolId field on the tool. If a tool has an
+                                ID with
                                 an category prefix, it will automatically be assigned to that category. If the category
-                                is
-                                changed, but the prefix is not updated, it will revert to the category that matches the
+                                is changed, but the prefix is not updated, it will revert to the category that matches
+                                the
                                 prefix.</p>
                         </div>
                     </div>
@@ -66,27 +63,30 @@
                         id="step-three-setup-arrow" class="fa-solid fa-arrow-right arrow ml-2"
                         onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
                 <div class="content">
-                    <p class="text-zinc-800 dark:text-zinc-300">Tools are the bread and butter of Toolkeeper, and are
-                        going to take the longest to get entered. There are two typical ways to enter tools, either
-                        through the "Create Tool" button available on any page (once you're logged in.) The other method
-                        is via batch tool entry. This saves time by letting you automatically increment unique fields
-                        like
-                        barcode, serial number, and tool-ID.</p>
-                    <br>
-                    <div class="flex md:flex-row flex-col justify-center items-center ">
-                        <img src="/img/docs/batch-create-tools.png" alt="Batch Create Tools" width="517px"
-                            height="314px">
-                        <div class="justify-center items-center align-middle">
-                            <p class="text-zinc-800 dark:text-zinc-300">The other method
+                    <div class="flex md:flex-row flex-col justify-evenly items-center mb-3">
+                        <img src="/img/docs/single-create-tool.png" alt="Create A Tool" width="517px" height="314px">
+                        <p class="prose text-zinc-800 dark:text-zinc-300">Tools are the bread and butter of Toolkeeper,
+                            and are going to take the longest to get entered. There are two typical ways to enter tools,
+                            either
+                            through the "Create Tool" button available on any page (once you're logged in.) The other
+                            method is via batch tool entry. This saves time by letting you automatically increment
+                            unique
+                            fields like barcode, serial number, and tool-ID.</p>
+                    </div>
+                    <div class="flex md:flex-row flex-col justify-evenly items-center">
+                        <div class="justify-evenly items-center align-middle">
+                            <p class="prose text-zinc-800 dark:text-zinc-300">The other method
                                 is via batch tool entry. This saves time by letting you automatically increment unique
                                 fields like barcode, serial number, and tool-ID. The form will attempt to increment the
                                 value placed in the first field, and will only work if the value ends with a number.</p>
                             <br>
-                            <p class="text-zinc-800 dark:text-zinc-300">When you've entered the unique values and
+                            <p class="prose text-zinc-800 dark:text-zinc-300">When you've entered the unique values and
                                 selected which fields to auto-increment, pressing the <strong>+</strong> will create the
                                 next tool sequentially. This also locks the initial unique values in an effort to lock
                                 in the initial values.</p>
                         </div>
+                        <img src="/img/docs/batch-create-tools.png" alt="Batch Create Tools" width="517px"
+                            height="314px">
                     </div>
                 </div>
             </div>
