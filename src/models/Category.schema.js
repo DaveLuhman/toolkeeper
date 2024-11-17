@@ -1,5 +1,4 @@
 import { Schema } from 'mongoose'
-import mongooseUniqueValidator from 'mongoose-unique-validator'
 
 const CategorySchema = new Schema(
   {
@@ -33,7 +32,6 @@ const CategorySchema = new Schema(
     timestamps: true
   }
 )
-CategorySchema.plugin(mongooseUniqueValidator)
 CategorySchema.index({ name: 1, tenant: 1 }, { unique: true });
 
 export default CategorySchema
