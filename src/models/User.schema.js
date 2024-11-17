@@ -68,7 +68,7 @@ const UserSchema = new Schema(
       ref: "Tenant",
       default: '66af881237c17b64394a4166',
       required: true
-    }
+    },
   },
   {
     toObject: { virtuals: true },

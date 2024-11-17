@@ -1,5 +1,12 @@
 import { connect, disconnect } from "mongoose";
-import { Tenant, Category, ServiceAssignment, User } from "../models/index.models.js";
+import {
+	Tenant,
+	Category,
+	ServiceAssignment,
+	User,
+	Onboarding,
+	Subscription,
+} from "../models/index.models.js";
 
 let globalConn;
 
@@ -40,7 +47,7 @@ async function connectDB() {
 		}
 	}
 	await checkUserCountAndCreateDocuments();
-	return 0
+	return 0;
 }
 
 async function createDefaultUser() {
@@ -62,7 +69,8 @@ async function createDefaultUser() {
 			role: "Manager",
 			email: "demo@toolkeeper.site",
 			tenant: "66af881237c17b64394a4166",
-		}]
+		},
+	];
 	try {
 		const createdUsers = await User.create(usersToCreate);
 		return createdUsers;
@@ -72,20 +80,53 @@ async function createDefaultUser() {
 	}
 }
 
+async function createDefaultOnboardings() {
+	try {
+		const adminAndDemoOnboardings = [
+			{
+				// admin onboarding document - fully completed
+				user: "663870c0a1a9cdb4b707c737",
+				tenant: "66af881237c17b64394a4166",
+				steps: {
+					profileSetup: true,
+					categoryCreated: true,
+					serviceAssignmentCreated: true,
+					firstToolAdded: true,
+					csvImportViewed: true,
+				},
+				progress: {
+					currentStep: "complete",
+					completedAt: new Date(),
+				},
+			},
+			{
+				// demo onboarding document - initial state
+				user: "663870c0a1a9cdb4b707c738",
+				tenant: "66af881237c17b64394a4166",
+				// steps will use schema defaults (all false)
+				// progress will use schema defaults (currentStep: 'profile', completedAt: null)
+			},
+		];
+		const createdOnboardings = await Onboarding.create(adminAndDemoOnboardings);
+		return createdOnboardings;
+	} catch (error) {
+		console.error(`Error creating default onboarding: ${error.message}`);
+		throw new Error(`Failed to create default onboarding: ${error.message}`);
+	}
+}
+
 async function createDefaultSubscription() {
 	try {
-        return await Subscription.create({
-            _id: "66af881237c17b64394a4167",
-            user: "663870c0a1a9cdb4b707c737",
-            tenant: "66af881237c17b64394a4166",
-			status: "Active",
-            plan: "Basic",
-
-        });
-    } catch (error) {
-        console.error(`Error creating default subscription: ${error.message}`);
-        throw new Error(`Failed to create default subscription: ${error.message}`);
-    }
+		return await Subscription.create({
+			_id: "66af881237c17b64394a4167",
+			user: "663870c0a1a9cdb4b707c737",
+			tenant: "66af881237c17b64394a4166",
+			lemonSqueezyId: 'manual-entry'
+		});
+	} catch (error) {
+		console.error(`Error creating default subscription: ${error.message}`);
+		throw new Error(`Failed to create default subscription: ${error.message}`);
+	}
 }
 
 async function createDefaultTenant() {
@@ -164,20 +205,28 @@ function createDefaultDocuments() {
 }
 
 async function createDefaultGlobalDocuments() {
-	const defaultGlobalPromises = [createDefaultUser(), createDefaultTenant()];
+	const defaultGlobalPromises = [
+		createDefaultUser(),
+		createDefaultTenant(),
+		createDefaultOnboardings(),
+		createDefaultSubscription(),
+	];
 	return Promise.allSettled(defaultGlobalPromises);
 }
 
 export const closeDbConnection = () => {
-	disconnect()
-	return 0
-}
+	disconnect();
+	return 0;
+};
 
 export const demoTenantId = "66af881237c17b64394a4166";
-export const DEFAULT_USER_IDS=["663870c0a1a9cdb4b707c737"]
-export const DEFAULT_CATEGORY_IDS=["64a1c3d8d71e121dfd39b7ab"]
-export const DEFAULT_ASSIGNMENT_IDS=["64a19e910e675938ebb67de7", "64a34b651288871770df1086", "64a34b651288871770df1087"]
-export default connectDB
-
+export const DEFAULT_USER_IDS = ["663870c0a1a9cdb4b707c737"];
+export const DEFAULT_CATEGORY_IDS = ["64a1c3d8d71e121dfd39b7ab"];
+export const DEFAULT_ASSIGNMENT_IDS = [
+	"64a19e910e675938ebb67de7",
+	"64a34b651288871770df1086",
+	"64a34b651288871770df1087",
+];
+export default connectDB;
 
 // src\config\db.js

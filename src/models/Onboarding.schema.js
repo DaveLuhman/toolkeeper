@@ -30,18 +30,10 @@ const OnboardingSchema = new mongoose.Schema({
 			type: Boolean,
 			default: false
 		},
-		csvImportUsed: {
+		csvImportViewed: {
 			type: Boolean,
 			default: false
 		},
-		userInvited: {
-			type: Boolean,
-			default: false
-		},
-		preferencesCustomized: {
-			type: Boolean,
-			default: false
-		}
 	},
 	progress: {
 		currentStep: {
