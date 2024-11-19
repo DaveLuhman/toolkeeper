@@ -44,34 +44,4 @@
     </div>
   </div>
 </div>
-  {{!-- New category Modal --}}
-  <input type="checkbox" id="newCategoriesModal" class="modal-toggle" />
-  <div class="modal">
-    <div class="modal-inner-md">
-      <label for="newCategoriesModal" class="modal-close-btn">✕</label>
-      <form action="/settings/categories/create" method="POST">
-        <input name="tenant" type="hidden" value="{{user.tenant}}" />
-        <div class="grid items-center w-full grid-rows-2">
-          <div class="title-bar">
-            <h3 class="title-text">New Tool Category</h3>
-          </div>
-          <div class="m-3">
-            <input placeholder="Prefix" type="text" name="prefix"
-              class="input input-bordered">
-          </div>
-          <div class="m-3">
-            <input placeholder="Name" type="text" name="name"
-              class="input input-bordered" required>
-          </div>
-          <div class="m-3">
-            <input placeholder="Description" type="text" name="description"
-              class="input input-bordered">
-          </div>
-          <div class="modal-button-row">
-            <label class="btn btn-sm"> <button
-                type="submit">Submit</button></label>
-          </div>
-        </div>
-      </form>
-    </div>
-  </div>
+ 

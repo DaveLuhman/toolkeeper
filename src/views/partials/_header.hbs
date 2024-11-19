@@ -14,12 +14,37 @@
         </ul>
       </div>
       {{!-- Medium+ Viewport NavBar --}}
-      <div class="order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1" id="menu">
+      <div class="z-10 order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1" id="menu">
         <ul class="items-center justify-between pt-4 text-base md:flex md:pt-0">
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"
               href="/dashboard">Dashboard</a></li>
-          <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"><label
-                for="newToolModal" style="cursor:pointer">Create A New Tool</label></a></li>
+          <li class="flex flex-wrap text-center justify-center"> {{!--Create modal buttons Dropdown --}}
+            <div class="dropdown dropdown-hover">
+              <label tabindex="0"
+                class="px-2 text-lg font-medium rounded text-white-50 hover:text-black"
+                style="cursor:pointer">Create <i class="fa-solid fa-chevron-down"></i></label>
+              <ul tabindex="0" class="w-full mt-2 rounded bg-neutral shadow menu dropdown-content rounded-b-box">
+                <li class="w-full text-center">
+                  <div
+                    class="inline-block w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
+                    <label for="newToolModal" style="cursor:pointer">Tool</label>
+                  </div>
+                </li>
+                <li class="w-full text-center">
+                  <div
+                    class="inline-block w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
+                    <label for="newAssignmentModal" style="cursor:pointer">Service Assignment</label>
+                  </div>
+                </li>
+                <li class="w-full text-center">
+                  <div
+                    class="inline-block w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
+                    <label for="newCategoryModal" style="cursor:pointer">Category</label>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </li>
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"><label
                 for="checkInOutModal" style="cursor:pointer">Check-In/Out</label></a></li>
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"><label
