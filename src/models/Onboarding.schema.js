@@ -1,74 +1,79 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const OnboardingSchema = new mongoose.Schema({
-	user: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'User',
-		required: true,
-		index: true
-	},
-	tenant: {
-		type: mongoose.Schema.Types.ObjectId,
-		ref: 'Tenant',
-		required: true,
-		index: true
-	},
-	steps: {
-		profileSetup: {
-			type: Boolean,
-			default: false
-		},
-		categoryCreated: {
-			type: Boolean,
-			default: false
-		},
-		serviceAssignmentCreated: {
-			type: Boolean,
-			default: false
-		},
-		firstToolAdded: {
-			type: Boolean,
-			default: false
-		},
-		csvImportViewed: {
-			type: Boolean,
-			default: false
-		},
-	},
-	progress: {
-		currentStep: {
-			type: String,
-			enum: ['profile', 'categories', 'services', 'tools', 'complete'],
-			default: 'profile'
+const OnboardingSchema = new mongoose.Schema(
+	{
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "User",
+			required: true,
+			index: true,
 		},
 		completedAt: {
 			type: Date,
-			default: null
-		}
-	}
-}, {
-	timestamps: true
+			default: null,
+		},
+		progress: {
+			profileSetup: {
+				// acknowledgement step for profile setup
+				type: Boolean,
+				default: false,
+			},
+			categoryCreated: {
+				// created a category
+				type: Boolean,
+				default: false,
+			},
+			serviceAssignmentCreated: {
+				// created a service assignment
+				type: Boolean,
+				default: false,
+			},
+			firstToolAdded: {
+				// added a first tool
+				type: Boolean,
+				default: false,
+			},
+			csvImportViewed: {
+				// downloaded a csv template for importing SA, C, T
+				type: Boolean,
+				default: false,
+			},
+		},
+	},
+	{
+		timestamps: true,
+	},
+);
+
+// Virtual field to return the last compeleted step
+OnboardingSchema.virtual("lastCompletedStep").get(function () {
+	const steps = ["profile", "categories", "services", "tools", "complete"];
+    const completedSteps = steps.filter((step) => this.progress[step]);
+    return completedSteps.length > 0? completedSteps[completedSteps.length - 1] : null;
 });
 
+// virtual field to return the next step to be completed
+ OnboardingSchema.virtual("nextStep").get(function () {
+    const steps = ["profile", "categories", "services", "tools", "complete"];
+    const completedSteps = steps.filter((step) => this.progress[step]);
+    return completedSteps.length < steps.length ? steps[completedSteps.length] : null;
+});
+
+// function to mark a provided step as completed
+ OnboardingSchema.methods.markStepAsCompleted = function (step) {
+    if (this.progress[step]) {
+        this.progress[step] = true;
+		this.save();
+    }
+
+};
 // Add index for quick lookups
 OnboardingSchema.index({ user: 1, tenant: 1 }, { unique: true });
 
 // Method to check if onboarding is complete
-OnboardingSchema.methods.isComplete = function() {
-	return this.progress.completedAt !== null;
+OnboardingSchema.methods.isComplete = function () {
+	return this.completedAt !== null;
 };
 
-// Method to advance to next step
-OnboardingSchema.methods.advanceStep = function() {
-	const steps = ['profile', 'categories', 'services', 'tools', 'complete'];
-	const currentIndex = steps.indexOf(this.progress.currentStep);
-
-	if (currentIndex < steps.length - 1) {
-		this.progress.currentStep = steps[currentIndex + 1];
-		if (this.progress.currentStep === 'complete') {
-			this.progress.completedAt = new Date();
-		}
-	}
-};
 
 export default OnboardingSchema;

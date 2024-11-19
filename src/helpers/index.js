@@ -84,20 +84,6 @@ const hbsDate_distanceFromToday = (date) => {
 	return moment(date).fromNow();
 };
 /**
- * Helper to determine if onboarding should be shown
- * Returns true if user has onboarding in progress and not all steps are completed
- */
-const showOnboarding = function(user, options) {
-	if (!user || !user.onboarding) return options.inverse(this);
-	const steps = user.onboarding.steps;
-	const allStepsCompleted = steps.profileSetup &&
-							steps.categoryCreated &&
-							steps.servicesCreated &&
-							steps.toolsAdded;
-	return allStepsCompleted ? options.inverse(this) : options.fn(this);
-};
-
-/**
  * Helper to check if a step is the current onboarding step
  * Returns true if the provided step is the next incomplete step
  */
@@ -127,7 +113,6 @@ const customHelpers = {
 	searchingForOneTool,
 	hbsDate_distanceFromToday,
 	isCurrentStep,
-	showOnboarding,
 	...handlebarsHelpers(),
 };
 
