@@ -1,5 +1,5 @@
 <input type="checkbox" id="newServiceAssignmentModal" class="modal-toggle" />
-<div class="modal">
+<div class="modal" role="dialog">
     <div class="modal-inner-md">
         <label for="newServiceAssignmentModal" class="modal-close-btn">✕</label>
         <form action="/settings/serviceAssignments/create" method="POST">
@@ -31,4 +31,5 @@
             </div>
         </form>
     </div>
+    <label class="modal-backdrop" for="newServiceAssignmentModal">Close</label>
 </div>

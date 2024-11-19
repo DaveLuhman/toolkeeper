@@ -1,6 +1,6 @@
 {{!-- New category Modal --}}
 <input type="checkbox" id="newCategoriesModal" class="modal-toggle" />
-<div class="modal">
+<div class="modal" role="dialog">
     <div class="modal-inner-md">
         <label for="newCategoriesModal" class="modal-close-btn">✕</label>
         <form action="/settings/categories/create" method="POST">
@@ -24,4 +24,5 @@
             </div>
         </form>
     </div>
+    <label class="modal-backdrop" for="newCategoriesModal">Close</label>
 </div>

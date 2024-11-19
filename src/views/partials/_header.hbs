@@ -23,23 +23,23 @@
               <label tabindex="0"
                 class="px-2 text-lg font-medium rounded text-white-50 hover:text-black"
                 style="cursor:pointer">Create <i class="fa-solid fa-chevron-down"></i></label>
-              <ul tabindex="0" class="w-full mt-2 rounded bg-neutral shadow menu dropdown-content rounded-b-box">
+              <ul tabindex="0" class="w-full px-4 rounded bg-neutral shadow menu dropdown-content rounded-b-box">
                 <li class="w-full text-center">
                   <div
-                    class="inline-block w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
+                    class="w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
                     <label for="newToolModal" style="cursor:pointer">Tool</label>
                   </div>
                 </li>
                 <li class="w-full text-center">
                   <div
-                    class="inline-block w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
-                    <label for="newAssignmentModal" style="cursor:pointer">Service Assignment</label>
+                    class=" w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
+                    <label for="newServiceAssignmentModal" style="cursor:pointer">Service Assignment</label>
                   </div>
                 </li>
                 <li class="w-full text-center">
                   <div
-                    class="inline-block w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
-                    <label for="newCategoryModal" style="cursor:pointer">Category</label>
+                    class=" w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
+                    <label for="newCategoriesModal" style="cursor:pointer">Category</label>
                   </div>
                 </li>
               </ul>
@@ -54,7 +54,7 @@
       </div>
       {{!-- User Menu --}}
       <div class="flex flex-wrap items-center justify-end order-2 mr-0 md:order-3" id="nav-content">
-        <div class="z-10 flex items-center w-full md:w-full">
+        <div class="z-10 flex items-center w-full">
           <div class="dropdown dropdown-end">
             <label tabindex="0" class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:text-black"
               style="cursor:pointer">{{user.firstName}}
