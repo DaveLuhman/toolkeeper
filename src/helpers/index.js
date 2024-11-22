@@ -83,24 +83,7 @@ export const returnUniqueIdentifier = (toolDocument) => {
 const hbsDate_distanceFromToday = (date) => {
 	return moment(date).fromNow();
 };
-/**
- * Helper to check if a step is the current onboarding step
- * Returns true if the provided step is the next incomplete step
- */
-const isCurrentStep = (step, user) => {
-	if (!user || !user.onboarding) return false;
-	const steps = user.onboarding.steps;
 
-	// Define step order
-	const stepOrder = {
-		'profile': () => !steps.profileSetup,
-		'categories': () => steps.profileSetup && !steps.categoryCreated,
-		'services': () => steps.categoryCreated && !steps.servicesCreated,
-		'tools': () => steps.servicesCreated && !steps.toolsAdded
-	};
-
-	return stepOrder[step] ? stepOrder[step]() : false;
-}
 
 const customHelpers = {
 	organizeContext,
@@ -112,7 +95,6 @@ const customHelpers = {
 	getPackageVersion,
 	searchingForOneTool,
 	hbsDate_distanceFromToday,
-	isCurrentStep,
 	...handlebarsHelpers(),
 };
 

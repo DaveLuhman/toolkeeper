@@ -1,4 +1,5 @@
 import passport from "passport";
+import { Onboarding } from "../models/index.models.js";
 /**
  * @param req Express Request object
  * @param  res  Express Response object
@@ -54,6 +55,27 @@ function login(req, res, next) {
 		failureRedirect: "/login",
 		failureFlash: true,
 		successRedirect: "/dashboard",
+	}, async (err, user, info) => {
+		if (err) {
+			return next(err);
+		}
+		if (!user) {
+			return res.redirect("/login");
+		}
+		req.logIn(user, async (err) => {
+			if (err) {
+				return next(err);
+			}
+			// Hoist the user's onboarding document to the request object
+			let onboardingDoc;
+			try {
+				onboardingDoc = await Onboarding.findOne({ user: user.id });
+				res.locals.onboarding = onboardingDoc; // Store onboarding document on req
+			} catch (error) {
+				return next(error);
+			}
+			return res.redirect("/dashboard");
+		});
 	})(req, res, next);
 }
 

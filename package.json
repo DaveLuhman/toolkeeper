@@ -46,6 +46,7 @@
     "fs": "^0.0.1-security",
     "handlebars-helpers": "^0.10.0",
     "handlebars-paginate": "^0.1.0",
+    "intro.js": "^7.2.0",
     "moment": "^2.30.1",
     "mongodb-memory-server": "^10.1.2",
     "mongoose": "^8.8.1",

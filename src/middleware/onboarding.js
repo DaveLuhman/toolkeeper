@@ -1,6 +1,6 @@
 import { Onboarding } from "../models/index.models.js";
 
-const hoistOnboardingToSession = async (req, res, next) => {
+export const hoistOnboarding = async (req, res, next) => {
     try {
         // Fetch user's onboarding document
         const onboardingDoc = await Onboarding.findOne({ user: req.user._id });
@@ -11,5 +11,26 @@ const hoistOnboardingToSession = async (req, res, next) => {
         next(new Error("Failed to locate onboarding document"));
     }
 };
+export const skipStep = async (req, res, next) => {
+	const { step } = req.params;
+	const onboarding = await Onboarding.findOne({ user: req.user.id });
+	onboarding.progress[step] = true;
+	await onboarding.save();
+    res.locals.onboarding = onboarding;
+	next()
+}
 
-export default hoistOnboardingToSession;
+export const onboardingComplete = async (req, res, next) => {
+	const onboarding = await Onboarding.findOne({ user: req.user.id });
+	onboarding.completedAt = new Date();
+    onboarding.progress = {
+        profileSetup: true,
+        categoryCreated: true,
+        serviceAssignmentCreated: true,
+        toolCreated: true,
+        csvImported: true,
+    }
+	await onboarding.save();
+	res.locals.onboarding = onboarding;
+	next();
+}

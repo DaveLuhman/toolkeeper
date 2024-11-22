@@ -1,4 +1,4 @@
-import { ServiceAssignment, Tool } from "../models/index.models.js";
+import { Onboarding, ServiceAssignment, Tool } from "../models/index.models.js";
 import { batchImportTools } from "../middleware/import/batch.js";
 import { deduplicateArray } from "../middleware/util.js";
 import moment from "moment";
@@ -161,6 +161,7 @@ export const renderDashboard = async (req, res) => {
 			req.user.tenant,
 			req.logger,
 		);
+		res.locals.onboarding = await Onboarding.findOne({ user: req.user.id });
 		res.render("dashboard", { cachedContent: res.locals.cachedContent });
 	} catch (err) {
 		console.error(err);

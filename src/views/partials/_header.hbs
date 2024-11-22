@@ -18,29 +18,19 @@
         <ul class="items-center justify-between pt-4 text-base md:flex md:pt-0">
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"
               href="/dashboard">Dashboard</a></li>
-          <li class="flex flex-wrap text-center justify-center"> {{!--Create modal buttons Dropdown --}}
+          <li class="flex flex-wrap text-center justify-center">
             <div class="dropdown dropdown-hover">
-              <label tabindex="0"
-                class="px-2 text-lg font-medium rounded text-white-50 hover:text-black"
+              <label tabindex="0" class="p-2 rounded text-lg font-medium text-white-50 hover:text-black"
                 style="cursor:pointer">Create <i class="fa-solid fa-chevron-down"></i></label>
-              <ul tabindex="0" class="w-full px-4 rounded bg-neutral shadow menu dropdown-content rounded-b-box">
-                <li class="w-full text-center">
-                  <div
-                    class="w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
-                    <label for="newToolModal" style="cursor:pointer">Tool</label>
-                  </div>
+              <ul tabindex="0" class="w-full drop-shadow menu dropdown-content rounded-lg ">
+                <li class="hover:border-gray-300 bg-base-100">
+                  <label for="newToolModal" style="cursor:pointer">Tool</label>
                 </li>
-                <li class="w-full text-center">
-                  <div
-                    class=" w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
-                    <label for="newServiceAssignmentModal" style="cursor:pointer">Service Assignment</label>
-                  </div>
+                <li class="hover:border-gray-300 bg-base-100">
+                  <label for="newServiceAssignmentModal" style="cursor:pointer">Service Assignment</label>
                 </li>
-                <li class="w-full text-center">
-                  <div
-                    class=" w-full px-2 py-1 text-md text-center font-medium no-underline hover:text-black lg:-ml-2">
-                    <label for="newCategoriesModal" style="cursor:pointer">Category</label>
-                  </div>
+                <li class="hover:border-gray-300 bg-base-100">
+                  <label for="newCategoriesModal" style="cursor:pointer">Category</label>
                 </li>
               </ul>
             </div>

@@ -47,25 +47,40 @@ const OnboardingSchema = new mongoose.Schema(
 
 // Virtual field to return the last compeleted step
 OnboardingSchema.virtual("lastCompletedStep").get(function () {
-	const steps = ["profile", "categories", "services", "tools", "complete"];
-    const completedSteps = steps.filter((step) => this.progress[step]);
-    return completedSteps.length > 0? completedSteps[completedSteps.length - 1] : null;
+	const steps = [
+		"profileSetup",
+		"categoryCreated",
+		"serviceAssignmentCreated",
+		"firstToolAdded",
+		"csvImportViewed",
+	];
+	const completedSteps = steps.filter((step) => this.progress[step]);
+	return completedSteps.length > 0
+		? completedSteps[completedSteps.length - 1]
+		: null;
 });
 
 // virtual field to return the next step to be completed
- OnboardingSchema.virtual("nextStep").get(function () {
-    const steps = ["profile", "categories", "services", "tools", "complete"];
-    const completedSteps = steps.filter((step) => this.progress[step]);
-    return completedSteps.length < steps.length ? steps[completedSteps.length] : null;
+OnboardingSchema.virtual("nextStep").get(function () {
+	const steps = [
+		"profileSetup",
+		"categoryCreated",
+		"serviceAssignmentCreated",
+		"firstToolAdded",
+		"csvImportViewed",
+	];
+	const completedSteps = steps.filter((step) => this.progress[step]);
+	return completedSteps.length < steps.length
+		? steps[completedSteps.length]
+		: null;
 });
 
 // function to mark a provided step as completed
- OnboardingSchema.methods.markStepAsCompleted = function (step) {
-    if (this.progress[step]) {
-        this.progress[step] = true;
+OnboardingSchema.methods.markStepAsCompleted = function (step) {
+	if (this.progress[step]) {
+		this.progress[step] = true;
 		this.save();
-    }
-
+	}
 };
 // Add index for quick lookups
 OnboardingSchema.index({ user: 1, tenant: 1 }, { unique: true });
@@ -74,6 +89,5 @@ OnboardingSchema.index({ user: 1, tenant: 1 }, { unique: true });
 OnboardingSchema.methods.isComplete = function () {
 	return this.completedAt !== null;
 };
-
 
 export default OnboardingSchema;

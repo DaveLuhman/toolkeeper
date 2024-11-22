@@ -22,7 +22,7 @@
             </div>
     </div>
 </div>
-{{#if onboarding}}
-{{> _onboarding_overlay}}
-{{/if}}
+{{#eq onboarding.completedAt null}}
+{{> onboarding/_dashboard}}
+{{/eq}}
   {{> dashboard/_createCache}}
