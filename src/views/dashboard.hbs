@@ -11,7 +11,7 @@
         {{/if}}
     </div>
     <div class="flex flex-1 flex-col">
-        <div class="text-center text-2xl font-semibold">Quick Search Links</div>
+        <div class="text-center text-2xl font-semibold" data-title="Quick Search Links" data-intro="These are links to the active service assignments and categories.">Quick Search Links</div>
         <div class="flex flex-row justify-evenly">
             {{#if activeServiceAssignments}}
             {{> dashboard/_serviceAssignmentBox}}
@@ -22,7 +22,4 @@
             </div>
     </div>
 </div>
-{{#eq onboarding.completedAt null}}
-{{> onboarding/_dashboard}}
-{{/eq}}
-  {{> dashboard/_createCache}}
+{{> dashboard/_createCache}}
