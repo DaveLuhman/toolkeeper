@@ -9,22 +9,29 @@
         <form action="/user/profile" method="POST">
             <div class="form-row">
                 <div class="form-control">
-                    <label class="label"><span class="label-text">First Name</span></label>
+                    <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
+                            data-title="First Name" data-intro="This is your first name." {{/unless}}>First
+                            Name</span></label>
                     <input required id="profile_firstName" name="firstName" type="text" value="{{user.firstName}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Last Name</span></label>
+                    <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
+                            data-title="Last Name" data-intro="This is your last name." {{/unless}}>Last
+                            Name</span></label>
                     <input required id="profile_lastName" name="lastName" type="text" value="{{user.lastName}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Email</span></label>
+                    <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
+                            data-title="Email" data-intro="This is your email address." {{/unless}}>Email</span></label>
                     <input required id="profile_email" name="email" type="text" value="{{user.email}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
-                    <label class="label" for="profile_role"><span class="label-text">Role</span></label>
+                    <label class="label" for="profile_role"><span class="label-text"
+                            {{#unless onboarding.progress.profileSetup}} data-title="Role"
+                            data-intro="This is your role in the system." {{/unless}}>Role</span></label>
                     <select class="select select-bordered" name="profile_role" id="profile_role"
                         aria-label="profile_role" disabled>
                         <option value="User" {{isSelected user.role "User" }}>User</option>
@@ -35,7 +42,10 @@
             </div>
             <div class="form-row">
                 <div class="form-control">
-                    <label class="label" for="theme"><span class="label-text">Visual Theme</span></label>
+                    <label class="label" for="theme"><span class="label-text"
+                            {{#unless onboarding.progress.profileSetup}} data-title="Visual Theme"
+                            data-intro="This is your visual theme preference." {{/unless}}>Visual
+                            Theme</span></label>
                     <select name="theme" id="profile_theme" class="select select-bordered"
                         aria-label="theme-preferences">
                         <option value="corporate" {{isSelected user.preferences.theme "corporate" }}>Light</option>
@@ -49,7 +59,9 @@
                     </select>
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Sort Field</span></label>
+                    <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
+                            data-title="Sort Field" data-intro="This is your sort field preference." {{/unless}}>Sort
+                            Field</span></label>
                     <select name="sortField" id="profile_sortField" class="select select-bordered"
                         aria-label="sort-field-preferences">
                         <option value="serialNumber" {{isSelected user.preferences.sortField "serialNumber" }}>
@@ -110,6 +122,11 @@
         </form>
     </div>
 </div>
-{{#eq onboarding.progress.profileSetup false}}
-{{> onboarding/_profile}}
-{{/eq}}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        introJs().onexit(() => {
+            $.post("/user/profile/onboarding-complete");
+        }).start();
+    });
+</script>
+{{onboarding}}

@@ -7,13 +7,13 @@ import { materialRouter } from './material.routes.js'
 import { importRouter } from './import.routes.js'
 import { tenantRouter } from './tenant.routes.js'
 import { renderSettingsUsers } from '../../controllers/settings/user.js'
-import { usersOnboardingComplete, profileOnboardingComplete } from '../../middleware/onboarding.js'
+import { hoistOnboarding, usersOnboardingComplete, profileOnboardingComplete } from '../../middleware/onboarding.js'
 
 export const settingsRouter = expressRouter()
 
 // show settings index page
 // @route  GET /settings
-settingsRouter.get('/', getUsers, renderSettingsUsers)
+settingsRouter.get('/', hoistOnboarding, getUsers, renderSettingsUsers)
 // all userSettings routes go to userSettingsRouter
 // @route  * /settings/users
 settingsRouter.use('/users', userSettingsRouter)

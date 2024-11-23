@@ -17,11 +17,11 @@
       <div class="z-10 order-3 hidden w-full md:flex md:items-center md:w-auto md:order-1" id="menu">
         <ul class="items-center justify-between pt-4 text-base md:flex md:pt-0">
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"
-              href="/dashboard" id="dashboardLink">Dashboard</a></li>
+              href="/dashboard" id="dashboardLink" {{#unless onboarding.progress.dashboardCompleted}} data-title="Dashboard" data-intro="This is how you get back to the dashboard."{{/unless}}>Dashboard</a></li>
           <li class="flex flex-wrap text-center justify-center">
             <div class="dropdown dropdown-hover">
               <label tabindex="0" class="p-2 rounded text-lg font-medium text-white-50 hover:text-black"
-                style="cursor:pointer" id="createLink">Create <i class="fa-solid fa-chevron-down"></i></label>
+                style="cursor:pointer" id="createLink" {{#unless onboarding.progress.dashboardCompleted}} data-title="Create" data-intro="This is how you create items from anywhere across the platform."{{/unless}}>Create <i class="fa-solid fa-chevron-down"></i></label>
               <ul tabindex="0" class="w-full drop-shadow menu dropdown-content rounded-lg ">
                 <li class="hover:border-gray-300 bg-base-100">
                   <label for="newToolModal" style="cursor:pointer">Tool</label>
@@ -36,16 +36,16 @@
             </div>
           </li>
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"><label
-                for="checkInOutModal" style="cursor:pointer">Check-In/Out</label></a></li>
+                for="checkInOutModal" style="cursor:pointer" {{#unless onboarding.progress.dashboardCompleted}} data-title="Check-In/Out" data-intro="This is how you check in and out tools."{{/unless}}>Check-In/Out</label></a></li>
           <li><a class="inline-block px-4 py-2 text-lg font-medium no-underline hover:text-black lg:-ml-2"><label
-                for="searchToolModal" style="cursor:pointer" id="searchLink">Search Tools</label></a></li>
+                for="searchToolModal" style="cursor:pointer" id="searchLink" {{#unless onboarding.progress.dashboardCompleted}} data-title="Search Tools" data-intro="This is how you search for tools by whatever fields you'd like."{{/unless}}>Search Tools</label></a></li>
         </ul>
 
       </div>
       {{!-- User Menu --}}
       <div class="flex flex-wrap items-center justify-end order-2 mr-0 md:order-3" id="nav-content">
         <div class="z-10 flex items-center w-full">
-          <div class="dropdown dropdown-end" id="userMenu">
+          <div class="dropdown dropdown-end" id="userMenu" {{#unless onboarding.progress.dashboardCompleted}} data-title="User Menu" data-intro="This is where you can access your profile and settings."{{/unless}}>
             <label tabindex="0" class="p-2 bg-transparent border border-gray-300 rounded text-white-50 hover:text-black"
               style="cursor:pointer">{{user.firstName}}
               {{user.lastName}} <i class="fa-solid fa-chevron-down"></i></label>

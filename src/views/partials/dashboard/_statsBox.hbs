@@ -20,7 +20,7 @@
       <br />
       Today
     </div>
-    <div class="stat-value" id="statsBoxToday">
+    <div class="stat-value" id="statsBoxToday" {{#unless onboarding.progress.dashboardCompleted}} data-title="Today's Changes" data-intro="This is the number of tools that have been checked in or out today."{{/unless}}>
       {{dashboardStats.todaysTools}}
     </div>
   </div>
@@ -46,7 +46,7 @@
       <br />
       This Week
     </div>
-    <div class="stat-value" id="statsBoxThisWeek">
+    <div class="stat-value" id="statsBoxThisWeek" {{#unless onboarding.progress.dashboardCompleted}} data-title="This Week's Changes" data-intro="This is the number of tools that have been checked in or out this week."{{/unless}}>
       {{dashboardStats.thisWeeksTools}}
     </div>
   </div>
@@ -57,7 +57,7 @@
     <div class="stat-title">
       Total Checked In/Out
     </div>
-    <div class="stat-value" id="statsBoxTotals">
+    <div class="stat-value" id="statsBoxTotals" {{#unless onboarding.progress.dashboardCompleted}} data-title="Total Checked In/Out" data-intro="This is the total number of tools that have been checked in or out."{{/unless}}>
       {{dashboardStats.totalIn}} in <br>
       {{dashboardStats.totalOut}} out
     </div>

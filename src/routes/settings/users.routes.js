@@ -9,11 +9,12 @@ import {
 } from '../../middleware/user.js'
 import { sanitizeReqBody } from '../../middleware/util.js'
 import { renderSettingsEditUser, renderSettingsUsers } from '../../controllers/settings/user.js'
+import { hoistOnboarding } from '../../middleware/onboarding.js'
 export const userSettingsRouter = Router()
 
 // @desc get all users and render settings page
 // @endpoint GET /settings/users
-userSettingsRouter.get('/', getUsers, renderSettingsUsers)
+userSettingsRouter.get('/', hoistOnboarding, getUsers, renderSettingsUsers)
 
 // @desc reset another user's password
 // @endpoint POST /settings/users/resetPW/:id

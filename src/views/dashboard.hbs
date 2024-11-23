@@ -19,7 +19,14 @@
             {{#if categories}}
             {{> dashboard/_categoryBox}}
             {{/if}}
-            </div>
+        </div>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        introJs().onexit(() => {
+            $.post("/dashboard/onboarding-complete");
+        }).start();
+    });
+</script>
 {{> dashboard/_createCache}}

@@ -1,5 +1,5 @@
 <div class="overflow-y-scroll max-h-[75vh]  z-0 relative">
-  <table class="table table-xs mt-2 max-h-min table-pin-rows table-pin-cols" id="recentlyUpdatedTable">
+  <table class="table table-xs mt-2 max-h-min table-pin-rows table-pin-cols" id="recentlyUpdatedTable" {{#unless onboarding.progress.dashboardCompleted}} data-title="Recently Updated" data-intro="This is a list of 50 tools that have been most recently updated."{{/unless}}  >
     <thead>
       <tr>
         <td>
