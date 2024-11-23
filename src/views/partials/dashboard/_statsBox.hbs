@@ -1,4 +1,4 @@
-<div class="stats shadow" data-title="Stats Box" data-intro="This is a box that shows you some stats about your tools.">
+<div class="stats shadow" id="statsBox">
   <div class="stat">
     <div class="stat-figure text-secondary">
       <svg
@@ -20,7 +20,7 @@
       <br />
       Today
     </div>
-    <div class="stat-value" data-title="Today's Changes" data-intro="This is the number of tools that have been checked in or out today.">
+    <div class="stat-value" id="statsBoxToday">
       {{dashboardStats.todaysTools}}
     </div>
   </div>
@@ -46,7 +46,7 @@
       <br />
       This Week
     </div>
-    <div class="stat-value" data-title="This Week's Changes" data-intro="This is the number of tools that have been checked in or out this week.">
+    <div class="stat-value" id="statsBoxThisWeek">
       {{dashboardStats.thisWeeksTools}}
     </div>
   </div>
@@ -57,7 +57,7 @@
     <div class="stat-title">
       Total Checked In/Out
     </div>
-    <div class="stat-value" data-title="Total Checked In/Out" data-intro="This is the total number of tools that have been checked in and out.">
+    <div class="stat-value" id="statsBoxTotals">
       {{dashboardStats.totalIn}} in <br>
       {{dashboardStats.totalOut}} out
     </div>

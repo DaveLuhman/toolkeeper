@@ -13,6 +13,11 @@ const OnboardingSchema = new mongoose.Schema(
 			default: null,
 		},
 		progress: {
+			dashboardCompleted: {
+				// completed the onboarding flow
+				type: Boolean,
+				default: false,
+			},
 			profileSetup: {
 				// acknowledgement step for profile setup
 				type: Boolean,
@@ -38,6 +43,11 @@ const OnboardingSchema = new mongoose.Schema(
 				type: Boolean,
 				default: false,
 			},
+			usersSetup: {
+				// completed the users setup flow
+				type: Boolean,
+				default: false,
+			},
 		},
 	},
 	{
@@ -53,6 +63,7 @@ OnboardingSchema.virtual("lastCompletedStep").get(function () {
 		"serviceAssignmentCreated",
 		"firstToolAdded",
 		"csvImportViewed",
+		"usersSetup",
 	];
 	const completedSteps = steps.filter((step) => this.progress[step]);
 	return completedSteps.length > 0
@@ -68,6 +79,7 @@ OnboardingSchema.virtual("nextStep").get(function () {
 		"serviceAssignmentCreated",
 		"firstToolAdded",
 		"csvImportViewed",
+		"usersSetup",
 	];
 	const completedSteps = steps.filter((step) => this.progress[step]);
 	return completedSteps.length < steps.length

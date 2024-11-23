@@ -1,0 +1,29 @@
+{{#eq onboarding.progress.usersSetup false}}
+<script>
+    introJs().addSteps([
+        {
+            element: '#userList',
+            title: 'User List',
+            intro: 'This is where you can see all the users in the system.'
+        },
+        {
+            element: '#addUserButton',
+            title: 'Add User',
+            intro: 'Click here to add a new user to the system.'
+        },
+        {
+            element: '#userRoles',
+            title: 'User Roles',
+            intro: 'Assign roles to users to manage their permissions.'
+        },
+        {
+            element: '#userActions',
+            title: 'User Actions',
+            intro: 'Use these actions to edit or remove users from the system.'
+        }
+    ]);
+    introJs().onexit(function () {
+        $.post('/settings/users/onboarding-complete')
+    });
+</script>
+{{/eq}}

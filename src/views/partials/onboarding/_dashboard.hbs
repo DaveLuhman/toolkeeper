@@ -1,0 +1,56 @@
+{{#eq onboarding.progress.dashboardCompleted false}}
+    <script>
+        introJs().addSteps([
+            {
+                element: '#dashboardLink',
+                title: 'Dashboard',
+                intro: 'This is how you get back to the dashboard.'
+            },
+            {
+                element: '#createLink',
+                title: 'Create',
+                intro: 'This is how you create items from anywhere across the platform.'
+            },
+            {
+                element: '#checkInOutLink',
+                title: 'Check-In/Out',
+                intro: 'This is where you check in and out tools.'
+            },
+            {
+                element: '#searchLink',
+                title: 'Search Tools',
+                intro: 'This is how you search for tools by whatever fields you\'d like.'
+            },
+            {
+                element: '#userMenu',
+                title: 'User Menu',
+                intro: 'This is where how you access your profile and settings.'
+            },
+            {
+                element: '#statsBox',
+                title: 'Stats Box',
+                intro: 'This is a box that shows you some stats about your tools.'
+            },
+            {
+                element: '#recentlyUpdatedTable',
+                title: 'Recently Updated',
+                intro: 'This is a list of 50 tools that have been most recently updated.'
+            },
+            {
+                element: '#statsBoxToday',
+                title: 'Today\'s Changes',
+                intro: 'This is the number of tools that have been checked in or out today.'
+            },
+            {
+                element: '#statsBoxThisWeek',
+                title: 'This Week\'s Changes',
+                intro: 'This is the number of tools that have been checked in or out this week.'
+            },
+        ])
+        introJs().onexit(function () {
+            $.post('/dashboard/onboarding-complete', {
+                completedAt: new Date().toISOString()
+            })
+        });
+    </script>
+{{/eq}}

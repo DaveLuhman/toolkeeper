@@ -20,17 +20,35 @@ export const skipStep = async (req, res, next) => {
 	next()
 }
 
-export const onboardingComplete = async (req, res, next) => {
+export const dashboardOnboardingComplete = async (req, res, next) => {
 	const onboarding = await Onboarding.findOne({ user: req.user.id });
-	onboarding.completedAt = new Date();
     onboarding.progress = {
-        profileSetup: true,
-        categoryCreated: true,
-        serviceAssignmentCreated: true,
-        toolCreated: true,
-        csvImported: true,
+        dashboardCompleted: true
     }
 	await onboarding.save();
 	res.locals.onboarding = onboarding;
 	next();
+}
+
+export const profileOnboardingComplete = async (req, res, next) => {
+    const onboarding = await Onboarding.findOne({ user: req.user.id });
+    onboarding.progress = {
+        profileSetup: true
+    }
+    await onboarding.save();
+}
+
+export const usersOnboardingComplete = async (req, res, next) => {
+    const onboarding = await Onboarding.findOne({ user: req.user.id });
+    onboarding.progress = {
+        usersSetup: true
+    }
+    await onboarding.save();
+}
+export const importOnboardingComplete = async (req, res, next) => {
+    const onboarding = await Onboarding.findOne({ user: req.user.id });
+    onboarding.progress = {
+        csvImportViewed: true
+    }
+    await onboarding.save();
 }

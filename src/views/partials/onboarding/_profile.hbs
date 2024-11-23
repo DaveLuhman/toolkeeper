@@ -1,0 +1,51 @@
+{{#eq onboarding.progress.profileSetup false}}
+    <script>
+        introJs().addSteps([
+            {
+                element: '#profile_firstName',
+                title: 'First Name',
+                intro: 'Enter your first name here.'
+            },
+            {
+                element: '#profile_lastName',
+                title: 'Last Name',
+                intro: 'Enter your last name here.'
+            },
+            {
+                element: '#profile_email',
+                title: 'Email',
+                intro: 'Provide your email address. This will be used for notifications and account recovery.'
+            },
+            {
+                element: '#profile_role',
+                title: 'Role',
+                intro: 'This displays your role across the platform. If you\'re a manager or admin, you will be able to change users\' roles from the settings page'
+            },
+            {
+                element: '#profile_theme',
+                title: 'Visual Theme',
+                intro: 'Choose a visual theme for your profile interface. This will change the appearance of Tookeeper for your account.'
+            },
+            {
+                element: '#profile_sortField',
+                title: 'Sort Field',
+                intro: 'Select a default field to sort your tools by. This is effective across the platform.'
+            },
+            {
+                element: '#profile_sortDirection',
+                title: 'Sort Direction',
+                intro: 'Choose the default direction for sorting your tools: ascending or descending.'
+            },
+            {
+                element: '#profile_developer',
+                title: 'Developer Mode',
+                intro: 'Enable this option if you want to access developer features. It reveals additional data as it runs in the background. This does not enable any additional features or permissions.'
+            }
+        ]);
+        introJs().onexit(function () {
+            $.post('/settings/profile/onboarding-complete', {
+                completedAt: new Date().toISOString()
+            })
+        });
+    </script>
+{{/eq}}

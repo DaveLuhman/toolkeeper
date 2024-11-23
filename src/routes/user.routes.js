@@ -2,7 +2,7 @@ import { Router as expressRouter } from 'express'
 import { updateUser, resetPassword } from '../middleware/user.js'
 import { sanitizeReqBody } from '../middleware/util.js'
 import { login } from '../middleware/auth.js'
-import { hoistOnboarding } from '../middleware/onboarding.js'
+import { hoistOnboarding, profileOnboardingComplete } from '../middleware/onboarding.js'
 
 export const userRouter = expressRouter()
 // show user their own profile
@@ -18,4 +18,7 @@ userRouter.post('/resetPassword', resetPassword, (_req, res) => {
   res.redirect('/user/profile')
 })
 
+// @desc complete profile onboarding
+// @endpoint POST /user/profile/onboarding-complete
+userRouter.post('/profile/onboarding-complete', profileOnboardingComplete)
 // src\routes\user.routes.js

@@ -7,6 +7,7 @@ import { materialRouter } from './material.routes.js'
 import { importRouter } from './import.routes.js'
 import { tenantRouter } from './tenant.routes.js'
 import { renderSettingsUsers } from '../../controllers/settings/user.js'
+import { usersOnboardingComplete, profileOnboardingComplete } from '../../middleware/onboarding.js'
 
 export const settingsRouter = expressRouter()
 
@@ -36,5 +37,11 @@ settingsRouter.use('/import', importRouter)
 // all tenant routes go to settingsRouter
 // @route * /settings/tenant
 settingsRouter.use('/tenant', tenantRouter)
+
+// onboarding routes
+// @route * /settings/profile/onboarding-complete
+settingsRouter.post('/profile/onboarding-complete', profileOnboardingComplete)
+// @route * /settings/users/onboarding-complete
+settingsRouter.post('/users/onboarding-complete', usersOnboardingComplete)
 
 // src\routes\settings\index.routes.js

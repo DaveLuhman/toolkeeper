@@ -1,7 +1,7 @@
 import { renderDashboard } from '../controllers/tool.js'
 import { generatePrinterFriendlyToolList, getRecentlyUpdatedTools } from '../middleware/tool.js'
 import {initCachedContent} from '../middleware/util.js'
-import { hoistOnboarding, onboardingComplete, skipStep } from '../middleware/onboarding.js'
+import { hoistOnboarding, dashboardOnboardingComplete, skipStep } from '../middleware/onboarding.js'
 import { Router } from 'express'
 export const dashboardRouter = Router()
 dashboardRouter.get(
@@ -13,5 +13,5 @@ dashboardRouter.get(
   renderDashboard
 )
 dashboardRouter.get('/skip-step/:step', skipStep, renderDashboard)
-dashboardRouter.get('/onboarding-complete', onboardingComplete, renderDashboard)
+dashboardRouter.post('/onboarding-complete', dashboardOnboardingComplete)
 // src\routes\dashboard.routes.js
