@@ -33,6 +33,7 @@ import { indexRouter } from "./routes/index.routes.js";
 import { settingsRouter } from "./routes/settings/index.routes.js";
 import { toolRouter } from "./routes/tool.routes.js";
 import { userRouter } from "./routes/user.routes.js";
+import docsRouter from "./routes/docs.routes.js";
 import customHelpers from "./helpers/index.js";
 import { applyImpersonation } from "./middleware/tenant.js";
 import webhookRouter from "./routes/webhooks.routes.js";
@@ -40,7 +41,6 @@ import bodyParser from "body-parser";
 import tenantLogger from "./logging/middleware.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import docsRouter from "./routes/docs.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const MongoDBStore = connectMongoDBSession(session);

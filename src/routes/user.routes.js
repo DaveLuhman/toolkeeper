@@ -6,7 +6,7 @@ import { hoistOnboarding } from '../middleware/onboarding.js'
 
 export const userRouter = expressRouter()
 // show user their own profile
-userRouter.get('/profile', hoistOnboarding, (_req, res) => {
+userRouter.get('/profile', (_req, res) => {
   res.render('profile')
 })
 // update user's own profile
