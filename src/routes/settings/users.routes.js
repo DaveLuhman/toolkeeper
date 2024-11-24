@@ -9,7 +9,7 @@ import {
 } from '../../middleware/user.js'
 import { sanitizeReqBody } from '../../middleware/util.js'
 import { renderSettingsEditUser, renderSettingsUsers } from '../../controllers/settings/user.js'
-import { hoistOnboarding } from '../../middleware/onboarding.js'
+import { hoistOnboarding, usersOnboardingComplete } from '../../middleware/onboarding.js'
 export const userSettingsRouter = Router()
 
 // @desc get all users and render settings page
@@ -27,6 +27,9 @@ userSettingsRouter.post('/disableUser/:id', disableUser, renderSettingsUsers)
 // @desc create new user
 // @endpoint POST /settings/users/create
 userSettingsRouter.post('/create', sanitizeReqBody, createUser, getUsers, renderSettingsUsers)
+// @route * /settings/users/onboarding-complete
+// @endpoint POST /settings/users/onboarding-complete
+userSettingsRouter.post('/onboarding-complete', usersOnboardingComplete)
 
 // @desc get user by ID and render edit page
 // @endpoint GET /settings/users/:id

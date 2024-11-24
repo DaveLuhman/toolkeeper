@@ -38,9 +38,13 @@ export const profileOnboardingComplete = async (req, res, next) => {
 };
 
 export const usersOnboardingComplete = async (req, res, next) => {
-	const onboarding = await Onboarding.findOne({ user: req.user.id });
-	onboarding.progress.usersSetup = true;
-	await onboarding.save();
+	try {
+		const onboarding = await Onboarding.findOne({ user: req.user.id });
+		onboarding.progress.usersSetup = true;
+		await onboarding.save();
+	} catch (error) {
+		next(error);
+	}
 	res.sendStatus(200);
 };
 export const importOnboardingComplete = async (req, res, next) => {

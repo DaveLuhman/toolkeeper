@@ -42,7 +42,7 @@
                                     {{#eq false isDisabled}}<i class="fa-regular fa-square"></i>{{/eq}}
                                     {{#eq true isDisabled}}<i class="fa-regular fa-square-check"></i>{{/eq}}
                                 </td>
-                                <td {{#unless onboarding.progress.usersSetup}} data-title="Edit"
+                                <td {{#unless ../onboarding.progress.usersSetup}} data-title="Edit A User"
                                     data-intro="Use this action to edit a user." {{/unless}}>
                                     <label class="rounded-badge btn-xs">
                                         <a href="/settings/users/{{id}}">
@@ -101,7 +101,6 @@
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-
         introJs().onexit(() => {
             $.post("/settings/users/onboarding-complete");
         }).start();
