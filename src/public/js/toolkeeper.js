@@ -7,6 +7,7 @@ function btnToSpinner() {
 	});
 }
 
+
 function openInNewTab() {
 	const x = window.open();
 	const newPage = x.document.createElement("div");
