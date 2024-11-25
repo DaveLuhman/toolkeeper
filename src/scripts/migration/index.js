@@ -12,8 +12,8 @@ async function migrateAllCollections() {
 			serverSelectionTimeoutMS: 30000,
 		});
 		const tenantId = await createTenantAndSubscription();
-		// await migrateTools(tenantId);
-		// await migrateServiceAssignments(tenantId);
+		await migrateTools(tenantId);
+		await migrateServiceAssignments(tenantId);
 		await migrateCategory(tenantId);
         await migrateUsers(tenantId);
 
