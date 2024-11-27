@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
     integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="/css/introjs.css" />
-  <link rel="stylesheet" href="/css/introjs-flattener.css" />
+  <link rel="stylesheet" href="/css/intro/introjs.css" />
+  <link rel="stylesheet" href="/css/intro/introjs-flattener.css" />
   <link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
   <link href="/css/style.css" rel="stylesheet">
 
@@ -25,17 +25,18 @@
 <body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
-  <script src="/js/intro.js"></script>
+  <script src="/js/intro/intro.js"></script>
   {{> _header}}
   {{> _impersonateBanner}}
   {{#if error}}
     {{> _error}}
   {{/if}}
+  {{> onboarding/_helpFloater}}
   {{{body}}}
   {{> _developer}}
   {{> _footer}}
   {{> _modals}}
-  {{> onboarding/_helpFloater}}
+
   <script src="/js/util.js" type="module" defer></script>
   <script src="/js/toolkeeper.js" type="module" defer></script>
 </body>
