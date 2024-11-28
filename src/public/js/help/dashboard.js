@@ -1,4 +1,3 @@
-import introJs from "intro.js";
 const dashboardHelp = () => {
 	const tour1 = introJs()
 		const dashboardSteps = [

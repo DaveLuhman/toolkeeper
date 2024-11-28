@@ -1,7 +1,7 @@
 <div class="flex w-screen h-screen ">
     <div id="settings-nav">
         {{>_settings}}
-        <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm mt-2 ml-2 ">
+        <div id="newServiceAssignmentBtn" class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm mt-2 ml-2 ">
             <label for="newServiceAssignmentModal">New Service Assignment</label>
         </div>
     </div>
@@ -10,7 +10,7 @@
             <div class="flex items-center justify-center flex-shrink-0 w-full h-10 px-2 relative">
                 <span class="text-center text-white block text-md font-extrabold">Active</span>
             </div>
-            <div class="flex flex-col px-2 pb-2 overflow-y-scroll min-w-fit">
+            <div class="flex flex-col px-2 pb-2 overflow-y-scroll min-w-fit" id="activeServiceAssignmentsTable">
                 <table class="table table-auto">
                     <thead>
                         <tr>
@@ -25,12 +25,12 @@
                         {{#if settings_activeServiceAssignments}}
                             {{#each settings_activeServiceAssignments}}
                                 <tr>
-                                    <td class="hidden lg:table-cell min-w-fit">{{toolCount}}</td>
+                                    <td class="hidden lg:table-cell min-w-fit active-service-assignment-tool-count">{{toolCount}}</td>
                                     <td>{{jobNumber}}</td>
                                     <td class="hidden lg:table-cell min-w-fit">{{jobName}}</td>
-                                    <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i
+                                    <td class="active-service-assignment-edit"><a href="/settings/serviceAssignments/edit/{{_id}}"><i
                                                 class="fa fa-pencil"></i></a></td>
-                                    <td><a href="/settings/serviceAssignments/deactivate/{{_id}}"><i
+                                    <td class="active-service-assignment-deactivate"><a href="/settings/serviceAssignments/deactivate/{{_id}}"><i
                                                 class="fa fa-arrow-right"></i></a></td>
                                     </td>
                                 </tr>
@@ -70,7 +70,7 @@
                                     </td>
                                     <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i
                                                 class="fa fa-pencil"></i></a></td>
-                                    <td><a href="/settings/serviceAssignments/delete/{{_id}}"
+                                    <td class="inactive-service-assignment-delete"><a href="/settings/serviceAssignments/delete/{{_id}}"
                                             onclick="return confirm('Are you sure you want to delete {{name}}')"><i
                                                 class="fa fa-trash"></i></a>
                                     </td>

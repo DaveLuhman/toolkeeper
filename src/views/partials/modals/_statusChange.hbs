@@ -7,36 +7,22 @@
         <div class="title-bar">
           <h3 class="title-text">Check Tools In or Out</h3>
         </div>
-        <input
-          class="input input-bordered col-span-1"
-          type="text"
-          name="serviceAssignmentInput"
-          id="checkInOut_serviceAssignmentInput"
-            placeholder="Scan or Enter the target SA"
-                onsubmit="#"
-        />
+        <div class="tooltip tooltip-primary col-span-1" data-tip="Scan or Enter the target Service Assignment.">
+          <input class="input input-bordered w-full" type="text" name="serviceAssignmentInput"
+            id="checkInOut_serviceAssignmentInput" placeholder="Scan or Enter the target SA" onsubmit="#" />
+        </div>
         <select name="serviceAssignmentSelector" class="select select-bordered col-span-2">
           {{#each activeServiceAssignments}}
-            <option
-              name="{{this.jobNumber}}"
-              value="{{this.id}}"
-            >{{this.jobNumber}} - {{this.jobName}}</option>
+            <option name="{{this.jobNumber}}" value="{{this.id}}">{{this.jobNumber}} - {{this.jobName}}</option>
           {{/each}}
         </select>
-        <textarea
-          required
-          id="searchTerms"
-          name="searchTerms"
-          type="text"
-          placeholder="Search Value"
-          class="textarea textarea-bordered textarea-lg w-full col-span-3"
-        ></textarea>
+        <div class="tooltip tooltip-primary col-span-3" data-tip="Enter serial #s or barcodes, separated by new lines.">
+          <textarea required id="searchTerms" name="searchTerms" type="text" placeholder="Search Value"
+            class="textarea textarea-bordered textarea-lg  w-full"></textarea>
+        </div>
         <div class="modal-button-row">
           <label class="modal-button" for="checkInOutModal">Cancel</label>
-          <label class="modal-button"><button
-              id="status-change_submit"
-              type="submit"
-            >Submit</button></label>
+          <label class="modal-button"><button id="status-change_submit" type="submit">Submit</button></label>
         </div>
       </div>
     </form>

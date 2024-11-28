@@ -454,7 +454,7 @@ async function checkTools(req, res, next) {
 
 		res.locals.destinationServiceAssignment = destinationServiceAssignment;
 
-		const search = deduplicateArray(req.body.searchTerms.split(/\r?\n/));
+		const search = deduplicateArray(req.body.searchTerms.split(/[\r?\n,]+/));
 		const toolsToBeChanged = await lookupToolWrapper(
 			search,
 			req.user.tenant.valueOf(),

@@ -1,6 +1,7 @@
-{{#eq onboarding.progress.profileSetup false}}
     <script>
-        introJs().addSteps([
+        const profileHelp = () => {
+        const profileTour = introJs()
+        const profileSteps = [
             {
                 element: '#profile_firstName',
                 title: 'First Name',
@@ -41,11 +42,14 @@
                 title: 'Developer Mode',
                 intro: 'Enable this option if you want to access developer features. It reveals additional data as it runs in the background. This does not enable any additional features or permissions.'
             }
-        ]);
-        introJs().onexit(function () {
-            $.post('/settings/profile/onboarding-complete', {
-                completedAt: new Date().toISOString()
-            })
+        ]
+        profileTour.setOptions({
+            steps: profileSteps,
+        }).start();
+    };
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector("#helpFloater").addEventListener("click", () => {
+            profileHelp();
         });
-    </script>
-{{/eq}}
+    });
+</script>

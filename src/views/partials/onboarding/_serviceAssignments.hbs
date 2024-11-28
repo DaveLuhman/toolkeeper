@@ -1,0 +1,38 @@
+<script>
+    const serviceAssignmentHelp = () => {
+        const serviceAssignmentsTour = introJs()
+        serviceAssignmentsTour.addSteps([
+            {
+                element: '#newServiceAssignmentBtn',
+                title: 'New Service Assignment',
+                intro: 'Click here to create a new service assignment',
+            },
+            {
+                element: '#activeServiceAssignmentsTable',
+                title: 'Active Service Assignments',
+                intro: 'This is a list of all active service assignments',
+            },
+            {
+                element: document.querySelector('.active-service-assignment-tool-count'),
+                title: 'Tool Count',
+                intro: 'How many tools are assigned to each service assignment',
+            },
+            {
+                element: document.querySelector('.active-service-assignment-edit'),
+                title: 'Edit Service Assignment',
+                intro: 'Click here to edit a service assignment',
+            },
+            {
+                element: document.querySelector('.active-service-assignment-deactivate'),
+                title: 'Deactivate Service Assignment',
+                intro: 'Click here to deactivate a service assignment, moving it to the other table',
+            },
+            {
+                element: document.querySelector('.inactive-service-assignment-delete'),
+                title: 'Delete Service Assignment',
+                intro: 'Click here to delete a service assignment. Only inactive service assignments can be deleted',
+            }
+        ])
+        serviceAssignmentsTour.start()
+    }
+</script>
