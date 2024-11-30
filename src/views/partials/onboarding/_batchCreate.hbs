@@ -1,0 +1,37 @@
+<script>
+    const batchCreateHelp = () => {
+        const tour1 = introJs()
+        const batchCreateSteps = [
+            {
+                element: "#batch-default-values",
+                title: "Batch Default Values",
+                intro:
+                    "This is the batch default values. It is where you can set the default values for the batch.",
+            },
+            {
+                element: "#batch-unique-values",
+                title: "Batch Unique Values",
+                intro:
+                    "This is the batch unique values. It is where you can set the unique values for the batch.",
+            },
+            {
+                element: "#batch-increment-checkboxes",
+                title: "Batch Increment Checkboxes",
+                intro: "This is the batch increment checkboxes. It is where you can enable incrementing for each unique valueset.",
+            },
+            {
+                element: "#plusButton",
+                title: "Plus Button",
+                intro: "This is how you add a new tool to the batch. This locks in incrementing for the batch, so you can't change it later.",
+            }
+        ]
+        tour1.setOptions({
+            steps: batchCreateSteps,
+        }).start();
+    };
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector("#helpFloater").addEventListener("click", () => {
+            batchCreateHelp();
+        });
+    });
+</script>

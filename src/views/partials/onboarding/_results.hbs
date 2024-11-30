@@ -1,0 +1,35 @@
+<script>
+    const resultsHelp = () => {
+        const tour1 = introJs()
+        const resultsSteps = [
+            {
+
+                title: "Results",
+                intro:
+                    "This is the results page. It is where you can view your search results.",
+            },
+            {
+                element: "#search-terms",
+                title: "Search Terms",
+                intro:
+                    "This is the search terms. It is the search terms that you used and how many results were found.",
+            },
+            {
+                element: "#printButton",
+                title: "Print",
+                intro:
+                    "This is how you print the displayed list of tools. \
+                    Anywhere you see this symbol, you can use it to generate \
+                    a printable report.",
+            },
+        ]
+        tour1.setOptions({
+            steps: resultsSteps,
+        }).start();
+    };
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector("#helpFloater").addEventListener("click", () => {
+            resultsHelp();
+        });
+    });
+</script>

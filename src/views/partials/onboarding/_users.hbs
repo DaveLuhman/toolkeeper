@@ -1,6 +1,6 @@
-{{#eq onboarding.progress.usersSetup false}}
 <script>
-    introJs().addSteps([
+    const userSetup = introJs()
+    const usersSteps = [
         {
             element: '#userList',
             title: 'User List',
@@ -21,9 +21,13 @@
             title: 'User Actions',
             intro: 'Use these actions to edit or remove users from the system.'
         }
-    ]);
-    introJs().onexit(function () {
-        $.post('/settings/users/onboarding-complete')
+    ]
+    userSetup.setOptions({
+        steps: usersSteps,
+        exitOnOverlayClick: false,
+        exitOnEsc: false,
+    });
+    document.querySelector('#helpFloater').addEventListener('click', () => {
+        userSetup.start();
     });
 </script>
-{{/eq}}
