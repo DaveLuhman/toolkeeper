@@ -30,8 +30,11 @@
                                     <td class="hidden lg:table-cell min-w-fit">{{jobName}}</td>
                                     <td class="active-service-assignment-edit"><a href="/settings/serviceAssignments/edit/{{_id}}"><i
                                                 class="fa fa-pencil"></i></a></td>
-                                    <td class="active-service-assignment-deactivate"><a href="/settings/serviceAssignments/deactivate/{{_id}}"><i
-                                                class="fa fa-arrow-right"></i></a></td>
+                                    <td class="active-service-assignment-deactivate">
+                                        <div class="deactivate-service-assignment" data-id="{{_id}}" data-toolCount="{{toolCount}}" onclick="confirmDeactivation(this)">
+                                            <i class="fa fa-arrow-right"></i>
+                                        </div>
+                                    </td>
                                     </td>
                                 </tr>
                             {{/each}}
@@ -84,3 +87,17 @@
     </div>
 </div>
 {{!-- New SA Modal --}}
+<script>
+    function confirmDeactivation(element) {
+        const toolCount = element.getAttribute('data-toolCount');
+        if (toolCount > 0) {
+            const confirmMessage = 'This service assignment has tools assigned. Are you sure you want to deactivate it?';
+            if (!confirm(confirmMessage)) {
+                return false; // Cancel deactivation
+            }
+        }
+        // Proceed with deactivation logic (e.g., redirect or AJAX call)
+        const id = element.getAttribute('data-id');
+        window.location.href = `/settings/serviceAssignments/deactivate/${id}`;
+    }
+</script>
