@@ -1,3 +1,4 @@
+import { checkoutUrl } from "../config/lemonSqueezy.js";
 import { Prospect, User } from "../models/index.models.js";
 
 
@@ -25,7 +26,7 @@ export async function createProspect(req, res, next) {
 	// Check if email already registered
 	try {
 		const existingUser = await User.find({ email });
-		if (existingUser) {
+		if (existingUser.length > 0) {
 			const error = "Email is already registered";
 			console.warn(error.yellow);
 			res.locals.message = error;

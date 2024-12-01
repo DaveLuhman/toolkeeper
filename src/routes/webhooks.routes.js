@@ -1,9 +1,9 @@
-import  { Router } from "express";
-import  handleWebhookEvent  from "../middleware/subscription.js";
+import { Router } from "express";
+import handleWebhookEvent from "../controllers/webhook.js";
 
-const webhookRouter = new Router()
+const webhookRouter = new Router();
 
-webhookRouter.post('/annual', handleWebhookEvent)
+webhookRouter.post("/subscription", handleWebhookEvent);
 
-export default webhookRouter
+export default webhookRouter;
 // src\routes\webhooks.routes.js

@@ -2,14 +2,39 @@ import {
 	Subscription,
 	User,
 	Tenant,
-	Prospect,
 	Onboarding,
 } from "../models/index.models.js";
 import { generatePassword } from "../middleware/tenant.js";
 import { getDomainFromEmail, sendEmail } from "../controllers/util.js";
-import { secret } from "../config/lemonSqueezy.js";
-import { createHmac, timingSafeEqual } from "node:crypto";
+
 import logger from "../logging/index.js";
+
+/**
+ * DetermineUserLimit - Determines the user limit based on the variant name.
+ * @param {string} variantName - The name of the subscription variant.
+ * @returns {object} - An object containing the user limit and plan name.
+ */
+export function DetermineUserLimit(variantName) {
+	const firstLetter = variantName.charAt(0).toUpperCase();
+	let userLimit;
+	let planName;
+
+	switch (firstLetter) {
+		case 'P':
+			userLimit = 5;
+			planName = 'Pro';
+			break;
+		case 'E':
+			userLimit = Number.POSITIVE_INFINITY;
+			planName = 'Enterprise';
+			break;
+		default:
+			userLimit = 1;
+			planName = 'Basic';
+	}
+
+	return { userLimit, planName };
+}
 
 const getInstanceUrl = () => {
 	return process.env.NODE_ENV === "production"
@@ -17,21 +42,6 @@ const getInstanceUrl = () => {
 		: "https://dev.toolkeeper.site";
 };
 
-// Verify the X-Signature to ensure the request is legitimate
-const verifySignature = (req) => {
-	try {
-		const hmac = createHmac("sha256", secret);
-		const digest = Buffer.from(hmac.update(req.rawBody).digest("hex"), "utf8");
-		const signature = Buffer.from(req.get("X-Signature") || "", "utf8");
-
-		if (!timingSafeEqual(digest, signature)) {
-			throw new Error("Invalid signature");
-		}
-	} catch (error) {
-		logger.error("Error verifying signature:", error.message);
-		throw error;
-	}
-};
 
 // Create a new user based on pending user data
 const createUserFromProspect = async (prospect) => {
@@ -98,18 +108,18 @@ const createSubscription = async (subscriptionData, activeUser, tenant) => {
 };
 
 // Send a welcome email to the new user
-const sendWelcomeEmail = async (prospect, activeUser, newPassword) => {
+const sendWelcomeEmail = async (newUser, newPassword) => {
 	try {
 		const instanceUrl = getInstanceUrl();
 		const emailSubject = "Welcome to ToolKeeper - Let's Get Started!";
 
 		const emailBody = `
-Dear ${prospect.name},
+Dear ${newUser.name},
 
 Welcome to ToolKeeper! Your account has been successfully created. Here's everything you need to get started:
 
 🔐 Your Login Credentials:
-Email: ${prospect.email}
+Email: ${newUser.email}
 Password: ${newPassword}
 
 🚀 Quick Start Guide:
@@ -134,14 +144,14 @@ We're excited to have you on board!
 Best regards,
 The ToolKeeper Team`;
 
-		await sendEmail(activeUser.email, emailSubject, emailBody);
+		await sendEmail(newUser.email, emailSubject, emailBody);
 	} catch (error) {
 		logger.error("Error sending welcome email:", error.message);
 		throw error;
 	}
 };
 
-const handleSubscriptionEvent = async (eventType, subscriptionData) => {
+export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 	let status;
 	switch (eventType) {
 		case "subscription_cancelled":
@@ -154,15 +164,28 @@ const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 			status = "expired";
 			break;
 		case "subscription_created": {
+			const newPassword = generatePassword();
 			const newAdminUser = await User.create({
+				name: subscriptionData.attributes.user_name,
 				email: subscriptionData.attributes.user_email,
-				password: generatePassword(),
+				password: newPassword,
 				role: "Admin",
 			});
-
-			const tenant = await createTenantForUser(activeUser);
-			await createSubscription(subscriptionData, activeUser, tenant);
-			await sendWelcomeEmail(prospect, activeUser, newPassword);
+			await Onboarding.create({
+				user: newAdminUser._id,
+			});
+			const tenant = await Tenant.create({
+				domain: getDomainFromEmail(newAdminUser.email),
+				adminUser: newAdminUser._id,
+			});
+			await Subscription.create({
+				user: newAdminUser._id,
+				tenant: tenant._id,
+				status: "active",
+				lemonSqueezyId: subscriptionData.id,
+				lemonSqueezyObject: subscriptionData.attributes,
+			});
+			await sendWelcomeEmail(newAdminUser, newPassword);
 			return "Subscription created, user and tenant created, and welcome email sent.";
 		}
 		default:
@@ -183,84 +206,5 @@ const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 	return `Subscription ${status} and updated.`;
 };
 
-const handleWebhookEvent = async (req, res) => {
-	let eventType = "unknown"; // Initialize eventType for error logging
-	try {
-		// Validate request body
-		if (!req.rawBody) {
-			return res.status(400).json({ error: "Missing request body" });
-		}
 
-		// Verify the request signature
-		try {
-			verifySignature(req);
-		} catch (error) {
-			return res.status(401).json({ error: "Invalid signature" });
-		}
 
-		// Parse the raw body into JSON
-		let webhookPayload;
-		try {
-			webhookPayload = JSON.parse(req.rawBody.toString("utf8"));
-		} catch (error) {
-			return res.status(400).json({ error: "Invalid JSON payload" });
-		}
-
-		// Validate webhook payload structure
-		if (!webhookPayload.data || !webhookPayload.meta || !webhookPayload.meta.event_name) {
-			console.log(webhookPayload)
-			return res
-				.status(400)
-				.json({ error: "Invalid webhook payload structure" });
-		}
-
-		const subscriptionData = webhookPayload.data;
-		eventType = webhookPayload.meta.event_name;
-
-		// Validate subscription data
-		if (!subscriptionData.id || !subscriptionData.attributes) {
-			return res.status(400).json({ error: "Invalid subscription data" });
-		}
-
-		// Handle the subscription event
-		const message = await handleSubscriptionEvent(eventType, subscriptionData);
-
-		// Log successful operation
-		console.log(
-			`Successfully processed ${eventType} webhook for subscription ${subscriptionData.id}`,
-		);
-
-		// Send a success response
-		return res.status(200).json({
-			success: true,
-			message: message,
-		});
-	} catch (error) {
-		// Determine appropriate status code based on error type
-		let statusCode = 500;
-		let errorMessage = "Internal server error";
-
-		if (error.message === "Unhandled event type") {
-			statusCode = 400;
-			errorMessage = `Unsupported webhook event type: ${eventType}`;
-		} else if (error.message === "Subscription not found") {
-			statusCode = 404;
-			errorMessage = `Subscription not found for event: ${eventType}`;
-		}
-
-		// Log the detailed error for debugging
-		logger.error(`Error processing ${eventType} webhook:`, {
-			error: error.message,
-			stack: error.stack,
-			eventType,
-		});
-
-		// Send error response
-		return res.status(statusCode).json({
-			success: false,
-			error: errorMessage,
-		});
-	}
-};
-
-export default handleWebhookEvent;
