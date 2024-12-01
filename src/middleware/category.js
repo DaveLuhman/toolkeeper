@@ -150,7 +150,7 @@ const listCategoryNames = async (req, res, next) => {
  */
 const getCategoryName = (categories, id) => {
 	try {
-		const category = categories.filter((item) => item._id === id);
+		const category = categories.filter((item) => item._id.valueOf() === id.valueOf());
 
 		if (category.length === 0) {
 			console.warn({ message: "Category not found", id });

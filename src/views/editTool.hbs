@@ -145,17 +145,15 @@
                     <th class="hidden md:table-cell">Description</th>
                     <th>Status</th>
                     <th>Service Assignment</th>
-                    <th class="hidden md:table-cell">Category</th>
                     <th>Date Updated (UTC)</th>
                 </tr>
             </thead>
             {{#each toolHistory as |entry|}}
                 <tr>
-                    <td class="hidden md:table-cell">{{entry.description}}</td>
+                    <td class="hidden md:table-cell">{{entry.changeDescription}}</td>
                     <td>{{entry.status}}</td>
                     <td>{{getServiceAssignmentJobNumber ../allServiceAssignments entry.serviceAssignment}}</td>
-                    <td class="hidden md:table-cell">{{getCategoryName ../categories entry.category}}</td>
-                    <td>{{moment entry.updatedAt format="MM/DD/YYYY hh:mm A"}}</td>
+                    <td>{{moment entry.updatedAt format="MM/DD/YY hh:mm A"}}</td>
                 </tr>
             {{/each}}
         </table>

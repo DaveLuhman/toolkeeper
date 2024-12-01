@@ -312,12 +312,12 @@ async function updateTool(req, res, next) {
 		if (!updatedTool) {
 			throw new Error("Tool not found or could not be updated");
 		}
-
+		const { jobNumber } = await ServiceAssignment.findById(serviceAssignment);
 		updatedTool.history.push({
 			updatedBy: req.user._id,
 			serviceAssignment,
 			status: updatedTool.status,
-			changeDescription: `Service assignment updated to ${serviceAssignment}`,
+			changeDescription: `Service assignment updated to ${jobNumber}`,
 		});
 
 		await updatedTool.save();

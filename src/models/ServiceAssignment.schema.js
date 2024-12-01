@@ -43,6 +43,10 @@ const ServiceAssignmentSchema = new Schema(
 			default: "66af881237c17b64394a4166",
 			required: true,
 		},
+		toolCount: {
+			type: Number,
+			default: 0,
+		},
 	},
 	{
 		toObject: { virtuals: true },

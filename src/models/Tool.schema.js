@@ -1,5 +1,7 @@
 import { Schema } from "mongoose";
 import mongooseAutoPopulate from "mongoose-autopopulate";
+import { ServiceAssignment } from "./index.models.js";
+import logger from "../logging/index.js";
 
 const ToolSchema = new Schema(
 	{
@@ -113,6 +115,32 @@ ToolSchema.virtual("status").get(function () {
 			return "Checked Out";
 		default:
 			return "Unavailable";
+	}
+});
+
+ToolSchema.post('save', async (doc) => {
+	const lastHistoryEntry = doc.history[doc.history.length - 1];
+
+	if (lastHistoryEntry) {
+		const { serviceAssignment } = lastHistoryEntry;
+
+		try {
+			// Update previous service assignment if it exists
+			if (doc.serviceAssignment) {
+				await ServiceAssignment.findByIdAndUpdate(doc.serviceAssignment, {
+					$inc: { toolCount: doc.serviceAssignment ? 0 : -1 } // Decrement tool count for previous assignment
+				});
+			}
+
+			// Update new service assignment if it exists
+			if (serviceAssignment) {
+				await ServiceAssignment.findByIdAndUpdate(serviceAssignment, {
+					$inc: { toolCount: serviceAssignment ? 1 : 0 } // Increment tool count for new assignment
+				});
+			}
+		} catch (error) {
+			logger.error(`Error updating toolCount for ServiceAssignment: ${error.message}`);
+		}
 	}
 });
 
