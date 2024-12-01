@@ -66,6 +66,8 @@ function login(req, res, next) {
 			if (err) {
 				return next(err);
 			}
+			user.lastLogin = new Date();
+			await user.save();
 			// Hoist the user's onboarding document to the request object
 			let onboardingDoc;
 			try {

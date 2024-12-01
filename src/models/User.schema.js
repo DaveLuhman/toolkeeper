@@ -40,9 +40,9 @@ const UserSchema = new Schema(
 			default: "User",
 			enum: ["User", "Manager", "Admin", "Superadmin"],
 		},
-		status: {
-			type: String,
-			default: "Lapsed",
+		isDisabled: {
+			type: Boolean,
+			default: false,
 		},
 		lastLogin: {
 			type: Date,

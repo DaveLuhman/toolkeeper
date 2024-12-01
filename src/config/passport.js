@@ -1,5 +1,5 @@
 import passport from 'passport'
-import { User } from '../models/index.models.js'
+import { User, Tenant, Subscription } from '../models/index.models.js'
 import { Strategy as LocalStrategy } from 'passport-local'
 import { compare } from 'bcrypt'
 
@@ -19,6 +19,15 @@ const passportConfig = (_app) => {
       if (user.isDisabled === true) {
         return done(null, false, { message: 'That user has been disabled. Contact your manager' })
       }
+
+      const tenant = await Tenant.findById(user.tenant)
+      if (tenant) {
+        const subscription = await Subscription.findOne({ tenant: tenant._id })
+        if (subscription && subscription.status === 'expired') {
+          return done(null, false, { message: 'Your subscription has expired. Please contact support.' })
+        }
+      }
+
       compare(password, user.password, (err, isMatch) => {
         if (err) throw err
         if (isMatch) {

@@ -163,6 +163,12 @@ export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 		case "subscription_expired":
 			status = "expired";
 			break;
+		case "subscription_paused":
+			status = "paused";
+			break;
+		case "subscription_unpaused":
+			status = "active";
+			break;
 		case "subscription_created": {
 			const newPassword = generatePassword();
 			const newAdminUser = await User.create({
@@ -187,6 +193,10 @@ export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 			});
 			await sendWelcomeEmail(newAdminUser, newPassword);
 			return "Subscription created, user and tenant created, and welcome email sent.";
+		}
+		case "subscription_updated": {
+			status = "updated";
+			break;
 		}
 		default:
 			throw new Error("Unhandled event type");

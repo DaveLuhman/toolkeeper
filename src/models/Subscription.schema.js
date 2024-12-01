@@ -5,8 +5,8 @@ const subscriptionSchema = new Schema({
 	tenant: { type: Schema.Types.ObjectId, ref: "Tenant" }, // Tenant associated with this subscription
 	status: {
 		type: String,
-		enum: ["pending", "active", "lapsed", "cancelled", "expired"],
-		default: "pending",
+		enum: ["past-due", "paused", "active", "unpaid", "cancelled", "expired"],
+		default: "active",
 	},
 	lemonSqueezyId: { type: String, required: true }, // Corresponds to the "id" field
 	lemonSqueezyObject: {
