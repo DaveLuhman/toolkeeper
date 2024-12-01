@@ -167,6 +167,7 @@ async function createDefaultServiceAssignments() {
 			jobNumber: "IMPORT",
 			jobName: "Imported",
 			type: "Imported - Uncategorized",
+			toolCount: 0,
 			phone: "",
 			notes: "Default SA for imported tools",
 			active: true,
@@ -176,6 +177,7 @@ async function createDefaultServiceAssignments() {
 			_id: "64a34b651288871770df1086",
 			jobNumber: "DEPOT",
 			jobName: "Default stockroom for serialized tools",
+			toolCount: 0,
 			type: "Stockroom",
 			active: true,
 			tenant: "66af881237c17b64394a4166",
@@ -183,6 +185,7 @@ async function createDefaultServiceAssignments() {
 		{
 			_id: "64a34b651288871770df1087",
 			jobNumber: "PARTS",
+			toolCount: 0,
 			jobName: "Default stockroom for consumables/parts",
 			type: "Stockroom",
 			active: true,
