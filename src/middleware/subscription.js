@@ -184,6 +184,8 @@ export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 				domain: getDomainFromEmail(newAdminUser.email),
 				adminUser: newAdminUser._id,
 			});
+			newAdminUser.tenant = tenant._id;
+			await newAdminUser.save();
 			await Subscription.create({
 				user: newAdminUser._id,
 				tenant: tenant._id,
