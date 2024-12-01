@@ -21,6 +21,10 @@ const ProspectSchema = new Schema(
 			required: true,
 		},
 		companyName: String,
+		converted: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	{
 		toObject: { virtuals: true },

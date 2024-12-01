@@ -54,8 +54,7 @@ async function createDefaultUser() {
 	const usersToCreate = [
 		{
 			_id: "663870c0a1a9cdb4b707c737",
-			firstName: "Admin",
-			lastName: "User",
+			name: "Admin User",
 			password: "asdfasdf",
 			role: "Superadmin",
 			email: "admin@toolkeeper.site",
@@ -63,8 +62,7 @@ async function createDefaultUser() {
 		},
 		{
 			_id: "663870c0a1a9cdb4b707c738",
-			firstName: "Demo",
-			lastName: "User",
+			name: "Demo User",
 			password: "demo",
 			role: "Manager",
 			email: "demo@toolkeeper.site",

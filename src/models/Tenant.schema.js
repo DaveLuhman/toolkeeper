@@ -6,7 +6,6 @@ const TenantSchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: true,
 			index: true,
 		},
 		domain: {

@@ -114,7 +114,7 @@ export const generatePassword = () => {
 
 export const createTenant = async (req, res, next) => {
 	try {
-		const { firstName, lastName, tenantName, adminEmail } = req.body;
+		const { name, tenantName, adminEmail } = req.body;
 		const domain = getDomainFromEmail(adminEmail);
 		// Check if the admin user already exists
 		let adminUser = null;

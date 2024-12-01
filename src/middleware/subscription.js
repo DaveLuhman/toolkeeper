@@ -50,20 +50,6 @@ const createUserFromProspect = async (prospect) => {
 		try {
 			await Onboarding.create({
 				user: activeUser._id,
-				tenant: null, // Will be updated after tenant creation
-				steps: {
-					profileSetup: false,
-					categoryCreated: false,
-					serviceAssignmentCreated: false,
-					firstToolAdded: false,
-					csvImportUsed: false,
-					userInvited: false,
-					preferencesCustomized: false
-				},
-				progress: {
-					currentStep: 'profile',
-					completedAt: null
-				}
 			});
 			logger.info(`Initialized onboarding for user ${activeUser._id}`);
 		} catch (onboardingError) {
@@ -80,10 +66,9 @@ const createUserFromProspect = async (prospect) => {
 };
 
 // Create a new tenant and associate the user as admin
-const createTenantForUser = async (activeUser, prospect) => {
+const createTenantForUser = async (newUser) => {
 	try {
 		const tenantData = {
-			name: prospect.companyName,
 			domain: getDomainFromEmail(activeUser.email),
 			adminUser: activeUser._id, // Assign the admin user to the tenant
 		};
@@ -105,12 +90,6 @@ const createSubscription = async (subscriptionData, activeUser, tenant) => {
 			lemonSqueezyId: subscriptionData.id,
 			lemonSqueezyObject: subscriptionData.attributes,
 		});
-
-		// Update the onboarding document with the tenant ID
-		await Onboarding.findOneAndUpdate(
-			{ user: activeUser._id },
-			{ tenant: tenant._id }
-		);
 
 		return subscription;
 	} catch (error) {
@@ -135,7 +114,7 @@ Email: ${prospect.email}
 Password: ${newPassword}
 
 🚀 Quick Start Guide:
-1. Login at ${instanceUrl}
+1. Login at ${instanceUrl}/login
 2. Change your password immediately
 3. Complete your company profile
 4. Invite your team members
@@ -144,13 +123,12 @@ Password: ${newPassword}
 💡 Key Features:
 • Tool Inventory Management
 • Team Collaboration
-• Real-time Tracking
 • Custom Reports
 
 🔍 Need Help?
 • Visit our documentation: ${instanceUrl}/docs
 • Contact support: support@toolkeeper.site
-• Join our community: ${instanceUrl}/community
+
 
 We're excited to have you on board!
 
@@ -162,16 +140,6 @@ The ToolKeeper Team`;
 		logger.error("Error sending welcome email:", error.message);
 		throw error;
 	}
-};
-
-const createProspectFromSubscriptionData = (subscriptionData) => {
-	const names = subscriptionData.attributes.user_name.split(" ");
-	return {
-		firstName: names[0],
-		lastName: names[1],
-		email: subscriptionData.attributes.user_email,
-		companyName: `${subscriptionData.attributes.user_name}'s Tools`,
-	};
 };
 
 const handleSubscriptionEvent = async (eventType, subscriptionData) => {
@@ -187,10 +155,13 @@ const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 			status = "expired";
 			break;
 		case "subscription_created": {
-			const prospect = createProspectFromSubscriptionData(subscriptionData);
-			const { activeUser, newPassword } =
-				await createUserFromProspect(prospect);
-			const tenant = await createTenantForUser(activeUser, prospect);
+			const newAdminUser = await User.create({
+				email: subscriptionData.attributes.user_email,
+				password: generatePassword(),
+				role: "Admin",
+			});
+
+			const tenant = await createTenantForUser(activeUser);
 			await createSubscription(subscriptionData, activeUser, tenant);
 			await sendWelcomeEmail(prospect, activeUser, newPassword);
 			return "Subscription created, user and tenant created, and welcome email sent.";
