@@ -16,8 +16,7 @@ describe("User Model", () => {
 
     // Step 2: Create a user
     const validUserData = {
-      firstName: "John",
-      lastName: "Doe",
+      name: "John Doe",
       email: "john.doe@example.com",
       password: "password123",
       role: "Admin",
@@ -28,7 +27,7 @@ describe("User Model", () => {
 
     // Assertions
     expect(savedUser._id).toBeDefined();
-    expect(savedUser.firstName).toBe("John");
+    expect(savedUser.name).toBe("John Doe");
     expect(savedUser.email).toBe("john.doe@example.com");
     expect(savedUser.tenant.toString()).toBe(tenant._id.toString());
 
@@ -46,7 +45,7 @@ describe("User Model", () => {
     });
 
     const invalidUserData = {
-      firstName: "Jane", // Missing email and password
+      name: "Jane Doe", // Missing email and password
       tenant: tenant._id,
     };
     try {
@@ -68,8 +67,7 @@ describe("User Model", () => {
     });
 
     const invalidUserData = {
-      firstName: "Invalid",
-      lastName: "Role",
+      name: "Invalid Role",
       email: "invalid.role@example.com",
       password: "password789",
       role: "InvalidRole", // Invalid enum value
@@ -84,34 +82,9 @@ describe("User Model", () => {
     }
   });
 
-  // Test case 4: Virtual property 'displayName'
-  it("should correctly get and set the virtual displayName", async () => {
-    const tenant = await Tenant.create({
-      name: "Tenant 4",
-      domain: "tenant4.example.com",
-      adminUser: new mongoose.Types.ObjectId(),
-    });
 
-    const validUserData = {
-      firstName: "Alice",
-      lastName: "Smith",
-      email: "alice.smith@example.com",
-      password: "password123",
-      tenant: tenant._id,
-    };
-    const user = new User(validUserData);
-    const savedUser = await user.save();
 
-    // Getter test
-    expect(savedUser.displayName).toBe("Alice Smith");
-
-    // Setter test
-    savedUser.displayName = "Bob Johnson";
-    expect(savedUser.firstName).toBe("Bob");
-    expect(savedUser.lastName).toBe("Johnson");
-  });
-
-  // Test case 5: Static method 'findByEmail'
+  // Test case 4: Static method 'findByEmail'
   it("should find a user by email using findByEmail static method", async () => {
     const tenant = await Tenant.create({
       name: "Tenant 5",
@@ -120,8 +93,7 @@ describe("User Model", () => {
     });
 
     const validUserData = {
-      firstName: "Chris",
-      lastName: "Jones",
+      name: "Chris Jones",
       email: "chris.jones@example.com",
       password: "password456",
       tenant: tenant._id,
@@ -135,7 +107,7 @@ describe("User Model", () => {
     expect(foundUser.email).toBe("chris.jones@example.com");
   });
 
-  // Test case 6: Static method 'findByToken'
+  // Test case 5: Static method 'findByToken'
   it("should find a user by token using findByToken static method", async () => {
     const tenant = await Tenant.create({
       name: "Tenant 6",
@@ -144,8 +116,7 @@ describe("User Model", () => {
     });
 
     const validUserData = {
-      firstName: "Sam",
-      lastName: "Lee",
+      name: "Sam Lee",
       email: "sam.lee@example.com",
       password: "password789",
       token: "unique-token",
@@ -160,7 +131,7 @@ describe("User Model", () => {
     expect(foundUser.token).toBe("unique-token");
   });
 
-  // Test case 7: Default preferences
+  // Test case 6: Default preferences
   it("should set default preferences for a new user", async () => {
     const tenant = await Tenant.create({
       name: "Tenant 7",
@@ -169,8 +140,7 @@ describe("User Model", () => {
     });
 
     const validUserData = {
-      firstName: "Sara",
-      lastName: "Wong",
+      name: "Sara Wong",
       email: "sara.wong@example.com",
       password: "password987",
       tenant: tenant._id,

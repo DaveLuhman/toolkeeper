@@ -73,18 +73,6 @@ const UserSchema = new Schema(
 	},
 );
 
-UserSchema.virtual("displayName")
-	.get(function () {
-		return `${this.firstName} ${this.lastName}`;
-	})
-	.set(function (v) {
-		// `v` is the value being set, so use the value to set
-		// `firstName` and `lastName`.
-		const firstName = v.substring(0, v.indexOf(" "));
-		const lastName = v.substring(v.indexOf(" ") + 1);
-		this.set({ firstName, lastName });
-	});
-
 UserSchema.statics.findByEmail = async (email) =>
 	(await model("User").findOne({ email: { $eq: email } })) || false;
 UserSchema.statics.findByToken = async (token) =>

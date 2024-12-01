@@ -36,7 +36,7 @@
                     {{#each users}}
                         {{#unless isDisabled}}
                             <tr class="text-center">
-                                <td class="hidden md:table-cell">{{displayName}}</td>
+                                <td class="hidden md:table-cell">{{name}}</td>
                                 <td>{{email}}</td>
                                 <td class="hidden lg:table-cell">{{role}}</td>
                                 <td>
@@ -76,10 +76,8 @@
                 <div class="title-bar">
                     <h3 class="title-text">Create A New User</h3>
                 </div>
-                <input placeholder="First Name" type="text" name="firstName" id="new-user_firstName"
-                    class="input input-bordered" required />
-                <input placeholder="Last Name" type="text" name="lastName" id="new-user_lastName"
-                    class="input input-bordered" required />
+                <input placeholder="Name" type="text" name="name" id="new-user_name" class="input input-bordered"
+                    required />
                 <input placeholder="E-Mail" type="email" name="email" id="new-user_email" class="input input-bordered"
                     required />
                 <select id="new-user_role" class="select select-bordered" name="role">

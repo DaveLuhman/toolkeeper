@@ -5,13 +5,10 @@ const ProspectSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			auto: true,
 		},
-		firstName: {
+		name: {
 			type: String,
 			trim: true,
-		},
-		lastName: {
-			type: String,
-			trim: true,
+			required: true,
 		},
 		email: {
 			type: String,

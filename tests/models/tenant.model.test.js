@@ -80,8 +80,7 @@ describe("Tenant Model", () => {
 			domain: "test.com",
 			adminUser: {
 				_id: "663870c0a1a9cdb4b707c737",
-				firstName: "Admin",
-				lastName: "User",
+				name: "Admin User",
 				password: "asdfasdf",
 				role: "Superadmin",
 				email: "admin@toolkeeper.site",
@@ -95,16 +94,14 @@ describe("Tenant Model", () => {
 		// Step 3: Create two users under the same tenant
 		const userData1 = {
 			_id: "663870c0a1a9cdb4b707c737",
-			firstName: "Admin",
-			lastName: "User",
+			name: "Admin User",
 			password: "asdfasdf",
 			role: "Superadmin",
 			email: "admin@toolkeeper.site",
 			tenant: savedTenant._id, // Associate this user with the tenant
 		};
 		const userData2 = {
-			firstName: "Admin",
-			lastName: "User",
+			name: "Demo User",
 			password: "asdfasdf",
 			role: "Admin",
 			email: "demo@toolkeeper.site",

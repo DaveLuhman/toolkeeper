@@ -84,8 +84,7 @@ describe("Log Model", () => {
     });
 
     const user = await User.create({
-      firstName: "John",
-      lastName: "Doe",
+      name: "John Doe",
       email: "john.doe@example.com",
       password: "password123",
       tenant: tenant._id,

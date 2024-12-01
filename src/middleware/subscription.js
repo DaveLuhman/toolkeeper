@@ -39,8 +39,7 @@ const createUserFromProspect = async (prospect) => {
 		const newPassword = generatePassword();
 
 		const activeUser = await User.create({
-			firstName: prospect.firstName,
-			lastName: prospect.lastName,
+			name: prospect.name,
 			email: prospect.email,
 			password: newPassword,
 			role: "Admin",
@@ -105,7 +104,7 @@ const sendWelcomeEmail = async (prospect, activeUser, newPassword) => {
 		const emailSubject = "Welcome to ToolKeeper - Let's Get Started!";
 
 		const emailBody = `
-Dear ${prospect.firstName},
+Dear ${prospect.name},
 
 Welcome to ToolKeeper! Your account has been successfully created. Here's everything you need to get started:
 

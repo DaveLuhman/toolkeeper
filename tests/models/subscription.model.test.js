@@ -7,8 +7,7 @@ describe("Subscription Model", () => {
   it("should create a subscription successfully with valid fields", async () => {
     // Step 1: Create a user and tenant for the subscription
     const userData = {
-      firstName: "John",
-      lastName: "Doe",
+      name: "John Doe",
       email: "john.doe@example.com",
       password: "password123",
     };
@@ -58,8 +57,7 @@ describe("Subscription Model", () => {
   // Test case 3: Validate enum for status
   it("should not save a subscription with an invalid status", async () => {
     const userData = {
-      firstName: "John",
-      lastName: "Doe",
+      name: "John Doe",
       email: "john.doe@example.com",
       password: "password123",
     };
@@ -92,8 +90,7 @@ describe("Subscription Model", () => {
   it("should associate a subscription with the correct user and tenant", async () => {
     // Step 1: Create a user and tenant for the subscription
     const userData = {
-      firstName: "Jane",
-      lastName: "Smith",
+      name: "Jane Smith",
       email: "jane.smith@example.com",
       password: "password123",
     };

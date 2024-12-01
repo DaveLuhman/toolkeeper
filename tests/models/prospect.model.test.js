@@ -6,8 +6,7 @@ describe("Prospect Model", () => {
   // Test case 1: Valid prospect creation
   it("should create a prospect successfully with valid fields", async () => {
     const validProspectData = {
-      firstName: "John",
-      lastName: "Doe",
+      name: "John Doe",
       email: "john.doe@example.com",
       companyName: "ToolCo",
     };
@@ -16,8 +15,7 @@ describe("Prospect Model", () => {
 
     // Assertions
     expect(savedProspect._id).toBeDefined();
-    expect(savedProspect.firstName).toBe("John");
-    expect(savedProspect.lastName).toBe("Doe");
+    expect(savedProspect.name).toBe("John Doe");
     expect(savedProspect.email).toBe("john.doe@example.com");
     expect(savedProspect.companyName).toBe("ToolCo");
   });
@@ -25,7 +23,7 @@ describe("Prospect Model", () => {
   // Test case 2: Required fields validation
   it("should fail to create a prospect without required fields", async () => {
     const invalidProspectData = {
-      firstName: "Missing Email", // Missing required 'email' field
+      name: "Missing Email", // Missing required 'email' field
     };
     try {
       const prospect = new Prospect(invalidProspectData);
@@ -39,16 +37,14 @@ describe("Prospect Model", () => {
   // Test case 3: Ensure prospect email is unique
   it("should not allow duplicate email addresses", async () => {
     const prospectData1 = {
-      firstName: "John",
-      lastName: "Smith",
+      name: "John Smith",
       email: "john.smith@example.com",
       companyName: "TechCo",
     };
     await Prospect.create(prospectData1);
 
     const prospectData2 = {
-      firstName: "Jane",
-      lastName: "Doe",
+      name: "Jane Doe",
       email: "john.smith@example.com", // Duplicate email
       companyName: "ToolCo",
     };
@@ -71,8 +67,7 @@ describe("Prospect Model", () => {
     // Assertions
     expect(savedProspect._id).toBeDefined();
     expect(savedProspect.email).toBe("jane.doe@example.com");
-    expect(savedProspect.firstName).toBeUndefined(); // Optional field not provided
-    expect(savedProspect.lastName).toBeUndefined(); // Optional field not provided
+    expect(savedProspect.name).toBeUndefined(); // Optional field not provided
     expect(savedProspect.companyName).toBeUndefined(); // Optional field not provided
   });
 });

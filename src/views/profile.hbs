@@ -10,16 +10,8 @@
             <div class="form-row">
                 <div class="form-control">
                     <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
-                            data-title="First Name" data-intro="This is your first name." {{/unless}}>First
-                            Name</span></label>
-                    <input required id="profile_firstName" name="firstName" type="text" value="{{user.firstName}}"
-                        class="input input-bordered" />
-                </div>
-                <div class="form-control">
-                    <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
-                            data-title="Last Name" data-intro="This is your last name." {{/unless}}>Last
-                            Name</span></label>
-                    <input required id="profile_lastName" name="lastName" type="text" value="{{user.lastName}}"
+                            data-title="Name" data-intro="This is your name." {{/unless}}>Name</span></label>
+                    <input required id="profile_name" name="name" type="text" value="{{user.name}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
@@ -31,7 +23,7 @@
                 <div class="form-control">
                     <label class="label" for="profile_role"><span class="label-text"
                             {{#unless onboarding.progress.profileSetup}} data-title="Role"
-                            data-intro="This is your role in the system." {{/unless}}>Role</span></label>
+                            data-intro="This is your role within your tenant." {{/unless}}>Role</span></label>
                     <select class="select select-bordered" name="profile_role" id="profile_role"
                         aria-label="profile_role" disabled>
                         <option value="User" {{isSelected user.role "User" }}>User</option>

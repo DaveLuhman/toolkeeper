@@ -123,8 +123,7 @@ export const createTenant = async (req, res, next) => {
 
 		if (!adminUser) {
 			adminUser = await User.create({
-				firstName: firstName || "Admin",
-				lastName: lastName || "User",
+				name: name || "Admin User",
 				email: req.body.adminEmail,
 				password: password, // The setter in the User model will hash this
 				role: "Admin",

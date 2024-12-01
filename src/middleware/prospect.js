@@ -1,5 +1,5 @@
-import Prospect from "../models/Prospect.schema.js";
-import User from "../models/User.schema.js";
+import { Prospect, User } from "../models/index.models.js";
+
 
 /**
  * Registers a pending user and redirects the user to the checkout page
@@ -24,13 +24,13 @@ export async function createProspect(req, res, next) {
 	}
 	// Check if email already registered
 	try {
-		const existingUser = await User.findOne({ email });
+		const existingUser = await User.find({ email });
 		if (existingUser) {
 			const error = "Email is already registered";
 			console.warn(error.yellow);
 			res.locals.message = error;
 			console.info("[MW] createProspect-out-2".bgWhite.blue);
-			return res.status(400).redirect("back");
+			return res.location(req.get("Referrer") || "/")
 		}
 	} catch (err) {
 		console.error(`[MW] Error checking email: ${err.message}`.bgRed.white);

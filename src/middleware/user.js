@@ -101,8 +101,7 @@ async function createUser(req, res, next) {
     // Create the new user in a try-catch block
     try {
       newUser = await User.create({
-        firstName,
-        lastName,
+        name,
         email,
         password,
         role,

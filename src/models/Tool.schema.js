@@ -63,11 +63,11 @@ const ToolSchema = new Schema(
 			default: false,
 		},
 		createdBy: {
-			refPath: "User.displayName",
+			ref: "User",
 			type: Schema.Types.ObjectId,
 		},
 		updatedBy: {
-			refPath: "User.displayName",
+			ref: "User",
 			type: Schema.Types.ObjectId,
 		},
 		tenant: {

@@ -155,8 +155,7 @@ describe("Tool Model", () => {
     });
 
     const user = await User.create({
-      firstName: "Alex",
-      lastName: "Johnson",
+      name: "Alex Johnson",
       email: "alex.johnson@example.com",
       password: "password123",
       tenant: tenant._id,
@@ -182,7 +181,7 @@ describe("Tool Model", () => {
 
     // Assertions
     expect(updatedTool.history.length).toBe(1);
-    expect(updatedTool.history[0].updatedBy.firstName).toBe("Alex");
+    expect(updatedTool.history[0].updatedBy.name).toBe("Alex Johnson");
     expect(updatedTool.history[0].status).toBe("Checked Out");
     expect(updatedTool.history[0].changeDescription).toBe("Tool assigned to jobsite");
   });
