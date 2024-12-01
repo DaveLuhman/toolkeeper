@@ -14,7 +14,7 @@ import logger from "../logging/index.js";
  * @param {string} variantName - The name of the subscription variant.
  * @returns {object} - An object containing the user limit and plan name.
  */
-export function DetermineUserLimit(variantName) {
+export function determineUserLimit(variantName) {
 	const firstLetter = variantName.charAt(0).toUpperCase();
 	let userLimit;
 	let planName;

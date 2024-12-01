@@ -1,7 +1,6 @@
-import { Prospect, User, Tenant, Onboarding } from "../models/index.models.js";
+import { User, Tenant, Onboarding } from "../models/index.models.js";
 import { mutateToArray } from "./util.js";
-import { checkoutUrl } from "../config/lemonSqueezy.js";
-import { DetermineUserLimit } from "./subscription.js";
+import { determineUserLimit } from "./subscription.js";
 import logger from "../logging/index.js";
 
 /**
@@ -81,7 +80,7 @@ async function createUser(req, res, next) {
 		const currentUserCount = await User.countDocuments({ tenant });
 
 		// Determine user limit using the external function
-		const { userLimit, planName } = DetermineUserLimit(
+		const { userLimit, planName } = determineUserLimit(
 			tenantDoc.subscription.lemonSqueezyObject.variantName,
 		);
 
