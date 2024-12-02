@@ -50,7 +50,7 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "postcss": "^8.4.41",
-    "sort-array": "^4.1.5",
+    "sort-array": "^5.0.0",
     "toastr": "^2.1.4",
     "winston": "^3.16.0",
     "winston-daily-rotate-file": "^5.0.0",
