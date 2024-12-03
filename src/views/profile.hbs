@@ -26,9 +26,7 @@
                             data-intro="This is your role within your tenant." {{/unless}}>Role</span></label>
                     <select class="select select-bordered" name="profile_role" id="profile_role"
                         aria-label="profile_role" disabled>
-                        <option value="User" {{isSelected user.role "User" }}>User</option>
-                        <option value="Manager" {{isSelected user.role "Manager" }}>Manager</option>
-                        <option value="Admin" {{isSelected user.role "Admin" }}>Admin</option>
+                        <option value='{{user.role}}' selected>{{user.role}}</option>
                     </select>
                 </div>
             </div>
