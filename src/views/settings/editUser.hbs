@@ -22,13 +22,18 @@
               {{#eq role "Admin" }}disabled{{/eq}}>
               <option value="User" {{#eq role "User" }}selected{{/eq}}>User</option>
               <option value="Manager" {{#eq role "Manager" }}selected{{/eq}}>Manager</option>
-              {{#eq role "Admin" }}<option value="Admin" selected>Admin</option>{{/eq}}
+              {{#eq role "Admin" }}
+                <option value="Admin" selected>Admin</option>
+              {{/eq}}
             </select>
           </div>
         </div>
-        <div class="flex flex-row justify-end gap-2">
-          <a href="/settings/users"><button type="button" class="btn btn-accent">Cancel</button></a>
-          <button id="edit-user_submit" type="submit" class="btn btn-primary">Submit</button>
+        <div class="flex flex-row gap-2">
+          <div class="flex-1"><a href="/settings/users/{{_id}}/delete"><button class="btn btn-error">Delete User</button></a></div>
+          <div class="justify-end"><a href="/settings/users"><button type="button"
+                class="btn btn-accent">Cancel</button></a>
+            <button id="edit-user_submit" type="submit" class="btn btn-primary">Submit</button>
+          </div>
         </div>
       </form>
   {{/each}}

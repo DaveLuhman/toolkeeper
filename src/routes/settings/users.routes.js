@@ -5,7 +5,8 @@ import {
   updateUser,
   resetPassword,
   disableUser,
-  getUserByID
+  getUserByID,
+  deleteUser
 } from '../../middleware/user.js'
 import { sanitizeReqBody } from '../../middleware/util.js'
 import { renderSettingsEditUser, renderSettingsUsers } from '../../controllers/settings/user.js'
@@ -23,6 +24,10 @@ userSettingsRouter.post('/resetPW/:id', resetPassword, renderSettingsUsers)
 // @desc disable user
 // @endpoint POST /settings/users/disableUser/:id
 userSettingsRouter.post('/disableUser/:id', disableUser, renderSettingsUsers)
+
+// @desc delete user
+// @endpoint GET /settings/users/:id/delete
+userSettingsRouter.get("/:id/delete", deleteUser, renderSettingsUsers);
 
 // @desc create new user
 // @endpoint POST /settings/users/create

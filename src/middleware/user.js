@@ -248,6 +248,13 @@ async function disableUser(req, res, next) {
 	console.info("[MW] disableUser-out".bgBlue.white);
 	next();
 }
+
+async function deleteUser(req, res, next) {
+	console.info("[MW] deleteUser-in".bgBlue.white);
+	await User.findByIdAndDelete(req.params.id);
+	console.info("[MW] deleteUser-out".bgBlue.white);
+	next();
+}
 export {
 	resetPassword,
 	getUsers,
@@ -256,6 +263,7 @@ export {
 	updateUser,
 	disableUser,
 	getUserByID,
+	deleteUser,
 };
 
 // src\middleware\user.js
