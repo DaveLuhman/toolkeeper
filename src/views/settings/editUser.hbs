@@ -1,33 +1,36 @@
-<div class="main-view">
+<div class="flex flex-col items-center justify-evenly">
   <div class="title-bar">
-    <h3 class="title-text">Edit User</h3>
+    <div class="font-bold text-center pb-2 text-lg">Edit User</div>
   </div>
-  {{#each targetUser as |user|}}
-  <div class="form-wrapper">
-    <form action="/settings/users/edit" method="POST">
-      <div class="form-row">
-        <div class="form-control">
-          <label class="label"><span class="label-text">First Name</span></label>
-          <input id="edit-user_name" name="name" type="text" value="{{user.name}}" class="input input-bordered" />
+  {{#each userToEdit}}
+    <div class="flex flex-wrap ">
+      <form action="/settings/users/edit" method="POST">
+        <input type="hidden" name="id" value="{{_id}}">
+        <div class="form-row">
+          <div class="form-control">
+            <label class="label label-text -mb-2">First Name</label>
+            <input id="edit-user_name" name="name" type="text" value="{{name}}" class="input input-bordered" />
+          </div>
+          <div class="form-control">
+            <label class="label label-text -mb-2">Email</label>
+            <input id="edit-user_email" name="email" type="text" value="{{email}}" class="input input-bordered"
+              disabled />
+          </div>
+          <div class="form-control">
+            <label class="label label-text -mb-2">Role</label>
+            <select class="select select-bordered" name="role" id="edit-user_role" aria-label="role"
+              {{#eq role "Admin" }}disabled{{/eq}}>
+              <option value="User" {{#eq role "User" }}selected{{/eq}}>User</option>
+              <option value="Manager" {{#eq role "Manager" }}selected{{/eq}}>Manager</option>
+              {{#eq role "Admin" }}<option value="Admin" selected>Admin</option>{{/eq}}
+            </select>
+          </div>
         </div>
-        <div class="form-control">
-          <label class="label"><span class="label-text">Email</span></label>
-          <input id="edit-user_email" name="email" type="text" value="{{user.email}}" class="input input-bordered" disabled/>
+        <div class="flex flex-row justify-end gap-2">
+          <a href="/settings/users"><button type="button" class="btn btn-accent">Cancel</button></a>
+          <button id="edit-user_submit" type="submit" class="btn btn-primary">Submit</button>
         </div>
-        <div class="form-control">
-          <label class="label" for="edit-user_role"><span class="label-text">Role</span></label>
-          <select class="select select-bordered" name="edit-user_role" id="edit-user_role" aria-label="role" {{#eq user.role "Admin" }}disabled{{/eq}}>
-            <option value="User" {{#eq user.role "User" }}selected{{/eq}}>User</option>
-            <option value="Manager" {{#eq user.role "Manager" }}selected{{/eq}}>Manager</option>
-            <option value="Admin" {{#eq user.role "Admin" }}selected{{/eq}}>Admin</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-button-row">
-        <a href="/settings/users"><button type="button" class="btn btn-accent">Cancel</button></a>
-        <button id="edit-user_submit" type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form>
-    {{/each}}
-  </div>
+      </form>
+  {{/each}}
+</div>
 </div>

@@ -34,7 +34,7 @@ async function getUserByID(req, res, next) {
 	const id = req.params.id;
 	console.info(`[MW] searching id: ${id}`);
 	const user = await User.findById(id);
-	res.locals.targetUser = mutateToArray(user);
+	res.locals.userToEdit = mutateToArray(user);
 	console.info("[MW] getUserByID-out".bgWhite.blue);
 	return next();
 }
@@ -169,27 +169,19 @@ async function updateUser(req, res, next) {
 			pageSize,
 			developer,
 		} = req.body;
-		const user = await User.findByIdAndUpdate(
-			req.user._id,
-			{
-				$set: {
-					name,
-					email,
-					preferences: {
-						theme,
-						sortField,
-						sortDirection,
-						pageSize,
-						developer,
-					},
-				},
-			},
-			{ new: true },
-		);
-		res.locals.user = user;
-		req.login(user, (error) => {
-			console.log(`This is an error ${error}`);
-		});
+		const existingUser = await User.findById(req.body.id);
+		if (name) existingUser.name = name;
+		if (email) existingUser.email = email;
+		if (theme) existingUser.preferences.theme = theme;
+		if (sortField) existingUser.preferences.sortField = sortField;
+		if (sortDirection) existingUser.preferences.sortDirection = sortDirection;
+		if (pageSize !== undefined) existingUser.preferences.pageSize = pageSize;
+		if (developer !== undefined) existingUser.preferences.developer = developer;
+		await existingUser.save();
+		if (req.user._id.toString() === existingUser._id.toString()) {
+			res.locals.user = existingUser;
+		}
+
 		console.info("[MW] updateUser-out".bgWhite.blue);
 		return next();
 	} catch (error) {
