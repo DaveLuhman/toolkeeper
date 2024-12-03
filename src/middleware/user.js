@@ -172,11 +172,11 @@ async function updateUser(req, res, next) {
 		const existingUser = await User.findById(req.body.id);
 		if (name) existingUser.name = name;
 		if (email) existingUser.email = email;
-		if (theme) existingUser.preferences.theme = theme;
-		if (sortField) existingUser.preferences.sortField = sortField;
-		if (sortDirection) existingUser.preferences.sortDirection = sortDirection;
-		if (pageSize !== undefined) existingUser.preferences.pageSize = pageSize;
-		if (developer !== undefined) existingUser.preferences.developer = developer;
+		if (theme) existingUser.set("preferences.theme", theme);
+		if (sortField) existingUser.set("preferences.sortField", sortField);
+		if (sortDirection) existingUser.set("preferences.sortDirection", sortDirection);
+		if (pageSize !== undefined) existingUser.set("preferences.pageSize", pageSize);
+		if (developer !== undefined) existingUser.set("preferences.developer", developer);
 		await existingUser.save();
 		if (req.user._id.toString() === existingUser._id.toString()) {
 			res.locals.user = existingUser;
