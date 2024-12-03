@@ -15,7 +15,7 @@ async function getUsers(req, res, next) {
 		.where("tenant")
 		.equals(req.user.tenant.valueOf())
 		.where("role")
-		.in(["Manager", "User", "Admin"])
+		.in(["Manager", "User", "Admin"]) // no super admins
 		.sort({ createdAt: -1 });
 	res.locals.users = mutateToArray(users);
 	console.info("[MW] getUsers-out-2".bgWhite.blue);
