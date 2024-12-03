@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import process from "node:process";
 
 /**
  * Generates a random string to be used as a token.

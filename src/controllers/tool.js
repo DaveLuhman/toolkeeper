@@ -39,42 +39,6 @@ async function getCheckedInTools(tenantId, logger) {
 }
 
 /**
- * Retrieves a list of checked-out tools for the given tenant.
- */
-async function getCheckedOutTools(tenantId, logger) {
-	try {
-		const tools = await Tool.find()
-			.where("archived")
-			.equals(false)
-			.where("tenant")
-			.equals(tenantId);
-
-		const activeServiceAssignments = await ServiceAssignment.find()
-			.where("type")
-			.ne("Stockroom")
-			.where("tenant")
-			.equals(tenantId)
-			.select("_id");
-
-		const checkedOutTools = tools.filter((tool) =>
-			activeServiceAssignments.some((assignment) =>
-				assignment._id.equals(tool.serviceAssignment),
-			),
-		);
-
-		return checkedOutTools;
-	} catch (err) {
-		logger.error({
-			message: "Failed to fetch checked-out tools",
-			metadata: { tenantId },
-			error: err.message,
-		});
-
-		throw err;
-	}
-}
-
-/**
  * Retrieves the dashboard statistics.
  */
 async function getDashboardStats(tenantId, logger) {
@@ -130,7 +94,7 @@ async function getDashboardStats(tenantId, logger) {
  * @param {object} req The request object.
  * @param {object} res The response object. Used to render the 'results' page.
  */
-export const renderResults = (req, res) => {
+export const renderResults = (_req, res) => {
 	res.render("results");
 };
 /**

@@ -9,7 +9,7 @@ function btnToSpinner() {
 
 
 function openInNewTab() {
-	const x = window.open();
+	const x = globalThis.open();
 	const newPage = x.document.createElement("div");
 	newPage.width = "100%";
 	newPage.height = "100%";

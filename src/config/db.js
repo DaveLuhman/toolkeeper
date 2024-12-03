@@ -7,6 +7,7 @@ import {
 	Onboarding,
 	Subscription,
 } from "../models/index.models.js";
+import process from "node:process";
 
 let globalConn;
 

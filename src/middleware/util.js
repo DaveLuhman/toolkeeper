@@ -4,6 +4,7 @@ import { listActiveSAs } from "./serviceAssignment.js";
 import xss from "xss";
 import crypto from "node:crypto";
 import { Category, ServiceAssignment, Tool } from "../models/index.models.js";
+import { Buffer } from "node:buffer";
 
 // mutate to array
 /**

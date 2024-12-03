@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { checkAuth, login, logout } from "../middleware/auth.js";
-import { createUser } from "../middleware/user.js";
 import { createProspect } from "../middleware/prospect.js";
 import {
 	renderLandingPage,

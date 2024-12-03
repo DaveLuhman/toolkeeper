@@ -18,8 +18,8 @@ const archiveButton = document.getElementById("archive-button");
 if (archiveButton) {
 	archiveButton.addEventListener("click", (e) => {
 		e.preventDefault();
-		if (window.confirm("Would you like to archive this tool?")) {
-			window.location.href = archiveButton.children[0].getAttribute("href");
+		if (globalThis.confirm("Would you like to archive this tool?")) {
+			globalThis.location.href = archiveButton.children[0].getAttribute("href");
 		}
 	});
 }

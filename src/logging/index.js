@@ -1,10 +1,7 @@
 import winston from 'winston';
 import 'winston-mongodb'; // Optional for MongoDB transport
 import { Log } from '../models/index.models.js';
-
-function replaceDatabaseName(uri, dbName) {
-    return uri.replace(/\/([a-zA-Z0-9_-]+)(\?|$)/, `/${dbName}$2`);
-}
+import process from "node:process";
 
 const logger = winston.createLogger({
     level: 'verbose', // Set the default logging level to verbose

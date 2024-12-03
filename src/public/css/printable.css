@@ -3,6 +3,7 @@ body {
   background: #cacaca;
   break-inside: auto;
 }
+
 section.table {
   border-style: solid;
   border-collapse: collapse;
@@ -12,18 +13,23 @@ section.table {
 
   margin-bottom: 10%;
 }
+
 .text-center {
   text-align: center;
 }
+
 .grid {
   display: grid;
 }
+
 .inline-grid {
   display: inline-grid;
 }
+
 .grid-cols-5 {
   grid-template-columns: repeat(5, 1fr);
 }
+
 div.header-cell {
   text-align: center;
   border-style: solid;
@@ -58,7 +64,7 @@ div.data-cell:first-child {
 }
 
 div .barcode {
-  font-family: "Libre Barcode 39";
+  font-family: 'Libre Barcode 39';
   font-size: 16pt;
 }
 
@@ -66,16 +72,19 @@ div .barcode {
   @page {
     margin: 1em;
   }
+
   body {
     height: 100%;
     width: 100%;
   }
+
   div.row > div {
     display: inline-block;
     border: solid 1px #black;
     margin: 0.1cm;
     font-size: 1rem;
   }
+
   div.row {
     display: block;
     margin: solid 2px black;
@@ -83,6 +92,7 @@ div .barcode {
     font-size: 0;
     white-space: nowrap;
   }
+  
   div.data-cell {
     border-bottom: 1px solid #808080;
     border-right: 1px solid #808080;

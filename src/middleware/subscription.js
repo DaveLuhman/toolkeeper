@@ -8,6 +8,7 @@ import { generatePassword } from "../middleware/tenant.js";
 import { getDomainFromEmail, sendEmail } from "../controllers/util.js";
 
 import logger from "../logging/index.js";
+import process from "node:process";
 
 /**
  * DetermineUserLimit - Determines the user limit based on the variant name.

@@ -2,8 +2,6 @@ import { describe, it, expect } from "vitest";
 import mongoose from "mongoose";
 import { Tenant, Subscription, User } from "../../src/models/index.models.js"; // Adjust this import to your project structure
 
-let mongoServer;
-
 describe("Tenant Model", () => {
 	// Test case 1: Valid tenant creation
 	it("should create a tenant successfully with valid fields", async () => {

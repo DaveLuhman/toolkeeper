@@ -4,6 +4,7 @@ import handlebarsHelpers from "handlebars-helpers";
 import { getCategoryName } from "../middleware/category.js";
 import { getServiceAssignmentJobNumber } from "../middleware/serviceAssignment.js";
 import { organizeContext } from "./context.js";
+import process from "node:process";
 /**
  *
  * @param {array} data

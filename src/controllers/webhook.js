@@ -2,6 +2,7 @@ import logger from "../logging/index.js";
 import { handleSubscriptionEvent } from "../middleware/subscription.js";
 import { secret } from "../config/lemonSqueezy.js";
 import { createHmac, timingSafeEqual } from "node:crypto";
+import { Buffer } from "node:buffer";
 
 // Verify the X-Signature to ensure the request is legitimate
 const verifySignature = (req) => {

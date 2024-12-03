@@ -1,5 +1,4 @@
-// skipcq: JS-0257
-import moment from "moment";
+
 import { Tool, ServiceAssignment } from "../models/index.models.js";
 import { deduplicateArray, mutateToArray } from "./util.js";
 import { returnUniqueIdentifier } from "../helpers/index.js";
@@ -598,7 +597,7 @@ export async function getRecentlyUpdatedTools(req, res, next) {
 /**
  * Generates a printer-friendly tool list based on the provided tools.
  */
-const generatePrinterFriendlyToolList = async (req, res, next) => {
+const generatePrinterFriendlyToolList = (req, res, next) => {
 	try {
 		if (!res.locals.tools || res.locals.tools.length === 0) {
 			res.locals.message = "There are no tools to make into a list";

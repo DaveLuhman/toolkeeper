@@ -2,6 +2,7 @@
 import { beforeEach, afterEach } from "vitest";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import process from "node:process";
 
 // Load environment variables based on the NODE_ENV
 const envFile = process.env.NODE_ENV === "test" ? ".env.test" : ".env";

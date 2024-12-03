@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 import colors from 'colors'
 import path from 'node:path';
 import { Tenant, Tool, ServiceAssignment, Material, Category, User } from "../../models/index.models.js";
-import connectDB, { DEFAULT_CATEGORY_IDS, DEFAULT_ASSIGNMENT_IDS, DEFAULT_USER_IDS } from "../../config/db.js"; // Import default IDs
+import connectDB, { DEFAULT_CATEGORY_IDS, DEFAULT_ASSIGNMENT_IDS, DEFAULT_USER_IDS } from "../../config/db.js";
+import process from "node:process"; // Import default IDs
 
 // Load environment variables from .env file
 dotenv.config();

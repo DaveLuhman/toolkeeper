@@ -7,7 +7,7 @@ export const hoistOnboarding = async (req, res, next) => {
 		res.locals.onboarding = onboardingDoc;
 		console.log("Onboarding Hoisted");
 		next();
-	} catch (error) {
+	} catch (_error) {
 		// Pass the error to the error-handling middleware
 		next(new Error("Failed to locate onboarding document"));
 	}
@@ -21,7 +21,7 @@ export const skipStep = async (req, res, next) => {
 	next();
 };
 
-export const dashboardOnboardingComplete = async (req, res, next) => {
+export const dashboardOnboardingComplete = async (req, res) => {
 	const onboarding = await Onboarding.findOne({ user: req.user.id });
 	onboarding.progress.dashboardCompleted = true;
 
@@ -30,7 +30,7 @@ export const dashboardOnboardingComplete = async (req, res, next) => {
 	res.sendStatus(200);
 };
 
-export const profileOnboardingComplete = async (req, res, next) => {
+export const profileOnboardingComplete = async (req, res) => {
 	const onboarding = await Onboarding.findOne({ user: req.user.id });
 	onboarding.progress.profileSetup = true;
 	await onboarding.save();
@@ -47,8 +47,13 @@ export const usersOnboardingComplete = async (req, res, next) => {
 	}
 	res.sendStatus(200);
 };
-export const importOnboardingComplete = async (req, res, next) => {
-	const onboarding = await Onboarding.findOne({ user: req.user.id });
-	onboarding.progress.csvImportViewed = true;
-	await onboarding.save();
+export const importOnboardingComplete = async (req, res) => {
+	try {
+		const onboarding = await Onboarding.findOne({ user: req.user.id });
+		onboarding.progress.csvImportViewed = true;
+		await onboarding.save();
+	} catch (error) {
+		next(error);
+	}
+	res.sendStatus(200);
 };
