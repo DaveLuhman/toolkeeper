@@ -1,0 +1,6 @@
+projectKey=toolkeeper
+serverUrl=https://tammy-sonar.drfpqb.easypanel.host
+serverVersion=9.9.8.100196
+dashboardUrl=https://tammy-sonar.drfpqb.easypanel.host/dashboard?id=toolkeeper
+ceTaskId=AZOcoFJjV3zKkxjJJkR4
+ceTaskUrl=https://tammy-sonar.drfpqb.easypanel.host/api/ce/task?id=AZOcoFJjV3zKkxjJJkR4
