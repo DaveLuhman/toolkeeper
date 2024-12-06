@@ -10,5 +10,4 @@ LABEL org.opencontainers.image.source="https://github.com/daveluhman/toolkeeper"
 LABEL org.opencontainers.image.version="v1.3.0"
 RUN npm install --omit dev
 RUN npm run build:css
-COPY . /
 CMD ["npm", "start"]
