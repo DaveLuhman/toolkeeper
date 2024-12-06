@@ -1,12 +1,13 @@
 import nodemailer from 'nodemailer';
 import process from "node:process";
+import crypto from 'node:crypto'
 
 /**
  * Generates a random string to be used as a token.
  * @returns {string} A random string token.
  */
 export function createToken() {
-    return Math.random().toString(36).slice(-8)
+    return crypto.randomBytes(16).toString('hex')
   }
 
 /**
