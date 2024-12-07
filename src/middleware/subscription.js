@@ -186,7 +186,7 @@ export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 				await Onboarding.create({
 					user: newAdminUser._id,
 				});
-				const tenant = await Tenant.create({
+				const tenant = await Tenant.createWithDefaults({
 					domain: getDomainFromEmail(newAdminUser.email),
 					adminUser: newAdminUser._id,
 				});
