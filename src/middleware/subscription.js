@@ -152,71 +152,80 @@ The ToolKeeper Team`;
 	}
 };
 
-export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
+export const handleWebhookEvent = async (eventType, subscriptionData) => {
+	if (!eventType) {
+		throw new Error("Event type is required");
+	}
+
 	let status;
-	switch (eventType) {
-		case "subscription_cancelled":
-			status = "cancelled";
-			break;
-		case "subscription_resumed":
-			status = "active";
-			break;
-		case "subscription_expired":
-			status = "expired";
-			break;
-		case "subscription_paused":
-			status = "paused";
-			break;
-		case "subscription_unpaused":
-			status = "active";
-			break;
-		case "subscription_created": {
-			const newPassword = generatePassword();
-			const newAdminUser = await User.create({
-				name: subscriptionData.attributes.user_name,
-				email: subscriptionData.attributes.user_email,
-				password: newPassword,
-				role: "Admin",
-			});
-			await Onboarding.create({
-				user: newAdminUser._id,
-			});
-			const tenant = await Tenant.create({
-				domain: getDomainFromEmail(newAdminUser.email),
-				adminUser: newAdminUser._id,
-			});
-			newAdminUser.tenant = tenant._id;
-			await newAdminUser.save();
-			await Subscription.create({
-				user: newAdminUser._id,
-				tenant: tenant._id,
-				status: "active",
-				lemonSqueezyId: subscriptionData.id,
-				lemonSqueezyObject: subscriptionData.attributes,
-			});
-			await sendWelcomeEmail(newAdminUser, newPassword);
-			return "Subscription created, user and tenant created, and welcome email sent.";
+	try {
+		switch (eventType) {
+			case "subscription_cancelled":
+				status = "cancelled";
+				break;
+			case "subscription_resumed":
+				status = "active";
+				break;
+			case "subscription_expired":
+				status = "expired";
+				break;
+			case "subscription_paused":
+				status = "paused";
+				break;
+			case "subscription_unpaused":
+				status = "active";
+				break;
+			case "subscription_created": {
+				const newPassword = generatePassword();
+				const newAdminUser = await User.create({
+					name: subscriptionData.attributes.user_name,
+					email: subscriptionData.attributes.user_email,
+					password: newPassword,
+					role: "Admin",
+				});
+				await Onboarding.create({
+					user: newAdminUser._id,
+				});
+				const tenant = await Tenant.create({
+					domain: getDomainFromEmail(newAdminUser.email),
+					adminUser: newAdminUser._id,
+				});
+				newAdminUser.tenant = tenant._id;
+				await newAdminUser.save();
+				await Subscription.create({
+					user: newAdminUser._id,
+					tenant: tenant._id,
+					status: "active",
+					lemonSqueezyId: subscriptionData.id,
+					lemonSqueezyObject: subscriptionData.attributes,
+				});
+				await sendWelcomeEmail(newAdminUser, newPassword);
+				return "Subscription created, user and tenant created, and welcome email sent.";
+			}
+			case "subscription_updated": {
+				status = "updated";
+				break;
+			}
+			default:
+				throw new Error("Unhandled event type");
 		}
-		case "subscription_updated": {
-			status = "updated";
-			break;
+
+		// Find the subscription and update its status
+		const subscription = await Subscription.findOneAndUpdate(
+			{ lemonSqueezyId: subscriptionData.id },
+			{ status: status },
+			{ new: true },
+		);
+
+		if (!subscription) {
+			throw new Error("Subscription not found");
 		}
-		default:
-			throw new Error("Unhandled event type");
+
+		return `Subscription ${status} and updated.`;
+	} catch (error) {
+		logger.error(`Error handling webhook event: ${eventType}`, { error: error.message, subscriptionData });
+		throw error; // Re-throw the error after logging
 	}
-
-	// Find the subscription and update its status
-	const subscription = await Subscription.findOneAndUpdate(
-		{ lemonSqueezyId: subscriptionData.id },
-		{ status: status },
-		{ new: true },
-	);
-
-	if (!subscription) {
-		throw new Error("Subscription not found");
-	}
-
-	return `Subscription ${status} and updated.`;
 };
 
 
