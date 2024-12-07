@@ -152,7 +152,7 @@ The ToolKeeper Team`;
 	}
 };
 
-export const handleWebhookEvent = async (eventType, subscriptionData) => {
+export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 	if (!eventType) {
 		throw new Error("Event type is required");
 	}
