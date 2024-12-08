@@ -1,12 +1,12 @@
 import { Router } from 'express'
 import {
-  createUser,
   getUsers,
   updateUser,
   resetPassword,
   disableUser,
   getUserByID,
-  deleteUser
+  deleteUser,
+  createUserInTenant
 } from '../../middleware/user.js'
 import { sanitizeReqBody } from '../../middleware/util.js'
 import { renderSettingsEditUser, renderSettingsUsers } from '../../controllers/settings/user.js'
@@ -31,7 +31,7 @@ userSettingsRouter.get("/:id/delete", deleteUser, renderSettingsUsers);
 
 // @desc create new user
 // @endpoint POST /settings/users/create
-userSettingsRouter.post('/create', sanitizeReqBody, createUser, getUsers, renderSettingsUsers)
+userSettingsRouter.post('/create', sanitizeReqBody, createUserInTenant, getUsers, renderSettingsUsers)
 // @route * /settings/users/onboarding-complete
 // @endpoint POST /settings/users/onboarding-complete
 userSettingsRouter.post('/onboarding-complete', usersOnboardingComplete)

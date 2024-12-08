@@ -47,7 +47,7 @@ async function getUserByID(req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the user is created.
  */
-async function createUser(req, res, next) {
+async function createUserInTenant(req, res, next) {
 	console.info("[MW] createUser-in".bgBlue.white);
 	let newUser;
 
@@ -70,9 +70,9 @@ async function createUser(req, res, next) {
 		if (password !== confirmPassword) {
 			throw new Error("Passwords do not match");
 		}
-
 		// Check user limit based on subscription
 		const tenantDoc = await Tenant.findById(tenant).populate("subscription");
+
 		if (!tenantDoc || !tenantDoc.subscription) {
 			throw new Error("Invalid tenant or subscription");
 		}
@@ -258,7 +258,7 @@ async function deleteUser(req, _res, next) {
 export {
 	resetPassword,
 	getUsers,
-	createUser,
+	createUserInTenant,
 	verifySelf,
 	updateUser,
 	disableUser,

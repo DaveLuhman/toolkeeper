@@ -12,19 +12,19 @@ const passportConfig = (_app) => {
     { usernameField: 'email' },
     async (email, password, done) => {
       console.info(`[AUTH] ${email} attempting login`.blue.bold)
-      const user = await User.findOne({ email: { $eq: email } })
-      if (!user) {
+      const user = await User.findOne({ email: { $eq: email } }) // find user by email
+      if (!user) { // check if user exists
         return done(null, false, { message: 'That email is not registered' })
       }
-      if (user.isDisabled === true) {
+      if (user.isDisabled === true) { // check if user is disabled
         return done(null, false, { message: 'That user has been disabled. Contact your manager' })
       }
 
-      const tenant = await Tenant.findById(user.tenant)
+      const tenant = await Tenant.findById(user.tenant) // find tenant by user's tenant id
       if (tenant) {
         const subscription = await Subscription.findOne({ tenant: tenant._id })
         if (subscription && subscription.status === 'expired') {
-          return done(null, false, { message: 'Your subscription has expired. Please contact support.' })
+          return done(null, false, { message: 'Your subscription has expired. Please contact support or update your subscription at https://store.ado.software.' }) // check if subscription is expired
         }
       }
 

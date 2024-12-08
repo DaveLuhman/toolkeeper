@@ -120,7 +120,30 @@ async function createDefaultSubscription() {
 			_id: "66af881237c17b64394a4167",
 			user: "663870c0a1a9cdb4b707c737",
 			tenant: "66af881237c17b64394a4166",
-			lemonSqueezyId: 'manual-entry'
+			lemonSqueezyId: "manual-entry",
+			lemonSqueezyObject: {
+				productName: "Toolkeeper",
+				variantName: "Enterprise - Annual Billing",
+				userName: "Admin User",
+				userEmail: "admin@toolkeeper.site",
+				status: "active",
+				statusFormatted: "Active",
+				cardBrand: "Visa",
+				cardLastFour: "1234",
+				cancelled: false,
+				trialEndsAt: null,
+				billingAnchor: 8,
+				firstSubscriptionItem: {
+					id: 617174,
+					subscription_id: 810572,
+					price_id: 830303,
+					quantity: 1,
+					is_usage_based: false,
+					created_at: "2024-12-08T17:22:26.000000Z",
+					updated_at: "2024-12-08T17:22:26.000000Z",
+				},
+				testMode: true,
+			},
 		});
 	} catch (error) {
 		console.error(`Error creating default subscription: ${error.message}`);
@@ -135,6 +158,7 @@ async function createDefaultTenant() {
 			name: "demo",
 			domain: "toolkeeper.site",
 			adminUser: "663870c0a1a9cdb4b707c737",
+			subscription: "66af881237c17b64394a4167",
 		});
 		return tenant;
 	} catch (error) {
