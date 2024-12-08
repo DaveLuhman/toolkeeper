@@ -1,0 +1,565 @@
+<input type="checkbox" id="feedback-form-modal" class="modal-toggle" />
+<div id="feedback-form-modal" class="modal" role="dialog">
+    <div class="">
+        <label for="feedback-form-modal" class="modal-close-btn">✕</label>
+        <div class="webform-container">
+            <div class="webform-header">
+            <style type="text/css">
+                :root {
+                    --primaryColor: 255, 100, 0;
+                }
+
+                .webform-container {
+                    width: 750px;
+                    background-color: #fff;
+                    font-family: "Roboto", sans-serif;
+                }
+
+                .webform-header {
+                    padding: 0 35px;
+                    text-align: left;
+                    background-color: #fafafa;
+                    color: #000;
+                    position: relative;
+                    height: 55px;
+                    display: flex;
+                    align-items: center;
+                    font-weight: 600;
+                    font-size: 14px;
+                }
+
+                .webform-data {
+                    padding: 20px 35px 20px;
+                }
+
+                .webform-data-wrapper {
+                    font-size: 14px;
+                    display: block;
+                    text-align: justify;
+                    -ms-text-justify: distribute-all-lines;
+                    text-justify: distribute-all-lines;
+                    white-space: normal;
+                    display: flex;
+                    flex-wrap: wrap;
+                    justify-content: space-between;
+                }
+
+                .web-form-field {
+                    display: inline-block;
+                    margin-bottom: 30px;
+                    position: relative;
+                    zoom: 1;
+                    text-align: left;
+                }
+
+                .full-field {
+                    width: 100%;
+                    clear: both;
+                }
+
+                .half-field {
+                    vertical-align: top;
+                    width: 47%;
+                }
+
+                .web-form-field>label {
+                    display: inline-block;
+                    max-width: 70%;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    font-size: 13px;
+                    font-weight: 400;
+                    margin-bottom: 5px;
+                }
+
+                .web-form-field>label.mandatory-field:after {
+                    margin-left: 2px;
+                    content: "*";
+                    color: red;
+                }
+
+                .webform-field-style,
+                input[type=date],
+                input[type=email],
+                input[type=number],
+                input[type=text],
+                input[type=numeric],
+                select,
+                textarea {
+                    width: 100%;
+                    height: 35px;
+                    background-color: #fff;
+                    border: #ecedee solid 1px;
+                    border-radius: 3px;
+                    display: block;
+                    font-size: 14px;
+                    font-weight: 400;
+                    padding-left: 8px;
+                    padding-right: 8px;
+                    margin: 0;
+                    outline: 0;
+                    text-align: left;
+                    box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    -webkit-box-sizing: border-box;
+                }
+
+                select[multiple] {
+                    padding: 5px;
+                    height: 120px !important;
+                    overflow: auto;
+                    white-space: initial;
+                }
+
+                select[multiple]>option {
+                    display: inline-block;
+                    vertical-align: top;
+                    padding: 5px;
+                    border-radius: 3px;
+                    cursor: pointer;
+                    background-color: #f2f2f2;
+                    margin-right: 5px;
+                }
+
+                select[multiple]>option[value=none] {
+                    display: none;
+                }
+
+                select[multiple]>option:checked,
+                select[multiple]:focus option:checked {
+                    background-color: rgb(var(--primaryColor));
+                    color: #fff;
+                }
+
+                select[multiple]:focus option:checked {
+                    background: rgb(var(--primaryColor)) linear-gradient(0deg, rgb(var(--primaryColor)) 0%, rgb(var(--primaryColor)) 100%);
+                }
+
+                .webform-field-style:hover,
+                input[type=date]:hover,
+                input[type=email]:hover,
+                input[type=number]:hover,
+                input[type=text]:hover,
+                select:hover,
+                textarea:hover {
+                    border: rgba(var(--primaryColor), .4) solid 1px;
+                }
+
+                .webform-field-style:focus-within,
+                input[type=date]:focus,
+                input[type=email]:focus,
+                input[type=number]:focus,
+                input[type=text]:focus,
+                select:focus,
+                textarea:focus {
+                    border: rgba(var(--primaryColor), .65) solid 1px
+                }
+
+                .primary-button,
+                .secondary-button {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    position: relative;
+                    vertical-align: top;
+                    font-size: 13px;
+                    cursor: pointer;
+                    padding: 0 15px;
+                    margin-right: 10px;
+                    outline: 0;
+                    border-radius: 25px;
+                    -moz-border-radius: 25px;
+                    -webkit-border-radius: 25px;
+                    height: 28px;
+                    box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 250px;
+                    transition: .3s;
+                    line-height: 1.5;
+                    flex: 0 0 auto
+                }
+
+                .primary-button {
+                    color: #fff;
+                    background-color: rgb(var(--primaryColor));
+                    border: rgb(var(--primaryColor)) solid 1px
+                }
+
+                .secondary-button {
+                    color: rgb(var(--primaryColor));
+                    background: #fff;
+                    border: rgb(var(--primaryColor)) solid 1px
+                }
+
+                .attachment-title {
+                    height: 35px;
+                    width: 100%;
+                    position: relative;
+                    padding: 10px;
+                    display: flex;
+                    align-items: center;
+                    border: #ecedee dashed 1px;
+                    background-color: #fff;
+                    border-radius: 3px;
+                    box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    -webkit-box-sizing: border-box
+                }
+
+                .attachment-title .attachment-msg {
+                    width: 250px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    color: #777
+                }
+
+                .attachment-title .attachment-input {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    opacity: 0;
+                    cursor: pointer;
+                    width: 100%
+                }
+
+                .attachment-title:hover .attachment-msg {
+                    color: rgb(var(--primaryColor))
+                }
+
+                .attachment {
+                    padding: 0 15px;
+                    background: #fff;
+                    border: #ecedee solid 1px;
+                    border-radius: 3px;
+                    position: relative;
+                    margin-top: 20px;
+                    width: 100%;
+                    height: 35px;
+                    line-height: 35px;
+                    box-sizing: border-box;
+                    -moz-box-sizing: border-box;
+                    -webkit-box-sizing: border-box
+                }
+
+                .attachment:before {
+                    content: "X";
+                    position: absolute;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 9px;
+                    right: 10px;
+                    top: 9px;
+                    background: rgb(var(--primaryColor));
+                    width: 16px;
+                    height: 16px;
+                    color: #fff;
+                    cursor: pointer;
+                    border-radius: 2px
+                }
+
+                .add-attachment {
+                    float: left;
+                    background: #fff;
+                    border-radius: 2px;
+                    cursor: pointer;
+                    color: #30a66b;
+                    padding: 8px 17px;
+                    margin-right: 11px;
+                    border: 1px solid
+                }
+
+                .webform-select-style {
+                    position: relative;
+                    display: block;
+                    width: 100%;
+                    padding-left: 0;
+                    padding-right: 0
+                }
+
+                .webform-select-style.hide {
+                    display: none
+                }
+
+                .webform-select-style select {
+                    width: 100%;
+                    height: 100%;
+                    border: none;
+                    box-shadow: none;
+                    background: 0 0;
+                    background-image: none;
+                    -webkit-appearance: none;
+                    color: #000;
+                    -moz-appearance: none;
+                    appearance: none
+                }
+
+                .webform-select-style:after {
+                    content: "";
+                    background: none repeat scroll 0 0 transparent;
+                    height: 7px;
+                    position: absolute;
+                    width: 7px;
+                    margin-top: 1px;
+                    border-width: 1px 1px 0 0;
+                    box-shadow: 1.5px 1.5px 0 rgb(var(--primaryColor));
+                    transform: rotate(43deg);
+                    float: right;
+                    right: 10px;
+                    top: 10px;
+                    cursor: pointer;
+                    pointer-events: none
+                }
+
+                .webform-select-style[disabled]:after {
+                    cursor: not-allowed
+                }
+
+                .webform-select-style select:focus {
+                    outline: 0
+                }
+
+                .webform-select-style select option {
+                    float: left;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    width: 100%;
+                    padding: 0 8px
+                }
+
+                .webform-select-style select::-ms-expand {
+                    display: none
+                }
+
+                .webform-field-style {
+                    display: flex;
+                    align-items: center
+                }
+
+                .webform-field-style>input[type=text] {
+                    border: 0 !important;
+                    padding: 0 !important;
+                    height: 100% !important;
+                    flex: 1
+                }
+
+                .webform-field-style>.web-captcha {
+                    flex: 0 0 auto;
+                    width: 200px;
+                    height: 100%;
+                    display: inline-flex;
+                    align-items: center;
+                    border-left: #ecedee solid 1px
+                }
+
+                .webform-field-style>.web-captcha canvas {
+                    border: 0;
+                    outline: 0;
+                    user-select: none;
+                    pointer-events: none;
+                    margin-left: 20px;
+                }
+
+                .webform-field-style>.web-captcha>.captcha-refresh {
+                    margin-left: auto;
+                    font-size: 28px;
+                    cursor: pointer;
+                    color: rgb(var(--primaryColor));
+                    position: relative;
+                    top: -2px;
+                    padding-left: 10px;
+                }
+            </style>
+            <script
+                type="text/javascript">let _wbf = (function () { var code; const captchaNeeded = false; window.onload = function () { generateCaptcha(); multiSelectWithoutCtrl(); const numberFields = document.querySelectorAll('[type^="number"]'); numberFields.forEach(function (element) { element.addEventListener('keydown', e => { const key = e.which || e.keyCode || 0; if (e.target.hasAttribute("maxLength") && e.target.value?.length >= e.target.getAttribute("maxLength") && key >= 48 && key <= 57) { event.preventDefault(); } }); }); }; const multiSelectWithoutCtrl = () => { let options = document.querySelectorAll('[name^="UDF_NMULTI"] option'); options.forEach(function (element) { element.addEventListener("mousedown", function (e) { e.preventDefault(); element.parentElement.focus(); this.selected = !this.selected; return false; }, false); }); let multiFields = document.querySelectorAll('[name^="UDF_NMULTI"]'); multiFields.forEach(function (element) { element.addEventListener('focus', event => { element.blur(); }); }); }; function generateCaptcha() { if (captchaNeeded) { document.getElementById("captcha").innerHTML = ""; var charsArray = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@!#$%"; var lengthOtp = 6; var captcha = []; for (var i = 0; i < lengthOtp; i++) { var index = Math.floor(Math.random() * charsArray.length + 1); if (captcha.indexOf(charsArray[index]) == -1) captcha.push(charsArray[index]); else i--; } var canv = document.createElement("canvas"); canv.id = "captcha"; canv.width = 100; canv.height = 50; var ctx = canv.getContext("2d"); ctx.font = "25px Georgia"; ctx.strokeText(captcha.join(""), 0, 30); code = captcha.join(""); document.getElementById("captcha").appendChild(canv); } } function addAttachment() { var fileInput = document.getElementById("uploadfile"); var filename = fileInput.files[0].name; document.getElementById("filename").innerHTML = filename; document.getElementById("filename").style.display = "block"; } function removeAttachement() { document.getElementById("uploadfile").value = ""; document.getElementById("filename").value = ""; document.getElementById("filename").style.display = "none"; } function validateForm() { if (document.getElementById("uploadfile").value != "") { var fsize = document.getElementById("uploadfile").files[0].size / 1024 / 1024; if (fsize > 125) { alert("File size exceeds 125 MB"); return false; } } var formName = document.fileabugform.subject.value; var eMail = document.fileabugform.email.value.trim(); document.fileabugform.email.value = eMail; if (formName == null || formName == "") { alert("Please enter Issue name"); return false; } if (eMail == null || eMail == "") { alert("Please enter a valid email address"); return false; } var atpos = eMail.indexOf("@"); var dotpos = eMail.lastIndexOf("."); if (atpos < 1 || dotpos < atpos + 2 || dotpos + 2 >= eMail.length) { alert("Please enter a valid email address"); return false; } if (captchaNeeded) { if (document.getElementById("input_captcha") == null) { alert("Invalid Captcha"); return false; } if (code != document.getElementById("input_captcha").value) { generateCaptcha(); alert("Invalid Captcha"); document.getElementById("input_captcha").value = ""; return false; } } const maxSelectable = 20; const mandatoryFields = document.querySelectorAll('[data-mand="true"]'); for (var idx = 0; idx < mandatoryFields.length; idx++) { var currDiv = mandatoryFields[idx]; if (currDiv.value == undefined || currDiv.value.trim() == '') { alert("The mandatory fields cannot be empty"); return false; } } var customfields = document.getElementsByClassName("customFields"); const maxFieldMaxLengths = { 'multiline': 1000, 'singleline': 150 }; for (i = 0; i < customfields.length; i++) { var name = customfields[i].getAttribute("name"); var fieldType = customfields[i].getAttribute("fieldType"); var label = customfields[i].getAttribute("data-lable-name"); if (fieldType === 'Date' && customfields[i].value != null && customfields[i].value != "") { if (!customfields[i].value.match(/^(?:(0[1-9]|1[012])[\- \/.](0[1-9]|[12][0-9]|3[01])[\- \/.](19|20)[0-9]{2})$/)) { alert("Please enter a valid date"); return false; } } if (fieldType === 'dateandtime' && customfields[i].value != null && customfields[i].value != "") { if (!customfields[i].value.match(/^(?:(0[1-9]|1[012])[\- \/.](0[1-9]|[12][0-9]|3[01])[\- \/.](19|20)[0-9]{2}) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]$/)) { alert("Please enter a valid date"); return false; } } if (name.startsWith("UDF_NLONG") && customfields[i].value != null && customfields[i].value != "") { if (!customfields[i].value.match(/^[0-9]\d*$/)) { alert("Please enter numeric value for " + label + ""); return false; } } if ((fieldType == 'multiuserpicklist' || fieldType == 'multipicklist') && customfields[i].selectedOptions.length > maxSelectable) { alert(("{0} cannot exceed 20 values").replace("{0}", label)); return false; } if (fieldType == 'phone' && customfields[i].value != '' && (!customfields[i].value.match(/^[0-9-( )+]+$/) || customfields[i].value.length > 15)) { alert(("Enter a valid phone number in {0} ").replace("{0}", label)); return false; } if (fieldType == 'email' && customfields[i].value != "" && !customfields[i].value.match(/^[\w](['A-Za-z0-9._%\-+]*@[A-Za-z0-9-]+(\.[a-zA-Z0-9-]{1,22}){0,9}\.[a-zA-Z]{2,22})$/)) { alert(("Enter a valid email ID in {0} ").replace("{0}", label)); return false; } if (fieldType == 'url' && customfields[i].value != "" && !customfields[i].value.match("^(?:(ftp|http|https)://|www.)?[a-zA-Z0-9]+([-\\.][a-zA-Z0-9]+){1,}(\\.[a-zA-Z0-9]{2,5})?(:[0-9]{1,5})?(/.*)?$ ")) { alert(("Enter a valid URL in {0} ").replace("{0}", label)); return false; } if ((fieldType == 'decimal' || fieldType == 'currency') && customfields[i].value != "" && !(/^-{0,1}\d*\.{0,1}\d+$/.test(customfields[i].value))) { alert(("Please enter a valid value in {0} ").replace("{0}", label)); return false; } if ((fieldType == 'percentage') && customfields[i].value != "" && !(/^[+]?([0-9]+(?:[\.][0-9]*)?|\.[0-9]+)$/.test(customfields[i].value))) { alert(("Please enter a valid value in {0}").replace("{0}", label)); return false; } if ((fieldType == 'multiline' || fieldType == 'singleline') && customfields[i].value != "" && customfields[i].value.length > maxFieldMaxLengths[fieldType]) { alert(("{0} cannot exceed {1} characters").replace("{0}", label).replace("{1}", maxFieldMaxLengths[fieldType])); return false; } } var dueDate = document.getElementById("dueDate")?.value; if (dueDate != null && dueDate != "") { if (!dueDate.match(/^((0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])-((19|20)\d\d))$/)) { alert("Please enter a valid date"); return false; } } return true; } return { validateForm: validateForm, generateCaptcha: generateCaptcha }; })();</script>
+            <div class="webform-container">
+                <form name="fileabugform" action="https://projects.zoho.com/portal/adosoftware/addbugfromiframe.do"
+                    method="post" enctype="multipart/form-data" onSubmit="return _wbf.validateForm()"><input
+                        type="hidden" name="projId"
+                        value="projects-12bc8b418433542f723717fc0337181f304a3de482fe6144903cf5a4d78665b5" /><input
+                        type="hidden" name="fId"
+                        value="projects-12bc8b418433542f723717fc0337181fde1e574b3e6cf38c46a412c228830b41" />
+                    <div class="webform-header">Submit Issue</div>
+                    <div class="webform-data">
+                        <div class="webform-data-wrapper">
+                            <div class="web-form-field full-field"><label class="mandatory-field">Issue
+                                    Name</label><input type="text" id="title" name="subject" value=""></div>
+                            <div class="web-form-field full-field"><label>Issue Description</label><textarea
+                                    id="description" name="desc" rows="4" style="height: 80px;"></textarea></div>
+                            <div class="web-form-field full-field"><label>Attach File</label>
+                                <div class="attachment-title"> <span class="attachment-msg">Drop files or add
+                                        attachments
+                                        here...</span><input type="file" id="uploadfile" name="uploadfile"
+                                        onchange="addAttachment();" class="attachment-input"></div>
+                                <div style="margin-top:20px;display:none" class="attachment" id="filename"
+                                    onclick="removeAttachement();">-</div>
+                            </div>
+                            <div class="web-form-field half-field"><label class="mandatory-field">Email
+                                    Address</label><input type="text" name="email"></div>
+                            <div class="web-form-field half-field"><label class="">Severity</label>
+                                <div class="webform-select-style"><select name="Severity"
+                                        style=" width: 100%; border-color: #e7e7e7; border-style: solid; border-width: 1px; color: #3A3A3A; font-size: 13px; font-weight: normal; border-radius:3px; padding:3px; height: 35px; outline:none; background-color: #fff;"
+                                        data-mand="false">
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c43af11c5236c2955fb74b75608266670f">
+                                            None</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c48cc8dc11f631366991436c81958a0688">
+                                            Show stopper</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4e23ac523fbf7382be1e14794dae6eeab">
+                                            Critical</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4a64a2ca955db1a65a1c557412310f80a">
+                                            Major</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4f59fb37c418ddb636424c731d5cf1664">
+                                            Minor</option>
+                                    </select></div>
+                            </div>
+                            <div class="web-form-field half-field"><label>Release Phase </label><select
+                                    name="Related Milestone"
+                                    style="width: 100%; border-color: #e7e7e7; border-style: solid; border-width: 1px; color: #3A3A3A; font-size: 13px; font-weight: normal; border-radius:3px; padding:3px; outline:none; height: 35px; background-color: #fff;">
+                                    <option value="projects-d3bb83abb3d6e6848f281394967ba266">None</option>
+                                    <optgroup label="Archived/Completed Phases"></optgroup>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181f5f6db8f4c16de041b63ef03474b08066">
+                                        Project Consolidation and Assessment</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181fd1bab2cb8a033fe0d153b1cf14420396">
+                                        Prioritization and Road Mapping</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181fe184b07fae63d4b21398e2465933d5f6">
+                                        Code
+                                        &amp; Feature Freeze Except for Stabilization</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181f97e2400d3c18b314079239529b770567">
+                                        Cross-Verification &amp; Bug Fixing</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181f434a3101a9f8e9c5960d519abbd2b8b5">
+                                        Final
+                                        Review &amp; Release Preparation</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181fed3a9caf6b80d19e965d51b613d4b977">
+                                        Deployment &amp; Post-Launch Validation</option>
+                                </select></div>
+                            <div class="web-form-field half-field"><label>Affected Phase </label><select
+                                    name="affectedmileid"
+                                    style="width: 100%; border-color: #e7e7e7; border-style: solid; border-width: 1px; color: #3A3A3A; font-size: 13px; font-weight: normal; border-radius:3px; padding:3px; outline:none; height: 35px; background-color: #fff;">
+                                    <option value="projects-d3bb83abb3d6e6848f281394967ba266">None</option>
+                                    <optgroup label="Archived/Completed Phases"></optgroup>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181f5f6db8f4c16de041b63ef03474b08066">
+                                        Project Consolidation and Assessment</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181fd1bab2cb8a033fe0d153b1cf14420396">
+                                        Prioritization and Road Mapping</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181fe184b07fae63d4b21398e2465933d5f6">
+                                        Code
+                                        &amp; Feature Freeze Except for Stabilization</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181f97e2400d3c18b314079239529b770567">
+                                        Cross-Verification &amp; Bug Fixing</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181f434a3101a9f8e9c5960d519abbd2b8b5">
+                                        Final
+                                        Review &amp; Release Preparation</option>
+                                    <option
+                                        value="projects-12bc8b418433542f723717fc0337181fed3a9caf6b80d19e965d51b613d4b977">
+                                        Deployment &amp; Post-Launch Validation</option>
+                                </select></div>
+                            <div class="web-form-field half-field"><label class="">Module</label>
+                                <div class="webform-select-style"><select
+                                        style=" width: 100%; border-color: #e7e7e7; border-style: solid; border-width: 1px; color: #3A3A3A; font-size: 13px; font-weight: normal; border-radius:3px; padding:3px; outline:none; height: 35px; background-color: #fff;"
+                                        name="Module" data-mand="false">
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c44b4ed2ebc6ade325d2b189cadfe7ed5d">
+                                            None</option>
+                                    </select></div>
+                            </div>
+                            <div class="web-form-field half-field"><label class="">Classification</label>
+                                <div class="webform-select-style"><select
+                                        style=" width: 100%; border-color: #e7e7e7; border-style: solid; border-width: 1px; color: #3A3A3A; font-size: 13px; font-weight: normal; border-radius:3px; height: 35px; padding:3px; outline:none; background-color: #fff;"
+                                        name="Classification" data-mand="false">
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c405ff4871eb4d2fc3dd779cce7d54b618">
+                                            None</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4481dba88cb8e8dab5a59581fc37d5ae7">
+                                            Security</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c44180fadc99c3406986b2ffcad857f5b3">
+                                            Crash/Hang</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4c4b8bfacf6e1d6b7d307fdd94a904b9b">
+                                            Data loss</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4c20128bf63df48a2f1a4df0274a4b022">
+                                            Performance</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c47e9fc9d757e6207006478172c9f1ab1b">
+                                            UI/Usabililty</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4377d994a1166af6650f874d935aeb7f5">
+                                            Other bug</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4fc9e893ecea2eb175a348ec297cf5262">
+                                            Feature(New)</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c466fb37b18982be11dc2dfdb735839ea1">
+                                            Enhancement</option>
+                                    </select></div>
+                            </div>
+                            <div class="web-form-field half-field"><label class="">Reproducible</label>
+                                <div class="webform-select-style"><select
+                                        style=" width: 100%; border-color: #e7e7e7; border-style: solid; border-width: 1px; color: #3A3A3A; font-size: 13px; font-weight: normal; /* border-radius:3px; */ padding:3px; outline:none; background-color: #fff; height: 35px;"
+                                        name="Is it Reproducible" data-mand="false">
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c49ed6f36b35d19731e0b16dfa533ad22d">
+                                            None</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c44a8a73468478c59c806dc374667f74e9">
+                                            Always</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c49586009470d8676714ca704d9807660a">
+                                            Sometimes</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c499442869a09fdbfd3abbde4a71c8887d">
+                                            Rarely</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c465fb46a6a879e09451b4d55e3468740e">
+                                            Unable</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4ddb9905c906f97d0cd95ce8fdbb2a939">
+                                            Never tried</option>
+                                        <option
+                                            value="projects-1b5cfe8d8f271a21dc4a39522b6361c4b21e4f5f48f4a1756cbc9174df715658">
+                                            Not applicable</option>
+                                    </select></div>
+                            </div>
+                            <div class="web-form-field full-field">
+                                <div style="line-height: 20px; color: #ff4d47;">Note: Email ID is used to know the
+                                    reporter of this
+                                    bug. Submitting your email ID will not add you as a user or give you access to
+                                    portal data.
+                                </div>
+                            </div>
+                            <div style="display:flex; align-items: center; width:100%;">
+                                <button type="submit" value="Save" title="Save" class="primary-button">Save</button>
+                                <label for="feedback-form-modal" type="reset" value="Cancel" title="Cancel"
+                                    class="secondary-button">Cancel</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    <label class="modal-backdrop" for="feedback-form-modal">Close</label>
+    </div>
+</div>
