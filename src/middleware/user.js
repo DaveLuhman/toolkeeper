@@ -249,9 +249,16 @@ async function disableUser(req, _res, next) {
 	next();
 }
 
-async function deleteUser(req, _res, next) {
+async function deleteUser(req, res, next) {
 	console.info("[MW] deleteUser-in".bgBlue.white);
-	await User.findByIdAndDelete(req.params.id);
+	const targetUser = await User.findById(req.params.id);
+	if (targetUser._id !== req.user._id) {
+		await User.findByIdAndDelete(req.params.id);
+	} else {
+		res.locals.error = "You cannot delete your own user account.";
+		res.status(400).redirect("back");
+		return;
+	}
 	console.info("[MW] deleteUser-out".bgBlue.white);
 	next();
 }
