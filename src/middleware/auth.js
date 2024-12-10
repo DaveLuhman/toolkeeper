@@ -1,5 +1,5 @@
 import passport from "passport";
-import { Onboarding } from "../models/index.models.js";
+import { Onboarding, User, Tenant, Subscription } from "../models/index.models.js";
 /**
  * @param req Express Request object
  * @param  res  Express Response object
@@ -38,6 +38,56 @@ function isManager(req, res, next) {
 	}
 	return next();
 }
+
+// Enhance verifySubscriptionStatus to handle additional statuses
+async function verifySubscriptionStatus(userId) {
+	const user = await User.findById(userId);
+	const tenant = await Tenant.findById(user.tenant);
+	if (tenant) {
+		const subscription = await Subscription.findOne({ tenant: tenant._id });
+		if (subscription) {
+			switch (subscription.status) {
+				case "expired":
+					return {
+						proceed: false,
+						message:
+							"Your subscription has expired. Please contact support or update your subscription at https://store.ado.software.",
+					};
+				case "lapsed":
+					return {
+						proceed: false,
+						message:
+							"Your subscription has lapsed. Please renew your subscription.",
+					};
+				case "cancelled":
+					return {
+						proceed: false,
+						message:
+							"Your subscription has been cancelled. Please contact support for more information.",
+					};
+				case "paused":
+					return {
+						proceed: false,
+						message:
+							"Your subscription is currently paused. Please resume your subscription to continue.",
+					};
+				default:
+					return { proceed: true };
+			}
+		}
+	}
+	return { proceed: true };
+}
+// Change hoistOnboardingDocument to an anonymous function
+const hoistOnboardingDocument = async (user) => {
+	try {
+		const onboardingDoc = await Onboarding.findOne({ user: user.id });
+		return onboardingDoc;
+	} catch (error) {
+		throw new Error("Error fetching onboarding document");
+	}
+};
+
 /**
  * @param req Express Request object
  * @param  res  Express Response object
@@ -50,35 +100,48 @@ function isManager(req, res, next) {
  * })
  * @todo fix the failure message
  **/
+
 function login(req, res, next) {
-	passport.authenticate("local", {
-		failureRedirect: "/login",
-		failureFlash: true,
-		successRedirect: "/dashboard",
-	}, async (err, user, info) => {
-		if (err) {
-			return next(err);
-		}
-		if (!user) {
-			return res.redirect("/login");
-		}
-		req.logIn(user, async (err) => {
+	passport.authenticate(
+		"local",
+		{
+			failureRedirect: "/login",
+			failureFlash: true,
+			successRedirect: "/dashboard",
+		},
+		async (err, user, info) => {
 			if (err) {
 				return next(err);
 			}
-			user.lastLogin = new Date();
-			await user.save();
-			// Hoist the user's onboarding document to the request object
-			let onboardingDoc;
-			try {
-				onboardingDoc = await Onboarding.findOne({ user: user.id });
-				res.locals.onboarding = onboardingDoc; // Store onboarding document on req
-			} catch (error) {
-				return next(error);
+			if (!user) {
+				return res.redirect("/login");
 			}
-			return res.redirect("/dashboard");
-		});
-	})(req, res, next);
+			req.logIn(user, async (err) => {
+				if (err) {
+					return next(err);
+				}
+				user.lastLogin = new Date();
+				await user.save();
+
+				// Verify subscription status
+				const subscriptionStatus = await verifySubscriptionStatus(user.id);
+				if (!subscriptionStatus.proceed) {
+					res.locals.message = subscriptionStatus.message;
+					return res.redirect("/login");
+				}
+
+				// Hoist the user's onboarding document using the anonymous function
+				try {
+					const onboardingDoc = await hoistOnboardingDocument(user);
+					res.locals.onboarding = onboardingDoc;
+				} catch (error) {
+					return next(error);
+				}
+
+				return res.redirect("/dashboard");
+			});
+		},
+	)(req, res, next);
 }
 
 /**
@@ -104,7 +167,3 @@ function logout(req, res, next) {
 export { checkAuth, isManager, login, logout };
 
 // src\middleware\auth.js
-
-// add function that checks if the user's tenant's subscription is active
-
-
