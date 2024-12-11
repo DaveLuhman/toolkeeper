@@ -105,7 +105,6 @@ function login(req, res, next) {
 	passport.authenticate(
 		"local",
 		{
-			failureRedirect: "/login",
 			failureFlash: true,
 			successRedirect: "/dashboard",
 		},
@@ -114,7 +113,7 @@ function login(req, res, next) {
 				return next(err);
 			}
 			if (!user) {
-				return res.redirect("/login");
+				return res.render("auth/login", { message: "Invalid username or password", layout: 'auth' });
 			}
 			req.logIn(user, async (err) => {
 				if (err) {
@@ -127,7 +126,7 @@ function login(req, res, next) {
 				const subscriptionStatus = await verifySubscriptionStatus(user.id);
 				if (!subscriptionStatus.proceed) {
 					res.locals.message = subscriptionStatus.message;
-					return res.redirect("/login");
+					return res.render("auth/login", { message: subscriptionStatus.message, layout: 'auth' });
 				}
 
 				// Hoist the user's onboarding document using the anonymous function
