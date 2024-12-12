@@ -2,7 +2,9 @@ function toggleSection(parentElement) {
     const children = parentElement.querySelectorAll('.content');
     const changingArrow = parentElement.querySelector('h4 i');
 
-    if (!changingArrow) return; // Guard clause if arrow doesn't exist
+    if (!changingArrow) {
+      return;
+    } // Guard clause if arrow doesn't exist
 
     // Close all other sections and reset their arrows
     const allContent = document.querySelectorAll('.content');
