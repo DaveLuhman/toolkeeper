@@ -31,7 +31,7 @@ async function getUsers(req, res, next) {
  */
 async function getUserByID(req, res, next) {
 	console.info("[MW] getUserByID-in".bgBlue.white);
-	const id = req.params.id;
+	const {id} = req.params;
 	console.info(`[MW] searching id: ${id}`);
 	const user = await User.findById(id);
 	res.locals.userToEdit = mutateToArray(user);
@@ -170,13 +170,13 @@ async function updateUser(req, res, next) {
 			developer,
 		} = req.body;
 		const existingUser = await User.findById(req.body.id);
-		if (name) existingUser.name = name;
-		if (email) existingUser.email = email;
-		if (theme) existingUser.set("preferences.theme", theme);
-		if (sortField) existingUser.set("preferences.sortField", sortField);
-		if (sortDirection) existingUser.set("preferences.sortDirection", sortDirection);
-		if (pageSize !== undefined) existingUser.set("preferences.pageSize", pageSize);
-		if (developer !== undefined) existingUser.set("preferences.developer", developer);
+		if (name){ existingUser.name = name;}
+		if (email) {existingUser.email = email;}
+		if (theme) {existingUser.set("preferences.theme", theme);}
+		if (sortField) {existingUser.set("preferences.sortField", sortField);}
+		if (sortDirection) {existingUser.set("preferences.sortDirection", sortDirection);}
+		if (pageSize !== undefined) {existingUser.set("preferences.pageSize", pageSize);}
+		if (developer !== undefined) {existingUser.set("preferences.developer", developer);}
 		await existingUser.save();
 		if (req.user._id.toString() === existingUser._id.toString()) {
 			res.locals.user = existingUser;
