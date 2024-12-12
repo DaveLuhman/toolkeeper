@@ -71,8 +71,7 @@ async function createDefaultUser() {
 		},
 	];
 	try {
-		const createdUsers = await User.create(usersToCreate);
-		return createdUsers;
+		return await User.create(usersToCreate);
 	} catch (error) {
 		console.error(`Error creating default user: ${error.message}`);
 		throw new Error(`Failed to create default user: ${error.message}`);
@@ -106,8 +105,7 @@ async function createDefaultOnboardings() {
 				// progress will use schema defaults (currentStep: 'profile', completedAt: null)
 			},
 		];
-		const createdOnboardings = await Onboarding.create(adminAndDemoOnboardings);
-		return createdOnboardings;
+		return await Onboarding.create(adminAndDemoOnboardings);
 	} catch (error) {
 		console.error(`Error creating default onboarding: ${error.message}`);
 		throw new Error(`Failed to create default onboarding: ${error.message}`);
@@ -153,14 +151,13 @@ async function createDefaultSubscription() {
 
 async function createDefaultTenant() {
 	try {
-		const tenant = await Tenant.create({
+		return await Tenant.create({
 			_id: "66af881237c17b64394a4166",
 			name: "demo",
 			domain: "toolkeeper.site",
 			adminUser: "663870c0a1a9cdb4b707c737",
 			subscription: "66af881237c17b64394a4167",
 		});
-		return tenant;
 	} catch (error) {
 		console.error(error);
 		throw error;
@@ -186,7 +183,7 @@ function createDefaultCategory() {
  * @returns {Promise} A promise that resolves when the service assignments are successfully created.
  */
 async function createDefaultServiceAssignments() {
-	const serviceAssignments = await ServiceAssignment.create([
+	return await ServiceAssignment.create([
 		{
 			_id: "64a19e910e675938ebb67de7",
 			jobNumber: "IMPORT",
@@ -219,7 +216,6 @@ async function createDefaultServiceAssignments() {
 	]).catch((error) => {
 		console.log(error.message);
 	});
-	return serviceAssignments;
 }
 
 function createDefaultDocuments() {

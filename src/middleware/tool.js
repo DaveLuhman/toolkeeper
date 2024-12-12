@@ -1,4 +1,3 @@
-
 import { Tool, ServiceAssignment } from "../models/index.models.js";
 import { deduplicateArray, mutateToArray } from "./util.js";
 import { returnUniqueIdentifier } from "../helpers/index.js";
@@ -10,7 +9,7 @@ import { findServiceAssignmentByJobNumber } from "./serviceAssignment.js";
  * @returns {array}
  * @description This function will return all tools in the database along with pagination data
  */
-async function getAllTools(req, res, next) {
+const getAllTools = async (req, res, next) => {
 	const { sortField, sortOrder } = req.user.preferences;
 	const tenantId = req.user.tenant.valueOf();
 	try {
@@ -33,12 +32,12 @@ async function getAllTools(req, res, next) {
 		});
 		return next(err);
 	}
-}
+};
 
 /**
  * Middleware to get all active tools in the database for the current tenant.
  */
-async function getActiveTools(req, res, next) {
+const getActiveTools = async (req, res, next) => {
 	const { sortField, sortOrder } = req.user.preferences;
 	const tenantId = req.user.tenant.valueOf();
 
@@ -68,13 +67,13 @@ async function getActiveTools(req, res, next) {
 		});
 		return next(err);
 	}
-}
+};
 
 /**
  * Middleware to get a tool by its ID and return it in the response.
  */
-async function getToolByID(req, res, next) {
-	const id = req.params.id;
+const getToolByID = async (req, res, next) => {
+	const {id} = req.params;
 	const tenantId = req.user.tenant.valueOf();
 
 	try {
@@ -103,12 +102,12 @@ async function getToolByID(req, res, next) {
 		});
 		return next(err);
 	}
-}
+};
 
 /**
  * Middleware to search tools based on user input.
  */
-async function searchTools(req, res, next) {
+const searchTools = async (req, res, next) => {
 	const { sortField, sortOrder } = req.user.preferences;
 	const { searchBy, searchTerm } = req.body;
 
@@ -173,12 +172,12 @@ async function searchTools(req, res, next) {
 
 		return next(err);
 	}
-}
+};
 
 /**
  * Middleware to create a new tool for the current tenant.
  */
-async function createTool(req, res, next) {
+const createTool = async (req, res, next) => {
 	try {
 		const {
 			serialNumber,
@@ -264,12 +263,12 @@ async function createTool(req, res, next) {
 		res.locals.message = error.message;
 		res.status(500).redirect("back");
 	}
-}
+};
 
 /**
  * Middleware to update a single tool by its ID.
  */
-async function updateTool(req, res, next) {
+const updateTool = async (req, res, next) => {
 	try {
 		const {
 			id,
@@ -337,12 +336,12 @@ async function updateTool(req, res, next) {
 
 		res.status(500).json({ message: error.message });
 	}
-}
+};
 
 /**
  * Middleware to archive a tool by its ID.
  */
-async function archiveTool(req, res, next) {
+const archiveTool = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 
@@ -380,12 +379,12 @@ async function archiveTool(req, res, next) {
 		});
 		res.status(500).json({ message: error.message });
 	}
-}
+};
 
 /**
  * Middleware to unarchive a tool by its ID.
  */
-async function unarchiveTool(req, res, next) {
+const unarchiveTool = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 
@@ -425,12 +424,12 @@ async function unarchiveTool(req, res, next) {
 		});
 		res.status(500).json({ message: error.message });
 	}
-}
+};
 
 /**
  * Middleware to check tools for service assignment changes.
  */
-async function checkTools(req, res, next) {
+const checkTools = async (req, res, next) => {
 	try {
 		if (!req.body.searchTerms) {
 			res.locals.message = "No Tools Submitted For Status Change";
@@ -476,14 +475,14 @@ async function checkTools(req, res, next) {
 		});
 		res.status(500).json({ message: error.message });
 	}
-}
+};
 /**
  *
  * @param {string} searchTerm search target
  * @param {string} searchField optional, key to search - if not provided, will search all fields
  * @returns {object}
  */
-async function lookupTool(searchTerm, tenant) {
+const lookupTool = async (searchTerm, tenant) => {
 	const capitalizedSearchTerm = searchTerm.toUpperCase();
 	let result = await Tool.findOne({
 		serialNumber: { $eq: capitalizedSearchTerm },
@@ -505,14 +504,14 @@ async function lookupTool(searchTerm, tenant) {
 		result = {};
 	}
 	return result;
-}
+};
 /**
  * @name lookupToolWrapper
  * @desc iterator for looking up multiple search terms for checkTools
  * @param {*} searchTerms
  * @return {*} array of tools, with dummy objects if nothing is found
  */
-async function lookupToolWrapper(searchTerms, tenantId) {
+const lookupToolWrapper = async (searchTerms, tenantId) => {
 	const tools = [];
 	for (let i = 0; i < searchTerms.length; i++) {
 		const result = await lookupTool(searchTerms[i], tenantId);
@@ -520,21 +519,25 @@ async function lookupToolWrapper(searchTerms, tenantId) {
 			tools.push({
 				serialNumber: searchTerms[i],
 			});
-		} else tools.push(result);
+		} else {
+			tools.push(result);
+		}
 	}
 	return tools;
-}
+};
 /**
  * Middleware to submit check-in/out requests for tools.
  */
-async function submitCheckInOut(req, res, next) {
+const submitCheckInOut = async (req, res, next) => {
 	try {
 		const id = mutateToArray(req.body.id);
 		const { destinationServiceAssignment } = req.body;
 		const newTools = [];
 
 		for (let i = 0; i < id.length; i++) {
-			if (id[i] === "toolNotFound") break;
+			if (id[i] === "toolNotFound") {
+				break;
+			}
 			const updatedTool = await Tool.findByIdAndUpdate(
 				id[i],
 				{
@@ -570,8 +573,8 @@ async function submitCheckInOut(req, res, next) {
 		});
 		res.status(500).json({ message: error.message });
 	}
-}
-export async function getRecentlyUpdatedTools(req, res, next) {
+};
+export const getRecentlyUpdatedTools = async (req, res, next) => {
 	try {
 		const tools = await Tool.find({ tenant: { $eq: req.user.tenant } })
 			.sort({ updatedAt: -1 })
@@ -610,8 +613,7 @@ const generatePrinterFriendlyToolList = (req, res, next) => {
 
 		const { tools } = res.locals;
 		const printerFriendlyToolArray = tools.map((tool) => {
-			const { serialNumber, modelNumber, toolID, barcode, description } = tool;
-			return { serialNumber, modelNumber, toolID, barcode, description };
+			return tool;
 		});
 
 		if (printerFriendlyToolArray.length === 0) {
