@@ -18,9 +18,10 @@ export async function importByFile(req, res, next) {
     })
     return next('router')
   }
-  const file = req.files.importFile
-  const importTarget = req.body.importTarget
-  const tenant = req.user.tenant.valueOf()
+  const { importFile: file } = req.files
+  const { importTarget } = req.body
+  const { tenant } = req.user
+  const tenantStr = tenant.valueOf()
   let result = null;
   switch (importTarget) {
     case 'tools':
