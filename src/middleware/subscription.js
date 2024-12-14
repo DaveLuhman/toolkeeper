@@ -21,17 +21,17 @@ export function determineUserLimit(variantName) {
 	let planName;
 
 	switch (firstLetter) {
-		case 'P':
+		case "P":
 			userLimit = 5;
-			planName = 'Pro';
+			planName = "Pro";
 			break;
-		case 'E':
+		case "E":
 			userLimit = Number.POSITIVE_INFINITY;
-			planName = 'Enterprise';
+			planName = "Enterprise";
 			break;
 		default:
 			userLimit = 1;
-			planName = 'Basic';
+			planName = "Basic";
 	}
 
 	return { userLimit, planName };
@@ -41,69 +41,6 @@ const getInstanceUrl = () => {
 	return process.env.NODE_ENV === "production"
 		? "https://toolkeeper.site"
 		: "https://dev.toolkeeper.site";
-};
-
-
-// Create a new user based on pending user data
-const createUserFromProspect = async (prospect) => {
-	try {
-		const newPassword = generatePassword();
-
-		const activeUser = await User.create({
-			name: prospect.name,
-			email: prospect.email,
-			password: newPassword,
-			role: "Admin",
-		});
-
-		// Initialize onboarding for the new user
-		try {
-			await Onboarding.create({
-				user: activeUser._id,
-			});
-			logger.info(`Initialized onboarding for user ${activeUser._id}`);
-		} catch (onboardingError) {
-			logger.error("Error initializing onboarding:", onboardingError);
-			await User.findByIdAndDelete(activeUser._id);
-			throw new Error('Failed to initialize user onboarding');
-		}
-
-		return { activeUser, newPassword };
-	} catch (error) {
-		logger.error("Error in createUserFromProspect:", error.message);
-		throw error;
-	}
-};
-
-// Create a new tenant and associate the user as admin
-const createTenantForUser = async (newUser) => {
-	try {
-		const tenantData = {
-			domain: getDomainFromEmail(activeUser.email),
-			adminUser: activeUser._id, // Assign the admin user to the tenant
-		};
-
-		return await Tenant.createWithDefaults(tenantData);
-	} catch (error) {
-		logger.error("Error creating tenant for user:", error.message);
-		throw error;
-	}
-};
-
-// Create a subscription in the database
-const createSubscription = async (subscriptionData, activeUser, tenant) => {
-	try {
-		return await Subscription.create({
-  			user: activeUser._id,
-  			tenant: tenant._id,
-  			status: "active",
-  			lemonSqueezyId: subscriptionData.id,
-  			lemonSqueezyObject: subscriptionData.attributes,
-  		});
-	} catch (error) {
-		logger.error("Error creating subscription:", error.message);
-		throw error;
-	}
 };
 
 // Send a welcome email to the new user
@@ -117,23 +54,23 @@ Dear ${newUser.name},
 
 Welcome to ToolKeeper! Your account has been successfully created. Here's everything you need to get started:
 
-🔐 Your Login Credentials:
+	Your Login Credentials:
 Email: ${newUser.email}
 Password: ${newPassword}
 
-🚀 Quick Start Guide:
+	Quick Start Guide:
 1. Login at ${instanceUrl}/login
 2. Change your password immediately
 3. Complete your company profile
 4. Invite your team members
 5. Start managing your tools inventory
 
-💡 Key Features:
+	Key Features:
 • Tool Inventory Management
 • Team Collaboration
 • Custom Reports
 
-🔍 Need Help?
+	Need Help?
 • Visit our documentation: ${instanceUrl}/docs
 • Contact support: support@toolkeeper.site
 
@@ -150,30 +87,14 @@ The ToolKeeper Team`;
 	}
 };
 
-export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
-	if (!eventType) {
-		throw new Error("Event type is required");
-	}
-
-	let status;
+export const handleWebhook = async (eventType, subscriptionData) => {
 	try {
-		switch (eventType) {
-			case "subscription_cancelled":
-				status = "cancelled";
-				break;
-			case "subscription_resumed":
-				status = "active";
-				break;
-			case "subscription_expired":
-				status = "expired";
-				break;
-			case "subscription_paused":
-				status = "paused";
-				break;
-			case "subscription_unpaused":
-				status = "active";
-				break;
-			case "subscription_created": {
+		const subscriptionId = subscriptionData.id;
+
+		// Handle subscription creation separately
+		if (eventType === "subscription_created") {
+			try {
+				// Create the admin user
 				const newPassword = generatePassword();
 				const newAdminUser = await User.create({
 					name: subscriptionData.attributes.user_name,
@@ -181,50 +102,77 @@ export const handleSubscriptionEvent = async (eventType, subscriptionData) => {
 					password: newPassword,
 					role: "Admin",
 				});
+
+				// Initialize onboarding
 				await Onboarding.create({
 					user: newAdminUser._id,
 				});
+
+				// Create tenant
 				const tenant = await Tenant.createWithDefaults({
 					domain: getDomainFromEmail(newAdminUser.email),
 					adminUser: newAdminUser._id,
 				});
+
+				// Update user with tenant
 				newAdminUser.tenant = tenant._id;
 				await newAdminUser.save();
-				await Subscription.create({
-					user: newAdminUser._id,
-					tenant: tenant._id,
-					status: "active",
-					lemonSqueezyId: subscriptionData.id,
-					lemonSqueezyObject: subscriptionData.attributes,
-				});
+
+				// Create subscription using static method
+				await Subscription.createFromWebhook(
+					newAdminUser._id,
+					tenant._id,
+					subscriptionData
+				);
+
+				// Send welcome email
 				await sendWelcomeEmail(newAdminUser, newPassword);
-				return "Subscription created, user and tenant created, and welcome email sent.";
+
+				logger.info(`New subscription created: ${subscriptionId}`);
+				return "Subscription created successfully";
+			} catch (error) {
+				logger.error("Error in subscription creation:", error);
+				throw error;
 			}
-			case "subscription_updated": {
-				status = "updated";
-				break;
-			}
-			default:
-				throw new Error("Unhandled event type");
 		}
 
-		// Find the subscription and update its status
-		const subscription = await Subscription.findOneAndUpdate(
-			{ lemonSqueezyId: subscriptionData.id },
-			{ status: status },
-			{ new: true },
-		);
+		// For all other events, find and update the subscription
+		const subscription = await Subscription.findOne({
+			lemonSqueezyId: subscriptionId,
+		});
 
 		if (!subscription) {
-			throw new Error("Subscription not found");
+			throw new Error(`Subscription not found: ${subscriptionId}`);
 		}
 
-		return `Subscription ${status} and updated.`;
+		// Update the lemonSqueezyObject with the latest data
+		subscription.lemonSqueezyObject = subscriptionData.attributes;
+		await subscription.save();
+
+		// Log the event
+		switch (eventType) {
+			case "subscription_updated":
+				logger.info(`Subscription updated: ${subscriptionId}`);
+				break;
+			case "subscription_cancelled":
+				logger.info(`Subscription cancelled: ${subscriptionId}`);
+				break;
+			case "subscription_resumed":
+				logger.info(`Subscription resumed: ${subscriptionId}`);
+				break;
+			case "subscription_expired":
+				logger.info(`Subscription expired: ${subscriptionId}`);
+				break;
+			default:
+				logger.warn(`Unhandled subscription event type: ${eventType}`);
+		}
+
+		return "Subscription updated successfully";
 	} catch (error) {
-		logger.error(`Error handling webhook event: ${eventType}`, { error: error.message, subscriptionData });
-		throw error; // Re-throw the error after logging
+		logger.error(`Error handling webhook event: ${eventType}`, {
+			error: error.message,
+			subscriptionData,
+		});
+		throw error;
 	}
 };
-
-
-

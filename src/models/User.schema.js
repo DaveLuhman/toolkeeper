@@ -24,12 +24,13 @@ const UserSchema = new Schema(
 			type: String,
 			required: true,
 			set: (cleartextPassword) => {
-				if (!cleartextPassword) return cleartextPassword;
+				if (!cleartextPassword) {
+					return cleartextPassword;
+				}
 
 				const saltRounds = 10;
 				try {
-					const hashedPassword = bcrypt.hashSync(cleartextPassword, saltRounds);
-					return hashedPassword;
+					return bcrypt.hashSync(cleartextPassword, saltRounds);
 				} catch (error) {
 					throw new Error("Error hashing password");
 				}

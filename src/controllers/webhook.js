@@ -1,5 +1,5 @@
 import logger from "../logging/index.js";
-import { handleSubscriptionEvent } from "../middleware/subscription.js";
+import { handleWebhook } from "../middleware/subscription.js";
 import { secret } from "../config/lemonSqueezy.js";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { Buffer } from "node:buffer";
@@ -60,7 +60,7 @@ const handleWebhookEvent = async (req, res) => {
 		}
 
 		// Handle the subscription event
-		const message = await handleSubscriptionEvent(eventType, subscriptionData);
+		const message = await handleSubscription(eventType, subscriptionData);
 
 		// Log successful operation
 		logger.info(

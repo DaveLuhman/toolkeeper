@@ -3,11 +3,6 @@ import { Schema } from "mongoose";
 const subscriptionSchema = new Schema({
 	user: { type: Schema.Types.ObjectId, ref: "User" }, // For renewal contact
 	tenant: { type: Schema.Types.ObjectId, ref: "Tenant" }, // Tenant associated with this subscription
-	status: {
-		type: String,
-		enum: ["past-due", "paused", "active", "unpaid", "cancelled", "expired"],
-		default: "active",
-	},
 	lemonSqueezyId: { type: String, required: true }, // Corresponds to the "id" field
 	lemonSqueezyObject: {
 		type: Object,
@@ -57,6 +52,32 @@ const subscriptionSchema = new Schema({
 	strict: false // This allows for additional fields not explicitly defined
 });
 
+// Virtual property to get status from lemonSqueezyObject
+subscriptionSchema.virtual("status").get(function () {
+  if (!this.lemonSqueezyObject) {
+    return "unknown";
+  }
+  return this.lemonSqueezyObject.status || "unknown";
+});
+
+// Static method to create a subscription from webhook event
+subscriptionSchema.statics.createFromWebhook = async function(userId, tenantId, webhookData) {
+  if (!webhookData?.id || !webhookData?.attributes) {
+    throw new Error('Invalid webhook data: Missing required fields');
+  }
+
+  try {
+    return await this.create({
+          user: userId,
+          tenant: tenantId,
+          lemonSqueezyId: webhookData.id,
+          lemonSqueezyObject: webhookData.attributes
+        });
+  } catch (error) {
+    throw new Error(`Failed to create subscription: ${error.message}`);
+  }
+};
+
 export default subscriptionSchema
 
 /** saving this data shape for posterity
@@ -102,7 +123,7 @@ export default subscriptionSchema
 	endsAt: { type: Date, default: null },
 	createdAt: { type: Date, required: true },
 	updatedAt: { type: Date, required: true },
+
 	testMode: { type: Boolean, default: false },
 	},
- */
-// src\models\Subscription.schema.js
+*/
