@@ -31,8 +31,7 @@ export async function checkDuplicate(model, field, value) {
  */
 export async function saveDocument(model, doc, errorList) {
   try {
-    const savedDoc = await model.create(doc);
-    return savedDoc;
+    return await model.create(doc);
   } catch (error) {
     errorList.push({ key: doc._id, reason: error.message });
   }

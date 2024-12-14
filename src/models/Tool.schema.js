@@ -104,7 +104,9 @@ ToolSchema.index({ barcode: 1, tenant: 1 }, { unique: true });
 ToolSchema.plugin(mongooseAutoPopulate);
 
 ToolSchema.virtual("status").get(function () {
-	if (!this.serviceAssignment) return "Undefined";
+	if (!this.serviceAssignment) {
+   return "Undefined";
+ }
 	switch (this.serviceAssignment?.type) {
 		case "Stockroom":
 			return "Checked In";

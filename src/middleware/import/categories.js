@@ -22,7 +22,7 @@ const createCategoryDocument = (row, tenant) => {
  * @returns {boolean} - True if a duplicate category exists, false otherwise.
  */
 const checkDuplicateCategory = async (prefix) => {
-	return await checkDuplicate(Category, "prefix", prefix);
+	return checkDuplicate(Category, "prefix", prefix);
 };
 
 /**

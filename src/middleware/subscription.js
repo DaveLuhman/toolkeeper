@@ -93,15 +93,13 @@ const createTenantForUser = async (newUser) => {
 // Create a subscription in the database
 const createSubscription = async (subscriptionData, activeUser, tenant) => {
 	try {
-		const subscription = await Subscription.create({
-			user: activeUser._id,
-			tenant: tenant._id,
-			status: "active",
-			lemonSqueezyId: subscriptionData.id,
-			lemonSqueezyObject: subscriptionData.attributes,
-		});
-
-		return subscription;
+		return await Subscription.create({
+  			user: activeUser._id,
+  			tenant: tenant._id,
+  			status: "active",
+  			lemonSqueezyId: subscriptionData.id,
+  			lemonSqueezyObject: subscriptionData.attributes,
+  		});
 	} catch (error) {
 		logger.error("Error creating subscription:", error.message);
 		throw error;
