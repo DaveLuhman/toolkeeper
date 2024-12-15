@@ -1,4 +1,4 @@
-import { User, Tenant, Onboarding } from "../models/index.models.js";
+import { User, Tenant, Subscription, Onboarding } from "../models/index.models.js";
 import { mutateToArray } from "./util.js";
 import { determineUserLimit } from "./subscription.js";
 import logger from "../logging/index.js";
@@ -71,7 +71,7 @@ async function createUserInTenant(req, res, next) {
 			throw new Error("Passwords do not match");
 		}
 		// Check user limit based on subscription
-		const tenantDoc = await Tenant.findById(tenant).populate("subscription");
+		const tenantDoc = await Subscription.findOne({ tenant });
 
 		if (!tenantDoc || !tenantDoc.subscription) {
 			throw new Error("Invalid tenant or subscription");
