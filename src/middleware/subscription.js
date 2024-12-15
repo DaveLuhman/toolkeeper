@@ -122,7 +122,7 @@ export const handleWebhook = async (eventType, subscriptionData) => {
 				await Subscription.createFromWebhook(
 					newAdminUser._id,
 					tenant._id,
-					subscriptionData
+					subscriptionData,
 				);
 
 				// Send welcome email
@@ -162,6 +162,21 @@ export const handleWebhook = async (eventType, subscriptionData) => {
 				break;
 			case "subscription_expired":
 				logger.info(`Subscription expired: ${subscriptionId}`);
+				break;
+			case "subscription_paused":
+				logger.info(`Subscription paused: ${subscriptionId}`);
+				break;
+			case "subscription_unpaused":
+				logger.info(`Subscription unpaused: ${subscriptionId}`);
+				break;
+			case "subscription_payment_success":
+				logger.info(`Subscription payment success: ${subscriptionId}`);
+				break;
+			case "subscription_payment_failed":
+				logger.info(`Subscription payment failed: ${subscriptionId}`);
+				break;
+			case "subscription_payment_updated":
+				logger.info(`Subscription payment updated: ${subscriptionId}`);
 				break;
 			default:
 				logger.warn(`Unhandled subscription event type: ${eventType}`);
