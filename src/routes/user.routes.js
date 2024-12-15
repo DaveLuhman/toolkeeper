@@ -13,7 +13,7 @@ userRouter.get("/profile", hoistOnboarding, (_req, res) => {
 	res.render("profile");
 });
 // update user's own profile
-userRouter.post("/profile", sanitizeReqBody, updateUser, login, (_req, res) => {
+userRouter.post("/profile", sanitizeReqBody, updateUser, (_req, res) => {
 	res.redirect("/user/profile");
 });
 // update user's own password

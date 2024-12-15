@@ -176,10 +176,11 @@ async function updateUser(req, res, next) {
 		if (sortField) {existingUser.set("preferences.sortField", sortField);}
 		if (sortDirection) {existingUser.set("preferences.sortDirection", sortDirection);}
 		if (pageSize !== undefined) {existingUser.set("preferences.pageSize", pageSize);}
-		if (developer !== undefined) {existingUser.set("preferences.developer", developer);}
+		if (developer === undefined) {existingUser.set("preferences.developer", false);}
+		else {existingUser.set("preferences.developer", true);}
 		await existingUser.save();
 		if (req.user._id.toString() === existingUser._id.toString()) {
-			res.locals.user = existingUser;
+			req.user = existingUser;
 		}
 
 		console.info("[MW] updateUser-out".bgWhite.blue);

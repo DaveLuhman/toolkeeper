@@ -85,7 +85,7 @@
                 <div class="form-control">
                     <span class="text-sm  rounded-l px-4 py-2 whitespace-no-wrap">Developer Mode?
                         <input type="checkbox" id="profile_developer" name="developer"
-                            class="checkbox-primary checkbox-sm rounded-xl ml-3"
+                            class="toggle toggle-primary"
                             {{#eq user.preferences.developer 'on'}}checked{{/eq}}>
                     </span>
                 </div>
@@ -95,7 +95,7 @@
                 <a class="btn btn-neutral col-span-2 md:col-span-1 md:w-3/4 col-start-1"><label for="resetPasswordModal"
                         style="cursor:pointer">Reset Password</label></a>
                 {{!-- cancel and save buttons --}}
-                <button type="reset" class="btn btn-accent md:col-start-3">Cancel</button>
+                <a href="/dashboard" class="btn btn-accent md:col-start-3">Cancel</a>
                 <button type="submit" id="profile_submit" class="btn btn-primary  md:col-start-4">Save</button>
             </div>
         </form>
