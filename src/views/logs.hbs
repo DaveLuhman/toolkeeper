@@ -17,17 +17,15 @@
         <tr class="bg-gray-100">
           <th class="p-4 text-left">Timestamp</th>
           <th class="p-4 text-left">Message</th>
-          <th class="p-4 text-left">User ID</th>
           <th class="p-4 text-left">Additional Info</th>
         </tr>
       </thead>
       <tbody id="logsTable">
         {{#each logs}}
           <tr class="border-t log-row {{#if (eq this.level 'error')}}log-error{{/if}}">
-            <td class="p-4">{{this.timestamp}}</td>
+            <td class="p-4">{{moment this.timestamp format="MM/DD/YY HH:mm a"}}</td>
             <td class="p-4">{{this.message}}</td>
-            <td class="p-4">{{this.userId}}</td>
-            <td class="p-4">{{this.metadata}}</td>
+            <td class="p-4">{{stringify this.metadata}}</td>
           </tr>
         {{/each}}
       </tbody>
