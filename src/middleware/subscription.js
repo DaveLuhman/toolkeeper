@@ -186,7 +186,8 @@ export const handleWebhook = async (eventType, subscriptionData) => {
 	} catch (error) {
 		logger.error(`Error handling webhook event: ${eventType}`, {
 			error: error.message,
-			subscriptionData,
+			subscriptionId: subscriptionData.id,
+			userEmail: subscriptionData.attributes.user_email,
 		});
 		throw error;
 	}
