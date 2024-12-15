@@ -1,5 +1,10 @@
 import passport from "passport";
-import { Onboarding, User, Tenant, Subscription } from "../models/index.models.js";
+import {
+	Onboarding,
+	User,
+	Tenant,
+	Subscription,
+} from "../models/index.models.js";
 /**
  * @param req Express Request object
  * @param  res  Express Response object
@@ -60,6 +65,11 @@ async function verifySubscriptionStatus(userId) {
 							"Your subscription has lapsed. Please renew your subscription at <a href='https://store.ado.software'>https://store.ado.software.</a>",
 					};
 				case "cancelled":
+					if (subscription.lemonSqueezyObject.ends_at > new Date()) {
+						return {
+							proceed: true,
+						};
+					}
 					return {
 						proceed: false,
 						message:
@@ -76,7 +86,7 @@ async function verifySubscriptionStatus(userId) {
 			}
 		}
 	}
-	return { proceed: true };
+	return { proceed: false, message: "No subscription found. Please contact support at <a href='mailto:support@ado.software'>https://support@ado.software.</a>" };
 }
 // Change hoistOnboardingDocument to an anonymous function
 const hoistOnboardingDocument = async (user) => {
@@ -112,7 +122,10 @@ function login(req, res, next) {
 				return next(err);
 			}
 			if (!user) {
-				return res.render("auth/login", { message: "Invalid username or password", layout: 'auth' });
+				return res.render("auth/login", {
+					message: "Invalid username or password",
+					layout: "auth",
+				});
 			}
 			req.logIn(user, async (err) => {
 				if (err) {
@@ -125,7 +138,10 @@ function login(req, res, next) {
 				const subscriptionStatus = await verifySubscriptionStatus(user.id);
 				if (!subscriptionStatus.proceed) {
 					res.locals.message = subscriptionStatus.message;
-					return res.render("auth/login", { message: subscriptionStatus.message, layout: 'auth' });
+					return res.render("auth/login", {
+						message: subscriptionStatus.message,
+						layout: "auth",
+					});
 				}
 
 				// Hoist the user's onboarding document using the anonymous function
