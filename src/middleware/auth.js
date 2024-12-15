@@ -51,25 +51,25 @@ async function verifySubscriptionStatus(userId) {
 					return {
 						proceed: false,
 						message:
-							"Your subscription has expired. Please contact support or update your subscription at https://store.ado.software.",
+							"Your subscription has expired. Please contact support or update your subscription at <a href='https://store.ado.software'>https://store.ado.software.</a>",
 					};
 				case "lapsed":
 					return {
 						proceed: false,
 						message:
-							"Your subscription has lapsed. Please renew your subscription.",
+							"Your subscription has lapsed. Please renew your subscription at <a href='https://store.ado.software'>https://store.ado.software.</a>",
 					};
 				case "cancelled":
 					return {
 						proceed: false,
 						message:
-							"Your subscription has been cancelled. Please contact support for more information.",
+							"Your subscription has been cancelled. Please contact support for more information at <a href='mailto:support@ado.software'>https://support@ado.software.</a>",
 					};
 				case "paused":
 					return {
 						proceed: false,
 						message:
-							"Your subscription is currently paused. Please resume your subscription to continue.",
+							"Your subscription is currently paused. Please resume your subscription to continue at <a href='https://store.ado.software'>https://store.ado.software.",
 					};
 				default:
 					return { proceed: true };
@@ -81,8 +81,7 @@ async function verifySubscriptionStatus(userId) {
 // Change hoistOnboardingDocument to an anonymous function
 const hoistOnboardingDocument = async (user) => {
 	try {
-		const onboardingDoc = await Onboarding.findOne({ user: user.id });
-		return onboardingDoc;
+		return await Onboarding.findOne({ user: user.id });
 	} catch (error) {
 		throw new Error("Error fetching onboarding document");
 	}

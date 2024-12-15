@@ -60,7 +60,7 @@ const handleWebhookEvent = async (req, res) => {
 		}
 
 		// Handle the subscription event
-		const message = await handleSubscription(eventType, subscriptionData);
+		const message = await handleWebhook(eventType, subscriptionData);
 
 		// Log successful operation
 		logger.info(

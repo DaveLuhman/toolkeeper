@@ -11,7 +11,9 @@ function determineServiceAssignmentType(cellValue) {
 		"Vehicle",
 		"Employee",
 	];
-	if (serviceAssignmentTypes.includes(cellValue)) return cellValue;
+	if (serviceAssignmentTypes.includes(cellValue)) {
+		return cellValue;
+	}
 	return "Imported - Uncategorized";
 }
 
@@ -23,7 +25,7 @@ async function createServiceAssignmentDocument(row, tenant) {
 		if (!Array.isArray(row)) {
 			throw new Error("Row must be an array");
 		}
-		if (!row[0] || row[0].trim() === '') {
+		if (!row[0] || row[0].trim() === "") {
 			return null;
 		}
 
@@ -34,19 +36,21 @@ async function createServiceAssignmentDocument(row, tenant) {
 		const existingAssignment = await ServiceAssignment.findOne({
 			$or: [
 				{ jobNumber: jobNumber, tenant },
-				{ jobName: jobName, tenant }
-			]
+				{ jobName: jobName, tenant },
+			],
 		});
 
 		if (existingAssignment) {
-			errorList.push(`Service Assignment already exists: ${jobNumber} - ${jobName}`);
+			errorList.push(
+				`Service Assignment already exists: ${jobNumber} - ${jobName}`,
+			);
 			return null;
 		}
 
 		const type = determineServiceAssignmentType(row[2]);
 		const phone = row[3]?.trim();
 		const notes = row[4]?.trim();
-		const serviceAssignmentDocument = {
+		return {
 			jobNumber,
 			jobName,
 			notes,
@@ -55,15 +59,18 @@ async function createServiceAssignmentDocument(row, tenant) {
 			active: true,
 			tenant,
 		};
-		return serviceAssignmentDocument;
 	} catch (error) {
-		errorList.push(`Error creating service assignment ${row[0]}: ${error.message}`);
+		errorList.push(
+			`Error creating service assignment ${row[0]}: ${error.message}`,
+		);
 		return null;
 	}
 }
 
 async function saveServiceAssignmentDocument(serviceAssignmentDocument) {
-	if (!serviceAssignmentDocument) return;
+	if (!serviceAssignmentDocument) {
+		return;
+	}
 
 	try {
 		// Additional duplicate check right before saving (race condition protection)
@@ -71,17 +78,19 @@ async function saveServiceAssignmentDocument(serviceAssignmentDocument) {
 			$or: [
 				{
 					jobNumber: serviceAssignmentDocument.jobNumber,
-					tenant: serviceAssignmentDocument.tenant
+					tenant: serviceAssignmentDocument.tenant,
 				},
 				{
 					jobName: serviceAssignmentDocument.jobName,
-					tenant: serviceAssignmentDocument.tenant
-				}
-			]
+					tenant: serviceAssignmentDocument.tenant,
+				},
+			],
 		});
 
 		if (isDuplicate) {
-			errorList.push(`Duplicate service assignment found: ${serviceAssignmentDocument.jobNumber} - ${serviceAssignmentDocument.jobName}`);
+			errorList.push(
+				`Duplicate service assignment found: ${serviceAssignmentDocument.jobNumber} - ${serviceAssignmentDocument.jobName}`,
+			);
 			return;
 		}
 
@@ -90,20 +99,26 @@ async function saveServiceAssignmentDocument(serviceAssignmentDocument) {
 			serviceAssignmentDocument,
 			errorList,
 		);
-		if (savedDoc) successCount++;
+		if (savedDoc) {
+			successCount++;
+		}
 	} catch (error) {
-		errorList.push(`Error saving service assignment ${serviceAssignmentDocument.jobNumber}: ${error.message}`);
+		errorList.push(
+			`Error saving service assignment ${serviceAssignmentDocument.jobNumber}: ${error.message}`,
+		);
 	}
 }
 
 async function createServiceAssignments(serviceAssignmentEntries, tenant) {
-	const serviceAssignmentsPromises = serviceAssignmentEntries.map(async (row) => {
-		const serviceAssignmentDocument = await createServiceAssignmentDocument(
+	const serviceAssignmentsPromises = serviceAssignmentEntries.map(
+		async (row) => {
+			const serviceAssignmentDocument = await createServiceAssignmentDocument(
 				row,
 				tenant,
-		);
-		return saveServiceAssignmentDocument(serviceAssignmentDocument);
-	});
+			);
+			return saveServiceAssignmentDocument(serviceAssignmentDocument);
+		},
+	);
 	return Promise.allSettled(serviceAssignmentsPromises);
 }
 
