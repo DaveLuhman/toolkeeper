@@ -119,11 +119,14 @@ export const handleWebhook = async (eventType, subscriptionData) => {
 				await newAdminUser.save();
 
 				// Create subscription using static method
-				await Subscription.createFromWebhook(
+				const subscriptionDoc = await Subscription.createFromWebhook(
 					newAdminUser._id,
 					tenant._id,
 					subscriptionData,
 				);
+
+				tenant.subscription = subscriptionDoc._id;
+				await tenant.save();
 
 				// Send welcome email
 				await sendWelcomeEmail(newAdminUser, newPassword);

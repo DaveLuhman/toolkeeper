@@ -3,13 +3,23 @@ import { Onboarding } from "../models/index.models.js";
 export const hoistOnboarding = async (req, res, next) => {
 	try {
 		// Fetch user's onboarding document
-		const onboardingDoc = await Onboarding.findOne({ user: req.user._id });
+		let onboardingDoc = await Onboarding.findOne({ user: req.user._id });
+
+		// If no onboarding document exists, create one
+		if (!onboardingDoc) {
+			onboardingDoc = await Onboarding.create({
+				user: req.user._id,
+				tenant: req.user.tenant
+			});
+			console.log(`Created missing onboarding document for user ${req.user._id}`);
+		}
+		
 		res.locals.onboarding = onboardingDoc;
 		console.log("Onboarding Hoisted");
 		next();
-	} catch (_error) {
-		// Pass the error to the error-handling middleware
-		next(new Error("Failed to locate onboarding document"));
+	} catch (error) {
+		console.error("Error in hoistOnboarding:", error);
+		next(new Error("Failed to locate or create onboarding document"));
 	}
 };
 export const skipStep = async (req, res, next) => {

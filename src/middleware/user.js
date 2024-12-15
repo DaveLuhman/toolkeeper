@@ -71,17 +71,17 @@ async function createUserInTenant(req, res, next) {
 			throw new Error("Passwords do not match");
 		}
 		// Check user limit based on subscription
-		const tenantDoc = await Subscription.findOne({ tenant });
+		const subscriptionDoc = await Subscription.findOne({ tenant });
 
-		if (!tenantDoc || !tenantDoc.subscription) {
-			throw new Error("Invalid tenant or subscription");
+		if (!subscriptionDoc) {
+			throw new Error("No subscription found. Please contact support at <a href='mailto:support@ado.software'>https://support@ado.software.</a>");
 		}
 
 		const currentUserCount = await User.countDocuments({ tenant });
 
 		// Determine user limit using the external function
 		const { userLimit, planName } = determineUserLimit(
-			tenantDoc.subscription.lemonSqueezyObject.variantName,
+			subscriptionDoc.lemonSqueezyObject.variantName,
 		);
 
 		if (currentUserCount >= userLimit) {
@@ -101,22 +101,6 @@ async function createUserInTenant(req, res, next) {
 		} catch (userError) {
 			console.error("[MW] Error creating user record:".bgRed.white, userError);
 			throw new Error("Failed to create user account");
-		}
-
-		// Upsert onboarding document in a separate try-catch block
-		try {
-			await Onboarding.findOneAndUpdate(
-				{ user: newUser._id },
-				{ user: newUser._id },
-				{ upsert: true, new: true },
-			);
-			console.info(`Upserted onboarding for user ${newUser._id}`.green);
-		} catch (onboardingError) {
-			// Log the error but don't fail the user creation
-			console.error(
-				"[MW] Error upserting onboarding:".bgYellow.black,
-				onboardingError,
-			);
 		}
 
 		res.locals.message = "User created successfully";

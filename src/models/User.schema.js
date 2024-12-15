@@ -74,10 +74,34 @@ const UserSchema = new Schema(
 	},
 );
 
+UserSchema.index({ email: 1 }, { unique: true });
+
 UserSchema.statics.findByEmail = async (email) =>
 	(await model("User").findOne({ email: { $eq: email } })) || false;
 UserSchema.statics.findByToken = async (token) =>
 	(await model("User").findOne({ token: { $eq: token } })) || false;
+
+UserSchema.post('save', async function(doc) {
+	// Only run this for newly created users
+	if (this.isNew) {
+		try {
+			const OnboardingModel = model('Onboarding');
+
+			// Check if onboarding document already exists
+			const existingOnboarding = await OnboardingModel.findOne({ user: doc._id });
+
+			if (!existingOnboarding) {
+				// Create new onboarding document with just the user ID
+				await OnboardingModel.create({
+					user: doc._id,
+				});
+			}
+		} catch (error) {
+			console.error('Error creating onboarding document:', error);
+			// Don't throw the error to prevent blocking user creation
+		}
+	}
+});
 
 export default UserSchema;
 

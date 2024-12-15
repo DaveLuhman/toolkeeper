@@ -20,13 +20,11 @@ async function getCheckedInTools(tenantId, logger) {
 			.where("tenant")
 			.equals(tenantId);
 
-		const checkedInTools = tools.filter((tool) =>
-			stockroomDocs.some((stockroomDoc) =>
-				stockroomDoc.equals(tool.serviceAssignment),
-			),
-		);
-
-		return checkedInTools;
+		return tools.filter((tool) =>
+  			stockroomDocs.some((stockroomDoc) =>
+  				stockroomDoc.equals(tool.serviceAssignment),
+  			),
+  		);
 	} catch (err) {
 		logger.error({
 			message: "Failed to fetch checked-in tools",
