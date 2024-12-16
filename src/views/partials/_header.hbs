@@ -53,6 +53,7 @@
               {{#contains "Manager, Admin, Superadmin" user.role}}
                 <li class="hover:border-gray-300 bg-base-100"><a href="/settings">Settings</a></li>
                 <li class="hover:border-gray-300 bg-base-100"><a href="/logs">Logs</a></li>
+                <li class="hover:border-gray-300 bg-base-100"><a href="https://store.ado.software" target="_blank">Billing</a></li>
               {{/contains}}
               {{#eq user.role "Superadmin"}}
                 <li class="hover:border-gray-300 bg-base-100"><a href="/settings/tenant">Tenants</a></li>
