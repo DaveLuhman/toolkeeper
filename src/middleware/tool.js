@@ -73,7 +73,7 @@ const getActiveTools = async (req, res, next) => {
  * Middleware to get a tool by its ID and return it in the response.
  */
 const getToolByID = async (req, res, next) => {
-	const {id} = req.params;
+	const { id } = req.params;
 	const tenantId = req.user.tenant.valueOf();
 
 	try {
@@ -103,7 +103,40 @@ const getToolByID = async (req, res, next) => {
 		return next(err);
 	}
 };
-
+const getCheckedInTools = async (tenant) => {
+	try {
+		return await Tool.find()
+			.where("serviceAssignment.type")
+			.equals("stockroom")
+			.where("tenant")
+			.equals(tenant)
+			.where("archived")
+			.equals(false);
+	} catch (err) {
+		req.logger.error({
+			message: "Failed to fetch checked-in tools",
+			metadata: { tenantId: tenant },
+			error: err.message,
+		});
+	}
+};
+const getCheckedOutTools = async (tenant) => {
+	try {
+		return await Tool.find()
+			.where("serviceAssignment.type")
+			.ne("stockroom")
+			.where("tenant")
+			.equals(tenant)
+			.where("archived")
+			.equals(false);
+	} catch (err) {
+		req.logger.error({
+			message: "Failed to fetch checked-out tools",
+			metadata: { tenantId: tenant },
+			error: err.message,
+		});
+	}
+};
 /**
  * Middleware to search tools based on user input.
  */
@@ -137,14 +170,10 @@ const searchTools = async (req, res, next) => {
 
 			case "status":
 				if (searchTerm === "Checked In") {
-					res.locals.tools = await getCheckedInTools(
-						req.user.tenant.valueOf(),
-						req.logger,
-					);
+					res.locals.tools = await getCheckedInTools(req.user.tenant.valueOf());
 				} else {
 					res.locals.tools = await getCheckedOutTools(
 						req.user.tenant.valueOf(),
-						req.logger,
 					);
 				}
 				break;
@@ -595,7 +624,7 @@ export const getRecentlyUpdatedTools = async (req, res, next) => {
 		});
 		return [];
 	}
-}
+};
 
 /**
  * Generates a printer-friendly tool list based on the provided tools.
