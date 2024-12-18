@@ -89,7 +89,7 @@ OnboardingSchema.virtual("nextStep").get(function () {
 
 // function to mark a provided step as completed
 OnboardingSchema.methods.markStepAsCompleted = function (step) {
-	if (this.progress[step]) {
+	if (!this.progress[step]) {
 		this.progress[step] = true;
 		this.save();
 	}
