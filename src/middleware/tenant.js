@@ -162,12 +162,14 @@ export const getTenants = async (req, res, next) => {
 	try {
 		// Fetch all tenants from the database
 		const tenants = await Tenant.find();
-		const activeTenants = []
-		const inactiveTenants = []
+		const activeTenants = [];
+		const inactiveTenants = [];
 
 		// Split tenants into active and inactive groups
-		for(const tenant of tenants){
-			tenant.subscription?.status === "active" ? activeTenants.push(tenant) : inactiveTenants.push(tenant)
+		for (const tenant of tenants) {
+			tenant.subscription?.status === "active"
+				? activeTenants.push(tenant)
+				: inactiveTenants.push(tenant);
 		}
 
 		// Hoist active and inactive tenants to res.locals
@@ -182,6 +184,14 @@ export const getTenants = async (req, res, next) => {
 			.status(500)
 			.render("error/error", { message: "Failed to load tenants", error });
 	}
+};
+
+export const getTenant = async (req, res, next) => {
+	const tenant = await Tenant.findById(req.params.tenantId).populate(
+		"adminUser",
+	);
+	res.locals.tenant = tenant;
+	next();
 };
 
 /**
@@ -226,7 +236,6 @@ export const impersonateTenant = async (req, res, next) => {
 		// Change the tenant for the current session
 		req.session.impersonatedTenant = targetTenant._id;
 
-
 		// Proceed to the next middleware or route handler
 		next();
 	} catch (error) {
@@ -242,10 +251,44 @@ export const applyImpersonation = async (req, res, next) => {
 	// Check if the session has an impersonated tenant
 	if (req.session.impersonatedTenant) {
 		// apply impersonation
-	  req.user.tenant = req.session.impersonatedTenant;
-	  // hoist tenant object for impersonation banner to identify the target tenant
-	  res.locals.tenant = await Tenant.findById(req.session.impersonatedTenant).lean();
+		req.user.tenant = req.session.impersonatedTenant;
+		// hoist tenant object for impersonation banner to identify the target tenant
+		res.locals.tenant = await Tenant.findById(
+			req.session.impersonatedTenant,
+		).lean();
 	}
 	next();
-  };
+};
+
+export const editTenant = async (req, res, next) => {
+	try {
+		const { name, adminEmail, domain } = req.body;
+
+		// Find tenant and handle if not found
+		const tenant = await Tenant.findById(req.params.tenantId);
+		if (!tenant) {
+			const error = new Error("Tenant not found");
+			error.status = 404;
+			return next(error);
+		}
+
+		// Find admin user and handle if not found
+		const adminUser = await User.findOne({ email: adminEmail });
+		if (!adminUser) {
+			const error = new Error("Admin user not found");
+			error.status = 404;
+			return next(error);
+		}
+
+		// Update tenant details
+		tenant.name = name;
+		tenant.adminUser = adminUser._id;
+		tenant.domain = domain || getDomainFromEmail(adminEmail);
+
+		await tenant.save();
+		next();
+	} catch (error) {
+		next(error);
+	}
+};
 // src\middleware\tenant.js

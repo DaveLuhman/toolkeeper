@@ -91,7 +91,9 @@ app.set("trust proxy", 1);
 
 // Express Middleware
 app.use(cookieParser());
-if (process.NODE_ENV === "PRODUCTION") app.use(csurf({ cookie: true })); // Cross Site Request Forgery protection middleware
+if (process.NODE_ENV === "PRODUCTION") {
+	app.use(csurf({ cookie: true }));
+} // Cross Site Request Forgery protection middleware
 
 // Add this middleware before express.static
 app.use((req, res, next) => {

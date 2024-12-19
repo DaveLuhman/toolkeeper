@@ -84,7 +84,9 @@ export const returnUniqueIdentifier = (toolDocument) => {
 const hbsDate_distanceFromToday = (date) => {
 	return moment(date).fromNow();
 };
-
+const generateSubscriptionUrl = (subscriptionId) => {
+	return `https://app.lemonsqueezy.com/subscriptions/${subscriptionId}`;
+};
 
 const customHelpers = {
 	organizeContext,
@@ -96,6 +98,7 @@ const customHelpers = {
 	getPackageVersion,
 	searchingForOneTool,
 	hbsDate_distanceFromToday,
+	generateSubscriptionUrl,
 	...handlebarsHelpers(),
 };
 
