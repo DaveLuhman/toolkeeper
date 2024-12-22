@@ -185,6 +185,25 @@ export const getTenants = async (req, res, next) => {
 			.render("error/error", { message: "Failed to load tenants", error });
 	}
 };
+export const activateTenant = async (req, res, next) => {
+	const tenant = await Tenant.findById(req.params.tenantId);
+	tenant.subscription.status = "active";
+	await tenant.save();
+	next();
+};
+
+export const deactivateTenant = async (req, res, next) => {
+	const tenant = await Tenant.findById(req.params.tenantId);
+	tenant.subscription.status = "inactive";
+	await tenant.save();
+	next();
+};
+
+export const deleteTenant = async (req, res, next) => {
+	const tenant = await Tenant.findById(req.params.tenantId);
+	await tenant.deleteOne();
+	next();
+};
 
 export const getTenant = async (req, res, next) => {
 	const tenant = await Tenant.findById(req.params.tenantId).populate(
