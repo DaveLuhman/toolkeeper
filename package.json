@@ -32,7 +32,7 @@
     "cookie-parser": "^1.4.6",
     "csurf": "^1.11.0",
     "daisyui": "^4.12.14",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.4.7",
     "express": "^4.19.2",
     "express-fileupload": "^1.5.1",
     "express-flash": "^0.0.2",
