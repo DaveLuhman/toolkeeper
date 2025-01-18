@@ -34,3 +34,17 @@ export const renderToolManagementPage = (_req, res) => {
 export const renderServiceAssignmentPage = (_req, res) => {
     res.render('docs/serviceAssignment', { layout: 'docs.hbs' });
 }
+/**
+ * Renders the users page.
+ * @param {Object} res - The response object.
+ */
+export const renderUsersPage = (_req, res) => {
+    res.render('docs/users', { layout: 'docs.hbs' });
+}
+/**
+ * Renders the categories page.
+ * @param {Object} res - The response object.
+ */
+export const renderCategoriesPage = (_req, res) => {
+    res.render('docs/categories', { layout: 'docs.hbs' });
+}

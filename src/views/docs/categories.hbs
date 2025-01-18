@@ -1,0 +1,65 @@
+<div class="flex-grow w-5/12 p-6">
+    <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">Categories</h1>
+
+    <div class="space-y-8 text-lg">
+        <div>
+            <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Overview:</h3>
+            <div class="space-y-6">
+                <div>
+                    <p class="text-zinc-800 dark:text-zinc-300">Categories in ToolKeeper provide a flexible way to organize and classify your tools. They help streamline inventory management, make searching easier, and enable meaningful reporting across different types of tools.</p>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">Category Fields</h4>
+                    <p class="text-zinc-800 dark:text-zinc-300">Each category in ToolKeeper contains several fields to help organize your tools effectively. Here's a detailed look at each field:</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div>
+                            <h3 class="text-lg font-semibold">Name</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Required unique identifier for the category (e.g., "Power Tools", "Hand Tools").</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Description</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Optional detailed description of what belongs in this category.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Prefix</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Optional short code used in Tool IDs (e.g., "PT" for Power Tools).</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Parent Category</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Optional reference to a parent category for hierarchical organization.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Active</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Boolean flag indicating if the category is currently in use.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold">Tool Count</h3>
+                            <p class="text-zinc-800 dark:text-zinc-300">Automatically tracked count of tools in this category.</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">Category Hierarchy</h4>
+                    <p class="text-zinc-800 dark:text-zinc-300">Categories can be organized hierarchically, allowing for both broad and specific classifications. For example:</p>
+                    <ul class="list-disc ml-6">
+                        <li class="text-zinc-800 dark:text-zinc-300"><strong>Power Tools</strong> (Parent)
+                            <ul class="list-disc ml-6">
+                                <li class="text-zinc-800 dark:text-zinc-300">Drills</li>
+                                <li class="text-zinc-800 dark:text-zinc-300">Sanders</li>
+                                <li class="text-zinc-800 dark:text-zinc-300">Saws</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">Category Management</h4>
+                    <p class="text-zinc-800 dark:text-zinc-300">Categories can be created, edited, and deactivated as needed. When a category is deactivated, existing tools retain their category assignment but new tools cannot be assigned to it. This helps maintain historical data while preventing future use of deprecated categories.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
