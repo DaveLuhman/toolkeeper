@@ -26,7 +26,9 @@ function paginate(data, targetPage, perPage) {
  * @returns
  */
 function isSelected(option, objectProperty) {
-	if (option === objectProperty) return "selected";
+	if (option === objectProperty) {
+   return "selected";
+ }
 	return null;
 }
 /**

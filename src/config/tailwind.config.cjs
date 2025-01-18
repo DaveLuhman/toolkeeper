@@ -536,7 +536,10 @@ module.exports = {
   theme,
   variants,
   plugins,
-  darkMode
+  darkMode,
+  output: {
+    clean: false
+  }
 };
 
 // src\config\tailwind.config.js
