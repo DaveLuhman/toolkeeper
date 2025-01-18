@@ -1,5 +1,5 @@
 <div class="w-4/6">
-  <div class="title-bar">
+  <div class="title-bar" id="batch-default-values">
     <h3 class="title-text">
       <div
         class="tooltip tooltip-bottom"
@@ -88,5 +88,11 @@
     </div>
     {{! End Size Inputs }}
   </div>
+      <input
+        id="batch_tenant"
+        name="tenant"
+        type="hidden"
+        value="{{user.tenant}}"
+      />
 </div>
 {{! end default values }}

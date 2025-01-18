@@ -1,0 +1,33 @@
+<script>
+    const userSetup = introJs()
+    const usersSteps = [
+        {
+            element: '#userList',
+            title: 'User List',
+            intro: 'This is where you can see all the users in the system.'
+        },
+        {
+            element: '#addUserButton',
+            title: 'Add User',
+            intro: 'Click here to add a new user to the system.'
+        },
+        {
+            element: '#userRoles',
+            title: 'User Roles',
+            intro: 'Assign roles to users to manage their permissions.'
+        },
+        {
+            element: '#userActions',
+            title: 'User Actions',
+            intro: 'Use these actions to edit or remove users from the system.'
+        }
+    ]
+    userSetup.setOptions({
+        steps: usersSteps,
+        exitOnOverlayClick: false,
+        exitOnEsc: false,
+    });
+    document.querySelector('#helpFloater').addEventListener('click', () => {
+        userSetup.start();
+    });
+</script>

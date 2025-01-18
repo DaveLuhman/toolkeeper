@@ -1,64 +1,138 @@
-import logger from '../../config/logger.js'
-import ServiceAssignment from '../../models/ServiceAssignment.model.js'
-import { csvFileToEntries } from '../util.js'
-let successCount = 0
-const errorList = []
+import { ServiceAssignment } from "../../models/index.models.js";
+import { readCSVFile, checkDuplicate, saveDocument } from "./importUtils.js";
+let successCount = 0;
+const errorList = [];
 
-function determineServiceAssignmentType(memberID, mLastName) {
-  const stockrooms = ['TOOL1', 'ZLOST', 'ZUP01', '00000', '00021']
-  if (!memberID || memberID === '') {
-    logger.error('Invalid Member ID' + memberID)
-    return 'Imported - Uncategorized'
-  }
-  if (memberID[0] === 'C') return 'Contract Jobsite'
-  if (memberID[0] === 'S') return 'Service Jobsite'
-  if (stockrooms.includes(memberID)) return 'Stockroom'
-  if (memberID[0] === '0') {
-    if (mLastName.includes('VAN' || 'TRUCK')) return 'Vehicle'
-    else return 'Employee'
-  } else return 'Imported - Uncategorized'
+function determineServiceAssignmentType(cellValue) {
+	const serviceAssignmentTypes = [
+		"Contract Jobsite",
+		"Service Jobsite",
+		"Stockroom",
+		"Vehicle",
+		"Employee",
+	];
+	if (serviceAssignmentTypes.includes(cellValue)) {
+		return cellValue;
+	}
+	return "Imported - Uncategorized";
 }
 
-function createServiceAssignmentDocument(row) {
-  try {
-    const jobNumber = row[0] || 'ERROR'
-    const jobName = row[1] ? row[1].trim() : ''
-    const notes = row[4]?.trim() + ' ' + row[5]?.trim() + ' ' + row[10]?.trim()
-    const phone = row[2]?.trim()
-    const type = determineServiceAssignmentType(row[0], row[1])
-    const serviceAssignmentDocument = { jobNumber, jobName, notes, phone, type, active: false }
-    return serviceAssignmentDocument
-  } catch (error) {
-    throw new Error('Could not create the document due to invalid input values')
-  }
+async function createServiceAssignmentDocument(row, tenant) {
+	try {
+		if (!row || !tenant) {
+			throw new Error("Missing required parameters: row or tenant");
+		}
+		if (!Array.isArray(row)) {
+			throw new Error("Row must be an array");
+		}
+		if (!row[0] || row[0].trim() === "") {
+			return null;
+		}
+
+		const jobNumber = row[0].trim() || "ERROR";
+		const jobName = row[1] ? row[1].trim() : "";
+
+		// Check for existing service assignments
+		const existingAssignment = await ServiceAssignment.findOne({
+			$or: [
+				{ jobNumber: jobNumber, tenant },
+				{ jobName: jobName, tenant },
+			],
+		});
+
+		if (existingAssignment) {
+			errorList.push(
+				`Service Assignment already exists: ${jobNumber} - ${jobName}`,
+			);
+			return null;
+		}
+
+		const type = determineServiceAssignmentType(row[2]);
+		const phone = row[3]?.trim();
+		const notes = row[4]?.trim();
+		return {
+			jobNumber,
+			jobName,
+			notes,
+			phone,
+			type,
+			active: true,
+			tenant,
+		};
+	} catch (error) {
+		errorList.push(
+			`Error creating service assignment ${row[0]}: ${error.message}`,
+		);
+		return null;
+	}
 }
 
-function saveServiceAssignmentDocument(serviceAssignmentDocument) {
-  try {
-    const serviceAssignment = new ServiceAssignment(serviceAssignmentDocument)
-    serviceAssignment.save()
-    successCount++
-  } catch (error) {
-    errorList.push({
-      key: serviceAssignmentDocument.jobNumber,
-      reason: error.message
-    })
-  }
+async function saveServiceAssignmentDocument(serviceAssignmentDocument) {
+	if (!serviceAssignmentDocument) {
+		return;
+	}
+
+	try {
+		// Additional duplicate check right before saving (race condition protection)
+		const isDuplicate = await ServiceAssignment.findOne({
+			$or: [
+				{
+					jobNumber: serviceAssignmentDocument.jobNumber,
+					tenant: serviceAssignmentDocument.tenant,
+				},
+				{
+					jobName: serviceAssignmentDocument.jobName,
+					tenant: serviceAssignmentDocument.tenant,
+				},
+			],
+		});
+
+		if (isDuplicate) {
+			errorList.push(
+				`Duplicate service assignment found: ${serviceAssignmentDocument.jobNumber} - ${serviceAssignmentDocument.jobName}`,
+			);
+			return;
+		}
+
+		const savedDoc = await saveDocument(
+			ServiceAssignment,
+			serviceAssignmentDocument,
+			errorList,
+		);
+		if (savedDoc) {
+			successCount++;
+		}
+	} catch (error) {
+		errorList.push(
+			`Error saving service assignment ${serviceAssignmentDocument.jobNumber}: ${error.message}`,
+		);
+	}
 }
 
-function createServiceAssignments(members) {
-  const serviceAssignmentsPromises = members.map((row) => {
-    const serviceAssignmentDocument = createServiceAssignmentDocument(row)
-    return saveServiceAssignmentDocument(serviceAssignmentDocument)
-  })
-  return Promise.allSettled(serviceAssignmentsPromises)
+async function createServiceAssignments(serviceAssignmentEntries, tenant) {
+	const serviceAssignmentsPromises = serviceAssignmentEntries.map(
+		async (row) => {
+			const serviceAssignmentDocument = await createServiceAssignmentDocument(
+				row,
+				tenant,
+			);
+			return saveServiceAssignmentDocument(serviceAssignmentDocument);
+		},
+	);
+	return Promise.allSettled(serviceAssignmentsPromises);
 }
 
-export async function importServiceAssignments(file) {
-  successCount = 0
-  const members = csvFileToEntries(file)
-  await createServiceAssignments(members)
-  return { successCount, errorList }
+/**
+ * Imports service assignments from a CSV file
+ * @param {File} file - The CSV file to import
+ * @param {string} tenant - The tenant ID
+ * @returns {Promise<{successCount: number, errorList: Array}>}
+ */
+export async function importServiceAssignments(file, tenant) {
+	successCount = 0;
+	const serviceAssignmentEntries = readCSVFile(file);
+	await createServiceAssignments(serviceAssignmentEntries, tenant);
+	return { successCount, errorList };
 }
 
 /**
@@ -67,8 +141,18 @@ export async function importServiceAssignments(file) {
  * @returns {Object} - An object containing the success count and error list.
  */
 export async function activateServiceAssignments(file) {
-  successCount = 0
-  const activeServiceRows = csvFileToEntries(file)
-  const activatedSAs = await Promise.all(activeServiceRows.map((entry) => { return ServiceAssignment.findOneAndUpdate({ jobNumber: entry[0] }, { active: true }, { new: true }) }))
-  return { successCount: activatedSAs.length, errorList }
+	successCount = 0;
+	const activeServiceRows = readCSVFile(file);
+	const activatedSAs = await Promise.all(
+		activeServiceRows.map((entry) => {
+			return ServiceAssignment.findOneAndUpdate(
+				{ jobNumber: entry[0] },
+				{ active: true },
+				{ new: true },
+			);
+		}),
+	);
+	return { successCount: activatedSAs.length, errorList };
 }
+
+// src\middleware\import\serviceAssignment.js

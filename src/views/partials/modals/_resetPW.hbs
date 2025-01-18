@@ -1,5 +1,5 @@
 <input type="checkbox" id="resetPasswordModal" class="modal-toggle" />
-<div class="modal">
+<div class="modal" role="dialog">
   <div class="modal-inner-sm">
     <label for="resetPasswordModal" class="modal-close-btn">
       ✕
@@ -9,12 +9,12 @@
       <div class="flex flex-col">
         <div class="title-bar">
           <h3 class="title-text">
-            Reset Your Password
+            Change Your Password
           </h3>
         </div>
         <div class="w-full flex justify-evenly">
           <input
-            placeholder="Password"
+            placeholder="New password"
             type="password"
             name="password"
             id="reset-pw_password"
@@ -22,7 +22,7 @@
             required
           />
           <input
-            placeholder="Confirm Password"
+            placeholder="Confirm New Password"
             type="password"
             name="confirmPassword"
             id="reset-pw_confirm-password"
@@ -43,4 +43,5 @@
       </div>
     </form>
   </div>
+  <label class="modal-backdrop" for="resetPasswordModal">Close</label>
 </div>

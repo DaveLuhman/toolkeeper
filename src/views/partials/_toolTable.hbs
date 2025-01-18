@@ -4,7 +4,7 @@
       <tr>
         <td>
           <div id="printButton" class="md:mr-3 md:items-start">
-            <label onclick="openInNewTab()"><i class="fa-solid fa-print"></i></label>
+            <i class="fa-solid fa-print"></i>
           </div>
         </td>
         <th>Serial number</th>
@@ -22,7 +22,7 @@
         {{#each tools}}
           <tr>
             <td></td>
-            <td id="serialNumber">{{serialNumber}}</td>
+            <td id="serialNumber"><a href="/tool/{{_id}}"><u>{{serialNumber}}</u></a></td>
             <td class="hidden md:table-cell" id="toolID">{{toolID}}</td>
             <td id="barcode">{{barcode}}</td>
             <td class="hidden lg:table-cell" id="description">{{description}}</td>
@@ -44,17 +44,3 @@
   {{> _printerFriendly}}
   {{!-- END OF CONVENIENT SSR LOCATION --}}
 </div>
-<script>
-  /*
-* Function to open the printer friendly tools in a new tab
-*/
-  // eslint-disable-next-line no-unused-vars
-  const openInNewTab = () => {
-    const x = window.open()
-    const newPage = x.document.createElement('div')
-    newPage.width = '100%'
-    newPage.height = '100%'
-    newPage.innerHTML = document.getElementById('printerFriendlyTools').innerHTML
-    x.document.body.appendChild(newPage)
-  }
-</script>

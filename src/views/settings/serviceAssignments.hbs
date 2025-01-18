@@ -1,77 +1,84 @@
 <div class="flex w-screen h-screen ">
     <div id="settings-nav">
         {{>_settings}}
-        <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm mt-2 ml-2">
+        <div id="newServiceAssignmentBtn" class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm mt-2 ml-2 ">
             <label for="newServiceAssignmentModal">New Service Assignment</label>
         </div>
     </div>
-    <div class="flex p-10 overflow-auto">
-        <div class="flex flex-col flex-shrink-0 w-1/2 ">
-            <div class="flex items-center justify-center flex-shrink-0 h-10 px-2 relative">
+    <div id="service-assignments-parent-container" class="flex flex-col md:flex-row p-10 overflow-auto">
+        <div id="service-assignments-active-container" class="flex flex-col flex-shrink-0 w-1/2 ">
+            <div class="flex items-center justify-center flex-shrink-0 w-full h-10 px-2 relative">
                 <span class="text-center text-white block text-md font-extrabold">Active</span>
             </div>
-            <div class="flex flex-col px-2 pb-2 overflow-y-scroll">
+            <div class="flex flex-col px-2 pb-2 overflow-y-scroll min-w-fit" id="activeServiceAssignmentsTable">
                 <table class="table table-auto">
                     <thead>
                         <tr>
-                            <th>Tool Count</th>
-                            <th>Job Number</th>
-                            <th class="hidden md:table-cell">Job Name</th>
+                            <th class="hidden lg:table-cell">Tool<br />Count</th>
+                            <th>Job<br />Number</th>
+                            <th class="hidden lg:table-cell">Job<br />Name</th>
                             <th>Edit</th>
                             <th>Deactivate</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#if settings_activeServiceAssignments}}
-                        {{#each settings_activeServiceAssignments}}
-                        <tr>
-                            <td>{{toolCount}}</td>
-                            <td>{{jobNumber}}</td>
-                            <td class="hidden md:table-cell min-w-fit">{{jobName}}</td>
-                            <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i class="fa fa-pencil"></i></a></td>
-                            <td><a href="/settings/serviceAssignments/deactivate/{{_id}}"><i
-                                        class="fas fa-arrow-right"></i></a></td>
-                            </td>
-                        </tr>
-                        {{/each}}
+                            {{#each settings_activeServiceAssignments}}
+                                <tr>
+                                    <td class="hidden lg:table-cell min-w-fit active-service-assignment-tool-count">{{toolCount}}</td>
+                                    <td>{{jobNumber}}</td>
+                                    <td class="hidden lg:table-cell min-w-fit">{{jobName}}</td>
+                                    <td class="active-service-assignment-edit"><a href="/settings/serviceAssignments/edit/{{_id}}"><i
+                                                class="fa fa-pencil"></i></a></td>
+                                    <td class="active-service-assignment-deactivate">
+                                        <div class="deactivate-service-assignment" data-id="{{_id}}" data-toolCount="{{toolCount}}" onclick="confirmDeactivation(this)">
+                                            <i class="fa fa-arrow-right"></i>
+                                        </div>
+                                    </td>
+                                    </td>
+                                </tr>
+                            {{/each}}
                         {{/if}}
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <div class="drop-shadow-2xl pl-5 flex flex-col flex-shrink-0 w-1/2">
+        <div id="service-assignments-inactive-container" class="drop-shadow-2xl pl-5 flex flex-col flex-shrink-0 w-1/2">
             <div class="flex items-center justify-center flex-shrink-0 h-10 px-2 relative">
                 <span class="text-center text-white block text-md font-extrabold">Inactive</span>
             </div>
-            <div class="flex flex-col px-2 pb-2 overflow-y-scroll">
+            <div class="flex flex-col px-2 pb-2 overflow-y-scroll min-w-fit">
                 <table class="table table-auto">
                     <thead>
                         <tr>
                             <th>Activate</th>
-                            <th>Job Number</th>
-                            <th class="hidden md:table-cell">Job Name</th>
-                            <th class="hidden md:table-cell">Tool Count</th>
+                            <th>Job<br />Number</th>
+                            <th class="hidden lg:table-cell">Job<br />Name</th>
+                            <th class="hidden lg:table-cell">Tool<br />Count</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#if settings_inactiveServiceAssignments}}
-                        {{#each settings_inactiveServiceAssignments}}
-                        <tr>
-                            <td><a href="/settings/serviceAssignments/activate/{{_id}}"><i
-                                        class="fas fa-arrow-left"></i></a></td>
-                            <td>{{jobNumber}}</td>
-                            <td class="hidden md:table-cell min-w-fit">{{jobName}}</td>
-                            <td {{#gt toolCount 0 }}class="text-red-400 font-semibold"{{/gt}}>{{toolCount}}</td>
-                            <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i class="fa fa-pencil"></i></a></td>
-                            <td><a href="/settings/serviceAssignments/delete/{{_id}}"
-                                    onclick="return confirm('Are you sure you want to delete {{name}}')"><i
-                                        class="fa fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        {{/each}}
+                            {{#each settings_inactiveServiceAssignments}}
+                                <tr>
+                                    <td><a href="/settings/serviceAssignments/activate/{{_id}}"><i
+                                                class="fas fa-arrow-left"></i></a></td>
+                                    <td>{{jobNumber}}</td>
+                                    <td class="hidden lg:table-cell min-w-fit">{{jobName}}</td>
+                                    <td {{#if (gt toolCount 0) }}class="text-red-400 font-semibold hidden lg:table-cell"
+                                        {{else}}class="hidden lg:table-cell" {{/if}}>{{toolCount}}
+                                    </td>
+                                    <td><a href="/settings/serviceAssignments/edit/{{_id}}"><i
+                                                class="fa fa-pencil"></i></a></td>
+                                    <td class="inactive-service-assignment-delete"><a href="/settings/serviceAssignments/delete/{{_id}}"
+                                            onclick="return confirm('Are you sure you want to delete {{name}}')"><i
+                                                class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            {{/each}}
                         {{/if}}
                     </tbody>
                 </table>
@@ -80,36 +87,17 @@
     </div>
 </div>
 {{!-- New SA Modal --}}
-<input type="checkbox" id="newServiceAssignmentModal" class="modal-toggle" />
-<div class="modal">
-    <div class="modal-inner-md">
-        <label for="newServiceAssignmentModal" class="modal-close-btn">✕</label>
-        <form action="/settings/serviceAssignments/create" method="POST">
-            <div class="grid items-center w-full grid-cols-2 grid-rows-3 gap-1">
-                <div class="title-bar">
-                    <h3 class="title-text">New Service Assignment</h3>
-                </div>
-
-                <input placeholder="Job Number" type="text" name="jobNumber" id="new-service-assignment_jobNumber"
-                    class="input input-bordered">
-                <input placeholder="Job Name" type="text" name="jobName" id="new-service-assignment_jobName"
-                    class="input input-bordered">
-                <input placeholder="Phone" type="text" name="phone" id="new-service-assignment_phone"
-                    class="input input-bordered">
-                <select name="type" id="new-service-assignment_type" class="select select-bordered">
-                    <option value="Contract Jobsite">Contract Jobsite</option>
-                    <option value="Service Jobsite">Service Jobsite</option>
-                    <option value="Vehicle">Vehicle</option>
-                    <option value="Employee">Employee</option>
-                    <option value="Stockroom">Stockroom</option>
-                </select>
-                <input placeholder="Misc Notes" type="textarea" name="notes" id="new-service-assignment_notes"
-                    class="col-span-2 input input-bordered">
-                <div class="modal-button-row">
-                    <label class="btn btn-sm"> <button id="new-service-assignment_submit"
-                            type="submit">Submit</button></label>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+<script>
+    function confirmDeactivation(element) {
+        const toolCount = element.getAttribute('data-toolCount');
+        if (toolCount > 0) {
+            const confirmMessage = 'This service assignment has tools assigned. Are you sure you want to deactivate it?';
+            if (!confirm(confirmMessage)) {
+                return false; // Cancel deactivation
+            }
+        }
+        // Proceed with deactivation logic (e.g., redirect or AJAX call)
+        const id = element.getAttribute('data-id');
+        window.location.href = `/settings/serviceAssignments/deactivate/${id}`;
+    }
+</script>

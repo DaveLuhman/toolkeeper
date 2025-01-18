@@ -1,28 +1,25 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Global CSS */
 body {
   @apply bg-gradient-to-t;
   @apply from-gray-700;
   @apply to-base-300;
-  @apply min-h-screen;
-  @apply min-w-min;
-  @apply p-0;
+  @apply min-w-min p-0 min-h-screen;
+  @apply overflow-x-hidden bg-base-100 font-body text-sm text-base-content antialiased;
 }
-/* custom css classes */
+
 .main-view {
   @apply flex;
   @apply items-center;
   @apply justify-evenly;
 }
+
 .title-bar {
   @apply col-span-2 md:col-span-3 rounded-lg drop-shadow-xl;
 }
+
 .title-text {
   @apply font-bold text-center pb-2 text-lg;
 }
+
 .user-table {
   @apply grid;
   @apply p-5;
@@ -34,6 +31,7 @@ body {
   @apply shadow;
   @apply m-5;
 }
+
 .dropdown-label {
   @apply hover:text-black;
   @apply hover:rotate-90;
@@ -43,6 +41,7 @@ body {
   @apply btn-ghost;
   @apply rounded-btn;
 }
+
 .dropdown-item-wrapper {
   @apply menu;
   @apply dropdown-content;
@@ -53,6 +52,7 @@ body {
   @apply mt-4;
   @apply bg-base-200;
 }
+
 .dropdown-item {
   @apply content-evenly;
   @apply no-underline;
@@ -68,24 +68,26 @@ body {
   @apply z-10;
 }
 
-/* ------------------LOGIN----------------------- */
-#login-wrapper {
+.login-wrapper {
   @apply flex-col;
   @apply justify-center;
   @apply sm:py-12;
 }
-#login-container {
+
+.login-container {
   @apply p-10;
   @apply mx-auto;
   @apply md:w-full;
   @apply md:max-w-md;
 }
+
 #tk-logo {
   @apply shadow-lg;
   @apply h-20;
   @apply mx-auto;
   @apply pb-2;
 }
+
 .login-form-wrapper {
   @apply bg-base-300;
   @apply shadow-2xl;
@@ -93,6 +95,7 @@ body {
   @apply rounded-lg;
   @apply divide-y;
 }
+
 .login-label {
   @apply font-semibold;
   @apply text-sm;
@@ -100,6 +103,7 @@ body {
   @apply pb-1;
   @apply block;
 }
+
 .login-input {
   @apply border;
   @apply rounded-lg;
@@ -110,6 +114,7 @@ body {
   @apply text-sm;
   @apply w-full;
 }
+
 #login-btn {
   @apply transition;
   @apply duration-200;
@@ -153,11 +158,7 @@ body {
   @apply focus:ring-opacity-50;
   @apply ring-inset;
 }
-/* ------------------END LOGIN----------------------- */
-/* START MAIN.hbs LAYOUT RENDER TARGETS */
 
-/* dashboard view */
-/* -------------SEARCH TERMS FLASH----------------- */
 h1#search-terms {
   @apply text-xl;
   @apply text-center;
@@ -170,22 +171,19 @@ h1#search-terms {
   @apply ml-5;
   @apply mr-5;
 }
-/* -----------------TABLE------------------ */
-table.table {
-  @apply text-gray-100;
 
+table.table {
   @apply shadow;
   @apply mb-4;
   @apply pr-5;
 }
 th {
-  @apply text-white;
-  @apply text-base-content;
   @apply font-bold;
   @apply uppercase;
   @apply p-2;
-  @apply bg-stone-700;
+  @apply bg-slate-700;
 }
+
 tr {
   @apply table-row;
   @apply text-base-content;
@@ -196,6 +194,7 @@ tr {
   @apply text-center;
   @apply bg-opacity-5;
 }
+
 td {
   @apply text-sm;
   @apply font-bold;
@@ -204,12 +203,12 @@ td {
   @apply border-base-300;
   @apply text-center;
 }
-/* -----------------END TABLE------------------ */
+
 #settings-nav {
   @apply w-auto;
   @apply mt-10;
 }
-/* ----------------MODALS------------- */
+
 .modal-inner-lg {
   @apply modal-box;
   @apply max-w-5xl;
@@ -218,6 +217,7 @@ td {
   @apply from-gray-900;
   @apply to-base-300;
 }
+
 .modal-inner-md {
   @apply modal-box;
   @apply max-w-fit;
@@ -226,6 +226,7 @@ td {
   @apply from-gray-900;
   @apply to-base-300;
 }
+
 .modal-inner-sm {
   @apply modal-box;
   @apply max-w-2xl;
@@ -234,6 +235,7 @@ td {
   @apply from-gray-900;
   @apply to-base-300;
 }
+
 .modal-close-btn {
   @apply rounded-badge;
   @apply btn-xs;
@@ -241,6 +243,7 @@ td {
   @apply right-1;
   @apply top-1;
 }
+
 .modal-table {
   @apply grid grid-cols-2  md:grid-cols-3 gap-4 w-full items-center;
 }
@@ -249,13 +252,15 @@ td {
   @apply w-full;
   @apply drop-shadow-md;
 }
+
 .modal-button-row {
   @apply modal-action float-right;
 }
+
 .modal-button {
   @apply btn normal-case  btn-sm  rounded-lg text-center  m-2;
 }
-/* ------------Form Fields----------------- */
+
 .form-wrapper {
   @apply flex;
   @apply flex-wrap;
@@ -265,14 +270,16 @@ td {
   @apply mb-4;
   @apply m-5;
 }
+
 .form-row {
   @apply grid;
-  @apply grid-cols-2;
+  @apply grid-cols-1;
+  @apply md:grid-cols-2;
   @apply lg:grid-cols-4;
   @apply gap-4;
   @apply mb-2;
 }
-/* ------------PAGINATION BAR------------------------ */
+
 .paginate-bar {
   @apply flex;
   @apply flex-wrap;
@@ -283,11 +290,11 @@ td {
   @apply overflow-hidden;
   @apply mb-4;
 }
+
 .btn-paginate {
   @apply btn;
 }
 
-/* ------- FOOTER ---------- */
 footer.tk-footer {
   @apply flex;
   @apply flex-wrap;
@@ -299,33 +306,55 @@ footer.tk-footer {
   @apply relative;
   @apply z-10;
 }
-/* This is for the Twitter - Youtube - Facebook Icons in the footer */
+
 svg.fill-current {
   @apply inline-block;
 }
-/* ------- SCROLLBAR SETTINGS --------*/
-/* width */
+
 ::-webkit-scrollbar {
   width: 10px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 5px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
-/* js invoked classes */
+
 .changed {
   @apply bg-red-500;
   @apply text-white;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;1000&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css');
+@import url('lucide-static/font/lucide.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  @apply relative scroll-smooth;
+}
+
+:target {
+  @apply lg:scroll-mt-0 scroll-m-12;
+}
+
+.content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.content.expanded {
+  max-height: 900rem; /* Adjust based on expected content height */
 }

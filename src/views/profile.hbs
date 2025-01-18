@@ -3,51 +3,56 @@
         <h3 class="title-text">User Profile</h3>
     </div>
     {{#if message}}
-    <div class="alert alert-{{message.type}}">{{message.text}}</div>
+        <div class="alert alert-{{message.type}}">{{message.text}}</div>
     {{/if}}
     <div class="form-wrapper">
         <form action="/user/profile" method="POST">
+            <input type="hidden" name="id" value="{{user._id}}">
             <div class="form-row">
                 <div class="form-control">
-                    <label class="label"><span class="label-text">First Name</span></label>
-                    <input required id="profile_firstName" name="firstName" type="text" value="{{user.firstName}}"
+                    <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
+                            data-title="Name" data-intro="This is your name." {{/unless}}>Name</span></label>
+                    <input required id="profile_name" name="name" type="text" value="{{user.name}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Last Name</span></label>
-                    <input required id="profile_lastName" name="lastName" type="text" value="{{user.lastName}}"
+                    <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
+                            data-title="Email" data-intro="This is your email address." {{/unless}}>Email</span></label>
+                    <input required id="profile_email" name="email" type="text" value="{{user.email}}"
                         class="input input-bordered" />
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Email</span></label>
-                    <input required id="profile_email" name="email" type="text" value="{{user.email}}" class="input input-bordered" />
-                </div>
-                <div class="form-control">
-                    <label class="label" for="profile_role"><span class="label-text">Role</span></label>
-                    <select class="select select-bordered" name="profile_role" id="profile_role" aria-label="profile_role" disabled>
-                        <option value="User" {{isSelected user.role "User" }}>User</option>
-                        <option value="Manager" {{isSelected user.role "Manager" }}>Manager</option>
-                        <option value="Admin" {{isSelected user.role "Admin" }}>Admin</option>
+                    <label class="label" for="profile_role"><span class="label-text"
+                            {{#unless onboarding.progress.profileSetup}} data-title="Role"
+                            data-intro="This is your role within your tenant." {{/unless}}>Role</span></label>
+                    <select class="select select-bordered" name="profile_role" id="profile_role"
+                        aria-label="profile_role" disabled>
+                        <option value='{{user.role}}' selected>{{user.role}}</option>
                     </select>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-control">
-                    <label class="label" for="theme"><span class="label-text">Visual Theme</span></label>
-                    <select name="theme" id="profile_theme" class="select select-bordered" aria-label="theme-preferences">
-                        <option value="light" {{isSelected user.preferences.theme "light" }}>Light</option>
+                    <label class="label" for="theme"><span class="label-text"
+                            {{#unless onboarding.progress.profileSetup}} data-title="Visual Theme"
+                            data-intro="This is your visual theme preference." {{/unless}}>Visual
+                            Theme</span></label>
+                    <select name="theme" id="profile_theme" class="select select-bordered"
+                        aria-label="theme-preferences">
+                        <option value="corporate" {{isSelected user.preferences.theme "corporate" }}>Light</option>
                         <option value="cupcake" {{isSelected user.preferences.theme "cupcake" }}>Cupcake
                         </option>
                         <option value="dracula" {{isSelected user.preferences.theme "dracula" }}>Dracula
                         </option>
-                        <option value="corporate" {{isSelected user.preferences.theme "corporate" }}>Corporate
-                        </option>
+
                         <option value="synthwave" {{isSelected user.preferences.theme "synthwave" }}>Synthwave
                         </option>
                     </select>
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Sort Field</span></label>
+                    <label class="label"><span class="label-text" {{#unless onboarding.progress.profileSetup}}
+                            data-title="Sort Field" data-intro="This is your sort field preference." {{/unless}}>Sort
+                            Field</span></label>
                     <select name="sortField" id="profile_sortField" class="select select-bordered"
                         aria-label="sort-field-preferences">
                         <option value="serialNumber" {{isSelected user.preferences.sortField "serialNumber" }}>
@@ -78,30 +83,29 @@
                     </select>
                 </div>
                 <div class="form-control">
-                    <label class="label"><span class="label-text">Page Size</span></label>
-                    <select name="pageSize" id="profile_pageSize" class="select select-bordered"
-                        aria-label="page-size-preferences">
-                        <option value="10" {{isSelected user.preferences.pageSize '10' }}>10</option>
-                        <option value="25" {{isSelected user.preferences.pageSize '25' }}>25</option>
-                        <option value="50" {{isSelected user.preferences.pageSize '50' }}>50</option>
-                        <option value="100" {{isSelected user.preferences.pageSize '100' }}>100</option>
-                        <option value="-1" {{isSelected user.preferences.pageSize '-1' }}>Infinite
-                        </option>
-                    </select>
-                </div>
-                <div class="form-control">
                     <span class="text-sm  rounded-l px-4 py-2 whitespace-no-wrap">Developer Mode?
-                        <input type="checkbox" id="profile_developer" name="developer" class="checkbox-primary checkbox-sm rounded-xl ml-3" {{#eq user.preferences.developer 'on'}}checked{{/eq}}>
+                        <input type="checkbox" id="profile_developer" name="developer"
+                            class="toggle toggle-primary"
+                            {{#eq user.preferences.developer 'on'}}checked{{/eq}}>
                     </span>
                 </div>
             </div>
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
                 {{!-- reset password button --}}
-                <a class="btn btn-neutral col-span-2 md:col-span-1 md:w-3/4 col-start-1"><label for="resetPasswordModal" style="cursor:pointer">Reset Password</label></a>
+                <a class="btn btn-neutral col-span-2 md:col-span-1 md:w-3/4 col-start-1"><label for="resetPasswordModal"
+                        style="cursor:pointer">Reset Password</label></a>
                 {{!-- cancel and save buttons --}}
-                <button type="reset" class="btn btn-accent md:col-start-3">Cancel</button>
+                <a href="/dashboard" class="btn btn-accent md:col-start-3">Cancel</a>
                 <button type="submit" id="profile_submit" class="btn btn-primary  md:col-start-4">Save</button>
             </div>
         </form>
     </div>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        introJs().onexit(() => {
+            $.post("/user/profile/onboarding-complete");
+        }).start();
+    });
+</script>
+{{> onboarding/_profile}}

@@ -1,0 +1,2 @@
+serialNumber,barcode,description,modelNumber,toolID,manufacturer,serviceAssignment,category
+unique+required, unique+required, optional,optional,unique+required,optional,JobNumber or JobName, prefix or name,

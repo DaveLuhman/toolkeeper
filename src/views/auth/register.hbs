@@ -1,22 +1,18 @@
 <!-- component -->
-<div id="login-wrapper">
-  <div id="login-container">
+<div class="login-wrapper">
+  <div class="login-container">
     <img src="\img\toolKeeperLogo-light-full.png" id="tk-logo">
     <div class="login-form-wrapper">
       <div class="px-5 py-7">
-        <form action="#" method="POST">
-          <label for="firstName" class="login-label">First Name</label>
-          <input type="text" name="firstName" id="register_firstName" class="login-input" />
-          <label for="lastName" class="login-label">Last Name</label>
-          <input type="text" name="lastName" id="register_lastName" class="login-input" />
+        <form action="/register" method="POST">
+          <label for="name" class="login-label">Name</label>
+          <input type="text" name="name" id="register_name" class="login-input" required aria-required="true" />
+          <label for="companyName" class="login-label">Company Name</label>
+          <input type="text" name="companyName" id="register_companyName" class="login-input" required aria-required="true" />
           <label for="email" class="login-label">E-mail</label>
-          <input type="text" name="email" id="register_email" class="login-input" />
-          <label class="login-label">Password</label>
-          <input type="password" name="password" class="login-input" />
-          <label class="login-label">Confirm Password</label>
-          <input type="password" name="confirmPassword" id="register_confirmPassword" class="login-input" />
-          <button disabled type="submit" id="register_submit">
-            <span class="inline-block mr-2">Login</span>
+          <input type="text" name="email" id="register_email" class="login-input" required aria-required="true"/>
+          <button type="submit" id="register_submit">
+            <span class="inline-block mr-2">Register</span>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
               class="inline-block w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />

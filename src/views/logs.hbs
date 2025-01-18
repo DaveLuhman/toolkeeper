@@ -1,0 +1,35 @@
+<!-- views/logs.hbs -->
+<div class="container mx-auto p-6">
+  <h1 class="text-3xl font-bold mb-6">Logs for {{tenant.name}}</h1>
+
+  <!-- Errors Only Checkbox -->
+  <div class="mb-4">
+    <label class="cursor-pointer">
+      <input type="checkbox" id="errorsOnly" class="checkbox">
+      <span class="ml-2">Show Errors Only</span>
+    </label>
+  </div>
+
+  <!-- Log Table with Vertical Scroll -->
+  <div class="overflow-y-auto max-h-96">
+    <table class="table-auto w-full">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="p-4 text-left">Timestamp</th>
+          <th class="p-4 text-left">Message</th>
+          <th class="p-4 text-left">Additional Info</th>
+        </tr>
+      </thead>
+      <tbody id="logsTable">
+        {{#each logs}}
+          <tr class="border-t log-row {{#if (eq this.level 'error')}}log-error{{/if}}">
+            <td class="p-4">{{moment this.timestamp format="MM/DD/YY HH:mm a"}}</td>
+            <td class="p-4">{{this.message}}</td>
+            <td class="p-4">{{stringify this.metadata}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+<script type="module" src="/js/logs.js"></script>

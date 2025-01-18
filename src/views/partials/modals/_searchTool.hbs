@@ -1,5 +1,5 @@
 <input type="checkbox" id="searchToolModal" class="modal-toggle" />
-<div class="modal">
+<div class="modal" role="dialog">
   <div class="modal-inner-sm">
     <label for="searchToolModal" class="modal-close-btn">✕</label>
     <form action="/tool/search" method="POST">
@@ -33,6 +33,7 @@
       </div>
     </form>
   </div>
+  <label class="modal-backdrop" for="searchToolModal">Close</label>
 </div>
 <script>
     const searchSelector = document.querySelector('#search-tool_searchBy')

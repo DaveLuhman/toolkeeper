@@ -1,97 +1,74 @@
 <div class="flex flex-wrap">
   <div id="settings-nav">
-            {{> _settings}}
+    {{> _settings}}
   </div>
-  <div id="root-container" class="grid items-center grid-flow-row ml-5 pl-5">
+  <div id="settings_import" class="grid items-center grid-flow-row ml-5 pl-5">
     <div id="title-bar">
       <label class="title-text">CSV Import</label>
       <hr />
-      <label class="font-thin">For the best results, import items in order:</label>
+      <label class="font-thin">Click each item name to download a template for importing.<br><br>
+        For the best results, import items in order:</label>
     </div>
-    <form
-      action="/settings/import/submit"
-      method="POST"
-      id="csv-import"
-      encType="multipart/form-data"
-    >
+    <style>
+        /* Style for larger radio buttons */
+        input[type="radio"] {
+            width: 20px; /* Adjust size as needed */
+            height: 20px; /* Adjust size as needed */
+            margin-right: 10px; /* Space between radio button and label */
+            vertical-align: middle; /* Align with text */
+        }
+
+        /* Ensure labels are aligned with radio buttons */
+        .form-control {
+            display: flex;
+            align-items: center; /* Center align items vertically */
+        }
+    </style>
+    <form action="/settings/import/submit" method="POST" id="csv-import" encType="multipart/form-data"
+      {{#unless onboarding.progress.csvImportViewed}} data-title="Import Items via CSV"
+      data-intro="Select the type of items you want to import from the list below.  We highly recommend doing them in the order listed, as tools are dependnent on categories and SAs and can fail to import if their dependencies are not imported first."
+      {{/unless}}>
       <ol class="list-decimal">
         <li>
           <div class="form-control">
-            <label for="allServiceAssignments" class="label"><span
-                class="label-text"
-              >Service Assignments - Total Entries:
-                {{length allServiceAssignments}}
-              </span></label>
-            <input
-              type="radio"
-              name="importTarget"
-              value="allServiceAssignments"
-              id="import_allServiceAssignments"
-            />
+            <label for="allServiceAssignments" class="label">
+              <span class="label-text hover:underline hover:cursor-pointer"><a
+                  href="{{baseUrl}}/templates/service_assignment.csv" target="_blank">Service
+                  Assignments - Total Entries:
+                  {{length allServiceAssignments}}
+                </a></span>
+            </label>
+            <input type="radio" name="importTarget" value="serviceAssignments" id="import_serviceAssignments" />
           </div>
         </li>
         <li>
           <div class="form-control">
-            <label for="activeServiceAssignments" class="label"><span
-                class="label-text"
-              >Service Assignments - Active Entries:
-                {{length activeServiceAssignments}}
-              </span></label>
-            <input
-              type="radio"
-              name="importTarget"
-              value="activeServiceAssignments"
-              id="import_activeServiceAssignments"
-            />
+            <label for="categories" class="label">
+              <span class="label-text hover:underline hover:cursor-pointer">
+                <a href="{{baseUrl}}/templates/category.csv" target="_blank">Categories- Total Entries:
+                  {{length categories}}
+                </a> </span>
+            </label>
+            <input type="radio" name="importTarget" value="categories" id="import_categories" />
           </div>
         </li>
         <li>
           <div class="form-control">
-            <label for="categories" class="label"><span
-                class="label-text"
-              >Categories - Total Entries:
-                {{length categories}}</span></label>
-            <input
-              type="radio"
-              name="importTarget"
-              value="categories"
-              id="import_categories"
-            />
-          </div>
-        </li>
-        <li>
-          <div class="form-control">
-            <label for="tools" class="label"><span class="label-text">Tools -
-                Total Entries:
-                {{length tools}}</span></label>
-            <input
-              type="radio"
-              name="importTarget"
-              value="tools"
-              id="import_tools"
-            />
-          </div>
-        </li>
-        <li>
-          <div class="form-control">
-            <label for="history" class="label"><span
-                class="label-text"
-              >Transaction History \(5-15 min to import\)</span></label>
-            <input
-              type="radio"
-              name="importTarget"
-              value="history"
-              id="import_history"
-            />
+            <label for="tools" class="label">
+              <span class="label-text hover:underline hover:cursor-pointer"><a href="{{baseUrl}}/templates/tool.csv"
+                  target="_blank">Tools- Total Entries:
+                  {{length tools}}
+                </a> </span>
+            </label>
+            <input type="radio" name="importTarget" value="tools" id="import_tools" required />
           </div>
         </li>
       </ol>
-      <input type="file" name="importFile" id="importFile" />
-      <button
-        type="submit"
-        id="importSubmitBtn"
-        class="modal-button"
-      >Import</button>
+      <input type="file" name="importFile" id="importFile" {{#unless onboarding.progress.csvImportViewed}}
+        data-title="Import File" data-intro="Select the file you want to import from your computer." {{/unless}} required />
+      <button type="submit" id="startImportButton" class="modal-button"
+        {{#unless onboarding.progress.csvImportViewed}} data-title="Start Import"
+        data-intro="Click here to submit the file for import." {{/unless}}>Import</button>
     </form>
     {{#if message}}
       <h2 class="font-extrabold text-red-700 alert alert-error">{{message}}</h2>
@@ -118,11 +95,15 @@
 <script>
   const fileInput = document.getElementById('#importFile')
   console.log(fileInput)
-  const submitBtn = document.querySelector('#importSubmitBtn') 
+  const submitBtn = document.querySelector('#startImportButton')
   const spinner = `<span class="loading loading-infinity loading-lg" ></span>`
   submitBtn.addEventListener('click', submitInputForm)
-  function submitInputForm() { 
+  function submitInputForm() {
     submitBtn.outerHTML = spinner;
-    document.forms['csv-import'].submit() 
+    document.forms['csv-import'].submit()
   }
+  introJs().onexit(() => {
+    $.post("/settings/import/onboarding-complete");
+  });
 </script>
+{{> onboarding/_import}}

@@ -4,7 +4,7 @@
  * @param {Object} res - The response object.
  */
 export const renderLandingPage = (_req, res) => {
-    res.render('index', { layout: 'public.hbs' })
+    res.status(200).render('index', { layout: 'public.hbs' })
 }
 
 /**
@@ -32,3 +32,4 @@ export const redirectToDashboard = (_req, res) => {
 export const renderRegisterPage = (_req, res) => {
     res.render('auth/register', { layout: 'auth.hbs' })
 }
+// src\controllers\index.js

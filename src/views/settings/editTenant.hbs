@@ -1,0 +1,46 @@
+<div class="flex flex-col items-center justify-evenly">
+    <div class="title-bar">
+        <div class="font-bold text-center pb-2 text-lg">Edit Tenant</div>
+    </div>
+
+    <div class="flex flex-wrap ">
+        <form action="/settings/tenant/edit" method="POST">
+            <input type="hidden" name="id" value="{{tenant._id}}">
+            <div class="form-row">
+                <div class="form-control">
+                    <label class="label label-text -mb-2">Tenant Name</label>
+                    <input id="edit-tenant_name" name="name" type="text" value="{{tenant.name}}"
+                        class="input input-bordered" />
+                </div>
+                <div class="form-control">
+                <label class="label label-text -mb-2">Domain</label>
+                <input id="edit-tenant_domain" name="domain" type="text" value="{{tenant.domain}}"
+                    class="input input-bordered" />
+            </div>
+            <div class="form-control">
+                <label class="label label-text -mb-2">Admin Email</label>
+                <input id="edit-tenant_admin-email" name="email" type="text" value="{{tenant.adminUser.email}}"
+                    class="input input-bordered" disabled />
+            </div>
+            <div class="form-control">
+                <label class="label label-text -mb-2">Subscription</label>
+                <a id="edit-tenant_subscription" name="subscription"
+                    href="{{generateSubscriptionUrl tenant.subscription.lemonSqueezyId}}" target="_blank">
+                    {{tenant.subscription.lemonSqueezyId}}
+                </a>
+            </div>
+    </div>
+    <div class="flex flex-row gap-2">
+        <div class="flex-1"><a href="/settings/tenants/{{tenant._id}}/delete">
+                <div class="btn btn-error">Delete Tenant</div>
+            </a></div>
+        <div class="justify-end"><a href="/settings/tenants">
+                <div class="btn btn-accent">Cancel</div>
+            </a>
+            <button id="edit-tenant_submit" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+    </form>
+
+</div>
+</div>

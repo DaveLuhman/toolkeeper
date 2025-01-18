@@ -1,0 +1,50 @@
+    <script>
+        const profileHelp = () => {
+        const profileTour = introJs()
+        const profileSteps = [
+            {
+                element: '#profile_name',
+                title: 'Name',
+                intro: 'Your name goes here.'
+            },
+            {
+                element: '#profile_email',
+                title: 'Email',
+                intro: 'This should be your email address. This will be used for notifications and account recovery.'
+            },
+            {
+                element: '#profile_role',
+                title: 'Role',
+                intro: 'This displays your role across the platform. If you\'re a manager or admin, you will be able to change users\' roles from the settings page'
+            },
+            {
+                element: '#profile_theme',
+                title: 'Visual Theme',
+                intro: 'Choose a visual theme for your profile interface. This will change the appearance of Tookeeper for your account.'
+            },
+            {
+                element: '#profile_sortField',
+                title: 'Sort Field',
+                intro: 'Select a default field to sort your tools by. This is effective across the platform.'
+            },
+            {
+                element: '#profile_sortDirection',
+                title: 'Sort Direction',
+                intro: 'Choose the default direction for sorting your tools: ascending or descending.'
+            },
+            {
+                element: '#profile_developer',
+                title: 'Developer Mode',
+                intro: 'Enable this option if you want to access developer features. It reveals additional data as it runs in the background. This does not enable any additional features or permissions.'
+            }
+        ]
+        profileTour.setOptions({
+            steps: profileSteps,
+        }).start();
+    };
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelector("#helpFloater").addEventListener("click", () => {
+            profileHelp();
+        });
+    });
+</script>

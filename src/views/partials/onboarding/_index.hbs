@@ -1,0 +1,24 @@
+<script src="/js/intro.js" type="module"></script>
+{{#eq onboarding.completedAt null}}
+    {{#eq onboarding.progress.profileSetup false}}
+        {{> onboarding/_profile}}
+    {{/eq}}
+
+    {{#eq onboarding.progress.dashboardCompleted false}}
+        {{> onboarding/_dashboard}}
+    {{/eq}}
+    {{#inArray user.role "Manager,Admin"}}
+        {{#eq onboarding.progress.usersSetup false}}
+            {{> onboarding/_users}}
+        {{/eq}}
+    {{/inArray}}
+
+    {{#eq onboarding.progress.csvImportViewed false}}
+        {{> onboarding/_import}}
+    {{/eq}}
+    <script>
+        $(document).ready(function() {
+            introJs().start();
+        });
+    </script>
+{{/eq}}

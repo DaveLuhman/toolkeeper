@@ -1,7 +1,7 @@
-import { csvFileToEntries } from '../util.js'
-import Category from '../../models/Category.model.js'
-let successCount = 0
-const errorList = []
+import { readCSVFile, checkDuplicate, saveDocument } from "./importUtils.js";
+import { Category } from "../../models/index.models.js";
+let successCount = 0;
+const errorList = [];
 
 /**
  * Create a category document from a row of data.
@@ -9,11 +9,11 @@ const errorList = []
  * @param {Array} row - The row of data.
  * @returns {Object} - The category document.
  */
-function createCategoryDocument(row) {
-  const data = row.map((cell) => cell.trim())
-  const description = data[2] || ''
-  return { prefix: data[0], name: data[1], description }
-}
+const createCategoryDocument = (row, tenant) => {
+	const data = row.map((cell) => cell.trim());
+	const description = data[2] || "";
+	return { prefix: data[0], name: data[1], description, tenant: tenant };
+};
 
 /**
  * Check if there is a duplicate category with the given prefix.
@@ -21,10 +21,9 @@ function createCategoryDocument(row) {
  * @param {string} prefix - The prefix to check.
  * @returns {boolean} - True if a duplicate category exists, false otherwise.
  */
-async function checkDuplicate(prefix) {
-  const dup = await Category.find({ prefix })
-  return dup.length !== 0
-}
+const checkDuplicateCategory = async (prefix) => {
+	return checkDuplicate(Category, "prefix", prefix);
+};
 
 /**
  * Save a category document to the database.
@@ -32,27 +31,28 @@ async function checkDuplicate(prefix) {
  * @param {Object} doc - The category document to save.
  * @returns {Promise} - A promise that resolves to the saved category document.
  */
-async function saveCategoryDocument(doc) {
-  try {
-    if (await checkDuplicate(doc.prefix)) throw new Error('Duplicate Prefix')
-    successCount++
-    return await Category.create(doc)
-  } catch (error) {
-    errorList.push({ key: doc.prefix, reason: error.message })
-  }
-}
+const saveCategoryDocument = async (doc) => {
+	if (await checkDuplicateCategory(doc.prefix)) {
+		errorList.push({ key: doc.prefix, reason: "Duplicate Prefix" });
+		return;
+	}
+	const savedDoc = await saveDocument(Category, doc, errorList);
+	if (savedDoc) {
+		successCount++;
+	}
+};
 /**
  *
  *
  * @param {*} entries
- * @return {*} 
+ * @return {*}
  */
-function createCategories(entries) {
-  const categoryPromises = entries.map((entry) => {
-    const doc = createCategoryDocument(entry)
-    return saveCategoryDocument(doc)
-  })
-  return Promise.all(categoryPromises)
+function createCategories(entries, tenant) {
+	const categoryPromises = entries.map((entry) => {
+		const doc = createCategoryDocument(entry, tenant);
+		return saveCategoryDocument(doc);
+	});
+	return Promise.all(categoryPromises);
 }
 
 /**
@@ -61,10 +61,12 @@ function createCategories(entries) {
  * @param {File} file - The file containing the categories data.
  * @returns {Object} - An object containing the success count and error list.
  */
-export async function importCategories(file) {
-  successCount = 0
-  errorList.length = 0
-  const entries = csvFileToEntries(file)
-  await createCategories(entries)
-  return { successCount, errorList }
+export async function importCategories(file, tenant) {
+	successCount = 0;
+	errorList.length = 0;
+	const entries = readCSVFile(file);
+	await createCategories(entries, tenant);
+	return { successCount, errorList };
 }
+
+// src\middleware\import\categories.js

@@ -1,19 +1,12 @@
-<div class="flex flex-row px-2 pb-2 overflow-y-scroll max-h-[75vh]">
+<div class="flex flex-row px-2 pb-2 overflow-y-scroll overflow-x-clip max-w-[500px] max-h-[75vh]">
     <table class="table table-xs w-auto max-h-min table-pin-rows table-pin-cols">
         <thead>
             <tr>
                 <th>Service Assignments</th>
             </tr>
         </thead>
-        <tbody>
-            {{#if activeServiceAssignments}}
-            {{#each activeServiceAssignments}}
-            <tr>
-                <td><a href="/tool/search?searchBy=serviceAssignment&searchTerm={{id}}"> {{toolCount}} | {{jobNumber}} - {{jobName}}</td>
+        <tbody id="service-assignments-parent">
 
-            </tr>
-            {{/each}}
-            {{/if}}
         </tbody>
     </table>
 </div>

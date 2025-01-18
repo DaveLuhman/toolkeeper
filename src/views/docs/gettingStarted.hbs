@@ -1,0 +1,97 @@
+<div class="flex-grow w-5/12 p-6">
+    <h1 class="text-4xl font-bold text-zinc-900 dark:text-zinc-100 mb-6">Getting Started</h1>
+
+    <div class="space-y-8 text-lg">
+        <div>
+            <h3 class="text-2xl font-semibold text-zinc-800 dark:text-zinc-100 mb-4">First Time Setup</h3>
+            <div class="space-y-6 section" id="service-assignments">
+                <h4 class="text-xl font-medium text-zinc-800 dark:text-zinc-100 mb-2">1. Create some service
+                    assignments<i id="step-one-setup-arrow" class="fa-solid fa-arrow-down arrow ml-2"
+                        onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
+                <div class="content expanded">
+                    <div class="flex md:flex-row flex-col justify-evenly items-center">
+                        <div class="justify-evenly items-center align-middle">
+                            <p class="prose text-zinc-800 dark:text-zinc-300">Service Assignments answer "where" or
+                                "who" a tool is assigned. By default there are three, IMPORT, STOCK, and PARTS.
+                                You'll want to add your own service assignments to suit your needs, typically starting
+                                with
+                                Stockrooms. Tools are <strong class="text-zinc-900 dark:text-zinc-400">checked
+                                    in</strong> when they're in a stockroom. All other service
+                                assignments will identify tools as <strong
+                                    class="text-zinc-900 dark:text-zinc-400">checked
+                                    out</strong>. Import is a catchall for tools when the import function is used and an
+                                existing
+                                service assignment cannot be found.</p>
+                            <br>
+                            <p class="prose text-zinc-800 dark:text-zinc-300">In the dropdown, there are five options,
+                                and with the exception of Stockroom, they all function the same. The dropdown is used to
+                                select the
+                                service assignment type, the text fields are descriptive fields for the SA's
+                                details. Job Number is the shortname field, as that's how many project management tools
+                                and other software identify a job.
+                                Job Name is the full name, and is intended as a human-readable field.</p>
+                        </div>
+                        <img src="/img/docs/create-service-assignment.png" alt="Create Service Assignments"
+                            width="660px" height="265px">
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6 section" id="categories">
+                <h4 class="text-xl font-medium text-zinc-800 dark:text-zinc-100 mb-2">2. Create some categories<i
+                        id="step-two-setup-arrow" class="fa-solid fa-arrow-right arrow ml-2"
+                        onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
+                <div class="content">
+                    <div class="flex md:flex-row flex-col justify-evenly items-center">
+                        <img src="/img/docs/create-category.png" alt="Create Category" width="517px" height="314px">
+                        <div class="justify-evenly items-center align-middle">
+                            <p class="prose text-zinc-800 dark:text-zinc-300">Categories are used to group tools by
+                                type, and there is only one by default, "Uncategorized". For example, you might have a
+                                category
+                                called "Cordless Drills" and another called "Ladders". This helps with reporting and
+                                filtering. Be as specific as you like, but keep in mind that each tool can only possess
+                            <br>
+                            <p class="prose text-zinc-800 dark:text-zinc-300">Categories use the "Name" field, although
+                                have a prefix value as well. This is for the ToolId field on the tool. If a tool has an
+                                ID with
+                                an category prefix, it will automatically be assigned to that category. If the category
+                                is changed, but the prefix is not updated, it will revert to the category that matches
+                                the
+                                prefix.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-6 section" id="tools">
+                <h4 class="text-xl font-medium text-zinc-800 dark:text-zinc-100 mb-2">3. Create some tools<i
+                        id="step-three-setup-arrow" class="fa-solid fa-arrow-right arrow ml-2"
+                        onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
+                <div class="content">
+                    <div class="flex md:flex-row flex-col justify-evenly items-center mb-3">
+                        <img src="/img/docs/single-create-tool.png" alt="Create A Tool" width="517px" height="314px">
+                        <p class="prose text-zinc-800 dark:text-zinc-300">Tools are the bread and butter of TolKeeper,
+                            and are going to take the longest to get entered. There are two ways to enter tools,
+                            either
+                            through the "Create Tool" button available on any page (once you're logged in.) The other
+                            method is via batch tool entry. This saves time by letting you automatically increment
+                            unique
+                            fields like barcode, serial number, and tool-ID.</p>
+                    </div>
+                    <div class="flex md:flex-row flex-col justify-evenly items-center">
+                        <div class="justify-evenly items-center align-middle">
+                            <p class="prose text-zinc-800 dark:text-zinc-300">The other method
+                                is via batch tool entry. This saves time by letting you automatically increment unique
+                                fields like barcode, serial number, and tool-ID. The form will attempt to increment the
+                                value placed in the first field, and will only work if the value ends with a number.</p>
+                            <br>
+                            <p class="prose text-zinc-800 dark:text-zinc-300">When you've entered the unique values and
+                                selected which fields to auto-increment, pressing the <strong>+</strong> will create the
+                                next tool sequentially. This also locks the initial unique value form fields, as they are used to calculate the values that follow.</p>
+                        </div>
+                        <img src="/img/docs/batch-create-tools.png" alt="Batch Create Tools" width="517px"
+                            height="314px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

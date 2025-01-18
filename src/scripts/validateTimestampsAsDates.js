@@ -5,6 +5,7 @@ import ServiceAssignment from '../models/ServiceAssignment.model.js';
 // skipcq: JS-0128 - imported to satisfy autopopulate on tool schema
 import Category from '../models/Category.model.js';
 import 'dotenv/config'
+import process from "node:process";
 // Connect to your MongoDB database
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
@@ -38,3 +39,4 @@ async function checkToolUpdatedAt() {
 
 // Run the script
 checkToolUpdatedAt();
+// src\scripts\validateTimestampsAsDates.js

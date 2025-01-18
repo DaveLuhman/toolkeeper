@@ -4,7 +4,8 @@
         <table class="table overflow-visible ">
             <thead>
                 <tr>
-                    <th>Target Tool</th>
+                    <th>Serial Number</th>
+                    <th>Barcode</th>
                     <th>Current SA</th>
                     <th>New SA</th>
                 </tr>
@@ -24,8 +25,8 @@
                                     {{serviceAssignment.jobName}}
                                 </td>
                                 <td name="newServiceAssignmment">
-                                    {{getServiceAssignmentJobNumber ../allServiceAssignments ../destinationServiceAssignment}}
-                                    
+                                    {{getServiceAssignmentJobNumber ../activeServiceAssignments ../destinationServiceAssignment}}
+
                                 </td>
                             </tr>
                         {{else}}

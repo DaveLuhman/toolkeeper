@@ -1,0 +1,8 @@
+jobNumber,jobName,type,phone,notes
+C-1430,C Job #1430,Contract Jobsite,,Example Contract Jobsite
+S-1992,,Service Jobsite,,Example Service Jobsite
+S-01,Shop Tool Storage,Stockroom,x6556,Example Stockroom
+T-17,Truck 17,Vehicle,LIC-PL8,Example Vehicle
+E-11,Robert Mills,Employee,(123) 555-1234,Example Employee
+--,--,--,--,--
+Type Fields, Must be, of one of, the above, types

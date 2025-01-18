@@ -1,8 +1,11 @@
 <div class="flex flex-wrap">
   <div id="settings-nav">
     {{> _settings}}
+    <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm ml-5 mt-2">
+      <label for="newMaterialModal">New Tool Material</label>
+    </div>
   </div>
-  <div id="materialsTable">
+  <div id="materialsTable" class="pl-3 pt-6">
 
     <table class="table table-auto">
       <thead>
@@ -26,11 +29,6 @@
         {{/if}}
       </tbody>
     </table>
-    <div class="mx-5">
-      <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
-        <label for="newMaterialModal">New Tool Material</label>
-      </div>
-    </div>
   </div>
 </div>
 {{!-- New Material Modal --}}
@@ -39,6 +37,7 @@
   <div class="modal-inner-md">
     <label for="newMaterialModal" class="modal-close-btn">✕</label>
     <form action="/settings/materials/create" method="POST">
+     <input name="tenant" type="hidden" value="{{user.tenant}}" />
       <div class="grid items-center w-full grid-rows-2">
         <div class="title-bar">
           <h3 class="title-text">New Tool Material</h3>
@@ -47,7 +46,8 @@
           <input placeholder="Title" id="new-material_name" type="text" name="name" class="input input-bordered">
         </div>
         <div>
-          <input placeholder="Description" id="new-material_description" type="text" name="description" class="input input-bordered">
+          <input placeholder="Description" id="new-material_description" type="text" name="description"
+            class="input input-bordered">
         </div>
         <div class="modal-button-row">
           <label class="btn btn-sm"> <button id="new-material_submit" type="submit">Submit</button></label>

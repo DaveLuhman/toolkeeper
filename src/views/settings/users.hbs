@@ -1,64 +1,105 @@
+{{> onboarding/_users}}
+{{#if message}}
+    <div id="message">
+        <span title="message">
+            <div class="font-extrabold text-red-700 alert alert-info">{{message}}</div>
+        </span>
+    </div>
+{{/if}}
+{{#if error}}
+    <div id="error">
+        <span title="error">
+            <div class="font-extrabold text-red-700 alert alert-error">{{error}}</div>
+        </span>
+    </div>
+{{/if}}
 <div class="flex flex-wrap">
-
-    {{#if message}}
-        <div id="message">
-            <span title="message">
-                <div class="font-extrabold text-red-700 alert alert-info">{{message}}</div>
-            </span>
-        </div>
-    {{/if}}
-    {{#if error}}
-        <div id="error">
-            <span title="error">
-                <div class="font-extrabold text-red-700 alert alert-error">{{error}}</div>
-            </span>
-        </div>
-    {{/if}}
     <div id="settings-nav">
         {{> _settings}}
-    </div>
-    <div class="flex-grow">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th class="hidden md:table-cell">Display Name</th>
-                    <th>Email</th>
-                    <th class="hidden lg:table-cell">Role</th>
-                    <th>Disabled?</th>
-                    <th>Edit</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                {{#if users}}
-                    {{#each users}}
-                        {{#unless isDisabled}}
-                            <tr class="text-center">
-                                <td class="hidden md:table-cell">{{displayName}}</td>
-                                <td>{{email}}</td>
-                                <td class="hidden lg:table-cell">{{role}}</td>
-                                <td>
-                                    {{#eq false isDisabled}}<i class="fa-regular fa-square"></i>{{/eq}}
-                                    {{#eq true isDisabled}}<i class="fa-regular fa-square-check"></i>{{/eq}}
-                                </td>
-                                <td>
-                                    <label class="rounded-badge btn-xs">
-                                        <a href="/settings/users/{{id}}">
-                                            <i class="fa fa-pencil"></i>
-                                        </a>
-                                    </label>
-                                </td>
-                            </tr>
-                        {{/unless}}
-                    {{/each}}
-                {{/if}}
-            </tbody>
-        </table>
-
-        <div class="mx-5">
-            <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
-                <label for="newUserModal">New User</label>
-            </div>
+        <div class="ml-9 mt-3">
+        <div id="addUserButton" {{#unless onboarding.progress.usersSetup}} data-title="Add User"
+            data-intro="Use this action to add a new user to the system." {{/unless}}
+            class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm lg:-ml-2">
+            <label for="newUserModal">New User</label>
         </div>
     </div>
 </div>
+<div class="mt-5 flex-grow">
+    <table class="table" id="userList" {{#unless onboarding.progress.usersSetup}} data-title="User List"
+        data-intro="This is where you can see all the users in the system." {{/unless}}>
+        <thead>
+            <tr>
+                <th class="hidden md:table-cell">Display Name</th>
+                <th>Email</th>
+                <th class="hidden lg:table-cell">Role</th>
+                <th>Disabled?</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#if users}}
+                {{#each users}}
+                    {{#unless isDisabled}}
+                        <tr class="text-center">
+                            <td class="hidden md:table-cell">{{name}}</td>
+                            <td>{{email}}</td>
+                            <td class="hidden lg:table-cell">{{role}}</td>
+                            <td>
+                                {{#eq false isDisabled}}<i class="fa-regular fa-square"></i>{{/eq}}
+                                {{#eq true isDisabled}}<i class="fa-regular fa-square-check"></i>{{/eq}}
+                            </td>
+                            <td {{#unless ../onboarding.progress.usersSetup}} data-title="Edit A User"
+                                data-intro="Use this action to edit a user." {{/unless}}>
+                                <label class="rounded-badge btn-xs">
+                                    <a href="/settings/users/{{id}}">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                </label>
+                            </td>
+                        </tr>
+                    {{/unless}}
+                {{/each}}
+            {{/if}}
+        </tbody>
+    </table>
+
+
+</div>
+</div>
+<input type="checkbox" id="newUserModal" class="modal-toggle" />
+<div class="modal" role="dialog">
+    <div class="modal-inner-lg">
+        <label for="newUserModal" class="modal-close-btn">✕</label>
+        <form action="/settings/users/create" method="POST">
+            <div class="modal-table">
+                <div class="title-bar">
+                    <h3 class="title-text">Create A New User</h3>
+                </div>
+                <input placeholder="Name" type="text" name="name" id="new-user_name" class="input input-bordered"
+                    required />
+                <input placeholder="E-Mail" type="email" name="email" id="new-user_email" class="input input-bordered"
+                    required />
+                <select id="new-user_role" class="select select-bordered" name="role">
+                    <option value="User">User</option>
+                    <option value="Manager">Manager</option>
+                </select>
+                <input placeholder="Password" type="password" name="password" id="new-user_password"
+                    class="input input-bordered" required />
+                <input placeholder="Confirm Password" type="password" name="confirmPassword"
+                    id="new-user_confirmPassword" class="input input-bordered" required>
+                <div class="modal-button-row">
+                    <label class="btn btn-sm"> <button id="new-user_submit" type="submit">Submit</button></label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <label class="modal-backdrop" for="newUserModal">Close</label>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        introJs().onexit(() => {
+            $.post("/settings/users/onboarding-complete");
+        }).start();
+    });
+</script>

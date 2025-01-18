@@ -1,30 +1,38 @@
-import { Router } from 'express'
-import { login, logout } from '../middleware/auth.js'
-import { createUser } from '../middleware/user.js'
+import { Router } from "express";
+import { checkAuth, login, logout } from "../middleware/auth.js";
+import { createProspect } from "../middleware/prospect.js";
 import {
-  renderLandingPage,
-  renderLoginPage,
-  renderRegisterPage,
-} from '../controllers/index.js'
-import { executeResetPasswordRequest, submitResetPasswordRequest, verifyResetPasswordRequest } from '../controllers/user.js'
+	renderLandingPage,
+	renderLoginPage,
+	renderRegisterPage,
+} from "../controllers/index.js";
+import {
+	executeResetPasswordRequest,
+	submitResetPasswordRequest,
+	verifyResetPasswordRequest,
+} from "../controllers/user.js";
+import { renderLogView } from "../logging/middleware.js";
 
-export const indexRouter = Router()
+export const indexRouter = Router();
 
 // Render Public Landing Page
-indexRouter.get('/', renderLandingPage)
+indexRouter.get("/", renderLandingPage);
 // Render Login Page
-indexRouter.get('/login', renderLoginPage)
+indexRouter.get("/login", renderLoginPage);
 // Login User
-indexRouter.post('/login', login)
+indexRouter.post("/login", login);
 // Render register Page
-indexRouter.get('/register', renderRegisterPage)
+indexRouter.get("/register", renderRegisterPage);
 // Register User
-indexRouter.post('/register', createUser, renderLoginPage)
+indexRouter.post("/register", createProspect);
 // Logout User
-indexRouter.get('/logout', logout)
+indexRouter.get("/logout", logout);
 // Submit Forgot Password Modal
-indexRouter.post('/forgotPassword', submitResetPasswordRequest)
+indexRouter.post("/forgotPassword", submitResetPasswordRequest);
 // Render Reset Password Page
-indexRouter.get('/forgotPassword/:token', verifyResetPasswordRequest)
+indexRouter.get("/forgotPassword/:token", verifyResetPasswordRequest);
 // Execute Reset Password
-indexRouter.post('/forgotPassword/:token', executeResetPasswordRequest)
+indexRouter.post("/forgotPassword/:token", executeResetPasswordRequest);
+// render logs page (per tenant)
+indexRouter.get("/logs", checkAuth, renderLogView);
+// src\routes\index.routes.js

@@ -1,0 +1,123 @@
+<section class="py-8 lg:py-20" id="pricing" x-data="{
+      period: 'monthly',
+      premium: {monthly: '$99', yearly: '$59'},
+      ultimate: {monthly: '$199', yearly: '$149'},
+    }" id="pricing">
+    <div class="container ">
+        <div class="text-center text-slate-800 dark:text-slate-100 ">
+            <h2 class="text-4xl font-semibold">Pricing Plans</h2>
+            <p class="mt-2 text-lg">
+                Explore flexible pricing that scales with your needs. No hidden fees, just transparent
+                options for your success.
+            </p>
+        </div>
+        <div class="mt-6 flex justify-center">
+            <div class="tabs-boxed tabs">
+                <button class="tab lg:px-10" :class="{'tab-active': period === 'monthly'}"
+                    @click="()=>period='monthly'">
+                    Monthly
+                </button>
+                <button class="tab indicator lg:px-10" :class="{'tab-active': period === 'yearly'}"
+                    @click="()=>period='yearly'">
+                    Yearly
+                    <span class="badge indicator-item badge-neutral">-40%</span>
+                </button>
+            </div>
+        </div>
+        <div class="mt-8 grid gap-8 lg:grid-cols-3 bg-slate-700 rounded-2xl">
+            <div class="card border border-base-content/15 p-3 shadow-sm">
+                <div class="card bg-base-200 p-6 ">
+                    <h3 class="text-xl font-semibold">Self-hosted</h3>
+                    <p class="mt-2 flex items-baseline">
+                        <span class="text-5xl font-bold tracking-tight">$0</span>
+                        <span class="ml-1 text-xl font-semibold">/month</span>
+                    </p>
+                    <p class="mt-4">
+                        Experience the full featureset of Toolkeeper, hosted on your hardware.
+                    </p>
+                </div>
+                <div class="p-6">
+                    <ul class="list-inside list-disc space-y-3" role="list">
+                        <li>
+                            <span class="ms-3 text-white">Fully Extendable</span>
+                        </li>
+                        <li>
+                            <span class="ms-3 text-white">Unlimited Products and Users</span>
+                        </li>
+                        <li>
+                            <span class="ms-3 text-white">Limited Support Available</span>
+                        </li>
+                    </ul>
+                </div>
+                <button id="github-link" class="btn btn-outline bg-slate-500 btn-block mt-auto">View On Github</button>
+            </div>
+            <div class="card border border-base-content/10 bg-base-100 p-3 shadow-sm">
+                <div class="card bg-base-200 p-6 text-base-content">
+                    <div class="flex justify-between">
+                        <h3 class="text-xl font-semibold text-primary">Pro Plan</h3>
+                        <div class="badge badge-outline text-sm font-medium">Best Offer</div>
+                    </div>
+
+                    <p class="mt-4 flex items-baseline">
+                        <span class="text-5xl font-bold tracking-tight text-primary" x-text="premium[period]"></span>
+                        <span class="ml-1 text-xl font-semibold">/month</span>
+                    </p>
+                    <p class="mt-6">
+                        All of the features on offer, limited only by number of users and tools. Fully hosted with
+                        backups and email support
+                    </p>
+                </div>
+                <div class="p-6">
+                    <ul class="list-inside list-disc space-y-3 text-base-content" role="list">
+                        <li>
+                            <span class="ms-3">Up to 5 Team Members</span>
+                        </li>
+                        <li>
+                            <span class="ms-3">Up to 5,000 Tools</span>
+                        </li>
+                        <li>
+                            <span class="ms-3">Printer Friendly Reports</span>
+                        </li>
+                        <li>
+                            <span class="ms-3">Mon-Fri Email Support</span>
+                        </li>
+                    </ul>
+                </div>
+                <button id="pro-link" class="btn btn-primary btn-block mt-auto">Get Started Today</button>
+            </div>
+            <div class="card border border-base-content/15 p-3 shadow-sm">
+                <div class="card bg-base-200 p-6">
+                    <h3 class="text-xl font-semibold">Enterprise</h3>
+                    <p class="mt-4 flex items-baseline">
+                        <span class="text-5xl font-bold tracking-tight" x-text="ultimate[period]"></span>
+                        <span class="ml-1 text-xl font-semibold">/month</span>
+                    </p>
+                    <p class="mt-6">
+                        For customers with more than 5 users managing their tool inventory, require customized
+                        reporting, or
+                        have more than 5k active tools.
+                    </p>
+                </div>
+                <div class="p-6">
+                    <ul class="list-inside list-disc space-y-3" role="list">
+                        <li>
+                            <span class="ms-3 text-white">Unlimited Users</span>
+                        </li>
+                        <li>
+                            <span class="ms-3 text-white">Unlimited Tools</span>
+                        </li>
+                        <li>
+                            <span class="ms-3 text-white">Customized Reporting</span>
+                        </li>
+                        <li>
+                            <span class="ms-3 text-white">24*7 High-Priority Support</span>
+                        </li>
+                    </ul>
+                </div>
+                <button id="enterprise-link" class="btn btn-outline bg-slate-500 text-white  btn-block mt-auto">
+                    Choose Enterprise
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

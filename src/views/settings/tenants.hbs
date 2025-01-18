@@ -1,0 +1,139 @@
+{{#isnt user.role 'Superadmin'}}
+    <div class='main-view'>
+        <div class='flex items-center justify-center w-screen h-screen'>
+            <div class='px-40 py-20 bg-white rounded-md shadow-xl'>
+                <div class='flex flex-col items-center'>
+                    <h1 class='font-bold text-blue-600 text-9xl'>401</h1>
+                    <h6 class='mb-2 text-2xl font-bold text-center text-red-500 md:text-3xl'>Unauthorized!</h6>
+                    <p class='mb-8 text-center text-gray-500 md:text-lg'>You're not permitted to be here.</p>
+                    <a href='/dashboard' class='px-6 py-2 text-sm font-semibold text-blue-800 bg-blue-100'>Go home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{else}}
+        <div class="flex w-screen h-screen ">
+            <div id="settings-nav">
+                {{>_settings}}
+                <div class="inline-block px-4 py-1.5 text-sm font-medium no-underline rounded-lg btn btn-sm ml-5 mt-2">
+                    <label for="newTenantModal">New Tenant</label>
+                </div>
+            </div>
+            <div class="flex pl-10 pt-10 overflow-auto">
+                <div class="flex flex-col flex-shrink-0 w-3/5 ">
+                    <div class="flex items-center justify-center flex-shrink-0 h-10 px-2 relative">
+                        <span class="text-center text-white block text-md font-extrabold">Active</span>
+                    </div>
+                    <div class="flex flex-col pb-2 overflow-y- min-w-fit">
+                        <table class="table table-auto w-full">
+                            <thead>
+                                <tr>
+                                    <th>Impersonate?</th>
+                                    <th>Tenant Name</th>
+                                    <th>Edit</th>
+                                    <th>Deactivate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#if activeTenants}}
+                                    {{#each activeTenants}}
+                                        {{!-- Impersontate button --}}
+                                        <tr>
+                                            {{#isnt this.id ../user.tenant}}
+                                                <td><a href="/settings/tenant/{{this.id}}/impersonate"><i
+                                                            class="fas fa-theater-masks"></i></a></td>
+                                    {{else}}
+                                        <td>
+                                            <div class="tooltip"
+                                                data-tip="You cannot impersonate the tenant you are currently using!"><i
+                                                    class="fa-solid fa-ban"></i></div>
+                                        </td>
+                                            {{/isnt}}
+                                            {{!-- Tenant Name --}}
+                                            <td>{{this.name}}</td>
+                                            {{!-- Edit Tenant Button --}}
+                                            <td><a href="/settings/tenant/{{this._id}}/edit"><i
+                                                        class="fa fa-pencil"></i></a>
+                                            </td>
+                                            {{!-- deactivate button --}}
+                                            {{#isnt this.id ../user.tenant}}
+                                                <td><a href="/settings/tenant/{{this._id}}/deactivate"><i
+                                                            class="fas fa-arrow-right"></i></a></td>
+                                                </td>
+                                            {{else}}
+                                        <td>
+                                            <div class="tooltip"
+                                                data-tip="You cannot deactivate the tenant you are currently using!"><i
+                                                    class="fa-solid fa-ban"></i></div>
+                                        </td>
+                                            {{/isnt}}
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="drop-shadow-2xl pl-5 flex flex-col flex-shrink-0 w-3/5">
+                    <div class="flex items-center justify-center flex-shrink-0 h-10 px-2 relative">
+                        <span class="text-center text-white block text-md font-extrabold">Inactive</span>
+                    </div>
+                    <div class="flex flex-col px-2 pb-2 overflow-y-scroll">
+                        <table class="table table-auto">
+                            <thead>
+                                <tr>
+                                    <th>Activate</th>
+                                    <th>Tenant Name</th>
+                                    <th class="hidden md:table-cell">Domain</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#if inactiveTenants}}
+                                    {{#each inactiveTenants}}
+                                        <tr>
+                                            <td><a href="/settings/tenant/{{_id}}/activate"><i
+                                                        class="fas fa-arrow-left"></i></a>
+                                            </td>
+                                            <td>{{jobNumber}}</td>
+                                            <td class="hidden md:table-cell min-w-fit">{{name}}</td>
+                                            <td><a href="/settings/tenant/{{_id}}/edit"><i class="fa fa-pencil"></i></a>
+                                            </td>
+                                            <td><a href="/settings/tenant/{{_id}}/delete"
+                                                    onclick="return confirm('Are you sure you want to delete {{name}}')"><i
+                                                        class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    {{/each}}
+                                {{/if}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{!-- New Tenant Modal --}}
+        <input type="checkbox" id="newTenantModal" class="modal-toggle" />
+        <div class="modal">
+            <div class="modal-inner-md">
+                <label for="newTenantModal" class="modal-close-btn">✕</label>
+                <form action="/settings/tenant/create" method="POST">
+                    <div class="grid items-center w-full grid-cols-2 grid-rows-3 gap-1">
+                        <div class="title-bar">
+                            <h3 class="title-text">New Tenant</h3>
+                        </div>
+                        <input placeholder="Admin Email Address" type="text" name="adminEmail"
+                            id="new-tenant_admin-email" class="input input-bordered">
+                        <input placeholder="Tenant Name" type="text" name="tenantName" id="new-tenant_name"
+                            class="input input-bordered">
+                        <div class="modal-button-row">
+                            <label class="btn btn-sm"> <button id="new-tenant_submit"
+                                    type="submit">Submit</button></label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+{{/isnt}}

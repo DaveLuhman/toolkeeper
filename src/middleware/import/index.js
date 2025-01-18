@@ -1,9 +1,7 @@
 import { activateServiceAssignments, importServiceAssignments } from './serviceAssignment.js'
 import { importTools } from './tool.js'
-import { importHistory } from './history.js'
 import { importCategories } from './categories.js'
-import 'fs/promises'
-import logger from '../../config/logger.js'
+import 'node:fs/promises'
 
 /**
  * Imports data from a file.
@@ -12,7 +10,7 @@ import logger from '../../config/logger.js'
  * @param {Function} next - The next middleware function.
  */
 export async function importByFile(req, res, next) {
-  logger.log(req.body.importTarget)
+  console.log(req.body.importTarget)
   if (!req.files || !req.body.importTarget) {
     res.locals.error = 'No file uploaded or no selection made'
     res.render('settings/import', {
@@ -20,28 +18,23 @@ export async function importByFile(req, res, next) {
     })
     return next('router')
   }
-  const file = req.files.importFile
-  const importTarget = req.body.importTarget
+  const { importFile: file } = req.files
+  const { importTarget } = req.body
+  const { tenant } = req.user
+  const tenantStr = tenant.valueOf()
   let result = null;
   switch (importTarget) {
     case 'tools':
-      logger.log('importing tools')
-      result = await importTools(file)
+      console.log('importing tools')
+      result = await importTools(file, tenant)
       break
-    case 'allServiceAssignments':
-      logger.log('importing all service assignments')
-      result = await importServiceAssignments(file)
-      break
-    case 'activeServiceAssignments':
-      logger.log('marking inactive SAs as such')
-      result = await activateServiceAssignments(file)
-      break
-    case 'history':
-      result = await importHistory(file)
+    case 'serviceAssignments':
+      console.log('importing all service assignments')
+      result = await importServiceAssignments(file, tenant)
       break
     case 'categories':
-      logger.log('importing categories')
-      result = await importCategories(file)
+      console.log('importing categories')
+      result = await importCategories(file, tenant)
       break
     default:
       res.locals.message = 'not sure how you managed this response.'
@@ -50,3 +43,5 @@ export async function importByFile(req, res, next) {
   res.locals.errorList = result.errorList;
   next()
 }
+
+// src\middleware\import\index.js

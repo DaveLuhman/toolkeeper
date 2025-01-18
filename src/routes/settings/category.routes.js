@@ -1,40 +1,49 @@
-import { Router } from 'express'
+import { Router } from "express";
 import {
-  getCategories,
-  getCategoryByID,
-  updateCategory,
-  createCategory,
-  deleteCategory
-} from '../../middleware/category.js'
-import { sanitizeReqBody } from '../../middleware/util.js'
-import { renderSettingsCategories, renderSettingsEditCategory } from '../../controllers/settings/category.js'
+	getCategories,
+	getCategoryByID,
+	updateCategory,
+	createCategory,
+	deleteCategory,
+} from "../../middleware/category.js";
+import { sanitizeReqBody } from "../../middleware/util.js";
+import {
+	renderSettingsCategories,
+	renderSettingsEditCategory,
+} from "../../controllers/settings/category.js";
 
-export const categoryRouter = Router()
+export const categoryRouter = Router();
 
-categoryRouter.get('/', getCategories, renderSettingsCategories)
+categoryRouter.get("/", getCategories, renderSettingsCategories);
 // get service assignment by ID and render edit page
 categoryRouter.get(
-  '/edit/:id', // target
-  getCategoryByID,
-  renderSettingsEditCategory
-)
+	"/edit/:id", // target
+	getCategoryByID,
+	renderSettingsEditCategory,
+);
 // update service assignment
 categoryRouter.post(
-  '/edit', // target
-  sanitizeReqBody,
-  updateCategory,
-  getCategories,
-  renderSettingsCategories
-)
+	"/edit", // target
+	sanitizeReqBody,
+	updateCategory,
+	getCategories,
+	renderSettingsCategories,
+);
 // add new service assignment
-categoryRouter.post('/create',
-  sanitizeReqBody,
-  createCategory,
-  getCategories,
-  renderSettingsCategories
-)
+categoryRouter.post(
+	"/create",
+	sanitizeReqBody,
+	createCategory,
+	getCategories,
+	renderSettingsCategories,
+);
 // delete service assignment
-categoryRouter.get('/delete/:id',
-  deleteCategory,
-  getCategories,
-  renderSettingsCategories)
+categoryRouter.get(
+	"/delete/:id",
+	deleteCategory,
+	getCategories,
+	renderSettingsCategories,
+);
+
+// File: src/routes/settings/category.routes.js
+// src\routes\settings\category.routes.js

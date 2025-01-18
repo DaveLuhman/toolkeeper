@@ -1,7 +1,5 @@
-import User from '../models/User.model.js'
+import { User } from '../models/index.models.js'
 import { createToken, sendResetPwEmail } from './util.js'
-import { hash } from 'bcrypt'
-
 
 /**
  * Initiates the password reset process for a user by generating a reset token and sending a reset password email.
@@ -21,7 +19,7 @@ export async function submitResetPasswordRequest(req, res) {
         user.save()
         await sendResetPwEmail(user.email, user.token)
         res.locals.message = `An e-mail has been sent to ${user.email} with further instructions.`
-        res.redirect('/login')
+        res.render('auth/login')
     }
 }
 
@@ -63,10 +61,12 @@ export async function executeResetPasswordRequest(req, res) {
         res.locals.message = 'Passwords do not match'
         res.redirect(`/forgotPassword/${token}`)
     }
-    user.password = await hash(password, 10)
+    user.password = password
     user.token = undefined
     user.tokenExpiry = undefined
     user.save()
     res.locals.message = 'Your password has been successfully reset. Please log in with your new password.'
     res.redirect('/login')
 }
+
+// src\controllers\user.js
