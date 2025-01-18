@@ -53,7 +53,7 @@
 
 ## Introduction
 
-This is a full-stack web application built with NodeJS and Express that allows an contractor to manage their tool crib. Currently at v1.1.6
+This is a full-stack web application built with NodeJS and Express that allows an contractor to manage their tool crib. Currently at v2.0!
 
 ## Features
 
@@ -77,7 +77,7 @@ This is a full-stack web application built with NodeJS and Express that allows a
 
 ### Prerequisites
 
-- NodeJS 19+
+- NodeJS 22+
 - MongoDB Target
 
 ### Docker-Compose
@@ -98,9 +98,9 @@ Note: This is configured with /data/db and /data/configdb persistent storage vol
 2. Duplicate the .env.sample file and fill in the details to match your environment
    a. note the .env file in the monorepo is in ./src/config/.env
 
-3. In a terminal, run `bun install` to perform a clean install of the node dependancies
-4. Next, we'll run `bun run build:css` to build the tailwind CSS files
-5. Finally, we'll run `bun start` to start the services
+3. In a terminal, run `npm install` to perform a clean install of the node dependancies
+4. Next, we'll run `npm run build:css` to build the tailwind CSS files
+5. Finally, we'll run `npm start` to start the services
 
 ## License
 
