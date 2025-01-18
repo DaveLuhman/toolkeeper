@@ -3,92 +3,80 @@
 
     <div class="space-y-8 text-lg">
         <div>
-            <h3 class="text-2xl font-semibold text-zinc-800 dark:text-zinc-100 mb-4">First Time Setup</h3>
-            <div class="space-y-6 section" id="service-assignments">
-                <h4 class="text-xl font-medium text-zinc-800 dark:text-zinc-100 mb-2">1. Create some service
-                    assignments<i id="step-one-setup-arrow" class="fa-solid fa-arrow-down arrow ml-2"
-                        onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
-                <div class="content expanded">
-                    <div class="flex md:flex-row flex-col justify-evenly items-center">
-                        <div class="justify-evenly items-center align-middle">
-                            <p class="prose text-zinc-800 dark:text-zinc-300">Service Assignments answer "where" or
-                                "who" a tool is assigned. By default there are three, IMPORT, STOCK, and PARTS.
-                                You'll want to add your own service assignments to suit your needs, typically starting
-                                with
-                                Stockrooms. Tools are <strong class="text-zinc-900 dark:text-zinc-400">checked
-                                    in</strong> when they're in a stockroom. All other service
-                                assignments will identify tools as <strong
-                                    class="text-zinc-900 dark:text-zinc-400">checked
-                                    out</strong>. Import is a catchall for tools when the import function is used and an
-                                existing
-                                service assignment cannot be found.</p>
-                            <br>
-                            <p class="prose text-zinc-800 dark:text-zinc-300">In the dropdown, there are five options,
-                                and with the exception of Stockroom, they all function the same. The dropdown is used to
-                                select the
-                                service assignment type, the text fields are descriptive fields for the SA's
-                                details. Job Number is the shortname field, as that's how many project management tools
-                                and other software identify a job.
-                                Job Name is the full name, and is intended as a human-readable field.</p>
-                        </div>
-                        <img src="/img/docs/create-service-assignment.png" alt="Create Service Assignments"
-                            width="660px" height="265px">
-                    </div>
+            <h3 class="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 mb-4">Overview:</h3>
+            <div class="space-y-6">
+                <div>
+                    <p class="text-zinc-800 dark:text-zinc-300">Welcome to ToolKeeper! This guide will walk you through the initial setup process to get your tool management system up and running. We'll cover the three essential steps: creating service assignments, setting up categories, and adding your tools to the system.</p>
                 </div>
-            </div>
-            <div class="space-y-6 section" id="categories">
-                <h4 class="text-xl font-medium text-zinc-800 dark:text-zinc-100 mb-2">2. Create some categories<i
-                        id="step-two-setup-arrow" class="fa-solid fa-arrow-right arrow ml-2"
-                        onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
-                <div class="content">
-                    <div class="flex md:flex-row flex-col justify-evenly items-center">
-                        <img src="/img/docs/create-category.png" alt="Create Category" width="517px" height="314px">
-                        <div class="justify-evenly items-center align-middle">
-                            <p class="prose text-zinc-800 dark:text-zinc-300">Categories are used to group tools by
-                                type, and there is only one by default, "Uncategorized". For example, you might have a
-                                category
-                                called "Cordless Drills" and another called "Ladders". This helps with reporting and
-                                filtering. Be as specific as you like, but keep in mind that each tool can only possess
-                            <br>
-                            <p class="prose text-zinc-800 dark:text-zinc-300">Categories use the "Name" field, although
-                                have a prefix value as well. This is for the ToolId field on the tool. If a tool has an
-                                ID with
-                                an category prefix, it will automatically be assigned to that category. If the category
-                                is changed, but the prefix is not updated, it will revert to the category that matches
-                                the
-                                prefix.</p>
+                <hr>
+                <div>
+                    <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">1. Service Assignments</h4>
+                    <div class="space-y-4">
+                        <p class="text-zinc-800 dark:text-zinc-300">Service Assignments answer "where" or "who" a tool is assigned. By default, there are three assignments: IMPORT, STOCK, and PARTS. You'll want to add your own service assignments to suit your needs, typically starting with Stockrooms.</p>
+
+                        <div class="flex md:flex-row flex-col justify-between items-center gap-6">
+                            <div class="flex-1">
+                                <p class="text-zinc-800 dark:text-zinc-300">Key points about Service Assignments:</p>
+                                <ul class="list-disc ml-6 text-zinc-800 dark:text-zinc-300">
+                                    <li>Tools are <strong class="text-zinc-900 dark:text-zinc-400">checked in</strong> when they're in a stockroom</li>
+                                    <li>All other service assignments mark tools as <strong class="text-zinc-900 dark:text-zinc-400">checked out</strong></li>
+                                    <li>The IMPORT assignment serves as a catchall for tools when the import function can't find an existing assignment</li>
+                                </ul>
+                                <p class="mt-4 text-zinc-800 dark:text-zinc-300">The dropdown offers five assignment types, with Stockroom having special handling. Job Number serves as a shortname field, while Job Name provides a human-readable description.</p>
+                            </div>
+                            <img src="/img/docs/create-service-assignment.png" alt="Create Service Assignments" class="max-w-xl">
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="space-y-6 section" id="tools">
-                <h4 class="text-xl font-medium text-zinc-800 dark:text-zinc-100 mb-2">3. Create some tools<i
-                        id="step-three-setup-arrow" class="fa-solid fa-arrow-right arrow ml-2"
-                        onclick="toggleSection(this.parentElement.parentElement)"></i></h4>
-                <div class="content">
-                    <div class="flex md:flex-row flex-col justify-evenly items-center mb-3">
-                        <img src="/img/docs/single-create-tool.png" alt="Create A Tool" width="517px" height="314px">
-                        <p class="prose text-zinc-800 dark:text-zinc-300">Tools are the bread and butter of TolKeeper,
-                            and are going to take the longest to get entered. There are two ways to enter tools,
-                            either
-                            through the "Create Tool" button available on any page (once you're logged in.) The other
-                            method is via batch tool entry. This saves time by letting you automatically increment
-                            unique
-                            fields like barcode, serial number, and tool-ID.</p>
-                    </div>
-                    <div class="flex md:flex-row flex-col justify-evenly items-center">
-                        <div class="justify-evenly items-center align-middle">
-                            <p class="prose text-zinc-800 dark:text-zinc-300">The other method
-                                is via batch tool entry. This saves time by letting you automatically increment unique
-                                fields like barcode, serial number, and tool-ID. The form will attempt to increment the
-                                value placed in the first field, and will only work if the value ends with a number.</p>
-                            <br>
-                            <p class="prose text-zinc-800 dark:text-zinc-300">When you've entered the unique values and
-                                selected which fields to auto-increment, pressing the <strong>+</strong> will create the
-                                next tool sequentially. This also locks the initial unique value form fields, as they are used to calculate the values that follow.</p>
+                <hr>
+                <div>
+                    <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">2. Categories</h4>
+                    <div class="space-y-4">
+                        <p class="text-zinc-800 dark:text-zinc-300">Categories help organize tools by type. The system starts with one default category, "Uncategorized". You can create categories as specific as needed to match your organization's needs.</p>
+
+                        <div class="flex md:flex-row flex-col justify-between items-center gap-6">
+                            <img src="/img/docs/create-category.png" alt="Create Category" class="max-w-xl">
+                            <div class="flex-1">
+                                <p class="text-zinc-800 dark:text-zinc-300">Important category features:</p>
+                                <ul class="list-disc ml-6 text-zinc-800 dark:text-zinc-300">
+                                    <li>Each category has a unique name and optional prefix</li>
+                                    <li>The prefix is used in Tool IDs for automatic category assignment</li>
+                                    <li>Tools with matching prefixes will automatically be assigned to the corresponding category</li>
+                                    <li>Category changes without prefix updates will revert to the prefix-matched category</li>
+                                </ul>
+                            </div>
                         </div>
-                        <img src="/img/docs/batch-create-tools.png" alt="Batch Create Tools" width="517px"
-                            height="314px">
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <h4 class="text-xl font-medium text-zinc-900 dark:text-zinc-100 mb-2">3. Tools</h4>
+                    <div class="space-y-4">
+                        <p class="text-zinc-800 dark:text-zinc-300">Tools are the core of ToolKeeper, and there are two methods for adding them to your system:</p>
+
+                        <div class="space-y-6">
+                            <div class="flex md:flex-row flex-col justify-between items-center gap-6">
+                                <div class="flex-1">
+                                    <h5 class="text-lg font-semibold mb-2">Single Tool Entry</h5>
+                                    <p class="text-zinc-800 dark:text-zinc-300">Use the "Create Tool" button available on any page once you're logged in. This method is best for adding individual tools or when you have unique items to catalog.</p>
+                                </div>
+                                <img src="/img/docs/single-create-tool.png" alt="Create A Tool" class="max-w-xl">
+                            </div>
+
+                            <div class="flex md:flex-row flex-col justify-between items-center gap-6">
+                                <img src="/img/docs/batch-create-tools.png" alt="Batch Create Tools" class="max-w-xl">
+                                <div class="flex-1">
+                                    <h5 class="text-lg font-semibold mb-2">Batch Tool Entry</h5>
+                                    <p class="text-zinc-800 dark:text-zinc-300">Perfect for adding multiple similar tools. This method:</p>
+                                    <ul class="list-disc ml-6 text-zinc-800 dark:text-zinc-300">
+                                        <li>Automatically increments unique fields (barcode, serial number, tool-ID)</li>
+                                        <li>Works when the initial value ends with a number</li>
+                                        <li>Locks initial values after the first entry to maintain sequence integrity</li>
+                                        <li>Uses the <strong>+</strong> button to create each sequential tool</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
