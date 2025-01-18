@@ -1,32 +1,13 @@
-FROM oven/bun:1 AS base
-WORKDIR /usr/src/app
-
-# install dependencies into temp directory
-# this will cache them and speed up future builds
-FROM base AS install
-RUN mkdir -p /temp/dev
-COPY package.json bun.lockb /temp/dev/
-RUN cd /temp/dev && bun install --frozen-lockfile
-
-# install with --production (exclude devDependencies)
-RUN mkdir -p /temp/prod
-COPY package.json bun.lockb /temp/prod/
-RUN cd /temp/prod && bun install --frozen-lockfile --production
-
-# copy node_modules from temp directory
-# then copy all (non-ignored) project files into the image
-FROM base AS prerelease
-COPY --from=install /temp/dev/node_modules node_modules
-COPY . .
-
-# build tailwindCSS files
+FROM node:22-alpine/node
+WORKDIR /src
+COPY . /
+EXPOSE 3000
 ENV NODE_ENV=PRODUCTION
-RUN bunx tailwindcss -c ./src/config/tailwind.config.cjs --postcss ./src/config/postcss.config.cjs  -i ./src/public/css/tailwind.css -o /usr/src/app/public/css/style.css
-
-# copy production dependencies and source code into final image
-FROM base AS release
-COPY --from=install /temp/prod/node_modules node_modules
-COPY --from=prerelease /usr/src/app .
-
-EXPOSE 3000/tcp
-ENTRYPOINT ["bun", "run", "start"]
+LABEL org.opencontainers.image.description="ToolKeeper by ADO Software"
+LABEL org.opencontainers.image.authors="Dave Luhman, <<dave@ado.software>>"
+LABEL org.opencontainers.image.url="https://ghcr.io/daveluhman/toolkeeper"
+LABEL org.opencontainers.image.source="https://github.com/daveluhman/toolkeeper"
+    LABEL org.opencontainers.image.version="v2.0"
+RUN npm install
+RUN npm run build:css
+CMD ["npm", "start"]
