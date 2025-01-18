@@ -13,10 +13,7 @@ body {
 }
 
 .title-bar {
-  @apply col-span-2;
-  @apply md:col-span-3;
-  @apply rounded-lg;
-  @apply drop-shadow-xl;
+  @apply col-span-2 md:col-span-3 rounded-lg drop-shadow-xl;
 }
 
 .title-text {
@@ -180,7 +177,6 @@ table.table {
   @apply mb-4;
   @apply pr-5;
 }
-
 th {
   @apply font-bold;
   @apply uppercase;
@@ -249,12 +245,7 @@ td {
 }
 
 .modal-table {
-  @apply grid;
-  @apply grid-cols-2;
-  @apply md:grid-cols-3;
-  @apply gap-4;
-  @apply w-full;
-  @apply items-center;
+  @apply grid grid-cols-2  md:grid-cols-3 gap-4 w-full items-center;
 }
 
 .modal-body {
@@ -263,19 +254,11 @@ td {
 }
 
 .modal-button-row {
-  @apply col-span-2;
-  @apply md:col-span-3;
-  @apply modal-action;
-  @apply float-right;
+  @apply modal-action float-right;
 }
 
 .modal-button {
-  @apply btn;
-  @apply normal-case;
-  @apply btn-sm;
-  @apply rounded-lg;
-  @apply text-center;
-  @apply m-2;
+  @apply btn normal-case  btn-sm  rounded-lg text-center  m-2;
 }
 
 .form-wrapper {

@@ -4,10 +4,7 @@
 <div class="flex flex-row">
     <div class="flex-1" id="recentlyChanged">
         {{#if recentlyUpdatedTools}}
-            {{> dashboard/_recentlyUpdated}}
-            {{#else}}
-                {{> dashboard/_nothingToDisplay}}
-            {{/else}}
+        {{> dashboard/_recentlyUpdated}}
         {{/if}}
     </div>
     <div class="flex flex-1 flex-col">
@@ -22,12 +19,3 @@
         </div>
     </div>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        introJs().onexit(() => {
-            $.post("/dashboard/onboarding-complete");
-        }).start();
-    });
-</script>
-{{> onboarding/_dashboard}}
-{{> dashboard/_createCache}}

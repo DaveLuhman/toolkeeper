@@ -36,6 +36,14 @@ function checkAuth(req, res, next) {
  * })
  **/
 function isManager(req, res, next) {
+  if (req.user.role === 'User') {
+    res.locals.error =
+      'You are not a manager, and have been redirected to the dashboard'
+    return res.redirect('/dashboard')
+
+  }
+  return next()
+}
 	if (req.user.role === "User") {
 		res.locals.error =
 			"You are not a manager, and have been redirected to the dashboard";
