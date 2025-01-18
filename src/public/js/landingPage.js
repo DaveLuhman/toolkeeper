@@ -7,7 +7,7 @@ if (document.getElementById("github-link")) {
 if (document.getElementById("pro-link")) {
 	document.getElementById("pro-link").addEventListener("click", () => {
 		globalThis.open(
-			"https://store.ado.software/buy/7e74e0bb-3f63-4973-a60f-3969d31ffeae",
+			"https://store.ado.software/buy/12b15f8d-2ecf-4fe0-9c8b-68a05567e50e",
 			"_blank",
 		);
 	});
@@ -15,7 +15,7 @@ if (document.getElementById("pro-link")) {
 if (document.getElementById("enterprise-link")) {
 	document.getElementById("enterprise-link").addEventListener("click", () => {
 		globalThis.open(
-			"https://store.ado.software/buy/7e74e0bb-3f63-4973-a60f-3969d31ffeae",
+			"https://store.ado.software/buy/12b15f8d-2ecf-4fe0-9c8b-68a05567e50e",
 			"_blank",
 		);
 	});
