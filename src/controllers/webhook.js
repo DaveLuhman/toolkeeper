@@ -1,13 +1,13 @@
 import logger from "../logging/index.js";
 import { handleWebhook } from "../middleware/subscription.js";
-import { secret } from "../config/lemonSqueezy.js";
+import { signingSecret } from "../config/lemonSqueezy.js";
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { Buffer } from "node:buffer";
 
 // Verify the X-Signature to ensure the request is legitimate
 const verifySignature = (req) => {
 	try {
-		const hmac = createHmac("sha256", secret);
+		const hmac = createHmac("sha256", signingSecret);
 		const digest = Buffer.from(hmac.update(req.rawBody).digest("hex"), "utf8");
 		const signature = Buffer.from(req.get("X-Signature") || "", "utf8");
 

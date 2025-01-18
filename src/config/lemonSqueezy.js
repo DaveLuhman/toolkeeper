@@ -1,4 +1,4 @@
-export const secret = "df027e53-f33b-4155-8ef2-a7366f65acfe";
+export const signingSecret = process.env.SIGNING_SECRET;
 import { lemonSqueezySetup, listProducts } from "@lemonsqueezy/lemonsqueezy.js";
 import process from "node:process";
 
