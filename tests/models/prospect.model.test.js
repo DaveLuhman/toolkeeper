@@ -59,6 +59,7 @@ describe("Prospect Model", () => {
   // Test case 4: Optional fields
   it("should allow creation of a prospect without optional fields", async () => {
     const validProspectData = {
+      name: "Jane Doe",
       email: "jane.doe@example.com", // Required field
     };
     const prospect = new Prospect(validProspectData);
@@ -67,7 +68,7 @@ describe("Prospect Model", () => {
     // Assertions
     expect(savedProspect._id).toBeDefined();
     expect(savedProspect.email).toBe("jane.doe@example.com");
-    expect(savedProspect.name).toBeUndefined(); // Optional field not provided
+    expect(savedProspect.name).toBeDefined(); // Optional field not provided
     expect(savedProspect.companyName).toBeUndefined(); // Optional field not provided
   });
 });

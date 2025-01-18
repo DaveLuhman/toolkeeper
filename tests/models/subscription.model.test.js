@@ -25,8 +25,13 @@ describe("Subscription Model", () => {
       user: user._id,
       tenant: tenant._id,
       lemonSqueezyId: "ls_12345",
-      status: "active",
-      plan: "monthly",
+      lemonSqueezyObject: {
+        data: {
+          id: "ls_12345",
+          status: "active",
+          plan: "monthly",
+        },
+      },
     };
     const subscription = new Subscription(validSubscriptionData);
     const savedSubscription = await subscription.save();

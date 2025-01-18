@@ -5,6 +5,7 @@ import {
 	ServiceAssignment,
 	Category,
 	Tenant,
+	User
 } from "../../src/models/index.models.js"; // Adjust this import to your project structure
 
 describe("Tool Model", () => {
