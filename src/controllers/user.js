@@ -31,7 +31,7 @@ export async function submitResetPasswordRequest(req, res) {
  * @returns {void} Does not return any value but redirects or renders a page based on token validity.
  */
 export async function verifyResetPasswordRequest(req, res) {
-    const token = req.params.token
+    const {token} = req.params
     const user = await User.findByToken(token)
     if (!user) {
         res.locals.message = 'Password reset token is invalid'
@@ -50,7 +50,7 @@ export async function verifyResetPasswordRequest(req, res) {
  * @param {object} res The response object used to send back the HTTP response.
  */
 export async function executeResetPasswordRequest(req, res) {
-    const token = req.params.token
+    const {token} = req.params
     const user = await User.findByToken(token)
     if (!user || user.tokenExpiry < Date.now()) {
         res.locals.message = 'Password reset token is invalid or has expired.'
