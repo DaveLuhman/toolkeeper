@@ -229,47 +229,36 @@ const createTool = async (req, res, next) => {
 			throw new Error("Missing required fields");
 		}
 
-		// Check for duplicates individually, putting errors in an
-		// error list of objects with the tool, field, and value
-
-		const errorList = [];
+		// Build query conditions for duplicate checking
+		const queryConditions = [];
 		if (serialNumber) {
-			const existingSerial = await Tool.findOne({ serialNumber, tenant });
-			if (existingSerial) {
-				errorList.push({
-					field: "Serial Number",
-					value: serialNumber,
-					tool: existingSerial,
-				});
-			}
+			queryConditions.push({ serialNumber: { $eq: serialNumber }, tenant: { $eq: tenant } });
 		}
 		if (barcode) {
-			const existingBarcode = await Tool.findOne({ barcode, tenant });
-			if (existingBarcode) {
-				errorList.push({
-					field: "Barcode",
-					value: barcode,
-					tool: existingBarcode,
-				});
-			}
+			queryConditions.push({ barcode: { $eq: barcode }, tenant: { $eq: tenant } });
 		}
 		if (toolID) {
-			const existingToolID = await Tool.findOne({ toolID, tenant });
-			if (existingToolID) {
-				errorList.push({
-					field: "Tool ID",
-					value: toolID,
-					tool: existingToolID,
-				});
-			}
+			queryConditions.push({ toolID: { $eq: toolID }, tenant: { $eq: tenant } });
 		}
 
-		if (errorList.length > 0) {
+		const existingTools = await Tool.find({ $or: queryConditions });
+
+		if (existingTools.length > 0) {
+			const errorList = existingTools.map((tool) => {
+				if (tool.serialNumber === serialNumber) {
+					return { field: "Serial Number", value: serialNumber, tool };
+				}
+				if (tool.barcode === barcode) {
+					return { field: "Barcode", value: barcode, tool };
+				}
+				return { field: "Tool ID", value: toolID, tool };
+			});
+
 			const error = new Error("Duplicate Tool(s) Found");
-			error.errorList = errorList.map(err => ({
+			error.errorList = errorList.map((err) => ({
 				cause: err.field,
 				duplicateValue: err.value,
-				existingTool: err.tool._id
+				existingTool: err.tool._id,
 			}));
 			throw error;
 		}
