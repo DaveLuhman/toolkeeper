@@ -1,10 +1,32 @@
 function openInNewTab() {
-	const x = globalThis.open();
-	const newPage = x.document.createElement("div");
-	newPage.width = "100%";
-	newPage.height = "100%";
-	newPage.innerHTML = document.getElementById("printerFriendlyTools").innerHTML;
-	x.document.body.appendChild(newPage);
+	// Open new window with specific security features
+	const printWindow = window.open('', '_blank',
+		'width=800,height=600,menubar=no,toolbar=no,location=no,status=no,noopener,noreferrer'
+	);
+
+	if (printWindow) {
+		// Set security headers for the new window
+		printWindow.document.write('<!DOCTYPE html><html><head>');
+		printWindow.document.write('<meta http-equiv="Content-Security-Policy" content="default-src \'self\'; script-src \'none\';">');
+		printWindow.document.write('<title>Printer Friendly View</title></head><body>');
+
+		// Get the content and create a sanitized copy
+		const content = document.getElementById("printerFriendlyTools");
+		if (content) {
+			// Create a deep clone to avoid manipulating the original DOM
+			const sanitizedContent = content.cloneNode(true);
+			// Remove any script tags from the cloned content
+			const scripts = sanitizedContent.getElementsByTagName('script');
+			while (scripts[0]) {
+				scripts[0].parentNode.removeChild(scripts[0]);
+			}
+
+			printWindow.document.body.appendChild(sanitizedContent);
+		}
+
+		printWindow.document.write('</body></html>');
+		printWindow.document.close();
+	}
 }
 if (document.getElementsByClassName("fa-print").length > 0) {
 	console.log("Print button found.");
@@ -20,37 +42,18 @@ function populateDashboard(cachedData) {
 		// Clear any existing content
 		serviceAssignmentsContainer.innerHTML = "";
 
-		console.log(
-			"All cached service assignments:",
-			cachedData.serviceAssignments,
-		);
-
 		// Loop through the cached service assignments and render them
 		// biome-ignore lint/complexity/noForEach: <explanation>
 		cachedData.serviceAssignments.forEach((assignment) => {
-			console.log("Processing assignment:", assignment);
-			console.log(
-				"toolCount:",
-				assignment.toolCount,
-				"active:",
-				assignment.active,
-			);
-
 			if (assignment.toolCount > 0 && assignment.active) {
 				const tr = document.createElement("tr");
 				const td = document.createElement("td");
-				td.innerHTML = `<a href="/tool/search?searchBy=serviceAssignment&searchTerm=${assignment._id}"> ${assignment.toolCount}  | ${assignment.jobNumber} - ${assignment.jobName}</a>`;
+				const link = document.createElement("a");
+				link.href = `/tool/search?searchBy=serviceAssignment&searchTerm=${assignment._id}`;
+				link.textContent = `${assignment.toolCount}  | ${assignment.jobNumber} - ${assignment.jobName}`;
+				td.appendChild(link);
 				tr.appendChild(td);
 				serviceAssignmentsContainer.appendChild(tr);
-			} else {
-				console.log(
-					"Assignment filtered out:",
-					assignment.jobNumber,
-					"toolCount:",
-					assignment.toolCount,
-					"active:",
-					assignment.active,
-				);
 			}
 		});
 	}
