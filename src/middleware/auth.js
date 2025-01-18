@@ -44,13 +44,7 @@ function isManager(req, res, next) {
   }
   return next()
 }
-	if (req.user.role === "User") {
-		res.locals.error =
-			"You are not a manager, and have been redirected to the dashboard";
-		return res.redirect("/dashboard");
-	}
-	return next();
-}
+
 
 // Enhance verifySubscriptionStatus to handle additional statuses
 async function verifySubscriptionStatus(userId) {
