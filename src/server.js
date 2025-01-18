@@ -102,7 +102,6 @@ app.use((req, res, next) => {
 	}
 	next();
 });
-app.use(rateLimiter);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(fileUpload());
 // Middleware to capture the raw body for /webhooks route
@@ -119,6 +118,7 @@ app.use(flash());
 passportConfig(app);
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(rateLimiter);
 app.use(getBaseUrl);
 app.use(tenantLogger);
 // Routes (No User Context)

@@ -11,7 +11,7 @@ import process from "node:process";
 
 let globalConn;
 
-async function checkUserCountAndCreateDocuments() {
+const checkUserCountAndCreateDocuments = async () => {
 	const userCount = await User.countDocuments();
 	if (userCount === 0) {
 		console.log(
@@ -20,9 +20,9 @@ async function checkUserCountAndCreateDocuments() {
 		await createDefaultGlobalDocuments();
 		await createDefaultDocuments();
 	}
-}
+};
 
-async function connectDB() {
+const connectDB = async () => {
 	let retries = 3;
 	while (retries > 0) {
 		try {
@@ -49,9 +49,9 @@ async function connectDB() {
 	}
 	await checkUserCountAndCreateDocuments();
 	return 0;
-}
+};
 
-async function createDefaultUser() {
+const createDefaultUser = async () => {
 	const usersToCreate = [
 		{
 			_id: "663870c0a1a9cdb4b707c737",
@@ -76,9 +76,9 @@ async function createDefaultUser() {
 		console.error(`Error creating default user: ${error.message}`);
 		throw new Error(`Failed to create default user: ${error.message}`);
 	}
-}
+};
 
-async function createDefaultOnboardings() {
+const createDefaultOnboardings = async () => {
 	try {
 		const adminAndDemoOnboardings = [
 			{
@@ -110,9 +110,9 @@ async function createDefaultOnboardings() {
 		console.error(`Error creating default onboarding: ${error.message}`);
 		throw new Error(`Failed to create default onboarding: ${error.message}`);
 	}
-}
+};
 
-async function createDefaultSubscription() {
+const createDefaultSubscription = async () => {
 	try {
 		return await Subscription.create({
 			_id: "66af881237c17b64394a4167",
@@ -147,9 +147,9 @@ async function createDefaultSubscription() {
 		console.error(`Error creating default subscription: ${error.message}`);
 		throw new Error(`Failed to create default subscription: ${error.message}`);
 	}
-}
+};
 
-async function createDefaultTenant() {
+const createDefaultTenant = async () => {
 	try {
 		return await Tenant.create({
 			_id: "66af881237c17b64394a4166",
@@ -162,12 +162,13 @@ async function createDefaultTenant() {
 		console.error(error);
 		throw error;
 	}
-}
+};
+
 /**
  * Creates and returns a default category object for uncategorized tools.
  * @returns {Object} The newly created category object with preset values.
  */
-function createDefaultCategory() {
+const createDefaultCategory = () => {
 	return Category.create({
 		_id: "64a1c3d8d71e121dfd39b7ab",
 		prefix: "UC",
@@ -175,14 +176,14 @@ function createDefaultCategory() {
 		description: "For Tools that dont have a category",
 		tenant: "66af881237c17b64394a4166",
 	});
-}
+};
 
 /**
  * Asynchronously creates default service assignments used across the platform.
  * This function seeds the database with predefined service assignment records.
  * @returns {Promise} A promise that resolves when the service assignments are successfully created.
  */
-async function createDefaultServiceAssignments() {
+const createDefaultServiceAssignments = async () => {
 	return await ServiceAssignment.create([
 		{
 			_id: "64a19e910e675938ebb67de7",
@@ -216,17 +217,17 @@ async function createDefaultServiceAssignments() {
 	]).catch((error) => {
 		console.log(error.message);
 	});
-}
+};
 
-function createDefaultDocuments() {
+const createDefaultDocuments = () => {
 	const defaultPromises = [
 		createDefaultCategory(),
 		createDefaultServiceAssignments(),
 	];
 	return Promise.allSettled(defaultPromises);
-}
+};
 
-async function createDefaultGlobalDocuments() {
+const createDefaultGlobalDocuments = async () => {
 	const defaultGlobalPromises = [
 		createDefaultUser(),
 		createDefaultTenant(),
@@ -234,7 +235,7 @@ async function createDefaultGlobalDocuments() {
 		createDefaultSubscription(),
 	];
 	return Promise.allSettled(defaultGlobalPromises);
-}
+};
 
 export const closeDbConnection = () => {
 	disconnect();

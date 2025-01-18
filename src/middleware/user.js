@@ -9,7 +9,7 @@ import logger from "../logging/index.js";
  * @param {*} next
  * @returns {array}
  */
-async function getUsers(req, res, next) {
+const getUsers = async (req, res, next) => {
 	console.info("[MW] getUsers-in".bgBlue.white);
 	const users = await User.find()
 		.where("tenant")
@@ -20,7 +20,8 @@ async function getUsers(req, res, next) {
 	res.locals.users = mutateToArray(users);
 	console.info("[MW] getUsers-out-2".bgWhite.blue);
 	return next();
-}
+};
+
 /**
  * Retrieves a user by their ID.
  *
@@ -29,7 +30,7 @@ async function getUsers(req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the user is retrieved.
  */
-async function getUserByID(req, res, next) {
+const getUserByID = async (req, res, next) => {
 	console.info("[MW] getUserByID-in".bgBlue.white);
 	const {id} = req.params;
 	console.info(`[MW] searching id: ${id}`);
@@ -37,7 +38,7 @@ async function getUserByID(req, res, next) {
 	res.locals.userToEdit = mutateToArray(user);
 	console.info("[MW] getUserByID-out".bgWhite.blue);
 	return next();
-}
+};
 
 /**
  * Creates a new user.
@@ -47,7 +48,7 @@ async function getUserByID(req, res, next) {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>} - A promise that resolves when the user is created.
  */
-async function createUserInTenant(req, res, next) {
+const createUserInTenant = async (req, res, next) => {
 	console.info("[MW] createUser-in".bgBlue.white);
 	let newUser;
 
@@ -112,7 +113,7 @@ async function createUserInTenant(req, res, next) {
 		res.status(400);
 		return next(error);
 	}
-}
+};
 
 /**
  * Verifies if the current user is the same as the target user.
@@ -120,7 +121,7 @@ async function createUserInTenant(req, res, next) {
  * @param {object} res The response object.
  * @param {function} next Callback function to pass control to the next middleware.
  */
-function verifySelf(req, res, next) {
+const verifySelf = (req, res, next) => {
 	console.info("[MW] verifySelf-in".bgBlue.white);
 	const targetID = req.params.id || req.body._id;
 	const currentUser = req.user._id;
@@ -133,7 +134,8 @@ function verifySelf(req, res, next) {
 	}
 	console.info("[MW] verifySelf-out-1".bgWhite.blue);
 	next();
-}
+};
+
 /**
  * Asynchronously updates user details based on the input provided in the request body.
  * @param {object} req The request object, containing user input data.
@@ -141,7 +143,7 @@ function verifySelf(req, res, next) {
  * @param {function} next Callback function to pass control to the next middleware.
  * @returns Calls the next middleware with updated user data or an error.
  */
-async function updateUser(req, res, next) {
+const updateUser = async (req, res, next) => {
 	console.info("[MW] updateUser-in".bgBlue.white);
 	try {
 		const {
@@ -176,7 +178,7 @@ async function updateUser(req, res, next) {
 		console.info("[MW] updateUser-out-1".bgRed.black);
 		return next();
 	}
-}
+};
 
 /**
  * Resets a user's password.
@@ -186,7 +188,7 @@ async function updateUser(req, res, next) {
  * @param {function} next - The next middleware function in the stack.
  * @returns {Promise<void>} Executes the next middleware function.
  */
-async function resetPassword(req, res, next) {
+const resetPassword = async (req, res, next) => {
 	console.info("[MW] resetPassword-in".bgBlue.white);
 
 	const { _id, password, confirmPassword } = req.body;
@@ -218,7 +220,7 @@ async function resetPassword(req, res, next) {
 		res.locals.error = "An error occurred while resetting the password";
 		res.status(500).redirect("back");
 	}
-}
+};
 
 /**
  * Disables a user by setting the isDisabled flag to true in the database.
@@ -227,14 +229,14 @@ async function resetPassword(req, res, next) {
  * @param {function} next - The next middleware function in the stack.
  * @returns {Promise<void>} Executes the next middleware function.
  */
-async function disableUser(req, _res, next) {
+const disableUser = async (req, _res, next) => {
 	console.info("[MW] disableUser-in".bgBlue.white);
 	await User.findByIdAndUpdate(req.params.id, { $set: { isDisabled: true } });
 	console.info("[MW] disableUser-out".bgBlue.white);
 	next();
-}
+};
 
-async function deleteUser(req, res, next) {
+const deleteUser = async (req, res, next) => {
 	console.info("[MW] deleteUser-in".bgBlue.white);
 	const targetUser = await User.findById(req.params.id);
 	if (targetUser._id !== req.user._id) {
@@ -246,7 +248,8 @@ async function deleteUser(req, res, next) {
 	}
 	console.info("[MW] deleteUser-out".bgBlue.white);
 	next();
-}
+};
+
 export {
 	resetPassword,
 	getUsers,
