@@ -82,7 +82,7 @@ const createUserInTenant = async (req, res, next) => {
 
 		// Determine user limit using the external function
 		const { userLimit, planName } = determineUserLimit(
-			subscriptionDoc.lemonSqueezyObject.variantName,
+			subscriptionDoc.lemonSqueezyObject.variant_name,
 		);
 
 		if (currentUserCount >= userLimit) {
