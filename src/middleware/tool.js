@@ -158,13 +158,15 @@ const searchTools = async (req, res, next) => {
 				res.locals.tools = await Tool.find({
 					serviceAssignment: searchTerm,
 					tenant: req.user.tenant.valueOf(),
+					archived: false
 				}).sort({ [sortField]: sortOrder || 1 });
 				break;
 
 			case "category":
 				res.locals.tools = await Tool.find({
 					category: searchTerm,
-					tenant: req.user.tenant.valueOf(),
+					tenant: req.user.tenant.valueOf(),,
+					archived: false
 				}).sort({ [sortField]: sortOrder || 1 });
 				break;
 
