@@ -165,7 +165,7 @@ const searchTools = async (req, res, next) => {
 			case "category":
 				res.locals.tools = await Tool.find({
 					category: searchTerm,
-					tenant: req.user.tenant.valueOf(),,
+					tenant: req.user.tenant.valueOf(),
 					archived: false
 				}).sort({ [sortField]: sortOrder || 1 });
 				break;
