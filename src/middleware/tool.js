@@ -307,6 +307,7 @@ const updateTool = async (req, res, next) => {
 			description,
 			serviceAssignment,
 			category,
+			barcode,
 			manufacturer,
 			width,
 			height,
@@ -325,6 +326,7 @@ const updateTool = async (req, res, next) => {
 				description,
 				serviceAssignment,
 				category,
+				barcode,
 				manufacturer,
 				size: {
 					width,
