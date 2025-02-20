@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.description="ToolKeeper by ADO Software"
 LABEL org.opencontainers.image.authors="Dave Luhman, <<dave@ado.software>>"
 LABEL org.opencontainers.image.url="https://ghcr.io/daveluhman/toolkeeper"
 LABEL org.opencontainers.image.source="https://github.com/daveluhman/toolkeeper"
-    LABEL org.opencontainers.image.version="v2.0"
+LABEL org.opencontainers.image.version="v2.0.1"
 RUN npm install
 RUN npm run build:css
 CMD ["npm", "start"]
