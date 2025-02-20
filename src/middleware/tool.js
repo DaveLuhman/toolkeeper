@@ -158,7 +158,7 @@ const searchTools = async (req, res, next) => {
 				res.locals.tools = await Tool.find({
 					serviceAssignment: searchTerm,
 					tenant: req.user.tenant.valueOf(),
-					archived: false
+					archived: false,
 				}).sort({ [sortField]: sortOrder || 1 });
 				break;
 
@@ -166,7 +166,7 @@ const searchTools = async (req, res, next) => {
 				res.locals.tools = await Tool.find({
 					category: searchTerm,
 					tenant: req.user.tenant.valueOf(),
-					archived: false
+					archived: false,
 				}).sort({ [sortField]: sortOrder || 1 });
 				break;
 
@@ -340,7 +340,7 @@ const updateTool = async (req, res, next) => {
 				$inc: { __v: 1 },
 				updatedAt: Date.now(),
 			},
-			{ new: true }
+			{ new: true },
 		);
 
 		if (!updatedTool) {
@@ -350,25 +350,38 @@ const updateTool = async (req, res, next) => {
 		// Build change log based on fields that were updated
 		const changes = [];
 		if (modelNumber !== undefined && modelNumber !== originalTool.modelNumber) {
-			changes.push(`Model was ${originalTool.modelNumber || 'none'}`);
+			changes.push(`Model was ${originalTool.modelNumber || "none"}`);
 		}
 		if (description !== undefined && description !== originalTool.description) {
-			changes.push(`Description was ${originalTool.description || 'none'}`);
+			changes.push(`Description was ${originalTool.description || "none"}`);
 		}
 		if (serviceAssignment !== undefined) {
 			let originalServiceAssignmentId;
-			if (typeof originalTool.serviceAssignment === "object" && originalTool.serviceAssignment._id) {
-				originalServiceAssignmentId = originalTool.serviceAssignment._id.toString();
+			if (
+				typeof originalTool.serviceAssignment === "object" &&
+				originalTool.serviceAssignment._id
+			) {
+				originalServiceAssignmentId =
+					originalTool.serviceAssignment._id.toString();
 			} else {
-				originalServiceAssignmentId = originalTool.serviceAssignment ? originalTool.serviceAssignment.toString() : undefined;
+				originalServiceAssignmentId = originalTool.serviceAssignment
+					? originalTool.serviceAssignment.toString()
+					: undefined;
 			}
 			if (originalServiceAssignmentId !== serviceAssignment) {
 				let oldSAJob = "none";
-				if (typeof originalTool.serviceAssignment === "object" && originalTool.serviceAssignment.jobNumber) {
+				if (
+					typeof originalTool.serviceAssignment === "object" &&
+					originalTool.serviceAssignment.jobNumber
+				) {
 					oldSAJob = originalTool.serviceAssignment.jobNumber;
 				} else if (originalTool.serviceAssignment) {
-					const oldSA = await ServiceAssignment.findById(originalTool.serviceAssignment);
-					if (oldSA) oldSAJob = oldSA.jobNumber;
+					const oldSA = await ServiceAssignment.findById(
+						originalTool.serviceAssignment,
+					);
+					if (oldSA) {
+						oldSAJob = oldSA.jobNumber;
+					}
 				}
 				changes.push(`Service Assignment was ${oldSAJob}`);
 			}
@@ -381,57 +394,69 @@ const updateTool = async (req, res, next) => {
 				incomingCategoryId = category ? category.toString() : undefined;
 			}
 			let originalCategoryId;
-			if (typeof originalTool.category === "object" && originalTool.category._id) {
+			if (
+				typeof originalTool.category === "object" &&
+				originalTool.category._id
+			) {
 				originalCategoryId = originalTool.category._id.toString();
 			} else {
-				originalCategoryId = originalTool.category ? originalTool.category.toString() : undefined;
+				originalCategoryId = originalTool.category
+					? originalTool.category.toString()
+					: undefined;
 			}
 			if (incomingCategoryId !== originalCategoryId) {
 				let originalCategoryName;
-				if (typeof originalTool.category === "object" && originalTool.category.name) {
+				if (
+					typeof originalTool.category === "object" &&
+					originalTool.category.name
+				) {
 					originalCategoryName = originalTool.category.name;
 				} else {
-					originalCategoryName = 'none';
+					originalCategoryName = "none";
 				}
 				changes.push(`Category was ${originalCategoryName}`);
 			}
 		}
 		if (barcode !== undefined && barcode !== originalTool.barcode) {
-			changes.push(`Barcode was ${originalTool.barcode || 'none'}`);
+			changes.push(`Barcode was ${originalTool.barcode || "none"}`);
 		}
-		if (manufacturer !== undefined && manufacturer !== originalTool.manufacturer) {
-			changes.push(`Mfr was ${originalTool.manufacturer || 'none'}`);
+		if (
+			manufacturer !== undefined &&
+			manufacturer !== originalTool.manufacturer
+		) {
+			changes.push(`Mfr was ${originalTool.manufacturer || "none"}`);
 		}
 		if (width !== undefined && (originalTool.size?.width || "") !== width) {
-			changes.push(`Width was ${originalTool.size?.width || 'none'}`);
+			changes.push(`Width was ${originalTool.size?.width || "none"}`);
 		}
 		if (height !== undefined && (originalTool.size?.height || "") !== height) {
-			changes.push(`Height was ${originalTool.size?.height || 'none'}`);
+			changes.push(`Height was ${originalTool.size?.height || "none"}`);
 		}
 		if (length !== undefined && (originalTool.size?.length || "") !== length) {
-			changes.push(`Length was ${originalTool.size?.length || 'none'}`);
+			changes.push(`Length was ${originalTool.size?.length || "none"}`);
 		}
 		if (weight !== undefined && (originalTool.size?.weight || "") !== weight) {
-			changes.push(`Weight was ${originalTool.size?.weight || 'none'}`);
+			changes.push(`Weight was ${originalTool.size?.weight || "none"}`);
 		}
 
 		// Prioritize unique fields (serialNumber, Barcode, toolID) first
 		const uniqueKeys = ["Barcode", "toolID"];
-		const uniqueChanges = changes.filter(c => {
+		const uniqueChanges = changes.filter((c) => {
 			const key = c.split(":")[0].trim();
-			return uniqueKeys.some(uk => uk.toLowerCase() === key.toLowerCase());
+			return uniqueKeys.some((uk) => uk.toLowerCase() === key.toLowerCase());
 		});
-		const otherChanges = changes.filter(c => {
+		const otherChanges = changes.filter((c) => {
 			const key = c.split(":")[0].trim();
-			return !uniqueKeys.some(uk => uk.toLowerCase() === key.toLowerCase());
+			return !uniqueKeys.some((uk) => uk.toLowerCase() === key.toLowerCase());
 		});
-		const changeDescription = (uniqueChanges.concat(otherChanges)).join(", ") || "No changes";
+		const changeDescription =
+			uniqueChanges.concat(otherChanges).join(", ") || "No changes";
 
 		updatedTool.history.push({
 			updatedBy: req.user._id,
 			serviceAssignment,
 			status: updatedTool.status,
-			changeDescription
+			changeDescription,
 		});
 
 		await updatedTool.save();
