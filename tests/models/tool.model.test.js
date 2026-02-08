@@ -76,7 +76,52 @@ describe("Tool Model", () => {
 		}
 	});
 
-	// Test case 3: Unique serialNumber and barcode
+	// Test case 3: Service assignment toolCount updates on save
+	it("should update service assignment toolCount on reassignment", async () => {
+		const tenant = await Tenant.create({
+			name: "Tenant 2B",
+			domain: "tenant2b.example.com",
+			adminUser: new mongoose.Types.ObjectId(),
+		});
+
+		const serviceAssignmentOne = await ServiceAssignment.create({
+			jobNumber: "JOB100",
+			jobName: "Jobsite One",
+			type: "Contract Jobsite",
+			tenant: tenant._id,
+		});
+
+		const serviceAssignmentTwo = await ServiceAssignment.create({
+			jobNumber: "JOB200",
+			jobName: "Jobsite Two",
+			type: "Contract Jobsite",
+			tenant: tenant._id,
+		});
+
+		const tool = await Tool.create({
+			serialNumber: "SN2222",
+			barcode: "BC2222",
+			serviceAssignment: serviceAssignmentOne._id,
+			tenant: tenant._id,
+		});
+
+		let refreshedSaOne = await ServiceAssignment.findById(serviceAssignmentOne._id);
+		let refreshedSaTwo = await ServiceAssignment.findById(serviceAssignmentTwo._id);
+
+		expect(refreshedSaOne.toolCount).toBe(1);
+		expect(refreshedSaTwo.toolCount).toBe(0);
+
+		tool.serviceAssignment = serviceAssignmentTwo._id;
+		await tool.save();
+
+		refreshedSaOne = await ServiceAssignment.findById(serviceAssignmentOne._id);
+		refreshedSaTwo = await ServiceAssignment.findById(serviceAssignmentTwo._id);
+
+		expect(refreshedSaOne.toolCount).toBe(0);
+		expect(refreshedSaTwo.toolCount).toBe(1);
+	});
+
+	// Test case 4: Unique serialNumber and barcode
 	it("should not allow duplicate serialNumbers or barcodes", async () => {
 		const tenant = await Tenant.create({
 			name: "Tenant 3",
@@ -105,7 +150,7 @@ describe("Tool Model", () => {
 		}
 	});
 
-	// Test case 4: Virtual property 'status'
+	// Test case 5: Virtual property 'status'
 	it("should correctly derive the status based on serviceAssignment", async () => {
 		const tenant = await Tenant.create({
 			name: "Tenant 4",
@@ -147,7 +192,7 @@ describe("Tool Model", () => {
 		expect(toolCheckedOut.status).toBe("Checked Out");
 	});
 
-	// Test case 5: History tracking
+	// Test case 6: History tracking
 	it("should correctly track history records", async () => {
 		const tenant = await Tenant.create({
 			name: "Tenant 5",

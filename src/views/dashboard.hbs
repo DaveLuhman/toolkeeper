@@ -1,6 +1,9 @@
 <div class="mb-2 text-center">
     {{> dashboard/_statsBox}}
 </div>
+{{#if cachedContent}}
+    {{> dashboard/_createCache}}
+{{/if}}
 <div class="flex flex-row">
     <div class="flex-1" id="recentlyChanged">
         {{#if recentlyUpdatedTools}}

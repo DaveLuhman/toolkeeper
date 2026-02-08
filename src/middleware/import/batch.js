@@ -155,9 +155,7 @@ const createBatchTool = async (toolObject) => {
  * @returns {Promise<Array>} - A promise that resolves to an array of settled promises.
  */
 const createBatchTools = async (toolObjectArray) => {
-  const promises = toolObjectArray.map(toolObject => 
-    createBatchTool(toolObject).catch(error => ({ error }))
-  );
+  const promises = toolObjectArray.map((toolObject) => createBatchTool(toolObject));
   return Promise.allSettled(promises);
 };
 
@@ -168,11 +166,12 @@ const createBatchTools = async (toolObjectArray) => {
  */
 const batchImportTools = async (requestBody) => {
   try {
+    errorList.length = 0;
     const toolObjectArray = prepareBatchData(requestBody);
     const results = await createBatchTools(toolObjectArray);
     return {
       newTools: results.filter(result => result.status === 'fulfilled').map(result => result.value),
-      errors: errorList
+      errorList
     };
   } catch (error) {
     errorList.push(error);

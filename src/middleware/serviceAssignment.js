@@ -1,4 +1,4 @@
-import { ServiceAssignment } from "../models/index.models.js";
+import { ServiceAssignment, Tool } from "../models/index.models.js";
 import { mutateToArray } from "./util.js";
 import logger from "../logging/index.js";
 /**
@@ -11,6 +11,14 @@ export async function getServiceAssignments(req, res, next) {
 		})
 			.sort("jobNumber")
 			.lean();
+		await Promise.all(
+			serviceAssignments.map(async (assignment) => {
+				assignment.toolCount = await Tool.countDocuments({
+					serviceAssignment: assignment._id,
+					tenant: req.user.tenant.valueOf(),
+				});
+			}),
+		);
 		res.locals.settings_inactiveServiceAssignments = serviceAssignments.filter(
 			(item) => item.active === false,
 		);

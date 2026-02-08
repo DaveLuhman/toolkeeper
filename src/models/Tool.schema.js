@@ -120,29 +120,61 @@ ToolSchema.virtual("status").get(function () {
 	}
 });
 
-ToolSchema.post('save', async (doc) => {
-	const lastHistoryEntry = doc.history[doc.history.length - 1];
+ToolSchema.pre("save", async function (next) {
+	if (!this.isModified("serviceAssignment")) {
+		return next();
+	}
 
-	if (lastHistoryEntry) {
-		const { serviceAssignment } = lastHistoryEntry;
+	if (this.isNew) {
+		this.$locals.previousServiceAssignment = null;
+		return next();
+	}
 
-		try {
-			// Update previous service assignment if it exists
-			if (doc.serviceAssignment) {
-				await ServiceAssignment.findByIdAndUpdate(doc.serviceAssignment, {
-					$inc: { toolCount: doc.serviceAssignment ? 0 : -1 } // Decrement tool count for previous assignment
-				});
-			}
+	try {
+		const existing = await this.constructor
+			.findById(this._id)
+			.select("serviceAssignment");
+		this.$locals.previousServiceAssignment = existing?.serviceAssignment || null;
+		return next();
+	} catch (error) {
+		logger.error(
+			`Error fetching previous serviceAssignment: ${error.message}`,
+		);
+		return next(error);
+	}
+});
 
-			// Update new service assignment if it exists
-			if (serviceAssignment) {
-				await ServiceAssignment.findByIdAndUpdate(serviceAssignment, {
-					$inc: { toolCount: serviceAssignment ? 1 : 0 } // Increment tool count for new assignment
-				});
-			}
-		} catch (error) {
-			logger.error(`Error updating toolCount for ServiceAssignment: ${error.message}`);
+ToolSchema.post("save", async (doc) => {
+	const previousServiceAssignment = doc.$locals?.previousServiceAssignment;
+	if (previousServiceAssignment === undefined) {
+		return;
+	}
+
+	const previousId = previousServiceAssignment
+		? previousServiceAssignment.valueOf()
+		: null;
+	const currentId = doc.serviceAssignment ? doc.serviceAssignment.valueOf() : null;
+
+	if (previousId === currentId) {
+		return;
+	}
+
+	try {
+		if (previousId) {
+			await ServiceAssignment.findByIdAndUpdate(previousId, {
+				$inc: { toolCount: -1 },
+			});
 		}
+
+		if (currentId) {
+			await ServiceAssignment.findByIdAndUpdate(currentId, {
+				$inc: { toolCount: 1 },
+			});
+		}
+	} catch (error) {
+		logger.error(
+			`Error updating toolCount for ServiceAssignment: ${error.message}`,
+		);
 	}
 });
 

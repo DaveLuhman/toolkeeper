@@ -1,5 +1,5 @@
 body {
-  margin: 1em;
+  margin: 0.75em;
   background: #cacaca;
   break-inside: auto;
 }
@@ -10,8 +10,9 @@ section.table {
   border-spacing: 0;
   color: black;
   break-after: always;
-
-  margin-bottom: 10%;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
 .text-center {
@@ -27,15 +28,15 @@ section.table {
 }
 
 .grid-cols-5 {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: 1.1fr 1.1fr 0.9fr 1.8fr 1.1fr;
 }
 
 div.header-cell {
   text-align: center;
   border-style: solid;
   font-weight: bold;
-  font-size: 15pt;
-  padding: 5px 8px;
+  font-size: 12pt;
+  padding: 4px 6px;
   vertical-align: middle;
 }
 
@@ -55,7 +56,7 @@ div.row:nth-child(even) {
 div.data-cell {
   border-bottom: 1px solid #808080;
   border-right: 1px solid #808080;
-  padding: 10px 15px;
+  padding: 6px 8px;
   vertical-align: middle;
 }
 
@@ -65,12 +66,13 @@ div.data-cell:first-child {
 
 div .barcode {
   font-family: 'Libre Barcode 39';
-  font-size: 16pt;
+  font-size: 14pt;
 }
 
 @media print {
   @page {
-    margin: 1em;
+    size: letter;
+    margin: 0.5in;
   }
 
   body {
@@ -80,9 +82,9 @@ div .barcode {
 
   div.row > div {
     display: inline-block;
-    border: solid 1px #black;
+    border: solid 1px #000;
     margin: 0.1cm;
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 
   div.row {
@@ -96,7 +98,7 @@ div .barcode {
   div.data-cell {
     border-bottom: 1px solid #808080;
     border-right: 1px solid #808080;
-    padding: 10px 15px;
+    padding: 6px 8px;
     vertical-align: middle;
   }
 }
