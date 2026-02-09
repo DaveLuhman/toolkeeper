@@ -100,17 +100,17 @@ const customHelpers = {
 	searchingForOneTool,
 	hbsDate_distanceFromToday,
 	generateSubscriptionUrl,
-	eq: (left, right, options) => {
-		if (left === right) {
-			return options.fn(this);
+	eq: function (left, right, options) {
+		if (options?.fn) {
+			return left === right ? options.fn(this) : options.inverse(this);
 		}
-		return options.inverse(this);
+		return left === right;
 	},
-	gt: (left, right, options) => {
-		if (left > right) {
-			return options.fn(this);
+	gt: function (left, right, options) {
+		if (options?.fn) {
+			return left > right ? options.fn(this) : options.inverse(this);
 		}
-		return options.inverse(this);
+		return left > right;
 	},
 	length: (value) => {
 		if (Array.isArray(value) || typeof value === "string") {
@@ -121,25 +121,76 @@ const customHelpers = {
 		}
 		return 0;
 	},
-	contains: (collection, value, options) => {
+	contains: function (collection, value, options) {
+		let result = false;
 		if (typeof collection === "string") {
 			const items = collection.split(",").map((item) => item.trim());
-			return items.includes(value) ? options.fn(this) : options.inverse(this);
+			result = items.includes(value);
+		} else if (Array.isArray(collection)) {
+			result = collection.includes(value);
 		}
-		if (Array.isArray(collection)) {
-			return collection.includes(value)
-				? options.fn(this)
-				: options.inverse(this);
+		if (options?.fn) {
+			return result ? options.fn(this) : options.inverse(this);
 		}
-		return options.inverse(this);
+		return result;
 	},
-	withGroup: (items, groupSize, options) => {
+	inArray: function (value, list, options) {
+		const items =
+			typeof list === "string"
+				? list.split(",").map((item) => item.trim())
+				: Array.isArray(list)
+					? list
+					: [];
+		const result = items.includes(value);
+		if (options?.fn) {
+			return result ? options.fn(this) : options.inverse(this);
+		}
+		return result;
+	},
+	withGroup: function (items, groupSize, options) {
 		if (!Array.isArray(items) || !groupSize) {
 			return options.inverse(this);
 		}
 		let output = "";
 		for (let index = 0; index < items.length; index += groupSize) {
 			output += options.fn(items.slice(index, index + groupSize));
+		}
+		return output;
+	},
+	moment: (date, options) => {
+		const format = options?.hash?.format || "MM/DD/YYYY";
+		return moment(date).format(format);
+	},
+	isnt: function (left, right, options) {
+		if (options?.fn) {
+			return left !== right ? options.fn(this) : options.inverse(this);
+		}
+		return left !== right;
+	},
+	stringify: (value) => {
+		try {
+			return JSON.stringify(value, null, 2);
+		} catch {
+			return "null";
+		}
+	},
+	forEach: (context, options) => {
+		if (!context || !options?.fn) {
+			return "";
+		}
+		let output = "";
+		if (Array.isArray(context)) {
+			for (let i = 0; i < context.length; i++) {
+				output += options.fn(context[i], { data: { index: i, key: i } });
+			}
+		} else if (typeof context === "object") {
+			const keys = Object.keys(context);
+			for (let i = 0; i < keys.length; i++) {
+				output += options.fn(
+					{ key: keys[i], content: context[keys[i]] },
+					{ data: { index: i, key: keys[i] } },
+				);
+			}
 		}
 		return output;
 	},
