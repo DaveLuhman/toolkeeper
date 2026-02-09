@@ -1,0 +1,36 @@
+<div class="flex flex-wrap">
+  <div id="settings-nav">
+    {{> _settings}}
+  </div>
+  <div id="settings_export" class="grid items-center grid-flow-row ml-5 pl-5">
+    <div id="title-bar">
+      <label class="title-text">CSV Export</label>
+      <hr />
+      <label class="font-thin">Download your existing data as CSV files.<br />
+        These files are formatted for use with the CSV Import tool.</label>
+    </div>
+    <div class="mt-4 space-y-4">
+      <div class="flex items-center gap-4">
+        <a href="/settings/import/export/categories" class="btn btn-outline btn-primary btn-sm">
+          Download Categories
+        </a>
+        <span class="text-sm text-gray-500">Exports prefix, name, and description</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/settings/import/export/serviceAssignments" class="btn btn-outline btn-primary btn-sm">
+          Download Service Assignments
+        </a>
+        <span class="text-sm text-gray-500">Exports jobNumber, jobName, type, phone, and notes</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="/settings/import/export/tools" class="btn btn-outline btn-primary btn-sm">
+          Download Tools
+        </a>
+        <span class="text-sm text-gray-500">Exports all tool fields with human-readable assignment and category values</span>
+      </div>
+    </div>
+    <div class="mt-6">
+      <a href="/settings/import" class="btn btn-ghost btn-sm">&larr; Back to Import</a>
+    </div>
+  </div>
+</div>
