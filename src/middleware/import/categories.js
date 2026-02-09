@@ -9,10 +9,42 @@ const errorList = [];
  * @param {Array} row - The row of data.
  * @returns {Object} - The category document.
  */
-const createCategoryDocument = (row, tenant) => {
-	const data = row.map((cell) => cell.trim());
-	const description = data[2] || "";
-	return { prefix: data[0], name: data[1], description, tenant: tenant };
+const buildHeaderMap = (entries) => {
+	if (!entries?.length) {
+		return null;
+	}
+	const headers = entries[0].map((value) => value.trim().toLowerCase());
+	const expected = ["prefix", "name", "description"];
+	if (!expected.every((header) => headers.includes(header))) {
+		return null;
+	}
+	return headers.reduce((acc, header, index) => {
+		acc[header] = index;
+		return acc;
+	}, {});
+};
+
+const getCell = (row, headerMap, headerName, fallbackIndex) => {
+	if (headerMap && headerMap[headerName] !== undefined) {
+		return row[headerMap[headerName]];
+	}
+	return row[fallbackIndex];
+};
+
+const createCategoryDocument = (row, tenant, headerMap) => {
+	const prefixValue = getCell(row, headerMap, "prefix", 0) || "";
+	const nameValue = getCell(row, headerMap, "name", 1) || "";
+	const descriptionValue = getCell(row, headerMap, "description", 2) || "";
+
+	const prefix = prefixValue.trim();
+	const name = nameValue.trim();
+	const description = descriptionValue.trim();
+
+	if (!prefix && !name) {
+		return null;
+	}
+
+	return { prefix, name, description, tenant };
 };
 
 /**
@@ -32,6 +64,9 @@ const checkDuplicateCategory = async (prefix) => {
  * @returns {Promise} - A promise that resolves to the saved category document.
  */
 const saveCategoryDocument = async (doc) => {
+	if (!doc) {
+		return;
+	}
 	if (await checkDuplicateCategory(doc.prefix)) {
 		errorList.push({ key: doc.prefix, reason: "Duplicate Prefix" });
 		return;
@@ -48,8 +83,11 @@ const saveCategoryDocument = async (doc) => {
  * @return {*}
  */
 function createCategories(entries, tenant) {
-	const categoryPromises = entries.map((entry) => {
-		const doc = createCategoryDocument(entry, tenant);
+	const headerMap = buildHeaderMap(entries);
+	const rows = headerMap ? entries.slice(1) : entries;
+
+	const categoryPromises = rows.map((entry) => {
+		const doc = createCategoryDocument(entry, tenant, headerMap);
 		return saveCategoryDocument(doc);
 	});
 	return Promise.all(categoryPromises);

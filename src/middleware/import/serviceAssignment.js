@@ -1,5 +1,5 @@
 import { ServiceAssignment } from "../../models/index.models.js";
-import { readCSVFile, checkDuplicate, saveDocument } from "./importUtils.js";
+import { readCSVFile, saveDocument } from "./importUtils.js";
 let successCount = 0;
 const errorList = [];
 
@@ -109,13 +109,43 @@ async function saveServiceAssignmentDocument(serviceAssignmentDocument) {
 	}
 }
 
+const buildHeaderMap = (entries) => {
+	if (!entries?.length) {
+		return null;
+	}
+	const headers = entries[0].map((value) => value.trim().toLowerCase());
+	const expected = ["jobnumber", "jobname", "type", "phone", "notes"];
+	if (!expected.every((header) => headers.includes(header))) {
+		return null;
+	}
+	return headers.reduce((acc, header, index) => {
+		acc[header] = index;
+		return acc;
+	}, {});
+};
+
+const mapRow = (row, headerMap) => {
+	if (!headerMap) {
+		return row;
+	}
+	return [
+		row[headerMap.jobnumber],
+		row[headerMap.jobname],
+		row[headerMap.type],
+		row[headerMap.phone],
+		row[headerMap.notes],
+	];
+};
+
 async function createServiceAssignments(serviceAssignmentEntries, tenant) {
-	const serviceAssignmentsPromises = serviceAssignmentEntries.map(
+	const headerMap = buildHeaderMap(serviceAssignmentEntries);
+	const rows = headerMap ? serviceAssignmentEntries.slice(1) : serviceAssignmentEntries;
+
+	const serviceAssignmentsPromises = rows.map(
 		async (row) => {
-			const serviceAssignmentDocument = await createServiceAssignmentDocument(
-				row,
-				tenant,
-			);
+			const mappedRow = mapRow(row, headerMap);
+			const serviceAssignmentDocument =
+				await createServiceAssignmentDocument(mappedRow, tenant);
 			return saveServiceAssignmentDocument(serviceAssignmentDocument);
 		},
 	);
