@@ -143,6 +143,13 @@ const customHelpers = {
 		}
 		return output;
 	},
+	JSONstringify: (value) => {
+		try {
+			return JSON.stringify(value);
+		} catch {
+			return "null";
+		}
+	},
 };
 
 export default customHelpers;
