@@ -55,7 +55,7 @@ function sanitize(string) {
  **/
 export function sanitizeReqBody(req, _res, next) {
 	for (const key in req.body) {
-		if (Object.prototype.hasOwnProperty.call(req.body, key)) {
+		if (Object.hasOwn(req.body, key)) {
 			req.body[key] = sanitize(req.body[key]);
 		}
 	}
@@ -65,13 +65,15 @@ export function sanitizeReqBody(req, _res, next) {
 export const populateDropdownItems = [listCategoryNames, listActiveSAs];
 
 export const rateLimiter = rateLimit({
-  skip: (req, res) => {return req.isAuthenticated()}, // Only apply rate limiting to unauthenticated users
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
-  skipSuccessfulRequests: false, // Skip middleware incrementer for successful requests
-})
+	skip: (req, _res) => {
+		return req.isAuthenticated();
+	}, // Only apply rate limiting to unauthenticated users
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+	skipSuccessfulRequests: false, // Skip middleware incrementer for successful requests
+});
 
 export const createAccountLimiter = rateLimit({
 	windowMs: 60 * 60 * 1000, // 1 hour
@@ -89,12 +91,38 @@ export const createAccountLimiter = rateLimit({
  * @returns {Array<Array<string>>} - The array of entries.
  */
 export function csvFileToEntries(file) {
+	const parseCsvLine = (line) => {
+		const values = [];
+		let current = "";
+		let inQuotes = false;
+
+		for (let i = 0; i < line.length; i++) {
+			const char = line[i];
+			if (char === '"') {
+				if (inQuotes && line[i + 1] === '"') {
+					current += '"';
+					i++;
+				} else {
+					inQuotes = !inQuotes;
+				}
+				continue;
+			}
+			if (char === "," && !inQuotes) {
+				values.push(current);
+				current = "";
+				continue;
+			}
+			current += char;
+		}
+		values.push(current);
+		return values;
+	};
+
 	return Buffer.from(file.data)
-		.toString("ascii")
-		.replace("'", "")
-		.replaceAll('"', "")
+		.toString("utf-8")
 		.split(/\r?\n/)
-		.map((row) => row.split(","));
+		.filter((row) => row.trim() !== "")
+		.map((row) => parseCsvLine(row));
 }
 
 /**

@@ -8,10 +8,6 @@ import { readCSVFile, checkDuplicate, saveDocument } from "./importUtils.js";
 const errorList = [];
 let successCount = 0;
 
-function trimArrayValues(array) {
-	return array.map((cell) => cell.trim());
-}
-
 async function checkForDuplicates(serialNumber, toolId, barcode) {
 	const duplicateChecks = [
 		{ field: "serialNumber", value: serialNumber },
@@ -31,25 +27,75 @@ async function checkForDuplicates(serialNumber, toolId, barcode) {
 	return false; // No duplicates found
 }
 
-async function createToolDocument(row, tenant) {
+const buildHeaderMap = (entries) => {
+	if (!entries?.length) {
+		return null;
+	}
+	const headers = entries[0].map((value) => value.trim().toLowerCase());
+	const expected = [
+		"serialnumber",
+		"barcode",
+		"description",
+		"modelnumber",
+		"toolid",
+		"manufacturer",
+		"serviceassignment",
+		"category",
+	];
+	if (!expected.every((header) => headers.includes(header))) {
+		return null;
+	}
+	return headers.reduce((acc, header, index) => {
+		acc[header] = index;
+		return acc;
+	}, {});
+};
+
+const getCell = (row, headerMap, headerName, fallbackIndex) => {
+	if (headerMap && headerMap[headerName] !== undefined) {
+		return row[headerMap[headerName]];
+	}
+	return row[fallbackIndex];
+};
+
+async function createToolDocument(row, tenant, headerMap) {
+	if (!row || !row.length) {
+		return null;
+	}
+
+	const serialNumber = (getCell(row, headerMap, "serialnumber", 0) || "").trim();
+	const barcode = (getCell(row, headerMap, "barcode", 1) || "").trim();
+	const description = (getCell(row, headerMap, "description", 2) || "").trim();
+	const modelNumber = (getCell(row, headerMap, "modelnumber", 3) || "").trim();
+	const toolID = (getCell(row, headerMap, "toolid", 4) || "").trim();
+	const manufacturer = (getCell(row, headerMap, "manufacturer", 5) || "").trim();
+	const serviceAssignmentValue = (
+		getCell(row, headerMap, "serviceassignment", 6) || ""
+	).trim();
+	const categoryValue = (getCell(row, headerMap, "category", 7) || "").trim();
+
+	if (!serialNumber && !barcode && !toolID) {
+		return null;
+	}
+
 	// Validate required fields
-	if (!row[0] || !row[1] || !row[4]) {
+	if (!serialNumber || !barcode || !toolID) {
 		throw new Error(
 			"Missing required fields: serialNumber, barcode, or toolID",
 		);
 	}
 
-	const trimmedRow = trimArrayValues(row);
-
 	// Find service assignment
 	let serviceAssignment;
 	try {
-		serviceAssignment = await ServiceAssignment.findOne({
-			$or: [
-				{ jobNumber: trimmedRow[6], tenant },
-				{ jobName: trimmedRow[6], tenant },
-			],
-		});
+		if (serviceAssignmentValue) {
+			serviceAssignment = await ServiceAssignment.findOne({
+				$or: [
+					{ jobNumber: serviceAssignmentValue, tenant },
+					{ jobName: serviceAssignmentValue, tenant },
+				],
+			});
+		}
 
 		if (!serviceAssignment) {
 			serviceAssignment = await ServiceAssignment.findOne({
@@ -64,12 +110,14 @@ async function createToolDocument(row, tenant) {
 	// Find category
 	let category;
 	try {
-		category = await Category.findOne({
-			$or: [
-				{ prefix: trimmedRow[7], tenant },
-				{ name: trimmedRow[7], tenant },
-			],
-		});
+		if (categoryValue) {
+			category = await Category.findOne({
+				$or: [
+					{ prefix: categoryValue, tenant },
+					{ name: categoryValue, tenant },
+				],
+			});
+		}
 
 		if (!category) {
 			category = await Category.findOne({
@@ -82,12 +130,12 @@ async function createToolDocument(row, tenant) {
 	}
 
 	return {
-		serialNumber: trimmedRow[0],
-		barcode: trimmedRow[1],
-		description: trimmedRow[2],
-		modelNumber: trimmedRow[3],
-		toolID: trimmedRow[4],
-		manufacturer: trimmedRow[5],
+		serialNumber,
+		barcode,
+		description,
+		modelNumber,
+		toolID,
+		manufacturer,
 		serviceAssignment,
 		category,
 		tenant,
@@ -130,8 +178,14 @@ async function createTool(toolDocument) {
  * Processes all tools in the CSV and creates them in the database.
  */
 export async function createTools(entries, tenant) {
-	const toolPromises = entries.map(async (entry) => {
-		const toolDocument = await createToolDocument(entry, tenant);
+	const headerMap = buildHeaderMap(entries);
+	const rows = headerMap ? entries.slice(1) : entries;
+
+	const toolPromises = rows.map(async (entry) => {
+		const toolDocument = await createToolDocument(entry, tenant, headerMap);
+		if (!toolDocument) {
+			return null;
+		}
 		return createTool(toolDocument);
 	});
 	return Promise.allSettled(toolPromises);

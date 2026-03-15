@@ -96,10 +96,12 @@
     </div>
     <label class="modal-backdrop" for="newUserModal">Close</label>
 </div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        introJs().onexit(() => {
-            $.post("/settings/users/onboarding-complete");
-        }).start();
-    });
-</script>
+{{#unless onboarding.progress.usersSetup}}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            introJs().onexit(() => {
+                $.post("/settings/users/onboarding-complete");
+            }).start();
+        });
+    </script>
+{{/unless}}
